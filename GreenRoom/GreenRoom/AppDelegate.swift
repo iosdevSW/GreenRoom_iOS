@@ -2,7 +2,7 @@
 //  AppDelegate.swift
 //  GreenRoom
 //
-//  Created by SangWoo's MacBook on 2022/07/31.
+//  Created by SangWoo's MacBook on 2022/08/01.
 //
 
 import UIKit
@@ -29,6 +29,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the user discards a scene session.
         // If any sessions were discarded while the application was not running, this will be called shortly after application:didFinishLaunchingWithOptions.
         // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
+    }
+    
+    // 모든 뷰에서 세로 화면 고정
+    func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
+        return UIInterfaceOrientationMask.portrait
     }
 
 
