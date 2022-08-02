@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DBBA947E289968AF00264405 /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBBA947D289968AF00264405 /* Extension.swift */; };
+		DBBA9481289968CD00264405 /* PaddingLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBBA9480289968CD00264405 /* PaddingLabel.swift */; };
 		DBD0821D2897E6EE0092241F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD0821C2897E6EE0092241F /* AppDelegate.swift */; };
 		DBD0821F2897E6EE0092241F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD0821E2897E6EE0092241F /* SceneDelegate.swift */; };
 		DBD082262897E6F30092241F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DBD082252897E6F30092241F /* Assets.xcassets */; };
@@ -18,21 +20,22 @@
 		DBD082552897E75B0092241F /* Green.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD0823F2897E75A0092241F /* Green.swift */; };
 		DBD082562897E75B0092241F /* MyPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD082412897E75A0092241F /* MyPage.swift */; };
 		DBD082572897E75B0092241F /* Keyword.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD082432897E75A0092241F /* Keyword.swift */; };
-		DBD082582897E75B0092241F /* Login.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD082452897E75A0092241F /* Login.swift */; };
 		DBD082592897E75B0092241F /* TempGreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD082482897E75A0092241F /* TempGreen.swift */; };
 		DBD0825A2897E75B0092241F /* TempMyPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD0824A2897E75A0092241F /* TempMyPage.swift */; };
 		DBD0825B2897E75B0092241F /* TempKeyword.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD0824C2897E75A0092241F /* TempKeyword.swift */; };
-		DBD0825C2897E75B0092241F /* TempLogin.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD0824E2897E75A0092241F /* TempLogin.swift */; };
 		DBD0825D2897E75B0092241F /* TempModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD082502897E75B0092241F /* TempModel.swift */; };
 		DBD082602897E7740092241F /* TempFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD0825F2897E7740092241F /* TempFile.swift */; };
-		DBD082662897E8430092241F /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD082652897E8430092241F /* Extension.swift */; };
-		DBD0826C289807FF0092241F /* SF-Pro.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DBD0826B289807C30092241F /* SF-Pro.ttf */; };
-		DBD0826D289808010092241F /* SFPro-Text-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = DBD0826A289807900092241F /* SFPro-Text-Bold.otf */; };
-		DBD0826E289808030092241F /* SFPro-Text-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = DBD082682898078F0092241F /* SFPro-Text-Regular.otf */; };
-		DBD0826F289808050092241F /* SFPro-Text-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = DBD082692898078F0092241F /* SFPro-Text-Semibold.otf */; };
+		DBD0826C289807FF0092241F /* SFPro.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DBD0826B289807C30092241F /* SFPro.ttf */; };
+		DBD0826D289808010092241F /* SFProText-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = DBD0826A289807900092241F /* SFProText-Bold.otf */; };
+		DBD0826E289808030092241F /* SFProText-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = DBD082682898078F0092241F /* SFProText-Regular.otf */; };
+		DBD0826F289808050092241F /* SFProText-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = DBD082692898078F0092241F /* SFProText-Semibold.otf */; };
+		DBE7A54A28996BCE00E9A4E9 /* Login.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBE7A54928996BCE00E9A4E9 /* Login.swift */; };
+		DBE7A54F28996C2000E9A4E9 /* TempLogin.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBE7A54E28996C2000E9A4E9 /* TempLogin.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		DBBA947D289968AF00264405 /* Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
+		DBBA9480289968CD00264405 /* PaddingLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaddingLabel.swift; sourceTree = "<group>"; };
 		DBD082192897E6EE0092241F /* GreenRoom.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GreenRoom.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DBD0821C2897E6EE0092241F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DBD0821E2897E6EE0092241F /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -46,18 +49,17 @@
 		DBD0823F2897E75A0092241F /* Green.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Green.swift; sourceTree = "<group>"; };
 		DBD082412897E75A0092241F /* MyPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyPage.swift; sourceTree = "<group>"; };
 		DBD082432897E75A0092241F /* Keyword.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Keyword.swift; sourceTree = "<group>"; };
-		DBD082452897E75A0092241F /* Login.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Login.swift; sourceTree = "<group>"; };
 		DBD082482897E75A0092241F /* TempGreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TempGreen.swift; sourceTree = "<group>"; };
 		DBD0824A2897E75A0092241F /* TempMyPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TempMyPage.swift; sourceTree = "<group>"; };
 		DBD0824C2897E75A0092241F /* TempKeyword.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TempKeyword.swift; sourceTree = "<group>"; };
-		DBD0824E2897E75A0092241F /* TempLogin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TempLogin.swift; sourceTree = "<group>"; };
 		DBD082502897E75B0092241F /* TempModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TempModel.swift; sourceTree = "<group>"; };
 		DBD0825F2897E7740092241F /* TempFile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TempFile.swift; sourceTree = "<group>"; };
-		DBD082652897E8430092241F /* Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
-		DBD082682898078F0092241F /* SFPro-Text-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFPro-Text-Regular.otf"; sourceTree = "<group>"; };
-		DBD082692898078F0092241F /* SFPro-Text-Semibold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFPro-Text-Semibold.otf"; sourceTree = "<group>"; };
-		DBD0826A289807900092241F /* SFPro-Text-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFPro-Text-Bold.otf"; sourceTree = "<group>"; };
-		DBD0826B289807C30092241F /* SF-Pro.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro.ttf"; sourceTree = "<group>"; };
+		DBD082682898078F0092241F /* SFProText-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFProText-Regular.otf"; sourceTree = "<group>"; };
+		DBD082692898078F0092241F /* SFProText-Semibold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFProText-Semibold.otf"; sourceTree = "<group>"; };
+		DBD0826A289807900092241F /* SFProText-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFProText-Bold.otf"; sourceTree = "<group>"; };
+		DBD0826B289807C30092241F /* SFPro.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = SFPro.ttf; sourceTree = "<group>"; };
+		DBE7A54928996BCE00E9A4E9 /* Login.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Login.swift; sourceTree = "<group>"; };
+		DBE7A54E28996C2000E9A4E9 /* TempLogin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TempLogin.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,6 +73,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		DBBA947F289968CD00264405 /* Custom */ = {
+			isa = PBXGroup;
+			children = (
+				DBBA9480289968CD00264405 /* PaddingLabel.swift */,
+			);
+			path = Custom;
+			sourceTree = "<group>";
+		};
 		DBD082102897E6EE0092241F = {
 			isa = PBXGroup;
 			children = (
@@ -90,13 +100,14 @@
 		DBD0821B2897E6EE0092241F /* GreenRoom */ = {
 			isa = PBXGroup;
 			children = (
+				DBBA947F289968CD00264405 /* Custom */,
 				DBD082642897E7840092241F /* Resource */,
 				DBD0825E2897E7740092241F /* Services */,
 				DBD0824F2897E75B0092241F /* Model */,
 				DBD082462897E75A0092241F /* View */,
 				DBD082382897E75A0092241F /* ViewModel */,
 				DBD0823D2897E75A0092241F /* Controller */,
-				DBD082652897E8430092241F /* Extension.swift */,
+				DBBA947D289968AF00264405 /* Extension.swift */,
 				DBD0821C2897E6EE0092241F /* AppDelegate.swift */,
 				DBD0821E2897E6EE0092241F /* SceneDelegate.swift */,
 				DBD082272897E6F30092241F /* LaunchScreen.storyboard */,
@@ -119,10 +130,10 @@
 		DBD0823D2897E75A0092241F /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				DBE7A54828996BBF00E9A4E9 /* Authentication */,
 				DBD0823E2897E75A0092241F /* Green */,
 				DBD082402897E75A0092241F /* MyPage */,
 				DBD082422897E75A0092241F /* Keyword */,
-				DBD082442897E75A0092241F /* Login */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -151,21 +162,13 @@
 			path = Keyword;
 			sourceTree = "<group>";
 		};
-		DBD082442897E75A0092241F /* Login */ = {
-			isa = PBXGroup;
-			children = (
-				DBD082452897E75A0092241F /* Login.swift */,
-			);
-			path = Login;
-			sourceTree = "<group>";
-		};
 		DBD082462897E75A0092241F /* View */ = {
 			isa = PBXGroup;
 			children = (
+				DBE7A54D28996BF500E9A4E9 /* Authentication */,
 				DBD082472897E75A0092241F /* Green */,
 				DBD082492897E75A0092241F /* MyPage */,
 				DBD0824B2897E75A0092241F /* Keyword */,
-				DBD0824D2897E75A0092241F /* Login */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -194,14 +197,6 @@
 			path = Keyword;
 			sourceTree = "<group>";
 		};
-		DBD0824D2897E75A0092241F /* Login */ = {
-			isa = PBXGroup;
-			children = (
-				DBD0824E2897E75A0092241F /* TempLogin.swift */,
-			);
-			path = Login;
-			sourceTree = "<group>";
-		};
 		DBD0824F2897E75B0092241F /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -221,10 +216,10 @@
 		DBD082612897E77F0092241F /* Font */ = {
 			isa = PBXGroup;
 			children = (
-				DBD0826B289807C30092241F /* SF-Pro.ttf */,
-				DBD0826A289807900092241F /* SFPro-Text-Bold.otf */,
-				DBD082682898078F0092241F /* SFPro-Text-Regular.otf */,
-				DBD082692898078F0092241F /* SFPro-Text-Semibold.otf */,
+				DBD0826B289807C30092241F /* SFPro.ttf */,
+				DBD0826A289807900092241F /* SFProText-Bold.otf */,
+				DBD082682898078F0092241F /* SFProText-Regular.otf */,
+				DBD082692898078F0092241F /* SFProText-Semibold.otf */,
 			);
 			path = Font;
 			sourceTree = "<group>";
@@ -236,6 +231,22 @@
 				DBD082612897E77F0092241F /* Font */,
 			);
 			path = Resource;
+			sourceTree = "<group>";
+		};
+		DBE7A54828996BBF00E9A4E9 /* Authentication */ = {
+			isa = PBXGroup;
+			children = (
+				DBE7A54928996BCE00E9A4E9 /* Login.swift */,
+			);
+			path = Authentication;
+			sourceTree = "<group>";
+		};
+		DBE7A54D28996BF500E9A4E9 /* Authentication */ = {
+			isa = PBXGroup;
+			children = (
+				DBE7A54E28996C2000E9A4E9 /* TempLogin.swift */,
+			);
+			path = Authentication;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -296,10 +307,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DBD0826C289807FF0092241F /* SF-Pro.ttf in Resources */,
-				DBD0826E289808030092241F /* SFPro-Text-Regular.otf in Resources */,
-				DBD0826F289808050092241F /* SFPro-Text-Semibold.otf in Resources */,
-				DBD0826D289808010092241F /* SFPro-Text-Bold.otf in Resources */,
+				DBD0826C289807FF0092241F /* SFPro.ttf in Resources */,
+				DBD0826E289808030092241F /* SFProText-Regular.otf in Resources */,
+				DBD0826F289808050092241F /* SFProText-Semibold.otf in Resources */,
+				DBD0826D289808010092241F /* SFProText-Bold.otf in Resources */,
 				DBD082262897E6F30092241F /* Assets.xcassets in Resources */,
 				DBD082292897E6F30092241F /* LaunchScreen.storyboard in Resources */,
 			);
@@ -313,21 +324,22 @@
 			buildActionMask = 2147483647;
 			files = (
 				DBD082512897E75B0092241F /* LoginViewModel.swift in Sources */,
+				DBE7A54A28996BCE00E9A4E9 /* Login.swift in Sources */,
 				DBD0825D2897E75B0092241F /* TempModel.swift in Sources */,
+				DBE7A54F28996C2000E9A4E9 /* TempLogin.swift in Sources */,
 				DBD082572897E75B0092241F /* Keyword.swift in Sources */,
 				DBD082522897E75B0092241F /* GreenViewModel.swift in Sources */,
-				DBD0825C2897E75B0092241F /* TempLogin.swift in Sources */,
+				DBBA9481289968CD00264405 /* PaddingLabel.swift in Sources */,
 				DBD082542897E75B0092241F /* MyPageViewModel.swift in Sources */,
 				DBD082602897E7740092241F /* TempFile.swift in Sources */,
 				DBD082592897E75B0092241F /* TempGreen.swift in Sources */,
 				DBD0821D2897E6EE0092241F /* AppDelegate.swift in Sources */,
+				DBBA947E289968AF00264405 /* Extension.swift in Sources */,
 				DBD0825B2897E75B0092241F /* TempKeyword.swift in Sources */,
 				DBD082532897E75B0092241F /* KeywordViewModel.swift in Sources */,
-				DBD082662897E8430092241F /* Extension.swift in Sources */,
 				DBD0821F2897E6EE0092241F /* SceneDelegate.swift in Sources */,
 				DBD0825A2897E75B0092241F /* TempMyPage.swift in Sources */,
 				DBD082552897E75B0092241F /* Green.swift in Sources */,
-				DBD082582897E75B0092241F /* Login.swift in Sources */,
 				DBD082562897E75B0092241F /* MyPage.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -472,7 +484,6 @@
 				INFOPLIST_FILE = GreenRoom/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -500,7 +511,6 @@
 				INFOPLIST_FILE = GreenRoom/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
