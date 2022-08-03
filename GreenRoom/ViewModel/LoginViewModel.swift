@@ -7,6 +7,10 @@
 
 import Foundation
 
-class LoginViewModel {
+protocol LoginViewModelProtocol{
+    
+}
+
+class LoginViewModel: LoginViewModelProtocol {
     
 }
