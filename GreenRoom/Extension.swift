@@ -41,7 +41,7 @@ extension UIView {
         self.layer.addSublayer(layer)
     }
     
-    func separatorLabel(color: UIColor = .customGray, margin: CGFloat = 24, viewHeight: CGFloat){
+    func separatorLine(color: UIColor = .customGray, margin: CGFloat = 24, viewHeight: CGFloat){
         let layer = CALayer()
         layer.borderColor = color.cgColor
         layer.borderWidth = 1
