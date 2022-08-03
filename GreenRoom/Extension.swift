@@ -8,17 +8,17 @@
 import UIKit
 
 extension UIColor {
-    class var mainColor:UIColor? { return UIColor(named: "main") }
-    class var sub: UIColor? { return UIColor(named: "sub") }
-    class var darken: UIColor? { return UIColor(named: "darken") }
-    class var point: UIColor? { return UIColor(named: "point") }
-    class var customGray: UIColor? { return UIColor(named: "customGray") }
-    class var customDarkGray: UIColor? { return UIColor(named: "customDarkGray") }
+    class var mainColor:UIColor! { return UIColor(named: "main") ?? UIColor.black }
+    class var sub: UIColor! { return UIColor(named: "sub") ?? UIColor.black}
+    class var darken: UIColor! { return UIColor(named: "darken") ?? UIColor.black}
+    class var point: UIColor! { return UIColor(named: "point") ?? UIColor.black}
+    class var customGray: UIColor! { return UIColor(named: "customGray") ?? UIColor.black}
+    class var customDarkGray: UIColor! { return UIColor(named: "customDarkGray") ?? UIColor.red}
 }
 
 extension UIView {
     //그라데이션 컬러 입히기
-    func gradient() {
+    func setGradientColor() {
         let layer = CAGradientLayer()
 
         layer.colors = [
@@ -39,5 +39,33 @@ extension UIView {
         layer.position = self.center
 
         self.layer.addSublayer(layer)
+    }
+    
+    func separatorLabel(color: UIColor = .customGray, margin: CGFloat = 24, viewHeight: CGFloat){
+        let layer = CALayer()
+        layer.borderColor = color.cgColor
+        layer.borderWidth = 1
+        layer.frame = CGRect(x: margin, y: viewHeight/2, width: UIScreen.main.bounds.width-(margin*2), height: 1)
+        
+        self.layer.addSublayer(layer)
+        self.layer.masksToBounds = true        
+    }
+}
+
+extension UIFont {
+    enum TextFamily: String {
+        case Bold, Regular
+    }
+    
+    enum Family: String {
+        case Bold, Regular, Semibold
+    }
+    
+    static func sfProText(size: CGFloat = 16, family: TextFamily = .Regular)->UIFont!{
+        return UIFont(name: "SFProText-\(family)", size: size)
+    }
+    
+    static func sfPro(size: CGFloat = 16, family: Family = .Regular)->UIFont!{
+        return UIFont(name: "SFPro-\(family)", size: size)
     }
 }
