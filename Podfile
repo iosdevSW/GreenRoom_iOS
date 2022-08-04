@@ -10,5 +10,9 @@ target 'GreenRoom' do
 	pod 'Then'
 	pod 'RxSwift', '6.5.0'
 	pod 'RxCocoa', '6.5.0'
+	pod 'RxKakaoSDKUser'
+	pod 'RxKakaoSDKAuth'
+	pod 'KakaoSDKUser'
+	pod 'KakaoSDKAuth'
 
 end

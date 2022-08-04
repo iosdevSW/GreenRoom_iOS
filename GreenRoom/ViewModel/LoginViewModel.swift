@@ -13,4 +13,7 @@ protocol LoginViewModelProtocol{
 
 class LoginViewModel: LoginViewModelProtocol {
     
+    func checkUserInfo(token: String){
+        
+    }
 }
