@@ -8,10 +8,17 @@
 import UIKit
 import SnapKit
 import Then
+import RxSwift
+import RxKakaoSDKUser
+import RxKakaoSDKAuth
+import KakaoSDKUser
+import KakaoSDKAuth
+
 
 class LoginViewController: UIViewController {
     //MARK: - Properties
-    let loginViewModel: LoginViewModel
+    let loginViewModel = LoginViewModel()
+    let disposeBag = DisposeBag()
     
     //MARK: - ViewDidLoad
     override func viewDidLoad() {
@@ -21,19 +28,57 @@ class LoginViewController: UIViewController {
         self.setBottomView()
     }
     
-    //MARK: - Init
-    init(loginView: LoginViewModel) {
-        self.loginViewModel = loginView
-        super.init(nibName: nil, bundle: nil)
+    deinit {
+        print("-------------------login dismiss-----------------------")
     }
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    @objc func clickedLoginButton(_ btn: UIButton){
+        if btn.tag == 0 { // 카카오톡 로그인 버튼 클릭시
+            kakaoLogin()
+        }else if btn.tag == 1 { // 네이버 로그인 버튼 클릭시
+            naverLogin()
+        }else { // Apple 로그인 버튼 클릭시
+            appleLogin()
+        }
     }
     
+    func kakaoLogin() {
+        // 카카오톡 설치 여부 확인
+        if (UserApi.isKakaoTalkLoginAvailable()) {
+            UserApi.shared.rx.loginWithKakaoTalk()
+                .subscribe(onNext:{ (oauthToken) in // 로그인 정상적으로 완료 -> 토큰
+                    let accessToken = oauthToken.accessToken
+                    // 여기서 access 토큰을 서버로 던지고, 사용자 정보를 조회하는 ViewModel함수 호출하기.
+                    // 로직은 Viewmodel에서 구현하고 호출만 하기. ( 파라미터로 토큰 넘기고 JSON을 받아 처리해야함)
+                    // 이 JSON엔 JWT (JSon Web Token (서버에서 만든 AccessToken과 Refresh Token)이 있고 이걸로 서버와 통신해야함.
+                    // 실패시 Refresh Token을 통해 갱신해주어야함.  갱신되면 저장을 해야한다는 말이 만료기간도 갱신시점부터 다시 늘어난다는 건가?
+                    // refresh 토큰도 만료되었다면 로그인창에서 다시 로그인
+                    print("accessToken: \(accessToken)")
+                    let navigationVC = UINavigationController(rootViewController: RegistNameViewController())
+                    navigationVC.modalPresentationStyle = .fullScreen
+                    self.present(navigationVC, animated: true, completion: {})
+                    
+                }, onError: {error in // 에러시
+                    print(error)
+                })
+            .disposed(by: disposeBag)
+        }
+    }
     
+    func naverLogin() {
+        
+    }
     
-    //MARK: -UIConfigure
+    func appleLogin() {
+        
+    }
+}
+
+
+
+
+//MARK: -UIConfigure
+extension LoginViewController {
     func setTopView(){
         let imageView = UIImageView().then{
             $0.translatesAutoresizingMaskIntoConstraints = false
@@ -111,7 +156,7 @@ class LoginViewController: UIViewController {
                                          tag: 0,
                                          titleColor: .black,
                                          backgroundColor: UIColor(red: 254/255, green: 229/255, blue: 0, alpha: 1))
-          
+            button.addTarget(self, action: #selector(clickedLoginButton(_:)), for: .touchUpInside)
             frameView.addSubview(button)
             button.snp.makeConstraints{ make in
                 make.leading.equalToSuperview().offset(24)
@@ -130,7 +175,7 @@ class LoginViewController: UIViewController {
                                          tag: 1,
                                          titleColor: .white,
                                          backgroundColor: UIColor(red: 0.118, green: 0.784, blue: 0, alpha: 1))
-
+            
             frameView.addSubview(button)
             button.snp.makeConstraints{ make in
                 make.leading.equalToSuperview().offset(24)
