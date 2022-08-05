@@ -13,23 +13,36 @@ import RxKakaoSDKUser
 import RxKakaoSDKAuth
 import KakaoSDKUser
 import KakaoSDKAuth
+import NaverThirdPartyLogin
+import Alamofire
 
 
-class LoginViewController: UIViewController {
+class LoginViewController: UIViewController{
+    
+    
     //MARK: - Properties
-    let loginViewModel = LoginViewModel()
+    let naverLoginInstance = NaverThirdPartyLoginConnection.getSharedInstance()
+    let loginViewModel: LoginViewModel
+    
     let disposeBag = DisposeBag()
     
     //MARK: - ViewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.setGradientColor() // 배경색 그라데이션 설정
+        self.naverLoginInstance?.delegate = self // 네이버로그인 델리게이트지정
         self.setTopView()
         self.setBottomView()
     }
     
-    deinit {
-        print("-------------------login dismiss-----------------------")
+    //MARK: - Init
+    init(loginViewModel: LoginViewModel){
+        self.loginViewModel = loginViewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     @objc func clickedLoginButton(_ btn: UIButton){
@@ -54,10 +67,10 @@ class LoginViewController: UIViewController {
                     // 실패시 Refresh Token을 통해 갱신해주어야함.  갱신되면 저장을 해야한다는 말이 만료기간도 갱신시점부터 다시 늘어난다는 건가?
                     // refresh 토큰도 만료되었다면 로그인창에서 다시 로그인
                     print("accessToken: \(accessToken)")
-                    let navigationVC = UINavigationController(rootViewController: RegistNameViewController())
+                    let navigationVC = UINavigationController(rootViewController: RegistNameViewController(loginViewModel: LoginViewModel(loginService: LoginService())))
                     navigationVC.modalPresentationStyle = .fullScreen
                     self.present(navigationVC, animated: true, completion: {})
-                    
+//
                 }, onError: {error in // 에러시
                     print(error)
                 })
@@ -66,11 +79,11 @@ class LoginViewController: UIViewController {
     }
     
     func naverLogin() {
-        
+        naverLoginInstance?.requestThirdPartyLogin()
     }
     
     func appleLogin() {
-        
+
     }
 }
 
@@ -175,7 +188,7 @@ extension LoginViewController {
                                          tag: 1,
                                          titleColor: .white,
                                          backgroundColor: UIColor(red: 0.118, green: 0.784, blue: 0, alpha: 1))
-            
+            button.addTarget(self, action: #selector(clickedLoginButton(_:)), for: .touchUpInside)
             frameView.addSubview(button)
             button.snp.makeConstraints{ make in
                 make.leading.equalToSuperview().offset(24)
@@ -194,7 +207,7 @@ extension LoginViewController {
                                          tag: 2,
                                          titleColor: .white,
                                          backgroundColor: .black)
-
+            button.addTarget(self, action: #selector(clickedLoginButton(_:)), for: .touchUpInside)
             frameView.addSubview(button)
             button.snp.makeConstraints{ make in
                 make.leading.equalToSuperview().offset(24)
@@ -236,4 +249,26 @@ extension LoginViewController {
         
         return button
     }
+}
+// 네이버 access 토큰 유효 기간 3,600초 (1시간)
+// isValidAcccessTokenExpireTimeNow -> 토큰이 유효한지 확인하는메소드
+extension LoginViewController: NaverThirdPartyLoginConnectionDelegate {
+    func oauth20ConnectionDidFinishRequestACTokenWithAuthCode() {
+        print("로그인 성공시 호출") // 성공적으로 토큰이 생겼을시 호출되는 것 같음 이미 토큰이 있을때 로그인버튼을 누르면 실행 안됨
+        loginViewModel.naverLoginPaser()
+    }
+    
+    func oauth20ConnectionDidFinishRequestACTokenWithRefreshToken() {
+        print("네이버 토큰\(naverLoginInstance?.accessToken)")
+    }
+    
+    func oauth20ConnectionDidFinishDeleteToken() {
+        print("네이버 로그아웃시 호출")
+    }
+    
+    func oauth20Connection(_ oauthConnection: NaverThirdPartyLoginConnection!, didFailWithError error: Error!) {
+        print("에러 = \(error.localizedDescription)")
+    }
+    
+   
 }
