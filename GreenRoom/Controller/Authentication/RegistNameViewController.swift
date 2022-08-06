@@ -1,5 +1,5 @@
 //
-//  RegistName.swift
+//  RegistNameViewController.swift
 //  GreenRoom
 //
 //  Created by SangWoo's MacBook on 2022/08/04.
@@ -8,6 +8,7 @@
 import UIKit
 import RxSwift
 import RxRelay
+import RxCocoa
 
 
 class RegistNameViewController: UIViewController {
@@ -17,12 +18,24 @@ class RegistNameViewController: UIViewController {
     var disposeBag = DisposeBag()
     
     var nameTextfield: UITextField!
+    var nextButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
         configureUI()
         self.setNavigationItem()
+        self.hideKeyboardWhenTapped()
+        
+        nameTextfield.rx.text
+            .subscribe(on: MainScheduler.instance)
+            .subscribe(onNext: { text in
+                if text == "" {
+                    self.nextButton.setEnableButton(false)
+                }else {
+                    self.nextButton.setEnableButton(true)
+                }
+            }).disposed(by: disposeBag)
     }
     
     //MARK: - Init
@@ -43,9 +56,12 @@ class RegistNameViewController: UIViewController {
         self.loginViewModel.generateRandomName()
             .subscribe(on: MainScheduler.instance)
             .subscribe(onNext: { name in
-                self.nameTextfield.text = name
+                self.nameTextfield.rx.text.onNext(name)
+                self.nextButton.setEnableButton(true)
             }).disposed(by: disposeBag)
     }
+    
+    
     
 }
 
@@ -111,7 +127,7 @@ extension RegistNameViewController {
             }
         }
         
-        let nextButton = UIButton(type: .system).then{
+        self.nextButton = UIButton(type: .system).then{
             $0.translatesAutoresizingMaskIntoConstraints = false
             $0.setTitleColor(.white, for: .normal)
             $0.setTitle("다음", for: .normal)
@@ -121,7 +137,7 @@ extension RegistNameViewController {
             $0.layer.shadowOpacity = 1
             $0.layer.shadowOffset = CGSize(width: 0, height: 5)
             $0.backgroundColor = .mainColor
-            
+            $0.isEnabled = false
             self.view.addSubview($0)
             $0.snp.makeConstraints{ make in
                 make.bottom.equalToSuperview().offset(-96)
