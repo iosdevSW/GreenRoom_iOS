@@ -27,7 +27,7 @@
 		DBD0825A2897E75B0092241F /* TempMyPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD0824A2897E75A0092241F /* TempMyPage.swift */; };
 		DBD0825B2897E75B0092241F /* TempKeyword.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD0824C2897E75A0092241F /* TempKeyword.swift */; };
 		DBD0825D2897E75B0092241F /* TempModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD082502897E75B0092241F /* TempModel.swift */; };
-		DBD082602897E7740092241F /* TempFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD0825F2897E7740092241F /* TempFile.swift */; };
+		DBD082602897E7740092241F /* LoginService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD0825F2897E7740092241F /* LoginService.swift */; };
 		DBD0826C289807FF0092241F /* SFPro.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DBD0826B289807C30092241F /* SFPro.ttf */; };
 		DBD0826D289808010092241F /* SFProText-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = DBD0826A289807900092241F /* SFProText-Bold.otf */; };
 		DBD0826E289808030092241F /* SFProText-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = DBD082682898078F0092241F /* SFProText-Regular.otf */; };
@@ -60,7 +60,7 @@
 		DBD0824A2897E75A0092241F /* TempMyPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TempMyPage.swift; sourceTree = "<group>"; };
 		DBD0824C2897E75A0092241F /* TempKeyword.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TempKeyword.swift; sourceTree = "<group>"; };
 		DBD082502897E75B0092241F /* TempModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TempModel.swift; sourceTree = "<group>"; };
-		DBD0825F2897E7740092241F /* TempFile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TempFile.swift; sourceTree = "<group>"; };
+		DBD0825F2897E7740092241F /* LoginService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginService.swift; sourceTree = "<group>"; };
 		DBD082682898078F0092241F /* SFProText-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFProText-Regular.otf"; sourceTree = "<group>"; };
 		DBD082692898078F0092241F /* SFProText-Semibold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFProText-Semibold.otf"; sourceTree = "<group>"; };
 		DBD0826A289807900092241F /* SFProText-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFProText-Bold.otf"; sourceTree = "<group>"; };
@@ -236,7 +236,7 @@
 		DBD0825E2897E7740092241F /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				DBD0825F2897E7740092241F /* TempFile.swift */,
+				DBD0825F2897E7740092241F /* LoginService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -405,7 +405,7 @@
 				DBD082522897E75B0092241F /* GreenViewModel.swift in Sources */,
 				DBBA9481289968CD00264405 /* PaddingLabel.swift in Sources */,
 				DBD082542897E75B0092241F /* MyPageViewModel.swift in Sources */,
-				DBD082602897E7740092241F /* TempFile.swift in Sources */,
+				DBD082602897E7740092241F /* LoginService.swift in Sources */,
 				DBD082592897E75B0092241F /* TempGreen.swift in Sources */,
 				DBD0821D2897E6EE0092241F /* AppDelegate.swift in Sources */,
 				DBBA947E289968AF00264405 /* Extension.swift in Sources */,

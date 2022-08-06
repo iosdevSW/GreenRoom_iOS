@@ -6,9 +6,18 @@
 //
 
 import UIKit
+import RxSwift
+import RxRelay
+
 
 class RegistNameViewController: UIViewController {
- 
+    //MARK: - Properties
+    let loginViewModel: LoginViewModel
+    
+    var disposeBag = DisposeBag()
+    
+    var nameTextfield: UITextField!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
@@ -16,8 +25,26 @@ class RegistNameViewController: UIViewController {
         self.setNavigationItem()
     }
     
+    //MARK: - Init
+    init(loginViewModel: LoginViewModel){
+        self.loginViewModel = loginViewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     @objc func clickedNextButton(_: UIButton){
         self.navigationController?.pushViewController(RegistCategoryViewController(), animated: true)
+    }
+    
+    @objc func generateRandomName(_: UIButton){
+        self.loginViewModel.generateRandomName()
+            .subscribe(on: MainScheduler.instance)
+            .subscribe(onNext: { name in
+                self.nameTextfield.text = name
+            }).disposed(by: disposeBag)
     }
     
 }
@@ -54,9 +81,9 @@ extension RegistNameViewController {
             }
         }
         
-        let nameTextfield = UITextField().then{
+            self.nameTextfield = UITextField().then{
             $0.translatesAutoresizingMaskIntoConstraints = false
-            $0.textColor = .customGray
+            $0.textColor = .customDarkGray
             $0.font = .sfPro(size: 20, family: .Regular)
             $0.attributedPlaceholder = NSAttributedString(string: "이름을 입력해주세요 :)",
                                                           attributes: [NSAttributedString.Key.foregroundColor : UIColor.customGray!])
@@ -75,6 +102,7 @@ extension RegistNameViewController {
             $0.setTitleColor(.darken, for: .normal)
             $0.titleLabel?.font = .sfPro()
             $0.setTitle("이름 자동입력", for: .normal)
+            $0.addTarget(self, action: #selector(self.generateRandomName(_:)), for: .touchUpInside)
             
             self.view.addSubview($0)
             $0.snp.makeConstraints{ make in

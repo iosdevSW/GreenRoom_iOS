@@ -12,7 +12,5 @@ target 'GreenRoom' do
 	pod 'RxCocoa', '6.5.0'
 	pod 'RxKakaoSDKUser'
 	pod 'RxKakaoSDKAuth'
-	pod 'KakaoSDKUser'
-	pod 'KakaoSDKAuth'
-
+	pod 'naveridlogin-sdk-ios'
 end

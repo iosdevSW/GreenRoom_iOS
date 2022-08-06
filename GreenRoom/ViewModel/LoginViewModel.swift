@@ -6,14 +6,24 @@
 //
 
 import Foundation
+import RxSwift
 
-protocol LoginViewModelProtocol{
-    
-}
-
-class LoginViewModel: LoginViewModelProtocol {
+class LoginViewModel {
+    let loginService: LoginServiceProtocol
     
     func checkUserInfo(token: String){
         
+    }
+    
+    func naverLoginPaser() {
+        self.loginService.naverLoginPaser()
+    }
+    
+    func generateRandomName()->Observable<String>{
+        return self.loginService.generateRandomName()
+    }
+    
+    init(loginService: LoginServiceProtocol) {
+        self.loginService = loginService
     }
 }
