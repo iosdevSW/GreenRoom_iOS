@@ -1,5 +1,5 @@
 //
-//  Login.swift
+//  LoginViewController.swift
 //  GreenRoom
 //
 //  Created by SangWoo's MacBook on 2022/08/01.
@@ -14,7 +14,7 @@ import RxKakaoSDKAuth
 import KakaoSDKUser
 import KakaoSDKAuth
 import NaverThirdPartyLogin
-import Alamofire
+import AuthenticationServices
 
 
 class LoginViewController: UIViewController{
@@ -66,15 +66,25 @@ class LoginViewController: UIViewController{
                     // 이 JSON엔 JWT (JSon Web Token (서버에서 만든 AccessToken과 Refresh Token)이 있고 이걸로 서버와 통신해야함.
                     // 실패시 Refresh Token을 통해 갱신해주어야함.  갱신되면 저장을 해야한다는 말이 만료기간도 갱신시점부터 다시 늘어난다는 건가?
                     // refresh 토큰도 만료되었다면 로그인창에서 다시 로그인
-                    print("accessToken: \(accessToken)")
                     let navigationVC = UINavigationController(rootViewController: RegistNameViewController(loginViewModel: LoginViewModel(loginService: LoginService())))
                     navigationVC.modalPresentationStyle = .fullScreen
                     self.present(navigationVC, animated: true, completion: {})
 //
                 }, onError: {error in // 에러시
                     print(error)
+                    print("출력된것이야!?")
                 })
             .disposed(by: disposeBag)
+        }else { // 카카오톡 앱x 웹 로그인
+            UserApi.shared.rx.loginWithKakaoAccount()
+                .subscribe(onNext: { oauthToken in
+                    let accessToken = oauthToken.accessToken
+                    let navigationVC = UINavigationController(rootViewController: RegistNameViewController(loginViewModel: LoginViewModel(loginService: LoginService())))
+                    navigationVC.modalPresentationStyle = .fullScreen
+                    self.present(navigationVC, animated: true, completion: {})
+                }, onError: {error in
+                    print(error)
+                }).disposed(by: disposeBag)
         }
     }
     
@@ -83,7 +93,7 @@ class LoginViewController: UIViewController{
     }
     
     func appleLogin() {
-
+        
     }
 }
 
@@ -200,14 +210,16 @@ extension LoginViewController {
             return button
         }()
         
-        let appleLoginButton: UIButton = {
-            let button = configureButton(button: UIButton(),
-                                         title: "Apple로 로그인",
-                                         icon: "apple",
-                                         tag: 2,
-                                         titleColor: .white,
-                                         backgroundColor: .black)
-            button.addTarget(self, action: #selector(clickedLoginButton(_:)), for: .touchUpInside)
+        let appleLoginButton: ASAuthorizationAppleIDButton = {
+            let button = ASAuthorizationAppleIDButton(type: .signIn, style: .black)
+            button.cornerRadius = 15
+//            let button = configureButton(button: UIButton(),
+//                                         title: "Apple로 로그인",
+//                                         icon: "apple",
+//                                         tag: 2,
+//                                         titleColor: .white,
+//                                         backgroundColor: .black)
+//            button.addTarget(self, action: #selector(clickedLoginButton(_:)), for: .touchUpInside)
             frameView.addSubview(button)
             button.snp.makeConstraints{ make in
                 make.leading.equalToSuperview().offset(24)

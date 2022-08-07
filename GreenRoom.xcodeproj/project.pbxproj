@@ -8,8 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		8945B5BA0A1A81EE982521EA /* Pods_GreenRoom.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CA5B588B57B3CE98A2591ED3 /* Pods_GreenRoom.framework */; };
-		DB797A99289B9BFF00ADF65F /* RegistName.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB797A98289B9BFF00ADF65F /* RegistName.swift */; };
-		DB797A9B289BC0D800ADF65F /* RegistCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB797A9A289BC0D800ADF65F /* RegistCategory.swift */; };
+		DB53AE9F289F967800E9A5CC /* RegistCompleteViewControlller.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB53AE9E289F967700E9A5CC /* RegistCompleteViewControlller.swift */; };
+		DB797A99289B9BFF00ADF65F /* RegistNameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB797A98289B9BFF00ADF65F /* RegistNameViewController.swift */; };
+		DB797A9B289BC0D800ADF65F /* RegistCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB797A9A289BC0D800ADF65F /* RegistCategoryViewController.swift */; };
+		DB9CF9BC289E27850091B705 /* CategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9CF9BB289E27850091B705 /* CategoryView.swift */; };
+		DB9CF9BE289E81FE0091B705 /* CateogryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9CF9BD289E81FE0091B705 /* CateogryCell.swift */; };
 		DBBA947E289968AF00264405 /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBBA947D289968AF00264405 /* Extension.swift */; };
 		DBBA9481289968CD00264405 /* PaddingLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBBA9480289968CD00264405 /* PaddingLabel.swift */; };
 		DBD0821D2897E6EE0092241F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD0821C2897E6EE0092241F /* AppDelegate.swift */; };
@@ -32,15 +35,19 @@
 		DBD0826D289808010092241F /* SFProText-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = DBD0826A289807900092241F /* SFProText-Bold.otf */; };
 		DBD0826E289808030092241F /* SFProText-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = DBD082682898078F0092241F /* SFProText-Regular.otf */; };
 		DBD0826F289808050092241F /* SFProText-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = DBD082692898078F0092241F /* SFProText-Semibold.otf */; };
-		DBE7A54A28996BCE00E9A4E9 /* Login.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBE7A54928996BCE00E9A4E9 /* Login.swift */; };
-		DBE7A54F28996C2000E9A4E9 /* TempLogin.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBE7A54E28996C2000E9A4E9 /* TempLogin.swift */; };
+		DBE7A54A28996BCE00E9A4E9 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBE7A54928996BCE00E9A4E9 /* LoginViewController.swift */; };
+		DBE7A54F28996C2000E9A4E9 /* CheckLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBE7A54E28996C2000E9A4E9 /* CheckLabel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		80B959E8028C70EEB08F8619 /* Pods-GreenRoom.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GreenRoom.release.xcconfig"; path = "Target Support Files/Pods-GreenRoom/Pods-GreenRoom.release.xcconfig"; sourceTree = "<group>"; };
 		CA5B588B57B3CE98A2591ED3 /* Pods_GreenRoom.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GreenRoom.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		DB797A98289B9BFF00ADF65F /* RegistName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistName.swift; sourceTree = "<group>"; };
-		DB797A9A289BC0D800ADF65F /* RegistCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistCategory.swift; sourceTree = "<group>"; };
+		DB53AE9E289F967700E9A5CC /* RegistCompleteViewControlller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistCompleteViewControlller.swift; sourceTree = "<group>"; };
+		DB6AABB9289FEEEA0061D716 /* GreenRoom.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = GreenRoom.entitlements; sourceTree = "<group>"; };
+		DB797A98289B9BFF00ADF65F /* RegistNameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistNameViewController.swift; sourceTree = "<group>"; };
+		DB797A9A289BC0D800ADF65F /* RegistCategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistCategoryViewController.swift; sourceTree = "<group>"; };
+		DB9CF9BB289E27850091B705 /* CategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryView.swift; sourceTree = "<group>"; };
+		DB9CF9BD289E81FE0091B705 /* CateogryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CateogryCell.swift; sourceTree = "<group>"; };
 		DBBA947D289968AF00264405 /* Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
 		DBBA9480289968CD00264405 /* PaddingLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaddingLabel.swift; sourceTree = "<group>"; };
 		DBD082192897E6EE0092241F /* GreenRoom.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GreenRoom.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -65,8 +72,8 @@
 		DBD082692898078F0092241F /* SFProText-Semibold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFProText-Semibold.otf"; sourceTree = "<group>"; };
 		DBD0826A289807900092241F /* SFProText-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFProText-Bold.otf"; sourceTree = "<group>"; };
 		DBD0826B289807C30092241F /* SFPro.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = SFPro.ttf; sourceTree = "<group>"; };
-		DBE7A54928996BCE00E9A4E9 /* Login.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Login.swift; sourceTree = "<group>"; };
-		DBE7A54E28996C2000E9A4E9 /* TempLogin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TempLogin.swift; sourceTree = "<group>"; };
+		DBE7A54928996BCE00E9A4E9 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		DBE7A54E28996C2000E9A4E9 /* CheckLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckLabel.swift; sourceTree = "<group>"; };
 		E2BA6B09FCB8DB3208DFF41D /* Pods-GreenRoom.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GreenRoom.debug.xcconfig"; path = "Target Support Files/Pods-GreenRoom/Pods-GreenRoom.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -99,6 +106,15 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		DB9CF9BA289E27650091B705 /* Category */ = {
+			isa = PBXGroup;
+			children = (
+				DB9CF9BB289E27850091B705 /* CategoryView.swift */,
+				DB9CF9BD289E81FE0091B705 /* CateogryCell.swift */,
+			);
+			path = Category;
+			sourceTree = "<group>";
+		};
 		DBBA947F289968CD00264405 /* Custom */ = {
 			isa = PBXGroup;
 			children = (
@@ -128,6 +144,7 @@
 		DBD0821B2897E6EE0092241F /* GreenRoom */ = {
 			isa = PBXGroup;
 			children = (
+				DB6AABB9289FEEEA0061D716 /* GreenRoom.entitlements */,
 				DBBA947F289968CD00264405 /* Custom */,
 				DBD082642897E7840092241F /* Resource */,
 				DBD0825E2897E7740092241F /* Services */,
@@ -193,6 +210,7 @@
 		DBD082462897E75A0092241F /* View */ = {
 			isa = PBXGroup;
 			children = (
+				DB9CF9BA289E27650091B705 /* Category */,
 				DBE7A54D28996BF500E9A4E9 /* Authentication */,
 				DBD082472897E75A0092241F /* Green */,
 				DBD082492897E75A0092241F /* MyPage */,
@@ -264,9 +282,10 @@
 		DBE7A54828996BBF00E9A4E9 /* Authentication */ = {
 			isa = PBXGroup;
 			children = (
-				DBE7A54928996BCE00E9A4E9 /* Login.swift */,
-				DB797A98289B9BFF00ADF65F /* RegistName.swift */,
-				DB797A9A289BC0D800ADF65F /* RegistCategory.swift */,
+				DBE7A54928996BCE00E9A4E9 /* LoginViewController.swift */,
+				DB797A98289B9BFF00ADF65F /* RegistNameViewController.swift */,
+				DB797A9A289BC0D800ADF65F /* RegistCategoryViewController.swift */,
+				DB53AE9E289F967700E9A5CC /* RegistCompleteViewControlller.swift */,
 			);
 			path = Authentication;
 			sourceTree = "<group>";
@@ -274,7 +293,7 @@
 		DBE7A54D28996BF500E9A4E9 /* Authentication */ = {
 			isa = PBXGroup;
 			children = (
-				DBE7A54E28996C2000E9A4E9 /* TempLogin.swift */,
+				DBE7A54E28996C2000E9A4E9 /* CheckLabel.swift */,
 			);
 			path = Authentication;
 			sourceTree = "<group>";
@@ -318,10 +337,10 @@
 			};
 			buildConfigurationList = DBD082142897E6EE0092241F /* Build configuration list for PBXProject "GreenRoom" */;
 			compatibilityVersion = "Xcode 13.0";
-			developmentRegion = en;
+			developmentRegion = ko;
 			hasScannedForEncodings = 0;
 			knownRegions = (
-				en,
+				ko,
 				Base,
 			);
 			mainGroup = DBD082102897E6EE0092241F;
@@ -398,21 +417,24 @@
 			buildActionMask = 2147483647;
 			files = (
 				DBD082512897E75B0092241F /* LoginViewModel.swift in Sources */,
-				DBE7A54A28996BCE00E9A4E9 /* Login.swift in Sources */,
+				DB9CF9BE289E81FE0091B705 /* CateogryCell.swift in Sources */,
+				DB53AE9F289F967800E9A5CC /* RegistCompleteViewControlller.swift in Sources */,
+				DBE7A54A28996BCE00E9A4E9 /* LoginViewController.swift in Sources */,
 				DBD0825D2897E75B0092241F /* TempModel.swift in Sources */,
-				DBE7A54F28996C2000E9A4E9 /* TempLogin.swift in Sources */,
+				DBE7A54F28996C2000E9A4E9 /* CheckLabel.swift in Sources */,
 				DBD082572897E75B0092241F /* Keyword.swift in Sources */,
 				DBD082522897E75B0092241F /* GreenViewModel.swift in Sources */,
 				DBBA9481289968CD00264405 /* PaddingLabel.swift in Sources */,
 				DBD082542897E75B0092241F /* MyPageViewModel.swift in Sources */,
+				DB9CF9BC289E27850091B705 /* CategoryView.swift in Sources */,
 				DBD082602897E7740092241F /* LoginService.swift in Sources */,
 				DBD082592897E75B0092241F /* TempGreen.swift in Sources */,
 				DBD0821D2897E6EE0092241F /* AppDelegate.swift in Sources */,
 				DBBA947E289968AF00264405 /* Extension.swift in Sources */,
-				DB797A99289B9BFF00ADF65F /* RegistName.swift in Sources */,
+				DB797A99289B9BFF00ADF65F /* RegistNameViewController.swift in Sources */,
 				DBD0825B2897E75B0092241F /* TempKeyword.swift in Sources */,
 				DBD082532897E75B0092241F /* KeywordViewModel.swift in Sources */,
-				DB797A9B289BC0D800ADF65F /* RegistCategory.swift in Sources */,
+				DB797A9B289BC0D800ADF65F /* RegistCategoryViewController.swift in Sources */,
 				DBD0821F2897E6EE0092241F /* SceneDelegate.swift in Sources */,
 				DBD0825A2897E75B0092241F /* TempMyPage.swift in Sources */,
 				DBD082552897E75B0092241F /* Green.swift in Sources */,
@@ -554,6 +576,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = GreenRoom/GreenRoom.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = V2YNV9QV27;
@@ -582,6 +605,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = GreenRoom/GreenRoom.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = V2YNV9QV27;

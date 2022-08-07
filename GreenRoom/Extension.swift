@@ -80,4 +80,27 @@ extension UIViewController{
         questionButtonItem.tintColor = .customGray
         self.navigationItem.rightBarButtonItem = questionButtonItem
     }
+    
+    func hideKeyboardWhenTapped(){
+        let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        tap.cancelsTouchesInView = false // 기본값이 true이면 제스쳐 발동시 터치 이벤트가 뷰로 전달x
+        //즉 제스쳐가 동작하면 뷰의 터치이벤트는 발생하지 않는것 false면 둘 다 작동한다는 뜻
+        view.addGestureRecognizer(tap) //view에 제스쳐추가
+    }
+
+    @objc func dismissKeyboard(){
+        self.view.endEditing(true)
+    }
+}
+
+extension UIButton{
+    func setEnableButton(_ isTrue: Bool,color: UIColor = .mainColor){
+        if isTrue {
+            self.backgroundColor = .mainColor
+            self.isEnabled = isTrue
+        }else {
+            self.backgroundColor = .customGray
+            self.isEnabled = isTrue
+        }
+    }
 }
