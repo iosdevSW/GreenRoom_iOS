@@ -29,7 +29,6 @@ class CategoryCell: UICollectionViewCell {
     //MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
         self.addSubview(self.frameView)
         frameView.snp.makeConstraints{ make in
             make.leading.trailing.top.equalToSuperview()
@@ -39,7 +38,7 @@ class CategoryCell: UICollectionViewCell {
         frameView.addSubview(imageView)
         imageView.snp.makeConstraints{ make in
             make.centerY.centerX.equalToSuperview()
-            make.width.height.equalTo(40)
+            make.width.height.equalTo(36)
         }
         
         self.addSubview(titleLabel)

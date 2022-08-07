@@ -84,9 +84,9 @@ extension RegistCategoryViewController {
         let layout = UICollectionViewFlowLayout().then{
 //            $0.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
             $0.minimumLineSpacing = 20
-            $0.minimumInteritemSpacing = 28
+            $0.minimumInteritemSpacing = 20
             let screenWidth = UIScreen.main.bounds.width
-            let cellWidth = (screenWidth - CGFloat(margin*2) - (28*3)) / 4
+            let cellWidth = (screenWidth - CGFloat(margin*2) - (20*3)) / 4
             print(cellWidth)
             $0.itemSize = CGSize(width: cellWidth, height: 90)
         }
@@ -95,6 +95,7 @@ extension RegistCategoryViewController {
         self.categoryView = CategoryView(frame: .zero, collectionViewLayout: layout).then{
             $0.translatesAutoresizingMaskIntoConstraints = false
             $0.register(CategoryCell.self, forCellWithReuseIdentifier: "categoryCell")
+            $0.backgroundColor = .white
             
             self.view.addSubview($0)
             $0.snp.makeConstraints{ make in
@@ -121,6 +122,7 @@ extension RegistCategoryViewController {
             $0.layer.shadowOffset = CGSize(width: 0, height: 5)
             $0.backgroundColor = .mainColor
             $0.setEnableButton(false)
+            
             self.view.addSubview($0)
             $0.snp.makeConstraints{ make in
                 make.bottom.equalToSuperview().offset(-96)
@@ -133,7 +135,7 @@ extension RegistCategoryViewController {
     }
     
     @objc func clickedNextButton(_: UIButton){
-        self.navigationController?.pushViewController(RegistCategoryViewController(), animated: true)
+        self.navigationController?.pushViewController(RegistCompleteViewControlller(), animated: true)
     }
     
     override func setNavigationItem() {

@@ -14,6 +14,7 @@ import RxKakaoSDKAuth
 import KakaoSDKUser
 import KakaoSDKAuth
 import NaverThirdPartyLogin
+import AuthenticationServices
 
 
 class LoginViewController: UIViewController{
@@ -71,6 +72,7 @@ class LoginViewController: UIViewController{
 //
                 }, onError: {error in // 에러시
                     print(error)
+                    print("출력된것이야!?")
                 })
             .disposed(by: disposeBag)
         }else { // 카카오톡 앱x 웹 로그인
@@ -208,14 +210,16 @@ extension LoginViewController {
             return button
         }()
         
-        let appleLoginButton: UIButton = {
-            let button = configureButton(button: UIButton(),
-                                         title: "Apple로 로그인",
-                                         icon: "apple",
-                                         tag: 2,
-                                         titleColor: .white,
-                                         backgroundColor: .black)
-            button.addTarget(self, action: #selector(clickedLoginButton(_:)), for: .touchUpInside)
+        let appleLoginButton: ASAuthorizationAppleIDButton = {
+            let button = ASAuthorizationAppleIDButton(type: .signIn, style: .black)
+            button.cornerRadius = 15
+//            let button = configureButton(button: UIButton(),
+//                                         title: "Apple로 로그인",
+//                                         icon: "apple",
+//                                         tag: 2,
+//                                         titleColor: .white,
+//                                         backgroundColor: .black)
+//            button.addTarget(self, action: #selector(clickedLoginButton(_:)), for: .touchUpInside)
             frameView.addSubview(button)
             button.snp.makeConstraints{ make in
                 make.leading.equalToSuperview().offset(24)
