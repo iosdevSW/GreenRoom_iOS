@@ -10,7 +10,8 @@ import SnapKit
 
 class RegistCompleteViewControlller: UIViewController{
     var completeButton: UIButton!
-    
+    let name: String
+    let categoryName: String
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -19,7 +20,17 @@ class RegistCompleteViewControlller: UIViewController{
         configureUI()
     }
     
-    @objc func clickedNextButton(_: UIButton){
+    init(name: String, categoryName: String){
+        self.name = name
+        self.categoryName = categoryName
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    @objc func clickedCompleteButton(_: UIButton){
       
     }
     
@@ -107,7 +118,7 @@ extension RegistCompleteViewControlller {
                 make.trailing.equalToSuperview().offset(-36)
                 make.height.equalTo(54)
             }
-            $0.addTarget(self, action: #selector(clickedNextButton(_:)), for: .touchUpInside)
+            $0.addTarget(self, action: #selector(clickedCompleteButton(_:)), for: .touchUpInside)
         }
     }
 }

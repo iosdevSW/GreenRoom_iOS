@@ -15,6 +15,9 @@ class RegistCategoryViewController: UIViewController{
     
     let disposeBag = DisposeBag()
     
+    let name: String
+    var categoryName: String?
+    
     var selectedCategory = "" {
         didSet {
             if selectedCategory == "" {
@@ -28,13 +31,21 @@ class RegistCategoryViewController: UIViewController{
     
     
     //MARK: - ViewdidLoad
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         self.setNavigationItem()
         configureUI()
         subscribe()
+    }
+    
+    init(name: String){
+        self.name = name
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     func subscribe(){
@@ -47,6 +58,7 @@ class RegistCategoryViewController: UIViewController{
                 let imageName = title.filter{$0 != "/"}
                 cell.imageView.image = UIImage(named: imageName+"S") ?? UIImage()
                 self.selectedCategory = title
+                self.categoryName = title
                 
             }).disposed(by: disposeBag)
         
@@ -135,7 +147,8 @@ extension RegistCategoryViewController {
     }
     
     @objc func clickedNextButton(_: UIButton){
-        self.navigationController?.pushViewController(RegistCompleteViewControlller(), animated: true)
+        let vc = RegistCompleteViewControlller(name: name, categoryName: categoryName!)
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     override func setNavigationItem() {

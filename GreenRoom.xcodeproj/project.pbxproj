@@ -23,13 +23,13 @@
 		DBD082522897E75B0092241F /* GreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD0823A2897E75A0092241F /* GreenViewModel.swift */; };
 		DBD082532897E75B0092241F /* KeywordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD0823B2897E75A0092241F /* KeywordViewModel.swift */; };
 		DBD082542897E75B0092241F /* MyPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD0823C2897E75A0092241F /* MyPageViewModel.swift */; };
-		DBD082552897E75B0092241F /* Green.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD0823F2897E75A0092241F /* Green.swift */; };
-		DBD082562897E75B0092241F /* MyPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD082412897E75A0092241F /* MyPage.swift */; };
-		DBD082572897E75B0092241F /* Keyword.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD082432897E75A0092241F /* Keyword.swift */; };
+		DBD082552897E75B0092241F /* GreenRoomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD0823F2897E75A0092241F /* GreenRoomViewController.swift */; };
+		DBD082562897E75B0092241F /* MyPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD082412897E75A0092241F /* MyPageViewController.swift */; };
+		DBD082572897E75B0092241F /* KeywordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD082432897E75A0092241F /* KeywordViewController.swift */; };
 		DBD082592897E75B0092241F /* TempGreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD082482897E75A0092241F /* TempGreen.swift */; };
 		DBD0825A2897E75B0092241F /* TempMyPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD0824A2897E75A0092241F /* TempMyPage.swift */; };
 		DBD0825B2897E75B0092241F /* TempKeyword.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD0824C2897E75A0092241F /* TempKeyword.swift */; };
-		DBD0825D2897E75B0092241F /* TempModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD082502897E75B0092241F /* TempModel.swift */; };
+		DBD0825D2897E75B0092241F /* LoginModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD082502897E75B0092241F /* LoginModel.swift */; };
 		DBD082602897E7740092241F /* LoginService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD0825F2897E7740092241F /* LoginService.swift */; };
 		DBD0826C289807FF0092241F /* SFPro.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DBD0826B289807C30092241F /* SFPro.ttf */; };
 		DBD0826D289808010092241F /* SFProText-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = DBD0826A289807900092241F /* SFProText-Bold.otf */; };
@@ -60,13 +60,13 @@
 		DBD0823A2897E75A0092241F /* GreenViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GreenViewModel.swift; sourceTree = "<group>"; };
 		DBD0823B2897E75A0092241F /* KeywordViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeywordViewModel.swift; sourceTree = "<group>"; };
 		DBD0823C2897E75A0092241F /* MyPageViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyPageViewModel.swift; sourceTree = "<group>"; };
-		DBD0823F2897E75A0092241F /* Green.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Green.swift; sourceTree = "<group>"; };
-		DBD082412897E75A0092241F /* MyPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyPage.swift; sourceTree = "<group>"; };
-		DBD082432897E75A0092241F /* Keyword.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Keyword.swift; sourceTree = "<group>"; };
+		DBD0823F2897E75A0092241F /* GreenRoomViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GreenRoomViewController.swift; sourceTree = "<group>"; };
+		DBD082412897E75A0092241F /* MyPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyPageViewController.swift; sourceTree = "<group>"; };
+		DBD082432897E75A0092241F /* KeywordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeywordViewController.swift; sourceTree = "<group>"; };
 		DBD082482897E75A0092241F /* TempGreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TempGreen.swift; sourceTree = "<group>"; };
 		DBD0824A2897E75A0092241F /* TempMyPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TempMyPage.swift; sourceTree = "<group>"; };
 		DBD0824C2897E75A0092241F /* TempKeyword.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TempKeyword.swift; sourceTree = "<group>"; };
-		DBD082502897E75B0092241F /* TempModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TempModel.swift; sourceTree = "<group>"; };
+		DBD082502897E75B0092241F /* LoginModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginModel.swift; sourceTree = "<group>"; };
 		DBD0825F2897E7740092241F /* LoginService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginService.swift; sourceTree = "<group>"; };
 		DBD082682898078F0092241F /* SFProText-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFProText-Regular.otf"; sourceTree = "<group>"; };
 		DBD082692898078F0092241F /* SFProText-Semibold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFProText-Semibold.otf"; sourceTree = "<group>"; };
@@ -144,7 +144,6 @@
 		DBD0821B2897E6EE0092241F /* GreenRoom */ = {
 			isa = PBXGroup;
 			children = (
-				DB6AABB9289FEEEA0061D716 /* GreenRoom.entitlements */,
 				DBBA947F289968CD00264405 /* Custom */,
 				DBD082642897E7840092241F /* Resource */,
 				DBD0825E2897E7740092241F /* Services */,
@@ -152,6 +151,7 @@
 				DBD082462897E75A0092241F /* View */,
 				DBD082382897E75A0092241F /* ViewModel */,
 				DBD0823D2897E75A0092241F /* Controller */,
+				DB6AABB9289FEEEA0061D716 /* GreenRoom.entitlements */,
 				DBBA947D289968AF00264405 /* Extension.swift */,
 				DBD0821C2897E6EE0092241F /* AppDelegate.swift */,
 				DBD0821E2897E6EE0092241F /* SceneDelegate.swift */,
@@ -186,7 +186,7 @@
 		DBD0823E2897E75A0092241F /* Green */ = {
 			isa = PBXGroup;
 			children = (
-				DBD0823F2897E75A0092241F /* Green.swift */,
+				DBD0823F2897E75A0092241F /* GreenRoomViewController.swift */,
 			);
 			path = Green;
 			sourceTree = "<group>";
@@ -194,7 +194,7 @@
 		DBD082402897E75A0092241F /* MyPage */ = {
 			isa = PBXGroup;
 			children = (
-				DBD082412897E75A0092241F /* MyPage.swift */,
+				DBD082412897E75A0092241F /* MyPageViewController.swift */,
 			);
 			path = MyPage;
 			sourceTree = "<group>";
@@ -202,7 +202,7 @@
 		DBD082422897E75A0092241F /* Keyword */ = {
 			isa = PBXGroup;
 			children = (
-				DBD082432897E75A0092241F /* Keyword.swift */,
+				DBD082432897E75A0092241F /* KeywordViewController.swift */,
 			);
 			path = Keyword;
 			sourceTree = "<group>";
@@ -246,7 +246,7 @@
 		DBD0824F2897E75B0092241F /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				DBD082502897E75B0092241F /* TempModel.swift */,
+				DBD082502897E75B0092241F /* LoginModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -420,9 +420,9 @@
 				DB9CF9BE289E81FE0091B705 /* CateogryCell.swift in Sources */,
 				DB53AE9F289F967800E9A5CC /* RegistCompleteViewControlller.swift in Sources */,
 				DBE7A54A28996BCE00E9A4E9 /* LoginViewController.swift in Sources */,
-				DBD0825D2897E75B0092241F /* TempModel.swift in Sources */,
+				DBD0825D2897E75B0092241F /* LoginModel.swift in Sources */,
 				DBE7A54F28996C2000E9A4E9 /* CheckLabel.swift in Sources */,
-				DBD082572897E75B0092241F /* Keyword.swift in Sources */,
+				DBD082572897E75B0092241F /* KeywordViewController.swift in Sources */,
 				DBD082522897E75B0092241F /* GreenViewModel.swift in Sources */,
 				DBBA9481289968CD00264405 /* PaddingLabel.swift in Sources */,
 				DBD082542897E75B0092241F /* MyPageViewModel.swift in Sources */,
@@ -437,8 +437,8 @@
 				DB797A9B289BC0D800ADF65F /* RegistCategoryViewController.swift in Sources */,
 				DBD0821F2897E6EE0092241F /* SceneDelegate.swift in Sources */,
 				DBD0825A2897E75B0092241F /* TempMyPage.swift in Sources */,
-				DBD082552897E75B0092241F /* Green.swift in Sources */,
-				DBD082562897E75B0092241F /* MyPage.swift in Sources */,
+				DBD082552897E75B0092241F /* GreenRoomViewController.swift in Sources */,
+				DBD082562897E75B0092241F /* MyPageViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

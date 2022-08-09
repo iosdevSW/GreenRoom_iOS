@@ -10,18 +10,37 @@ import NaverThirdPartyLogin
 import Alamofire
 import RxSwift
 
-protocol LoginServiceProtocol {
-    func naverLoginPaser()
-    func generateRandomName()->Observable<String>
-}
 
-class LoginService: LoginServiceProtocol{
-    let naverLoginInstance = NaverThirdPartyLoginConnection.getSharedInstance()
+class LoginService{
+    static let serviceURL = "https://green-room.link"
     
+    static func loginAPI(_ accessToken: String)->Observable<LoginModel> {
+        let urlString = serviceURL + "/api/auth/login"
+        let url = URL(string: urlString)!
+        
+        let param: Parameters = [
+            "accessToken" : accessToken,
+            "oauthType" : 0
+        ]
+        
+        return Observable.create{ emitter in
+            let req = AF.request(url, method: .post, parameters: param ,encoding: JSONEncoding.default)
+            req.responseDecodable(of: LoginModel.self){ res in
+                switch res.result {
+                case .success(let data):
+                    emitter.onNext(data)
+                case .failure(let error):
+                    print(error)
+                }
+            }
+            return Disposables.create()
+        }
+    }
     
-    func naverLoginPaser() {
+    static func naverLoginPaser() {
+        let naverLoginInstance = NaverThirdPartyLoginConnection.getSharedInstance()
+        
         guard let accessToken = naverLoginInstance?.isValidAccessTokenExpireTimeNow() else { return }
-       
             
         if !accessToken { // 액세스 토큰이 유효하지않음
             return
@@ -60,7 +79,7 @@ class LoginService: LoginServiceProtocol{
         }
     }
     
-    func generateRandomName()-> Observable<String> {
+    static func generateRandomName()-> Observable<String> {
         struct Name: Codable {
             let words: [String]
             let seed: String
@@ -75,7 +94,6 @@ class LoginService: LoginServiceProtocol{
 
                 switch response.result{
                 case .success(let data):
-                    print("data: \(data)")
                     m.onNext(data.words.first!) // 이름만 보내기
                     m.onCompleted()
                     break
