@@ -49,19 +49,17 @@ class RegistNameViewController: UIViewController {
     }
     
     @objc func clickedNextButton(_: UIButton){
-        self.navigationController?.pushViewController(RegistCategoryViewController(), animated: true)
+        self.navigationController?.pushViewController(RegistCategoryViewController(name: nameTextfield.text!), animated: true)
     }
     
     @objc func generateRandomName(_: UIButton){
-        self.loginViewModel.generateRandomName()
+        LoginService.generateRandomName()
             .subscribe(on: MainScheduler.instance)
             .subscribe(onNext: { name in
                 self.nameTextfield.rx.text.onNext(name)
                 self.nextButton.setEnableButton(true)
             }).disposed(by: disposeBag)
     }
-    
-    
     
 }
 

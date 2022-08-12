@@ -56,36 +56,26 @@ class LoginViewController: UIViewController{
     }
     
     func kakaoLogin() {
-        // 카카오톡 설치 여부 확인
-        if (UserApi.isKakaoTalkLoginAvailable()) {
-            UserApi.shared.rx.loginWithKakaoTalk()
-                .subscribe(onNext:{ (oauthToken) in // 로그인 정상적으로 완료 -> 토큰
-                    let accessToken = oauthToken.accessToken
-                    // 여기서 access 토큰을 서버로 던지고, 사용자 정보를 조회하는 ViewModel함수 호출하기.
-                    // 로직은 Viewmodel에서 구현하고 호출만 하기. ( 파라미터로 토큰 넘기고 JSON을 받아 처리해야함)
-                    // 이 JSON엔 JWT (JSon Web Token (서버에서 만든 AccessToken과 Refresh Token)이 있고 이걸로 서버와 통신해야함.
-                    // 실패시 Refresh Token을 통해 갱신해주어야함.  갱신되면 저장을 해야한다는 말이 만료기간도 갱신시점부터 다시 늘어난다는 건가?
-                    // refresh 토큰도 만료되었다면 로그인창에서 다시 로그인
-                    let navigationVC = UINavigationController(rootViewController: RegistNameViewController(loginViewModel: LoginViewModel(loginService: LoginService())))
-                    navigationVC.modalPresentationStyle = .fullScreen
-                    self.present(navigationVC, animated: true, completion: {})
-//
-                }, onError: {error in // 에러시
-                    print(error)
-                    print("출력된것이야!?")
-                })
-            .disposed(by: disposeBag)
-        }else { // 카카오톡 앱x 웹 로그인
-            UserApi.shared.rx.loginWithKakaoAccount()
-                .subscribe(onNext: { oauthToken in
-                    let accessToken = oauthToken.accessToken
-                    let navigationVC = UINavigationController(rootViewController: RegistNameViewController(loginViewModel: LoginViewModel(loginService: LoginService())))
-                    navigationVC.modalPresentationStyle = .fullScreen
-                    self.present(navigationVC, animated: true, completion: {})
-                }, onError: {error in
-                    print(error)
-                }).disposed(by: disposeBag)
-        }
+        loginViewModel.kakaoLogin()
+            .subscribe(onNext: { response in
+                if response.success {
+                    guard let res = response.response else { return }
+                    self.loginViewModel.tokenModel.accessToken = res.accessToken
+                    self.loginViewModel.tokenModel.refreshToken = res.refreshToken
+                    self.moveToGreenRoomVC()
+                }else {
+                    switch response.error?.status {
+                    case 400:
+                        //회원 정보 없음
+                        self.moveToRegistVC() // 회원가입 화면으로
+                    case 401:
+                        // 토큰 유효하지 않음 -> 토큰 갱신
+                        print(response.error!.message)
+                    default:
+                        print("serviceError: \(response.error!.message)")
+                    }
+                }
+            }).disposed(by: disposeBag)
     }
     
     func naverLogin() {
@@ -94,6 +84,28 @@ class LoginViewController: UIViewController{
     
     func appleLogin() {
         
+    }
+    
+    func moveToRegistVC() {
+        let navigationVC = UINavigationController(rootViewController: RegistNameViewController(loginViewModel: self.loginViewModel))
+        navigationVC.modalPresentationStyle = .fullScreen
+        self.present(navigationVC, animated: true, completion: {})
+    }
+    
+    func moveToGreenRoomVC(){
+        let mainTabbarController = UITabBarController()
+        
+        let greenRoomController = UINavigationController(rootViewController: GreenRoomViewController())
+        let keywordController = UINavigationController(rootViewController: KeywordViewController())
+        let mypageController = UINavigationController(rootViewController: MyPageViewController())
+        
+        greenRoomController.title = "그린룸"
+        keywordController.title = "키워드연습"
+        mypageController.title = "마이페이지"
+        
+        mainTabbarController.viewControllers = [greenRoomController,keywordController,mypageController]
+        
+        self.present(mainTabbarController, animated: true)
     }
 }
 
@@ -267,7 +279,7 @@ extension LoginViewController {
 extension LoginViewController: NaverThirdPartyLoginConnectionDelegate {
     func oauth20ConnectionDidFinishRequestACTokenWithAuthCode() {
         print("로그인 성공시 호출") // 성공적으로 토큰이 생겼을시 호출되는 것 같음 이미 토큰이 있을때 로그인버튼을 누르면 실행 안됨
-        loginViewModel.naverLoginPaser()
+        LoginService.naverLoginPaser()
     }
     
     func oauth20ConnectionDidFinishRequestACTokenWithRefreshToken() {
