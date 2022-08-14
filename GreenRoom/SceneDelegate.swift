@@ -21,10 +21,27 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: windowScene)
-        window?.rootViewController = LoginViewController(loginViewModel: LoginViewModel())
+        
+        let mainTabbarController = UITabBarController()
+        
+        let greenRoomController = UINavigationController(rootViewController: GreenRoomViewController())
+        let keywordController = UINavigationController(rootViewController: KeywordViewController())
+        let mypageController = UINavigationController(rootViewController: MyPageViewController())
+        
+        greenRoomController.title = "그린룸"
+        greenRoomController.tabBarItem.image = UIImage(named: "greenroom")
+        keywordController.title = "키워드연습"
+        keywordController.tabBarItem.image = UIImage(named: "keyword")
+        mypageController.title = "마이페이지"
+        mypageController.tabBarItem.image = UIImage(named: "mypage")
+        
+        mainTabbarController.tabBar.tintColor = .darken
+        mainTabbarController.tabBar.unselectedItemTintColor = .customGray
+        mainTabbarController.viewControllers = [keywordController,greenRoomController,mypageController]
+        mainTabbarController.selectedIndex = 1
+        
+        window?.rootViewController = mainTabbarController
         window?.makeKeyAndVisible()
-        
-        
     }
     
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {

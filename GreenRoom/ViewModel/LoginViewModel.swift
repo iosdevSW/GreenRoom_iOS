@@ -11,6 +11,7 @@ import KakaoSDKAuth
 import RxKakaoSDKAuth
 import RxKakaoSDKUser
 import KakaoSDKUser
+import SwiftKeychainWrapper
 
 // 여기서 access 토큰을 서버로 던지고, 사용자 정보를 조회하는 ViewModel함수 호출하기.
 // 로직은 Viewmodel에서 구현하고 호출만 하기. ( 파라미터로 토큰 넘기고 JSON을 받아 처리해야함)
@@ -20,16 +21,16 @@ import KakaoSDKUser
 
 
 class LoginViewModel {
-    var tokenModel = Token(accessToken: nil, refreshToken: nil)
     let disposeBag = DisposeBag()
-    
+    var oauthAccessToken = ""
     func kakaoLogin()->Observable<LoginModel>{
         // 카카오톡 설치 여부 확인
-        
             if (UserApi.isKakaoTalkLoginAvailable()) {
                 return Observable<LoginModel>.create{ emitter in
                     UserApi.shared.rx.loginWithKakaoTalk()
                         .subscribe(onNext:{ (oauthToken) in
+                            KeychainWrapper.standard.set(oauthToken.accessToken, forKey: "oauthAccessToken")
+                            KeychainWrapper.standard.set(oauthToken.refreshToken, forKey: "oauthRefreshToken")
                             LoginService.loginAPI(oauthToken.accessToken)
                                 .subscribe(onNext:{ response in
                                     emitter.onNext(response)
@@ -44,6 +45,8 @@ class LoginViewModel {
                 return Observable<LoginModel>.create{ emitter in
                     UserApi.shared.rx.loginWithKakaoAccount()
                         .subscribe(onNext: { oauthToken in
+                            KeychainWrapper.standard.set(oauthToken.accessToken, forKey: "oauthAccessToken")
+                            KeychainWrapper.standard.set(oauthToken.refreshToken, forKey: "oauthRefreshToken")
                             LoginService.loginAPI(oauthToken.accessToken)
                                 .subscribe(onNext:{ response in
                                     emitter.onNext(response)
@@ -58,6 +61,5 @@ class LoginViewModel {
     }
         
     func registUser(){
-        
     }
 }

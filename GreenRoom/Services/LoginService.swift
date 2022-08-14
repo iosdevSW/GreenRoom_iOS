@@ -9,6 +9,8 @@ import Foundation
 import NaverThirdPartyLogin
 import Alamofire
 import RxSwift
+import KakaoSDKUser
+import SwiftKeychainWrapper
 
 
 class LoginService{
@@ -33,6 +35,73 @@ class LoginService{
                     print(error)
                 }
             }
+            return Disposables.create()
+        }
+    }
+    
+    static func registUser(accessToken: String, oauthType: Int, category: Int, name: String){
+        let urlString = serviceURL + "/api/users/join"
+        let url = URL(string: urlString)!
+        
+        let param: Parameters = [
+            "accessToken" : accessToken,
+            "oauthType" : oauthType,
+            "categoryId" : category,
+            "name" : name
+        ]
+        
+        let req = AF.request(url, method: .post, parameters: param,encoding: JSONEncoding.default)
+        
+        req.responseJSON(){ response in
+            switch response.result {
+                case .success(let data):
+                print(data)
+                case .failure(let error):
+                print(error)
+            }
+        }
+    }
+    
+    static func logout()->Observable<Bool>{
+        return Observable.create{ emitter in
+            UserApi.shared.logout{ error in
+                if let err = error {
+                    emitter.onNext(false)
+                    emitter.onError(err)
+                }else {
+                    emitter.onNext(true)
+                    emitter.onCompleted()
+                }
+            }
+            return Disposables.create()
+        }
+        
+    }
+   
+    static func checkName(name: String) -> Observable<Bool> {
+        let urlString = serviceURL + "/api/users/name"
+        let url = URL(string: urlString)!
+        
+        let param: Parameters = [
+            "name" : name
+        ]
+        
+        return Observable.create{ emitter in
+            let req = AF.request(url, method: .get, parameters: param, encoding: URLEncoding.default)
+            
+            req.responseDecodable(of: NameCheck.self){ response in
+                switch response.result{
+                    
+                case .success(let data):
+                    if data.success {
+                        emitter.onNext(data.response!.result)
+                        emitter.onCompleted()
+                    }
+                case .failure(let error):
+                    print("NameCheck Error : \(error)")
+                }
+            }
+            
             return Disposables.create()
         }
     }

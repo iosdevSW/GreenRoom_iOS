@@ -7,11 +7,12 @@
 
 import UIKit
 import SnapKit
+import SwiftKeychainWrapper
+import RxSwift
 
 class RegistCompleteViewControlller: UIViewController{
     var completeButton: UIButton!
-    let name: String
-    let categoryName: String
+    let disposeBag = DisposeBag()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,18 +21,30 @@ class RegistCompleteViewControlller: UIViewController{
         configureUI()
     }
     
-    init(name: String, categoryName: String){
-        self.name = name
-        self.categoryName = categoryName
-        super.init(nibName: nil, bundle: nil)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
     @objc func clickedCompleteButton(_: UIButton){
-      
+        guard let oauthAccessToken = KeychainWrapper.standard.string(forKey: "oauthAccessToken") else { return }
+        LoginService.loginAPI(oauthAccessToken)
+            .subscribe(on: MainScheduler.instance)
+            .subscribe(onNext: { response in
+                if response.success { //로그인 성공 키체인에 저장 후
+                    guard let res = response.response else { return }
+                    KeychainWrapper.standard.set(res.accessToken, forKey: "accessToken")
+                    KeychainWrapper.standard.set(res.refreshToken, forKey: "refreshToken")
+                    
+                    self.dismiss(animated: true)
+                }else {
+                    switch response.error?.status {
+                    case 400:
+                        //회원 정보 없음
+                        print("회원가입 안된경우")
+                    case 401:
+                        // 토큰 유효하지 않음 -> 토큰 갱신
+                        print(response.error!.message)
+                    default:
+                        print("serviceError: \(response.error!.message)")
+                    }
+                }
+            }).disposed(by: disposeBag)
     }
     
 }

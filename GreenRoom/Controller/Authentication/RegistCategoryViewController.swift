@@ -7,6 +7,7 @@
 
 import UIKit
 import RxSwift
+import SwiftKeychainWrapper
 
 class RegistCategoryViewController: UIViewController{
     // MARK: - Properties
@@ -16,7 +17,9 @@ class RegistCategoryViewController: UIViewController{
     let disposeBag = DisposeBag()
     
     let name: String
-    var categoryName: String?
+    var categoryId: Int?
+    var oauthType: Int!
+    let margin = 42
     
     var selectedCategory = "" {
         didSet {
@@ -27,8 +30,6 @@ class RegistCategoryViewController: UIViewController{
             }
         }
     }
-    let margin = 42
-    
     
     //MARK: - ViewdidLoad
     override func viewDidLoad() {
@@ -39,8 +40,9 @@ class RegistCategoryViewController: UIViewController{
         subscribe()
     }
     
-    init(name: String){
+    init(name: String, oauthType: Int){
         self.name = name
+        self.oauthType = oauthType
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -58,7 +60,7 @@ class RegistCategoryViewController: UIViewController{
                 let imageName = title.filter{$0 != "/"}
                 cell.imageView.image = UIImage(named: imageName+"S") ?? UIImage()
                 self.selectedCategory = title
-                self.categoryName = title
+                self.categoryId = indexPath.row+1
                 
             }).disposed(by: disposeBag)
         
@@ -99,7 +101,6 @@ extension RegistCategoryViewController {
             $0.minimumInteritemSpacing = 20
             let screenWidth = UIScreen.main.bounds.width
             let cellWidth = (screenWidth - CGFloat(margin*2) - (20*3)) / 4
-            print(cellWidth)
             $0.itemSize = CGSize(width: cellWidth, height: 90)
         }
 
@@ -147,7 +148,14 @@ extension RegistCategoryViewController {
     }
     
     @objc func clickedNextButton(_: UIButton){
-        let vc = RegistCompleteViewControlller(name: name, categoryName: categoryName!)
+        guard let accessToken = KeychainWrapper.standard.string(forKey: "oauthAccessToken") else { return }
+        print("accessToken : \(accessToken)")
+        print("oauthType : \(oauthType!)")
+        print("categoryId : \(categoryId!)")
+        print("name : \(name)")
+        
+        LoginService.registUser(accessToken: accessToken, oauthType: oauthType!, category: categoryId!, name: name)
+        let vc = RegistCompleteViewControlller()
         self.navigationController?.pushViewController(vc, animated: true)
     }
     

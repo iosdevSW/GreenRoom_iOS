@@ -11,6 +11,7 @@ import RxRelay
 import RxCocoa
 
 
+
 class RegistNameViewController: UIViewController {
     //MARK: - Properties
     let loginViewModel: LoginViewModel
@@ -18,7 +19,11 @@ class RegistNameViewController: UIViewController {
     var disposeBag = DisposeBag()
     
     var nameTextfield: UITextField!
+    var textfieldBox: UIView!
     var nextButton: UIButton!
+    var guideLabel: UILabel!
+    
+    var oauthType: Int!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,14 +38,18 @@ class RegistNameViewController: UIViewController {
                 if text == "" {
                     self.nextButton.setEnableButton(false)
                 }else {
-                    self.nextButton.setEnableButton(true)
+                    LoginService.checkName(name: text!)
+                        .subscribe(onNext:{ bool in
+                            self.duplicatedName(bool: bool)
+                        }).disposed(by: self.disposeBag)
                 }
             }).disposed(by: disposeBag)
     }
     
     //MARK: - Init
-    init(loginViewModel: LoginViewModel){
+    init(loginViewModel: LoginViewModel, oauthType: Int){
         self.loginViewModel = loginViewModel
+        self.oauthType = oauthType
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -49,7 +58,7 @@ class RegistNameViewController: UIViewController {
     }
     
     @objc func clickedNextButton(_: UIButton){
-        self.navigationController?.pushViewController(RegistCategoryViewController(name: nameTextfield.text!), animated: true)
+        self.navigationController?.pushViewController(RegistCategoryViewController(name: nameTextfield.text!, oauthType: oauthType), animated: true)
     }
     
     @objc func generateRandomName(_: UIButton){
@@ -57,10 +66,23 @@ class RegistNameViewController: UIViewController {
             .subscribe(on: MainScheduler.instance)
             .subscribe(onNext: { name in
                 self.nameTextfield.rx.text.onNext(name)
-                self.nextButton.setEnableButton(true)
+                LoginService.checkName(name: name)
+                    .subscribe(onNext:{ bool in
+                        self.duplicatedName(bool: bool)
+                    }).disposed(by: self.disposeBag)
             }).disposed(by: disposeBag)
     }
     
+    func duplicatedName(bool: Bool){
+        if bool {
+            self.textfieldBox.layer.borderColor = UIColor.darken.cgColor
+
+        }else {
+            self.textfieldBox.layer.borderColor = UIColor.red.cgColor
+        }
+        self.guideLabel.isHidden = bool
+        self.nextButton.setEnableButton(bool)
+    }
 }
 
 
@@ -80,7 +102,7 @@ extension RegistNameViewController {
             }
         }
         
-        let textfieldBox = UIView().then{
+        textfieldBox = UIView().then{
             $0.translatesAutoresizingMaskIntoConstraints = false
             $0.layer.cornerRadius = 15
             $0.layer.borderWidth = 2
@@ -92,6 +114,20 @@ extension RegistNameViewController {
                 make.trailing.equalToSuperview().offset(-24)
                 make.top.equalTo(nameLabel.snp.bottom).offset(100)
                 make.height.equalTo(64)
+            }
+        }
+        
+        guideLabel = UILabel().then{
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            $0.text = "! 이미 등록된 이름이에요"
+            $0.textColor = .red
+            $0.font = .sfPro(size: 12, family: .Semibold)
+            $0.isHidden = true
+            self.view.addSubview($0)
+            
+            $0.snp.makeConstraints{ make in
+                make.bottom.equalTo(textfieldBox.snp.top).offset(5)
+                make.leading.equalTo(textfieldBox.snp.leading).offset(12)
             }
         }
         

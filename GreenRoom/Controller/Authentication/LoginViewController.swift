@@ -4,6 +4,7 @@
 //
 //  Created by SangWoo's MacBook on 2022/08/01.
 //
+import Alamofire
 
 import UIKit
 import SnapKit
@@ -15,11 +16,10 @@ import KakaoSDKUser
 import KakaoSDKAuth
 import NaverThirdPartyLogin
 import AuthenticationServices
+import SwiftKeychainWrapper
 
 
 class LoginViewController: UIViewController{
-    
-    
     //MARK: - Properties
     let naverLoginInstance = NaverThirdPartyLoginConnection.getSharedInstance()
     let loginViewModel: LoginViewModel
@@ -47,7 +47,7 @@ class LoginViewController: UIViewController{
     
     @objc func clickedLoginButton(_ btn: UIButton){
         if btn.tag == 0 { // 카카오톡 로그인 버튼 클릭시
-            kakaoLogin()
+            kakaoLogin(oauthType: btn.tag)
         }else if btn.tag == 1 { // 네이버 로그인 버튼 클릭시
             naverLogin()
         }else { // Apple 로그인 버튼 클릭시
@@ -55,19 +55,21 @@ class LoginViewController: UIViewController{
         }
     }
     
-    func kakaoLogin() {
+    func kakaoLogin(oauthType: Int) {
         loginViewModel.kakaoLogin()
+            .subscribe(on: MainScheduler.instance)
             .subscribe(onNext: { response in
-                if response.success {
+                if response.success { //로그인 성공 키체인에 저장 후
                     guard let res = response.response else { return }
-                    self.loginViewModel.tokenModel.accessToken = res.accessToken
-                    self.loginViewModel.tokenModel.refreshToken = res.refreshToken
-                    self.moveToGreenRoomVC()
+                    KeychainWrapper.standard.set(res.accessToken, forKey: "accessToken")
+                    KeychainWrapper.standard.set(res.refreshToken, forKey: "refreshToken")
+                    
+                    self.dismiss(animated: true)
                 }else {
                     switch response.error?.status {
                     case 400:
                         //회원 정보 없음
-                        self.moveToRegistVC() // 회원가입 화면으로
+                        self.moveToRegistVC(oauthType: oauthType) // 회원가입 화면으로
                     case 401:
                         // 토큰 유효하지 않음 -> 토큰 갱신
                         print(response.error!.message)
@@ -83,34 +85,15 @@ class LoginViewController: UIViewController{
     }
     
     func appleLogin() {
-        
+    
     }
     
-    func moveToRegistVC() {
-        let navigationVC = UINavigationController(rootViewController: RegistNameViewController(loginViewModel: self.loginViewModel))
+    func moveToRegistVC(oauthType: Int) {
+        let navigationVC = UINavigationController(rootViewController: RegistNameViewController(loginViewModel: loginViewModel, oauthType: oauthType))
         navigationVC.modalPresentationStyle = .fullScreen
         self.present(navigationVC, animated: true, completion: {})
     }
-    
-    func moveToGreenRoomVC(){
-        let mainTabbarController = UITabBarController()
-        
-        let greenRoomController = UINavigationController(rootViewController: GreenRoomViewController())
-        let keywordController = UINavigationController(rootViewController: KeywordViewController())
-        let mypageController = UINavigationController(rootViewController: MyPageViewController())
-        
-        greenRoomController.title = "그린룸"
-        keywordController.title = "키워드연습"
-        mypageController.title = "마이페이지"
-        
-        mainTabbarController.viewControllers = [greenRoomController,keywordController,mypageController]
-        
-        self.present(mainTabbarController, animated: true)
-    }
 }
-
-
-
 
 //MARK: -UIConfigure
 extension LoginViewController {
@@ -225,13 +208,14 @@ extension LoginViewController {
         let appleLoginButton: ASAuthorizationAppleIDButton = {
             let button = ASAuthorizationAppleIDButton(type: .signIn, style: .black)
             button.cornerRadius = 15
+            button.tag = 2
 //            let button = configureButton(button: UIButton(),
 //                                         title: "Apple로 로그인",
 //                                         icon: "apple",
 //                                         tag: 2,
 //                                         titleColor: .white,
 //                                         backgroundColor: .black)
-//            button.addTarget(self, action: #selector(clickedLoginButton(_:)), for: .touchUpInside)
+            button.addTarget(self, action: #selector(clickedLoginButton(_:)), for: .touchUpInside)
             frameView.addSubview(button)
             button.snp.makeConstraints{ make in
                 make.leading.equalToSuperview().offset(24)
