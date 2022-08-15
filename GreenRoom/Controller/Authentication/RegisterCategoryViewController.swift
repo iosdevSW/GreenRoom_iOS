@@ -1,5 +1,5 @@
 //
-//  RegistCategoryViewController.swift
+//  RegisterCategoryViewController.swift
 //  GreenRoom
 //
 //  Created by SangWoo's MacBook on 2022/08/04.
@@ -7,8 +7,9 @@
 
 import UIKit
 import RxSwift
+import SwiftKeychainWrapper
 
-class RegistCategoryViewController: UIViewController{
+class RegisterCategoryViewController: UIViewController{
     // MARK: - Properties
     var nextButton: UIButton!
     var categoryView: CategoryView!
@@ -16,7 +17,9 @@ class RegistCategoryViewController: UIViewController{
     let disposeBag = DisposeBag()
     
     let name: String
-    var categoryName: String?
+    var categoryId: Int?
+    var oauthTokenInfo: OAuthTokenModel!
+    let margin = 42
     
     var selectedCategory = "" {
         didSet {
@@ -27,8 +30,6 @@ class RegistCategoryViewController: UIViewController{
             }
         }
     }
-    let margin = 42
-    
     
     //MARK: - ViewdidLoad
     override func viewDidLoad() {
@@ -39,8 +40,9 @@ class RegistCategoryViewController: UIViewController{
         subscribe()
     }
     
-    init(name: String){
+    init(name: String, oauthTokenInfo: OAuthTokenModel){
         self.name = name
+        self.oauthTokenInfo = oauthTokenInfo
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -58,7 +60,7 @@ class RegistCategoryViewController: UIViewController{
                 let imageName = title.filter{$0 != "/"}
                 cell.imageView.image = UIImage(named: imageName+"S") ?? UIImage()
                 self.selectedCategory = title
-                self.categoryName = title
+                self.categoryId = indexPath.row+1
                 
             }).disposed(by: disposeBag)
         
@@ -75,7 +77,7 @@ class RegistCategoryViewController: UIViewController{
 }
 
 //MARK: - Configure UI
-extension RegistCategoryViewController {
+extension RegisterCategoryViewController {
     func configureUI(){
         let label = UILabel().then{
             $0.translatesAutoresizingMaskIntoConstraints = false
@@ -99,7 +101,6 @@ extension RegistCategoryViewController {
             $0.minimumInteritemSpacing = 20
             let screenWidth = UIScreen.main.bounds.width
             let cellWidth = (screenWidth - CGFloat(margin*2) - (20*3)) / 4
-            print(cellWidth)
             $0.itemSize = CGSize(width: cellWidth, height: 90)
         }
 
@@ -142,12 +143,16 @@ extension RegistCategoryViewController {
                 make.trailing.equalToSuperview().offset(-36)
                 make.height.equalTo(54)
             }
-            $0.addTarget(self, action: #selector(clickedNextButton(_:)), for: .touchUpInside)
+            $0.addTarget(self, action: #selector(didClickNextButton(_:)), for: .touchUpInside)
         }
     }
     
-    @objc func clickedNextButton(_: UIButton){
-        let vc = RegistCompleteViewControlller(name: name, categoryName: categoryName!)
+    @objc func didClickNextButton(_: UIButton){
+        guard let accessToken = oauthTokenInfo.accessToken else { return }
+        guard let oauthType = oauthTokenInfo.oauthType else { return }
+        
+        LoginService.registUser(accessToken: accessToken, oauthType: oauthType, category: categoryId!, name: name)
+        let vc = RegisterCompleteViewControlller()
         self.navigationController?.pushViewController(vc, animated: true)
     }
     

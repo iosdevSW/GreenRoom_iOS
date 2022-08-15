@@ -7,57 +7,68 @@
 
 import Foundation
 import RxSwift
+import RxCocoa
 import KakaoSDKAuth
 import RxKakaoSDKAuth
 import RxKakaoSDKUser
 import KakaoSDKUser
-
-// 여기서 access 토큰을 서버로 던지고, 사용자 정보를 조회하는 ViewModel함수 호출하기.
-// 로직은 Viewmodel에서 구현하고 호출만 하기. ( 파라미터로 토큰 넘기고 JSON을 받아 처리해야함)
-// 이 JSON엔 JWT (JSon Web Token (서버에서 만든 AccessToken과 Refresh Token)이 있고 이걸로 서버와 통신해야함.
-// 실패시 Refresh Token을 통해 갱신해주어야함.  갱신되면 저장을 해야한다는 말이 만료기간도 갱신시점부터 다시 늘어난다는 건가?
-// refresh 토큰도 만료되었다면 로그인창에서 다시 로그인
-
+import SwiftKeychainWrapper
 
 class LoginViewModel {
-    var tokenModel = Token(accessToken: nil, refreshToken: nil)
     let disposeBag = DisposeBag()
+    let loginService = LoginService()
     
-    func kakaoLogin()->Observable<LoginModel>{
-        // 카카오톡 설치 여부 확인
+    var oauthToken = PublishSubject<OAuthTokenModel>()
+    var loginObservable = PublishSubject<LoginModel>()
+    
+    init(){
+        oauthToken.asObserver() // oauth 토큰 발급 옵저버
+            .take(1)
+            .subscribe(onNext: { [self]token in
+                _ = self.loginService.loginAPI(token.accessToken!)
+                    .take(1)
+                    .bind(to: loginObservable)
+            }).disposed(by: disposeBag)
         
-            if (UserApi.isKakaoTalkLoginAvailable()) {
-                return Observable<LoginModel>.create{ emitter in
-                    UserApi.shared.rx.loginWithKakaoTalk()
-                        .subscribe(onNext:{ (oauthToken) in
-                            LoginService.loginAPI(oauthToken.accessToken)
-                                .subscribe(onNext:{ response in
-                                    emitter.onNext(response)
-                                }).disposed(by: self.disposeBag)
-                        },onError: { error in
-                            print("kakaoAppLoginError: \(error)")
-                        }).disposed(by: self.disposeBag)
-                    
-                    return Disposables.create()
-                }
-            }else { // 카카오톡 앱x 웹 로그인
-                return Observable<LoginModel>.create{ emitter in
-                    UserApi.shared.rx.loginWithKakaoAccount()
-                        .subscribe(onNext: { oauthToken in
-                            LoginService.loginAPI(oauthToken.accessToken)
-                                .subscribe(onNext:{ response in
-                                    emitter.onNext(response)
-                                }).disposed(by: self.disposeBag)
-                        }, onError: {error in
-                            print("kakaoWebLoginError: \(error)")
-                        }).disposed(by: self.disposeBag)
-                        
-                    return Disposables.create()
-                }
-            }
     }
-        
-    func registUser(){
+    
+    func oauthLogin(oauthType: Int){
+        switch oauthType {
+            case 0: kakaoLogin(oauthType: oauthType)            // 0: 카카오톡 로그인
+            case 1: naverLogin(oauthType: oauthType)            // 1: 네이버 로그인
+            default: appleLogin(oauthType: oauthType)           // 2: 애플 로그인
+        }
+    }
+    
+    func kakaoLogin(oauthType: Int){
+        if (UserApi.isKakaoTalkLoginAvailable()) { // 카카오톡 설치 여부 확인
+            UserApi.shared.rx.loginWithKakaoTalk() // 카카오톡 앱 로그인
+                .subscribe(onNext:{ (oauthToken) in
+                    self.oauthToken.onNext(OAuthTokenModel(oauthType: oauthType,
+                                                           accessToken: oauthToken.accessToken,
+                                                           refreshToken: oauthToken.refreshToken))
+                },onError: { error in
+                    print("kakaoAppLoginError: \(error)")
+                }).disposed(by: self.disposeBag)
+
+               
+        }else { // 카카오톡 앱x 웹 로그인
+            UserApi.shared.rx.loginWithKakaoAccount()
+                .subscribe(onNext: { oauthToken in
+                    self.oauthToken.onNext(OAuthTokenModel(oauthType: oauthType,
+                                                           accessToken: oauthToken.accessToken,
+                                                           refreshToken: oauthToken.refreshToken))
+                }, onError: {error in
+                    print("kakaoWebLoginError: \(error)")
+                }).disposed(by: self.disposeBag)
+        }
+    }
+    
+    func naverLogin(oauthType: Int) {
+    
+    }
+    
+    func appleLogin(oauthType: Int) {
         
     }
 }

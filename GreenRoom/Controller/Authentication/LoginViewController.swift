@@ -4,6 +4,7 @@
 //
 //  Created by SangWoo's MacBook on 2022/08/01.
 //
+import Alamofire
 
 import UIKit
 import SnapKit
@@ -15,15 +16,14 @@ import KakaoSDKUser
 import KakaoSDKAuth
 import NaverThirdPartyLogin
 import AuthenticationServices
+import SwiftKeychainWrapper
 
 
 class LoginViewController: UIViewController{
-    
-    
     //MARK: - Properties
     let naverLoginInstance = NaverThirdPartyLoginConnection.getSharedInstance()
     let loginViewModel: LoginViewModel
-    
+    var oauthTokenInfo  = OAuthTokenModel()
     let disposeBag = DisposeBag()
     
     //MARK: - ViewDidLoad
@@ -33,6 +33,7 @@ class LoginViewController: UIViewController{
         self.naverLoginInstance?.delegate = self // 네이버로그인 델리게이트지정
         self.setTopView()
         self.setBottomView()
+        self.subscribe()
     }
     
     //MARK: - Init
@@ -45,24 +46,31 @@ class LoginViewController: UIViewController{
         fatalError("init(coder:) has not been implemented")
     }
     
-    @objc func clickedLoginButton(_ btn: UIButton){
-        if btn.tag == 0 { // 카카오톡 로그인 버튼 클릭시
-            kakaoLogin()
-        }else if btn.tag == 1 { // 네이버 로그인 버튼 클릭시
-            naverLogin()
-        }else { // Apple 로그인 버튼 클릭시
-            appleLogin()
-        }
+    @objc func didClickedLoginButton(_ btn: UIButton){
+        loginViewModel.oauthLogin(oauthType: btn.tag)
+        
     }
     
-    func kakaoLogin() {
-        loginViewModel.kakaoLogin()
-            .subscribe(onNext: { response in
-                if response.success {
+//    func naverLogin(oauthType: Int) {
+//        naverLoginInstance?.requestThirdPartyLogin()
+//    }
+    
+    func subscribe(){
+        _ = loginViewModel.oauthToken
+            .take(1)
+            .subscribe(onNext: { tokenModel in
+                self.oauthTokenInfo = tokenModel
+            })
+        
+        loginViewModel.loginObservable
+            .take(1)
+            .bind(onNext: { response in
+                if response.success { //로그인 성공 키체인에 저장 후
                     guard let res = response.response else { return }
-                    self.loginViewModel.tokenModel.accessToken = res.accessToken
-                    self.loginViewModel.tokenModel.refreshToken = res.refreshToken
-                    self.moveToGreenRoomVC()
+                    KeychainWrapper.standard.set(res.accessToken, forKey: "accessToken")
+                    KeychainWrapper.standard.set(res.refreshToken, forKey: "refreshToken")
+                    
+                    self.dismiss(animated: true)
                 }else {
                     switch response.error?.status {
                     case 400:
@@ -78,34 +86,10 @@ class LoginViewController: UIViewController{
             }).disposed(by: disposeBag)
     }
     
-    func naverLogin() {
-        naverLoginInstance?.requestThirdPartyLogin()
-    }
-    
-    func appleLogin() {
-        
-    }
-    
     func moveToRegistVC() {
-        let navigationVC = UINavigationController(rootViewController: RegistNameViewController(loginViewModel: self.loginViewModel))
+        let navigationVC = UINavigationController(rootViewController: RegisterNameViewController(loginViewModel: loginViewModel, oauthTokenInfo: oauthTokenInfo))
         navigationVC.modalPresentationStyle = .fullScreen
         self.present(navigationVC, animated: true, completion: {})
-    }
-    
-    func moveToGreenRoomVC(){
-        let mainTabbarController = UITabBarController()
-        
-        let greenRoomController = UINavigationController(rootViewController: GreenRoomViewController())
-        let keywordController = UINavigationController(rootViewController: KeywordViewController())
-        let mypageController = UINavigationController(rootViewController: MyPageViewController())
-        
-        greenRoomController.title = "그린룸"
-        keywordController.title = "키워드연습"
-        mypageController.title = "마이페이지"
-        
-        mainTabbarController.viewControllers = [greenRoomController,keywordController,mypageController]
-        
-        self.present(mainTabbarController, animated: true)
     }
 }
 
@@ -191,7 +175,7 @@ extension LoginViewController {
                                          tag: 0,
                                          titleColor: .black,
                                          backgroundColor: UIColor(red: 254/255, green: 229/255, blue: 0, alpha: 1))
-            button.addTarget(self, action: #selector(clickedLoginButton(_:)), for: .touchUpInside)
+            button.addTarget(self, action: #selector(didClickedLoginButton(_:)), for: .touchUpInside)
             frameView.addSubview(button)
             button.snp.makeConstraints{ make in
                 make.leading.equalToSuperview().offset(24)
@@ -210,7 +194,7 @@ extension LoginViewController {
                                          tag: 1,
                                          titleColor: .white,
                                          backgroundColor: UIColor(red: 0.118, green: 0.784, blue: 0, alpha: 1))
-            button.addTarget(self, action: #selector(clickedLoginButton(_:)), for: .touchUpInside)
+            button.addTarget(self, action: #selector(didClickedLoginButton(_:)), for: .touchUpInside)
             frameView.addSubview(button)
             button.snp.makeConstraints{ make in
                 make.leading.equalToSuperview().offset(24)
@@ -225,13 +209,14 @@ extension LoginViewController {
         let appleLoginButton: ASAuthorizationAppleIDButton = {
             let button = ASAuthorizationAppleIDButton(type: .signIn, style: .black)
             button.cornerRadius = 15
+            button.tag = 2
 //            let button = configureButton(button: UIButton(),
 //                                         title: "Apple로 로그인",
 //                                         icon: "apple",
 //                                         tag: 2,
 //                                         titleColor: .white,
 //                                         backgroundColor: .black)
-//            button.addTarget(self, action: #selector(clickedLoginButton(_:)), for: .touchUpInside)
+            button.addTarget(self, action: #selector(didClickedLoginButton(_:)), for: .touchUpInside)
             frameView.addSubview(button)
             button.snp.makeConstraints{ make in
                 make.leading.equalToSuperview().offset(24)

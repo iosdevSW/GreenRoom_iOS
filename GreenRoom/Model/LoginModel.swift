@@ -24,7 +24,8 @@ struct LoginModel: Codable {
     let success: Bool
 }
 
-struct Token {
+struct OAuthTokenModel{
+    var oauthType: Int?
     var accessToken: String?
     var refreshToken: String?
 }
