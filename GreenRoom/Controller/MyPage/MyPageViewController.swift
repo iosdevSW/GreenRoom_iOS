@@ -30,12 +30,10 @@ class MyPageViewController: UIViewController {
     
     @objc func logout(_ sender: UIButton){
         LoginService.logout()
-            .subscribe(onNext: { bool in
-                if bool {
+            .subscribe(onNext: { isToken in
+                if isToken {
                     KeychainWrapper.standard.removeObject(forKey: "accessToken")
                     KeychainWrapper.standard.removeObject(forKey: "refreshToken")
-                    KeychainWrapper.standard.removeObject(forKey: "oauthAccessToken")
-                    KeychainWrapper.standard.removeObject(forKey: "oauthRefreshToken")
                     
                     self.present(LoginViewController(loginViewModel: LoginViewModel()), animated: false)
                 }else {

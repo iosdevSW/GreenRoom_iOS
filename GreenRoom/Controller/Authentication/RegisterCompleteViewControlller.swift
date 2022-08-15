@@ -1,5 +1,5 @@
 //
-//  RegistCompleteViewControlller.swift
+//  RegisterCompleteViewControlller.swift
 //  GreenRoom
 //
 //  Created by SangWoo's MacBook on 2022/08/07.
@@ -10,8 +10,10 @@ import SnapKit
 import SwiftKeychainWrapper
 import RxSwift
 
-class RegistCompleteViewControlller: UIViewController{
+class RegisterCompleteViewControlller: UIViewController{
     var completeButton: UIButton!
+    let loginViewModel = LoginViewModel()
+    
     let disposeBag = DisposeBag()
     
     override func viewDidLoad() {
@@ -21,9 +23,9 @@ class RegistCompleteViewControlller: UIViewController{
         configureUI()
     }
     
-    @objc func clickedCompleteButton(_: UIButton){
+    @objc func didClickCompleteButton(_: UIButton){
         guard let oauthAccessToken = KeychainWrapper.standard.string(forKey: "oauthAccessToken") else { return }
-        LoginService.loginAPI(oauthAccessToken)
+        loginViewModel.loginService.loginAPI(oauthAccessToken)
             .subscribe(on: MainScheduler.instance)
             .subscribe(onNext: { response in
                 if response.success { //로그인 성공 키체인에 저장 후
@@ -49,7 +51,7 @@ class RegistCompleteViewControlller: UIViewController{
     
 }
 
-extension RegistCompleteViewControlller {
+extension RegisterCompleteViewControlller {
     func configureUI(){
         let completeLable = UILabel().then{
             $0.translatesAutoresizingMaskIntoConstraints = false
@@ -131,7 +133,7 @@ extension RegistCompleteViewControlller {
                 make.trailing.equalToSuperview().offset(-36)
                 make.height.equalTo(54)
             }
-            $0.addTarget(self, action: #selector(clickedCompleteButton(_:)), for: .touchUpInside)
+            $0.addTarget(self, action: #selector(didClickCompleteButton(_:)), for: .touchUpInside)
         }
     }
 }

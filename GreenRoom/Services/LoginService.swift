@@ -16,8 +16,8 @@ import SwiftKeychainWrapper
 class LoginService{
     static let serviceURL = "https://green-room.link"
     
-    static func loginAPI(_ accessToken: String)->Observable<LoginModel> {
-        let urlString = serviceURL + "/api/auth/login"
+    func loginAPI(_ accessToken: String)->Observable<LoginModel> {
+        let urlString = LoginService.serviceURL + "/api/auth/login"
         let url = URL(string: urlString)!
         
         let param: Parameters = [
@@ -26,7 +26,7 @@ class LoginService{
         ]
         
         return Observable.create{ emitter in
-            let req = AF.request(url, method: .post, parameters: param ,encoding: JSONEncoding.default)
+            let req = AF.request(url, method: .post, parameters: param ,encoding: JSONEncoding.default).validate(statusCode: 200..<300)
             req.responseDecodable(of: LoginModel.self){ res in
                 switch res.result {
                 case .success(let data):
@@ -35,6 +35,7 @@ class LoginService{
                     print(error)
                 }
             }
+            
             return Disposables.create()
         }
     }
@@ -87,18 +88,20 @@ class LoginService{
         ]
         
         return Observable.create{ emitter in
-            let req = AF.request(url, method: .get, parameters: param, encoding: URLEncoding.default)
-            
+            let req = AF.request(url, method: .get, parameters: param, encoding: URLEncoding.default).validate(statusCode: 200..<300)
+            struct NameCheck: Codable {
+                struct Response: Codable{
+                    let result: Bool
+                }
+                let response: Response
+            }
             req.responseDecodable(of: NameCheck.self){ response in
                 switch response.result{
-                    
-                case .success(let data):
-                    if data.success {
-                        emitter.onNext(data.response!.result)
-                        emitter.onCompleted()
-                    }
-                case .failure(let error):
-                    print("NameCheck Error : \(error)")
+                    case .success(let data):
+                    emitter.onNext(data.response.result)
+                    emitter.onCompleted()
+                    case .failure(let error):
+                        emitter.onError(error)
                 }
             }
             
@@ -162,15 +165,16 @@ class LoginService{
             req.responseDecodable(of: Name.self){ response in
 
                 switch response.result{
-                case .success(let data):
-                    m.onNext(data.words.first!) // 이름만 보내기
-                    m.onCompleted()
-                    break
-                case .failure(let error):
-                    print(error.localizedDescription)
-                    break
+                    case .success(let data):
+                        m.onNext(data.words.first!) // 이름만 보내기
+                        m.onCompleted()
+                        break
+                    case .failure(let error):
+                        print(error.localizedDescription)
+                        break
                 }
             }
+            
             return Disposables.create()
         }
     }

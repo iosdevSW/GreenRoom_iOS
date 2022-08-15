@@ -1,5 +1,5 @@
 //
-//  RegistCategoryViewController.swift
+//  RegisterCategoryViewController.swift
 //  GreenRoom
 //
 //  Created by SangWoo's MacBook on 2022/08/04.
@@ -9,7 +9,7 @@ import UIKit
 import RxSwift
 import SwiftKeychainWrapper
 
-class RegistCategoryViewController: UIViewController{
+class RegisterCategoryViewController: UIViewController{
     // MARK: - Properties
     var nextButton: UIButton!
     var categoryView: CategoryView!
@@ -18,7 +18,7 @@ class RegistCategoryViewController: UIViewController{
     
     let name: String
     var categoryId: Int?
-    var oauthType: Int!
+    var oauthTokenInfo: OAuthTokenModel!
     let margin = 42
     
     var selectedCategory = "" {
@@ -40,9 +40,9 @@ class RegistCategoryViewController: UIViewController{
         subscribe()
     }
     
-    init(name: String, oauthType: Int){
+    init(name: String, oauthTokenInfo: OAuthTokenModel){
         self.name = name
-        self.oauthType = oauthType
+        self.oauthTokenInfo = oauthTokenInfo
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -77,7 +77,7 @@ class RegistCategoryViewController: UIViewController{
 }
 
 //MARK: - Configure UI
-extension RegistCategoryViewController {
+extension RegisterCategoryViewController {
     func configureUI(){
         let label = UILabel().then{
             $0.translatesAutoresizingMaskIntoConstraints = false
@@ -143,19 +143,16 @@ extension RegistCategoryViewController {
                 make.trailing.equalToSuperview().offset(-36)
                 make.height.equalTo(54)
             }
-            $0.addTarget(self, action: #selector(clickedNextButton(_:)), for: .touchUpInside)
+            $0.addTarget(self, action: #selector(didClickNextButton(_:)), for: .touchUpInside)
         }
     }
     
-    @objc func clickedNextButton(_: UIButton){
-        guard let accessToken = KeychainWrapper.standard.string(forKey: "oauthAccessToken") else { return }
-        print("accessToken : \(accessToken)")
-        print("oauthType : \(oauthType!)")
-        print("categoryId : \(categoryId!)")
-        print("name : \(name)")
+    @objc func didClickNextButton(_: UIButton){
+        guard let accessToken = oauthTokenInfo.accessToken else { return }
+        guard let oauthType = oauthTokenInfo.oauthType else { return }
         
-        LoginService.registUser(accessToken: accessToken, oauthType: oauthType!, category: categoryId!, name: name)
-        let vc = RegistCompleteViewControlller()
+        LoginService.registUser(accessToken: accessToken, oauthType: oauthType, category: categoryId!, name: name)
+        let vc = RegisterCompleteViewControlller()
         self.navigationController?.pushViewController(vc, animated: true)
     }
     

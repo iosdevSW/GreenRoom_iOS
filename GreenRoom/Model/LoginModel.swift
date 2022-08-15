@@ -24,23 +24,8 @@ struct LoginModel: Codable {
     let success: Bool
 }
 
-struct NameCheck: Codable {
-    struct Error: Codable {
-        let invalidFields: String?
-        let message: String
-        let status: Int
-    }
-    
-    struct Response: Codable {
-        let result: Bool
-    }
-    
-    let error: Error?
-    let response: Response?
-    let success: Bool
-}
-
-struct OAuthToken {
+struct OAuthTokenModel{
+    var oauthType: Int?
     var accessToken: String?
     var refreshToken: String?
 }
