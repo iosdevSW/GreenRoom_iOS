@@ -40,7 +40,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         mainTabbarController.viewControllers = [keywordController,greenRoomController,mypageController]
         mainTabbarController.selectedIndex = 1
         
-        window?.rootViewController = mainTabbarController
+        window?.rootViewController = MyPageViewController()
         window?.makeKeyAndVisible()
     }
     
