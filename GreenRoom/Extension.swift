@@ -6,6 +6,9 @@
 //
 
 import UIKit
+import RxSwift
+import NaverThirdPartyLogin
+import RxCocoa
 
 extension UIColor {
     class var mainColor:UIColor! { return UIColor(named: "main") ?? UIColor.black }
@@ -103,4 +106,9 @@ extension UIButton{
             self.isEnabled = isTrue
         }
     }
+}
+
+
+extension Reactive where Base: NaverThirdPartyLoginConnection{
+  
 }

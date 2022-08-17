@@ -13,11 +13,13 @@ import RxKakaoSDKAuth
 import RxKakaoSDKUser
 import KakaoSDKUser
 import SwiftKeychainWrapper
+import NaverThirdPartyLogin
 
 class LoginViewModel {
     let disposeBag = DisposeBag()
     let loginService = LoginService()
     
+    let naverLoginInstance = NaverThirdPartyLoginConnection.getSharedInstance()
     var oauthToken = PublishSubject<OAuthTokenModel>()
     var loginObservable = PublishSubject<LoginModel>()
     
@@ -30,6 +32,12 @@ class LoginViewModel {
                     .bind(to: loginObservable)
             }).disposed(by: disposeBag)
         
+        naverLoginInstance?.rx.subject
+            .take(1)
+            .subscribe(onNext: { oauthToken in
+                self.oauthToken.onNext(oauthToken)
+            }).disposed(by: disposeBag)
+            
     }
     
     func oauthLogin(oauthType: Int){
@@ -44,9 +52,10 @@ class LoginViewModel {
         if (UserApi.isKakaoTalkLoginAvailable()) { // 카카오톡 설치 여부 확인
             UserApi.shared.rx.loginWithKakaoTalk() // 카카오톡 앱 로그인
                 .subscribe(onNext:{ (oauthToken) in
-                    self.oauthToken.onNext(OAuthTokenModel(oauthType: oauthType,
-                                                           accessToken: oauthToken.accessToken,
-                                                           refreshToken: oauthToken.refreshToken))
+                    let oauthToken = OAuthTokenModel(oauthType: oauthType,
+                                                     accessToken: oauthToken.accessToken,
+                                                     refreshToken: oauthToken.refreshToken)
+                    self.oauthToken.onNext(oauthToken)
                 },onError: { error in
                     print("kakaoAppLoginError: \(error)")
                 }).disposed(by: self.disposeBag)
@@ -65,10 +74,11 @@ class LoginViewModel {
     }
     
     func naverLogin(oauthType: Int) {
-    
+        naverLoginInstance?.requestThirdPartyLogin()
     }
     
     func appleLogin(oauthType: Int) {
-        
+        naverLoginInstance?.requestDeleteToken()
+        UserApi.shared.logout{_ in ()}
     }
 }

@@ -27,28 +27,25 @@ class RegisterCompleteViewControlller: UIViewController{
         guard let oauthAccessToken = KeychainWrapper.standard.string(forKey: "oauthAccessToken") else { return }
         loginViewModel.loginService.loginAPI(oauthAccessToken)
             .subscribe(on: MainScheduler.instance)
-            .subscribe(onNext: { response in
-                if response.success { //로그인 성공 키체인에 저장 후
-                    guard let res = response.response else { return }
-                    KeychainWrapper.standard.set(res.accessToken, forKey: "accessToken")
-                    KeychainWrapper.standard.set(res.refreshToken, forKey: "refreshToken")
-                    
-                    self.dismiss(animated: true)
-                }else {
-                    switch response.error?.status {
-                    case 400:
-                        //회원 정보 없음
-                        print("회원가입 안된경우")
-                    case 401:
-                        // 토큰 유효하지 않음 -> 토큰 갱신
-                        print(response.error!.message)
-                    default:
-                        print("serviceError: \(response.error!.message)")
-                    }
+            .subscribe(onNext: { res in
+                KeychainWrapper.standard.set(res.accessToken, forKey: "accessToken")
+                KeychainWrapper.standard.set(res.refreshToken, forKey: "refreshToken")
+                
+                self.dismiss(animated: true)
+            },onError: { error in
+                guard let statusCode = error.asAFError?.responseCode else { return }
+                switch statusCode {
+                case 400:
+                    //회원 정보 없음
+                    print("회원가입 안된경우")
+                case 401:
+                    // 토큰 유효하지 않음 -> 토큰 갱신
+                    print("유효하지 않은 토큰")
+                default:
+                    print("serviceError: \(error.localizedDescription)")
                 }
             }).disposed(by: disposeBag)
     }
-    
 }
 
 extension RegisterCompleteViewControlller {
