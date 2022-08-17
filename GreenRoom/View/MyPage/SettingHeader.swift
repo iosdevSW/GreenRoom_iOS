@@ -45,7 +45,7 @@ final class SettingHeader: UICollectionReusableView {
         backgroundColor = .clear
         addSubview(headerLabel)
         headerLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview()
+            make.leading.equalToSuperview().offset(48)
             make.centerY.equalToSuperview()
         }
     }

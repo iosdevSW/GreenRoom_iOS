@@ -44,12 +44,12 @@ final class SettingRow: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        backgroundColor = .clear
+        backgroundColor = .white
         
         addSubview(iconImageView)
         
         iconImageView.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(10)
+            make.leading.equalToSuperview().offset(58)
             make.centerY.equalToSuperview()
             make.width.height.equalTo(27)
         }
@@ -63,7 +63,7 @@ final class SettingRow: UICollectionViewCell {
         addSubview(infoLabel)
         infoLabel.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
-            make.trailing.equalToSuperview()
+            make.trailing.equalToSuperview().offset(-48)
         }
     }
     

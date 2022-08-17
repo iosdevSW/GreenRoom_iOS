@@ -13,9 +13,7 @@ final class SetNotificationRow: UICollectionViewCell {
     static let reuseIdentifier = "SetNotificationRow"
         
     var setting: InfoItem? {
-        didSet{
-            configure()
-        }
+        didSet{ configure() }
     }
     
     private var iconImageView = UIImageView().then {
@@ -30,19 +28,18 @@ final class SetNotificationRow: UICollectionViewCell {
         $0.text = "알림 설정"
     }
     
-    private var notificationSwitch = UISwitch().then {
-       
+    private lazy var notificationSwitch = UISwitch().then {
         $0.addTarget(self, action: #selector(onClickSwitch(sender:)), for: UIControl.Event.valueChanged)
     }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        backgroundColor = .clear
+        backgroundColor = .white
         addSubview(iconImageView)
         
         iconImageView.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(10)
+            make.leading.equalToSuperview().offset(58)
             make.centerY.equalToSuperview()
             make.width.height.equalTo(27)
         }
@@ -56,7 +53,7 @@ final class SetNotificationRow: UICollectionViewCell {
         addSubview(notificationSwitch)
         notificationSwitch.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
-            make.trailing.equalToSuperview()
+            make.trailing.equalToSuperview().offset(-48)
         }
         
         notificationSwitch.isOn = UserDefaults.standard.bool(forKey: "isNotificationOn")
@@ -74,9 +71,7 @@ final class SetNotificationRow: UICollectionViewCell {
     }
     //MARK: - selector
     @objc func onClickSwitch(sender: UISwitch){
-        let isNotificationOn = sender.isOn
-        UserDefaults.standard.set(isNotificationOn, forKey: "isNotificationOn")
-        print(UserDefaults.standard.bool(forKey: "isNotificationOn"))
-//        UserDefaults.standard.synchronize()
+        UserDefaults.standard.set(sender.isOn, forKey: "isNotificationOn")
+        UserDefaults.standard.synchronize()
     }
 }

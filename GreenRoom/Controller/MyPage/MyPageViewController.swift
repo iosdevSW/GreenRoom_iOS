@@ -9,6 +9,7 @@ import UIKit
 import SwiftKeychainWrapper
 import RxSwift
 import RxDataSources
+import PhotosUI
 
 final class MyPageViewController: UIViewController {
     
@@ -16,6 +17,7 @@ final class MyPageViewController: UIViewController {
     private var disposeBag = DisposeBag()
     
     private var collectionView: UICollectionView!
+    private let imagePickerView = UIImagePickerController()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,7 +27,11 @@ final class MyPageViewController: UIViewController {
         bind()
     }
     
+    
     private func configureUI(){
+        
+        navigationController?.navigationBar.isHidden = true
+        view.backgroundColor = UIColor(red: 249/255.0, green: 249/255.0, blue: 249/255.0, alpha: 1.0)
         self.view.addSubview(self.collectionView)
         collectionView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
@@ -47,50 +53,49 @@ final class MyPageViewController: UIViewController {
     private func bind() {
         let dataSource = dataSource()
         viewModel.MyPageDataSource.bind(to: collectionView.rx.items(dataSource: dataSource))
-                   .disposed(by: disposeBag)
+            .disposed(by: disposeBag)
     }
 }
 
 //MARK: - CollectionViewDataSoruce
 extension MyPageViewController {
     private func dataSource() -> RxCollectionViewSectionedReloadDataSource<MyPageSectionModel> {
-            return RxCollectionViewSectionedReloadDataSource<MyPageSectionModel> {
-                dataSource, collectionView, indexPath, item in
-                print("DEBUG: \(item)")
-                switch item {
-    
-                case .profile(profileInfo: let profile) :
-                    guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ProfileCell.reuseIdentifier, for: indexPath) as? ProfileCell else {
+        return RxCollectionViewSectionedReloadDataSource<MyPageSectionModel> {
+            dataSource, collectionView, indexPath, item in
+            switch item {
+                
+            case .profile(profileInfo: let profile) :
+                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ProfileCell.reuseIdentifier, for: indexPath) as? ProfileCell else {
+                    return UICollectionViewCell()
+                }
+                cell.profile = profile
+                cell.delegate = self
+                return cell
+            case .setting(settingInfo: let setting) :
+                switch setting.setting {
+                case .notification:
+                    guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SetNotificationRow.reuseIdentifier, for: indexPath) as? SetNotificationRow else { return UICollectionViewCell() }
+                    cell.setting = setting
+                    return cell
+                    
+                default:
+                    guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SettingRow.reuseIdentifier, for: indexPath) as? SettingRow else {
                         return UICollectionViewCell()
                     }
-                    cell.profile = profile
-                    cell.delegate = self
+                    cell.setting = setting
                     return cell
-                case .setting(settingInfo: let setting) :
-                    switch setting.setting {
-                    case .notification:
-                        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SetNotificationRow.reuseIdentifier, for: indexPath) as? SetNotificationRow else { return UICollectionViewCell() }
-                        cell.setting = setting
-                        return cell
-                        
-                    default:
-                        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SettingRow.reuseIdentifier, for: indexPath) as? SettingRow else {
-                            return UICollectionViewCell()
-                        }
-                        cell.setting = setting
-                        return cell
-                    }
-                }
-            } configureSupplementaryView: { dataSource, collectionView, kind, indexPath in
-                switch dataSource[indexPath.section] {
-                case .setting(header: let header, items: _):
-                    guard let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: SettingHeader.reuseIdentifier, withReuseIdentifier: SettingHeader.reuseIdentifier, for: indexPath) as? SettingHeader else { return UICollectionReusableView() }
-                    headerView.text = header
-                    return headerView
-                default: return UICollectionReusableView()
                 }
             }
+        } configureSupplementaryView: { dataSource, collectionView, kind, indexPath in
+            switch dataSource[indexPath.section] {
+            case .setting(header: let header, items: _):
+                guard let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: SettingHeader.reuseIdentifier, withReuseIdentifier: SettingHeader.reuseIdentifier, for: indexPath) as? SettingHeader else { return UICollectionReusableView() }
+                headerView.text = header
+                return headerView
+            default: return UICollectionReusableView()
+            }
         }
+    }
 }
 //MARK: - collectionViewLayout
 extension MyPageViewController {
@@ -114,15 +119,13 @@ extension MyPageViewController {
                 
                 let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
                 
-                let headerSize = NSCollectionLayoutSize(widthDimension: .absolute(self.view.frame.width - 96),
+                let headerSize = NSCollectionLayoutSize(widthDimension: .absolute(self.view.frame.width),
                                                         heightDimension: .absolute(48))
                 let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(
                     layoutSize: headerSize,
                     elementKind: SettingHeader.reuseIdentifier, alignment: .topLeading)
                 
                 let section = NSCollectionLayoutSection(group: group)
-                
-                section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 48, bottom: 0, trailing: 48)
                 
                 section.interGroupSpacing = CGFloat(8)
                 
@@ -135,22 +138,80 @@ extension MyPageViewController {
 }
 
 //MARK: - ProfileCellDelegate
-extension MyPageViewController: ProfileCellDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+extension MyPageViewController: ProfileCellDelegate, PHPickerViewControllerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
-//    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-//            if let pickedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
-//                imageView.contentMode = .scaleAspectFit
-//                imageView.image = pickedImage //4
-//            }
-//            dismiss(animated: true, completion: nil)
-//        }
-    
-    func didTapEditProfileImage() {
+    //MARK: - UIImagePickerController
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        
+        var newImage: UIImage? = nil // update 할 이미지
+        
+        if let possibleImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
+            newImage = possibleImage // 수정된 이미지가 있을 경우
+        } else if let possibleImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
+            newImage = possibleImage // 원본 이미지가 있을 경우
+        }
+        viewModel.profileImageObservable.onNext(newImage)// 받아온 이미지를 update
+        picker.dismiss(animated: true, completion: nil) // picker를 닫아줌
         
     }
     
-    func didTapEditProfileInfo() {
+    //MARK: - PHPickerView
+    func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
         
+        picker.dismiss(animated: true, completion: nil)
+        
+        let itemProvider = results.first?.itemProvider
+        if let itemProvider = itemProvider,
+           itemProvider.canLoadObject(ofClass: UIImage.self) {
+            itemProvider.loadObject(ofClass: UIImage.self) { [weak self] image, error in
+                guard let image = image as? UIImage else { return }
+                self?.viewModel.profileImageObservable.onNext(image)
+            }
+        }
+    }
+    
+    func didTapEditProfileImage() {
+        let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        actionSheet.view.tintColor = .mainColor
+        
+        actionSheet.addAction(UIAlertAction(title: "사진 선택", style: .default) { [weak self] _ in
+            self?.didTapopenGallery()
+        })
+        
+        actionSheet.addAction(UIAlertAction(title: "사진 찍기", style: .default) { [weak self] _ in
+            self?.didTapOpenCamera()
+        })
+        
+        actionSheet.addAction(UIAlertAction(title: "취소", style: .cancel))
+        present(actionSheet, animated: true)
+    }
+    
+    
+    func didTapOpenCamera() {
+        
+        imagePickerView.delegate = self
+        imagePickerView.sourceType = .camera
+        present(imagePickerView,animated: true)
+    }
+    
+    func didTapopenGallery(){
+        
+        if #available(iOS 14.0, *) {
+            var configuration = PHPickerConfiguration()
+            configuration.filter = .images
+            let PHPcikerView = PHPickerViewController(configuration: configuration)
+            PHPcikerView.delegate = self
+            self.present(PHPcikerView, animated: true)
+        } else {
+            imagePickerView.delegate = self
+            imagePickerView.sourceType = .savedPhotosAlbum
+            present(imagePickerView,animated: true)
+        }
+    }
+    
+    func didTapEditProfileInfo() {
+        let vc = EditProfileInfoViewController()
+        navigationController?.pushViewController(vc, animated: false)
     }
     
     

@@ -138,11 +138,9 @@ final class ProfileCell: UICollectionViewCell {
     //MARK: - Selector
     @objc func didTapEditProfileImageButton(){
         delegate?.didTapEditProfileImage()
-        print("didTapEditProfileImageButton")
     }
     
     @objc func didTapEditProfileInfo(){
         delegate?.didTapEditProfileInfo()
-        print("didTapEditProfileInfo")
     }
 }
