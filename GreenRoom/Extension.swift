@@ -107,8 +107,3 @@ extension UIButton{
         }
     }
 }
-
-
-extension Reactive where Base: NaverThirdPartyLoginConnection{
-  
-}

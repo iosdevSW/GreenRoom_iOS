@@ -25,13 +25,11 @@ class LoginViewController: UIViewController{
     let loginViewModel: LoginViewModel
     var oauthTokenInfo  = OAuthTokenModel()
     let disposeBag = DisposeBag()
-    let naverLoginInstance = NaverThirdPartyLoginConnection.getSharedInstance()
 
     //MARK: - ViewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.setGradientColor() // 배경색 그라데이션 설정
-//        self.naverLoginInstance?.delegate = self // 네이버로그인 델리게이트지정
         self.setTopView()
         self.setBottomView()
         self.subscribe()
@@ -50,10 +48,6 @@ class LoginViewController: UIViewController{
     @objc func didClickedLoginButton(_ btn: UIButton){
         loginViewModel.oauthLogin(oauthType: btn.tag)
     }
-    
-//    func naverLogin(oauthType: Int) {
-//        naverLoginInstance?.requestThirdPartyLogin()
-//    }
     
     func subscribe(){
         _ = loginViewModel.oauthToken
@@ -260,25 +254,3 @@ extension LoginViewController {
         return button
     }
 }
-// 네이버 access 토큰 유효 기간 3,600초 (1시간)
-// isValidAcccessTokenExpireTimeNow -> 토큰이 유효한지 확인하는메소드
-//extension LoginViewController: NaverThirdPartyLoginConnectionDelegate {
-//    func oauth20ConnectionDidFinishRequestACTokenWithAuthCode() {
-//        print("로그인 성공시 호출") // 성공적으로 토큰이 생겼을시 호출되는 것 같음 이미 토큰이 있을때 로그인버튼을 누르면 실행 안됨
-////        loginViewModel.loginService.naverLoginPaser()
-//    }
-//
-//    func oauth20ConnectionDidFinishRequestACTokenWithRefreshToken() {
-////        print("네이버 토큰\(naverLoginInstance?.accessToken)")
-//    }
-//
-//    func oauth20ConnectionDidFinishDeleteToken() {
-//        print("네이버 로그아웃시 호출")
-//    }
-//
-//    func oauth20Connection(_ oauthConnection: NaverThirdPartyLoginConnection!, didFailWithError error: Error!) {
-//        print("에러 = \(error.localizedDescription)")
-//    }
-//
-//
-//}

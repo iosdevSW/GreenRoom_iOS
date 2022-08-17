@@ -1,15 +1,16 @@
 //
-//  NaverRx.swift
+//  RxNaverThirdPartyLoginProxy.swift
 //  GreenRoom
 //
 //  Created by SangWoo's MacBook on 2022/08/16.
 //
 
-import UIKit
+
 import NaverThirdPartyLogin
+import SwiftKeychainWrapper
 import RxSwift
 import RxCocoa
-import SwiftKeychainWrapper
+import UIKit
 
 class RxNaverThirdPartyLoginProxy : DelegateProxy<NaverThirdPartyLoginConnection, NaverThirdPartyLoginConnectionDelegate>,
                                     DelegateProxyType,NaverThirdPartyLoginConnectionDelegate {
@@ -64,7 +65,6 @@ extension Reactive where Base: NaverThirdPartyLoginConnection {
     }
     
     var subject: Observable<OAuthTokenModel> {
-        print("delegate:\(delegate)")
         return delegate.oauthTokenSubject.asObserver()
     }
 }
