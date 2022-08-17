@@ -14,4 +14,5 @@ target 'GreenRoom' do
 	pod 'RxKakaoSDKAuth'
 	pod 'naveridlogin-sdk-ios'
 	pod 'SwiftKeychainWrapper'
+	pod 'RxDataSources', '~> 5.0'
 end
