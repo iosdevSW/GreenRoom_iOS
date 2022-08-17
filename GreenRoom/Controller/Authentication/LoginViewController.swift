@@ -9,6 +9,7 @@ import Alamofire
 import UIKit
 import SnapKit
 import Then
+import RxCocoa
 import RxSwift
 import RxKakaoSDKUser
 import RxKakaoSDKAuth
@@ -21,16 +22,14 @@ import SwiftKeychainWrapper
 
 class LoginViewController: UIViewController{
     //MARK: - Properties
-    let naverLoginInstance = NaverThirdPartyLoginConnection.getSharedInstance()
     let loginViewModel: LoginViewModel
     var oauthTokenInfo  = OAuthTokenModel()
     let disposeBag = DisposeBag()
-    
+
     //MARK: - ViewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.setGradientColor() // 배경색 그라데이션 설정
-        self.naverLoginInstance?.delegate = self // 네이버로그인 델리게이트지정
         self.setTopView()
         self.setBottomView()
         self.subscribe()
@@ -48,12 +47,7 @@ class LoginViewController: UIViewController{
     
     @objc func didClickedLoginButton(_ btn: UIButton){
         loginViewModel.oauthLogin(oauthType: btn.tag)
-        
     }
-    
-//    func naverLogin(oauthType: Int) {
-//        naverLoginInstance?.requestThirdPartyLogin()
-//    }
     
     func subscribe(){
         _ = loginViewModel.oauthToken
@@ -64,24 +58,25 @@ class LoginViewController: UIViewController{
         
         loginViewModel.loginObservable
             .take(1)
-            .bind(onNext: { response in
-                if response.success { //로그인 성공 키체인에 저장 후
-                    guard let res = response.response else { return }
-                    KeychainWrapper.standard.set(res.accessToken, forKey: "accessToken")
-                    KeychainWrapper.standard.set(res.refreshToken, forKey: "refreshToken")
-                    
-                    self.dismiss(animated: true)
-                }else {
-                    switch response.error?.status {
-                    case 400:
-                        //회원 정보 없음
-                        self.moveToRegistVC() // 회원가입 화면으로
-                    case 401:
-                        // 토큰 유효하지 않음 -> 토큰 갱신
-                        print(response.error!.message)
-                    default:
-                        print("serviceError: \(response.error!.message)")
-                    }
+            .subscribe(on: MainScheduler.instance)
+            .subscribe(onNext: { res in
+                print("성공 토큰저장 그린룸으로")
+                KeychainWrapper.standard.set(res.accessToken, forKey: "accessToken")
+                KeychainWrapper.standard.set(res.refreshToken, forKey: "refreshToken")
+                
+                self.dismiss(animated: true)
+            },onError: { error in
+                guard let statusCode = error.asAFError?.responseCode else { return }
+                switch statusCode {
+                case 400:
+                    //회원 정보 없음
+                    print("회원가입하러가자")
+                    self.moveToRegistVC() // 회원가입 화면으로
+                case 401:
+                    // 토큰 유효하지 않음 -> 토큰 갱신
+                    print("유효하지 않은 토큰")
+                default:
+                    print("serviceError: \(error.localizedDescription)")
                 }
             }).disposed(by: disposeBag)
     }
@@ -258,26 +253,4 @@ extension LoginViewController {
         
         return button
     }
-}
-// 네이버 access 토큰 유효 기간 3,600초 (1시간)
-// isValidAcccessTokenExpireTimeNow -> 토큰이 유효한지 확인하는메소드
-extension LoginViewController: NaverThirdPartyLoginConnectionDelegate {
-    func oauth20ConnectionDidFinishRequestACTokenWithAuthCode() {
-        print("로그인 성공시 호출") // 성공적으로 토큰이 생겼을시 호출되는 것 같음 이미 토큰이 있을때 로그인버튼을 누르면 실행 안됨
-        LoginService.naverLoginPaser()
-    }
-    
-    func oauth20ConnectionDidFinishRequestACTokenWithRefreshToken() {
-        print("네이버 토큰\(naverLoginInstance?.accessToken)")
-    }
-    
-    func oauth20ConnectionDidFinishDeleteToken() {
-        print("네이버 로그아웃시 호출")
-    }
-    
-    func oauth20Connection(_ oauthConnection: NaverThirdPartyLoginConnection!, didFailWithError error: Error!) {
-        print("에러 = \(error.localizedDescription)")
-    }
-    
-   
 }

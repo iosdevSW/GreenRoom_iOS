@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		8945B5BA0A1A81EE982521EA /* Pods_GreenRoom.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CA5B588B57B3CE98A2591ED3 /* Pods_GreenRoom.framework */; };
 		DB53AE9F289F967800E9A5CC /* RegisterCompleteViewControlller.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB53AE9E289F967700E9A5CC /* RegisterCompleteViewControlller.swift */; };
+		DB563F9A28ABADDF00E7193D /* RxNaverThirdPartyLoginProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB563F9928ABADDF00E7193D /* RxNaverThirdPartyLoginProxy.swift */; };
 		DB797A99289B9BFF00ADF65F /* RegisterNameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB797A98289B9BFF00ADF65F /* RegisterNameViewController.swift */; };
 		DB797A9B289BC0D800ADF65F /* RegisterCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB797A9A289BC0D800ADF65F /* RegisterCategoryViewController.swift */; };
 		DB9CF9BC289E27850091B705 /* CategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9CF9BB289E27850091B705 /* CategoryView.swift */; };
@@ -43,6 +44,7 @@
 		80B959E8028C70EEB08F8619 /* Pods-GreenRoom.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GreenRoom.release.xcconfig"; path = "Target Support Files/Pods-GreenRoom/Pods-GreenRoom.release.xcconfig"; sourceTree = "<group>"; };
 		CA5B588B57B3CE98A2591ED3 /* Pods_GreenRoom.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GreenRoom.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DB53AE9E289F967700E9A5CC /* RegisterCompleteViewControlller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterCompleteViewControlller.swift; sourceTree = "<group>"; };
+		DB563F9928ABADDF00E7193D /* RxNaverThirdPartyLoginProxy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RxNaverThirdPartyLoginProxy.swift; sourceTree = "<group>"; };
 		DB6AABB9289FEEEA0061D716 /* GreenRoom.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = GreenRoom.entitlements; sourceTree = "<group>"; };
 		DB797A98289B9BFF00ADF65F /* RegisterNameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNameViewController.swift; sourceTree = "<group>"; };
 		DB797A9A289BC0D800ADF65F /* RegisterCategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterCategoryViewController.swift; sourceTree = "<group>"; };
@@ -119,6 +121,7 @@
 			isa = PBXGroup;
 			children = (
 				DBBA9480289968CD00264405 /* PaddingLabel.swift */,
+				DB563F9928ABADDF00E7193D /* RxNaverThirdPartyLoginProxy.swift */,
 			);
 			path = Custom;
 			sourceTree = "<group>";
@@ -438,6 +441,7 @@
 				DBD0821F2897E6EE0092241F /* SceneDelegate.swift in Sources */,
 				DBD0825A2897E75B0092241F /* TempMyPage.swift in Sources */,
 				DBD082552897E75B0092241F /* GreenRoomViewController.swift in Sources */,
+				DB563F9A28ABADDF00E7193D /* RxNaverThirdPartyLoginProxy.swift in Sources */,
 				DBD082562897E75B0092241F /* MyPageViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

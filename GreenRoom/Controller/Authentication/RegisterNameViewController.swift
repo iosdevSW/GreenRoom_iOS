@@ -73,7 +73,10 @@ class RegisterNameViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
+        addSubView()
+        layout()
         configureUI()
+        
         self.setNavigationItem()
         self.hideKeyboardWhenTapped()
         
@@ -146,6 +149,7 @@ extension RegisterNameViewController {
         self.nameLabel.snp.makeConstraints{ make in
             make.top.equalToSuperview().offset(143)
             make.centerX.equalToSuperview()
+            
         }
         
         self.textfieldBox.snp.makeConstraints{ make in
@@ -156,7 +160,7 @@ extension RegisterNameViewController {
         }
         
         self.guideLabel.snp.makeConstraints{ make in
-            make.bottom.equalTo(textfieldBox.snp.top).offset(5)
+            make.bottom.equalTo(textfieldBox.snp.top).offset(-5)
             make.leading.equalTo(textfieldBox.snp.leading).offset(12)
         }
         
