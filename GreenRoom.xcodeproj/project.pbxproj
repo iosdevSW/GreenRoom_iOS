@@ -10,11 +10,11 @@
 		8264C21FBC48D22BCC90B0D5 /* Pods_GreenRoom.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48A2A5400036D7B484D9CF77 /* Pods_GreenRoom.framework */; };
 		DB53AE9F289F967800E9A5CC /* RegisterCompleteViewControlller.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB53AE9E289F967700E9A5CC /* RegisterCompleteViewControlller.swift */; };
 		DB563F9A28ABADDF00E7193D /* RxNaverThirdPartyLoginProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB563F9928ABADDF00E7193D /* RxNaverThirdPartyLoginProxy.swift */; };
+		DB563F9C28AD407400E7193D /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB563F9B28AD407400E7193D /* Extension.swift */; };
 		DB797A99289B9BFF00ADF65F /* RegisterNameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB797A98289B9BFF00ADF65F /* RegisterNameViewController.swift */; };
 		DB797A9B289BC0D800ADF65F /* RegisterCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB797A9A289BC0D800ADF65F /* RegisterCategoryViewController.swift */; };
 		DB9CF9BC289E27850091B705 /* CategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9CF9BB289E27850091B705 /* CategoryView.swift */; };
 		DB9CF9BE289E81FE0091B705 /* CateogryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9CF9BD289E81FE0091B705 /* CateogryCell.swift */; };
-		DBBA947E289968AF00264405 /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBBA947D289968AF00264405 /* Extension.swift */; };
 		DBBA9481289968CD00264405 /* PaddingLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBBA9480289968CD00264405 /* PaddingLabel.swift */; };
 		DBD0821D2897E6EE0092241F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD0821C2897E6EE0092241F /* AppDelegate.swift */; };
 		DBD0821F2897E6EE0092241F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD0821E2897E6EE0092241F /* SceneDelegate.swift */; };
@@ -51,12 +51,12 @@
 		C657AA73E3298A49BA775B7C /* Pods-GreenRoom.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GreenRoom.release.xcconfig"; path = "Target Support Files/Pods-GreenRoom/Pods-GreenRoom.release.xcconfig"; sourceTree = "<group>"; };
 		DB53AE9E289F967700E9A5CC /* RegisterCompleteViewControlller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterCompleteViewControlller.swift; sourceTree = "<group>"; };
 		DB563F9928ABADDF00E7193D /* RxNaverThirdPartyLoginProxy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RxNaverThirdPartyLoginProxy.swift; sourceTree = "<group>"; };
+		DB563F9B28AD407400E7193D /* Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Extension.swift; path = GreenRoom/Extension.swift; sourceTree = SOURCE_ROOT; };
 		DB6AABB9289FEEEA0061D716 /* GreenRoom.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = GreenRoom.entitlements; sourceTree = "<group>"; };
 		DB797A98289B9BFF00ADF65F /* RegisterNameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNameViewController.swift; sourceTree = "<group>"; };
 		DB797A9A289BC0D800ADF65F /* RegisterCategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterCategoryViewController.swift; sourceTree = "<group>"; };
 		DB9CF9BB289E27850091B705 /* CategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryView.swift; sourceTree = "<group>"; };
 		DB9CF9BD289E81FE0091B705 /* CateogryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CateogryCell.swift; sourceTree = "<group>"; };
-		DBBA947D289968AF00264405 /* Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
 		DBBA9480289968CD00264405 /* PaddingLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaddingLabel.swift; sourceTree = "<group>"; };
 		DBD082192897E6EE0092241F /* GreenRoom.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GreenRoom.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DBD0821C2897E6EE0092241F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -320,7 +320,7 @@
 		E46539DA28ACD77B00F17A6C /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				DBBA947D289968AF00264405 /* Extension.swift */,
+				DB563F9B28AD407400E7193D /* Extension.swift */,
 				E46539D828ACD77600F17A6C /* Utilities.swift */,
 			);
 			path = Utils;
@@ -450,6 +450,7 @@
 				E470539728AB856D00884B56 /* SettingHeader.swift in Sources */,
 				DB53AE9F289F967800E9A5CC /* RegisterCompleteViewControlller.swift in Sources */,
 				E470539928AB882900884B56 /* SettingRow.swift in Sources */,
+				DB563F9C28AD407400E7193D /* Extension.swift in Sources */,
 				DBE7A54A28996BCE00E9A4E9 /* LoginViewController.swift in Sources */,
 				E470539528AB81EC00884B56 /* MyPageModel.swift in Sources */,
 				DBD0825D2897E75B0092241F /* LoginModel.swift in Sources */,
@@ -463,7 +464,6 @@
 				DBD082592897E75B0092241F /* TempGreen.swift in Sources */,
 				DBD0821D2897E6EE0092241F /* AppDelegate.swift in Sources */,
 				E46539E428AD33C700F17A6C /* EditProfileInfoViewController.swift in Sources */,
-				DBBA947E289968AF00264405 /* Extension.swift in Sources */,
 				DB797A99289B9BFF00ADF65F /* RegisterNameViewController.swift in Sources */,
 				DBD0825B2897E75B0092241F /* TempKeyword.swift in Sources */,
 				DBD082532897E75B0092241F /* KeywordViewModel.swift in Sources */,
@@ -613,7 +613,7 @@
 				CODE_SIGN_ENTITLEMENTS = GreenRoom/GreenRoom.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 9R39BMBYFW;
+				DEVELOPMENT_TEAM = V2YNV9QV27;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = GreenRoom/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -642,7 +642,7 @@
 				CODE_SIGN_ENTITLEMENTS = GreenRoom/GreenRoom.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 9R39BMBYFW;
+				DEVELOPMENT_TEAM = V2YNV9QV27;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = GreenRoom/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

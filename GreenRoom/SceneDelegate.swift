@@ -40,7 +40,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         mainTabbarController.viewControllers = [keywordController,greenRoomController,mypageController]
         mainTabbarController.selectedIndex = 1
         
-        window?.rootViewController = MyPageViewController()
+        window?.rootViewController = mainTabbarController
         window?.makeKeyAndVisible()
     }
     
@@ -85,7 +85,5 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Use this method to save data, release shared resources, and store enough scene-specific state information
         // to restore the scene back to its current state.
     }
-
-
 }
 
