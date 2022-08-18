@@ -50,17 +50,17 @@ class LoginViewController: UIViewController{
     }
     
     func subscribe(){
+        // oauthtoken 발급시 oauth토큰 정보 가져오기
         _ = loginViewModel.oauthToken
             .take(1)
             .subscribe(onNext: { tokenModel in
                 self.oauthTokenInfo = tokenModel
             })
-        
+        // JWT토큰 받아 키체인에 저장하고 예외처리
         loginViewModel.loginObservable
             .take(1)
             .subscribe(on: MainScheduler.instance)
             .subscribe(onNext: { res in
-                print("성공 토큰저장 그린룸으로")
                 KeychainWrapper.standard.set(res.accessToken, forKey: "accessToken")
                 KeychainWrapper.standard.set(res.refreshToken, forKey: "refreshToken")
                 
@@ -70,7 +70,6 @@ class LoginViewController: UIViewController{
                 switch statusCode {
                 case 400:
                     //회원 정보 없음
-                    print("회원가입하러가자")
                     self.moveToRegistVC() // 회원가입 화면으로
                 case 401:
                     // 토큰 유효하지 않음 -> 토큰 갱신
