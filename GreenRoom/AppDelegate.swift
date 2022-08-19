@@ -14,13 +14,7 @@ import NaverThirdPartyLogin
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-<<<<<<< HEAD
-        RxKakaoSDK.initSDK(appKey: "a45de08bf74de9630747bd72021eb355") //Kakao SDK Init
-        
-=======
         KakaoSDK.initSDK(appKey: Storage().kakaoAppKey) //Kakao SDK Init
->>>>>>> 45db1549f6522f1e99f86a76a9dc3284b98001ec
-        
         if #available(iOS 15.0, *) {
             let tabbarAppearance = UITabBarAppearance()
             tabbarAppearance.configureWithOpaqueBackground()

@@ -58,13 +58,9 @@
 		C657AA73E3298A49BA775B7C /* Pods-GreenRoom.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GreenRoom.release.xcconfig"; path = "Target Support Files/Pods-GreenRoom/Pods-GreenRoom.release.xcconfig"; sourceTree = "<group>"; };
 		DB53AE9E289F967700E9A5CC /* RegisterCompleteViewControlller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterCompleteViewControlller.swift; sourceTree = "<group>"; };
 		DB563F9928ABADDF00E7193D /* RxNaverThirdPartyLoginProxy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RxNaverThirdPartyLoginProxy.swift; sourceTree = "<group>"; };
-<<<<<<< HEAD
-		DB563F9B28AD407400E7193D /* Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Extension.swift; path = GreenRoom/Extension.swift; sourceTree = SOURCE_ROOT; };
+		DB563F9B28AD407400E7193D /* Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Extension.swift; path = GreenRoom/Utils/Extension.swift; sourceTree = SOURCE_ROOT; };
 		DB563F9D28AE266D00E7193D /* CategoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryViewModel.swift; sourceTree = "<group>"; };
 		DB563F9F28AF841400E7193D /* RxAppleLoginProxy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RxAppleLoginProxy.swift; sourceTree = "<group>"; };
-=======
-		DB563F9B28AD407400E7193D /* Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Extension.swift; path = GreenRoom/Utils/Extension.swift; sourceTree = SOURCE_ROOT; };
->>>>>>> 45db1549f6522f1e99f86a76a9dc3284b98001ec
 		DB6AABB9289FEEEA0061D716 /* GreenRoom.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = GreenRoom.entitlements; sourceTree = "<group>"; };
 		DB797A98289B9BFF00ADF65F /* RegisterNameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNameViewController.swift; sourceTree = "<group>"; };
 		DB797A9A289BC0D800ADF65F /* RegisterCategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterCategoryViewController.swift; sourceTree = "<group>"; };
@@ -495,11 +491,8 @@
 				E4141ABA28AF5199004D74B3 /* FAQModel.swift in Sources */,
 				DBBA9481289968CD00264405 /* PaddingLabel.swift in Sources */,
 				DBD082542897E75B0092241F /* MyPageViewModel.swift in Sources */,
-<<<<<<< HEAD
-=======
 				E4141ACB28AF79E7004D74B3 /* FAQViewController.swift in Sources */,
 				DB9CF9BC289E27850091B705 /* CategoryView.swift in Sources */,
->>>>>>> 45db1549f6522f1e99f86a76a9dc3284b98001ec
 				DBD082602897E7740092241F /* LoginService.swift in Sources */,
 				DBD082592897E75B0092241F /* TempGreen.swift in Sources */,
 				DBD0821D2897E6EE0092241F /* AppDelegate.swift in Sources */,
