@@ -14,6 +14,7 @@ import RxKakaoSDKUser
 import KakaoSDKUser
 import SwiftKeychainWrapper
 import NaverThirdPartyLogin
+import AuthenticationServices
 
 class LoginViewModel {
     let disposeBag = DisposeBag()
@@ -37,7 +38,6 @@ class LoginViewModel {
             .subscribe(onNext: { oauthToken in
                 self.oauthToken.onNext(oauthToken)
             }).disposed(by: disposeBag)
-            
     }
     
     func oauthLogin(oauthType: Int){
@@ -74,11 +74,57 @@ class LoginViewModel {
     }
     
     func naverLogin(oauthType: Int) {
+        if naverLoginInstance!.isValidAccessTokenExpireTimeNow(){
+            naverLoginInstance?.requestDeleteToken()
+        }
         naverLoginInstance?.requestThirdPartyLogin()
     }
     
     func appleLogin(oauthType: Int) {
-        naverLoginInstance?.requestDeleteToken()
-        UserApi.shared.logout{_ in ()}
+        let appleIDProvider = ASAuthorizationAppleIDProvider()
+        let request = appleIDProvider.createRequest()
+        request.requestedScopes = [.fullName, .email]
+        
+        let authorizationController = ASAuthorizationController(authorizationRequests: [request])
+        authorizationController.presentationContextProvider
+        authorizationController.performRequests()
+        
+        authorizationController.rx.didCompleteWithAuthorization
+            .take(1)
+            .subscribe(onNext: { (controller,auth) in
+                switch auth.credential {
+                case let appleIDCredential as ASAuthorizationAppleIDCredential:
+                    // Create an account in your system.
+                    let userIdentifier = appleIDCredential.user
+                    let fullName = appleIDCredential.fullName
+                    let email = appleIDCredential.email
+                
+                    if  let authorizationCode = appleIDCredential.authorizationCode,
+                        let identityToken = appleIDCredential.identityToken,
+                        let authString = String(data: authorizationCode, encoding: .utf8),
+                        let tokenString = String(data: identityToken, encoding: .utf8) {
+                        print("authorizationCode: \(authorizationCode)")
+                        print("identityToken: \(identityToken)")
+                        print("authString: \(authString)")
+                        print("tokenString: \(tokenString)")
+                    }
+                    
+                    print("useridentifier: \(userIdentifier)")
+//                    print("fullName: \(fullName)")
+//                    print("email: \(email)")
+                    
+                case let passwordCredential as ASPasswordCredential:
+                    // Sign in using an existing iCloud Keychain credential.
+                    let username = passwordCredential.user
+                    let password = passwordCredential.password
+                    
+                    print("username: \(username)")
+                    print("password: \(password)")
+                    
+                default:
+                    break
+                }
+            }).disposed(by: disposeBag)
+        
     }
 }

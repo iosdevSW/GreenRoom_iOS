@@ -10,7 +10,7 @@
 			<key>CFBundleURLIconFile</key>
 			<string></string>
 			<key>CFBundleURLName</key>
-			<string>kakaologin</string>
+			<string>kakaokompassauth</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>kakaoa45de08bf74de9630747bd72021eb355</string>

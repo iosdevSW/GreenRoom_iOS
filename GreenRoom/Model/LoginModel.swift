@@ -20,58 +20,58 @@ struct OAuthTokenModel{
 }
 
 enum CategoryID: Int {
-    case Common = 1
-    case Intern = 2
-    case IA,Design,MP,Accounting,PM,Personnel,Marketing,Sales,ITDevelopment,RD
+    case common = 1
+    case intern = 2
+    case ia,design,mp,accounting,pm,personnel,marketing,sales,itDevelopment,rd
 
     var title: String {
         switch self {
-        case .Common: return "공통"
-        case .Intern: return "인턴"
-        case .IA: return "대외활동"
-        case .Design: return "디자인"
-        case .MP: return "경영기획"
-        case .Accounting: return "회계"
-        case .PM: return "생산/품질관리"
-        case .Personnel: return "인사"
-        case .Marketing: return "마케팅"
-        case .Sales: return "영업"
-        case .ITDevelopment: return "IT/개발"
-        case .RD: return "연구개발(R&D)"
+        case .common: return "공통"
+        case .intern: return "인턴"
+        case .ia: return "대외활동"
+        case .design: return "디자인"
+        case .mp: return "경영기획"
+        case .accounting: return "회계"
+        case .pm: return "생산/품질관리"
+        case .personnel: return "인사"
+        case .marketing: return "마케팅"
+        case .sales: return "영업"
+        case .itDevelopment: return "IT/개발"
+        case .rd: return "연구개발(R&D)"
         }
     }
     
     var nonSelectedImage: UIImage{
         switch self {
-        case .Common: return UIImage(named: "Common") ?? UIImage()
-        case .Intern: return UIImage(named: "Intern") ?? UIImage()
-        case .IA: return UIImage(named: "IA") ?? UIImage()
-        case .Design: return UIImage(named: "Design") ?? UIImage()
-        case .MP: return UIImage(named: "MP") ?? UIImage()
-        case .Accounting: return UIImage(named: "Accounting") ?? UIImage()
-        case .PM: return UIImage(named: "PM") ?? UIImage()
-        case .Personnel: return UIImage(named: "Personnel") ?? UIImage()
-        case .Marketing: return UIImage(named: "Marketing") ?? UIImage()
-        case .Sales: return UIImage(named: "Sales") ?? UIImage()
-        case .ITDevelopment: return UIImage(named: "ITDevelopment") ?? UIImage()
-        case .RD: return UIImage(named: "RD") ?? UIImage()
+        case .common: return UIImage(named: "Common") ?? UIImage()
+        case .intern: return UIImage(named: "Intern") ?? UIImage()
+        case .ia: return UIImage(named: "IA") ?? UIImage()
+        case .design: return UIImage(named: "Design") ?? UIImage()
+        case .mp: return UIImage(named: "MP") ?? UIImage()
+        case .accounting: return UIImage(named: "Accounting") ?? UIImage()
+        case .pm: return UIImage(named: "PM") ?? UIImage()
+        case .personnel: return UIImage(named: "Personnel") ?? UIImage()
+        case .marketing: return UIImage(named: "Marketing") ?? UIImage()
+        case .sales: return UIImage(named: "Sales") ?? UIImage()
+        case .itDevelopment: return UIImage(named: "ITDevelopment") ?? UIImage()
+        case .rd: return UIImage(named: "RD") ?? UIImage()
         }
     }
     
     var SelectedImage: UIImage {
         switch self {
-        case .Common: return UIImage(named: "CommonS") ?? UIImage()
-        case .Intern: return UIImage(named: "InternS") ?? UIImage()
-        case .IA: return UIImage(named: "IAS") ?? UIImage()
-        case .Design: return UIImage(named: "DesignS") ?? UIImage()
-        case .MP: return UIImage(named: "MPS") ?? UIImage()
-        case .Accounting: return UIImage(named: "AccountingS") ?? UIImage()
-        case .PM: return UIImage(named: "PMS") ?? UIImage()
-        case .Personnel: return UIImage(named: "PersonnelS") ?? UIImage()
-        case .Marketing: return UIImage(named: "MarketingS") ?? UIImage()
-        case .Sales: return UIImage(named: "SalesS") ?? UIImage()
-        case .ITDevelopment: return UIImage(named: "ITDevelopmentS") ?? UIImage()
-        case .RD: return UIImage(named: "RDS") ?? UIImage()
+        case .common: return UIImage(named: "CommonS") ?? UIImage()
+        case .intern: return UIImage(named: "InternS") ?? UIImage()
+        case .ia: return UIImage(named: "IAS") ?? UIImage()
+        case .design: return UIImage(named: "DesignS") ?? UIImage()
+        case .mp: return UIImage(named: "MPS") ?? UIImage()
+        case .accounting: return UIImage(named: "AccountingS") ?? UIImage()
+        case .pm: return UIImage(named: "PMS") ?? UIImage()
+        case .personnel: return UIImage(named: "PersonnelS") ?? UIImage()
+        case .marketing: return UIImage(named: "MarketingS") ?? UIImage()
+        case .sales: return UIImage(named: "SalesS") ?? UIImage()
+        case .itDevelopment: return UIImage(named: "ITDevelopmentS") ?? UIImage()
+        case .rd: return UIImage(named: "RDS") ?? UIImage()
         }
     }
 }
