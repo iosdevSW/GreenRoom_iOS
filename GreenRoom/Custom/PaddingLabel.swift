@@ -15,23 +15,23 @@ class PaddingLabel: UILabel {
     var right: CGFloat = 0
     
     convenience init(padding: UIEdgeInsets) {
-            self.init()
-            self.top = padding.top
-            self.left = padding.left
-            self.bottom = padding.bottom
-            self.right = padding.right
-        }
+        self.init()
+        self.top = padding.top
+        self.left = padding.left
+        self.bottom = padding.bottom
+        self.right = padding.right
+    }
     
     override func drawText(in rect: CGRect) {
-            let padding = UIEdgeInsets.init(top: top, left: left, bottom: bottom, right: right)
-            super.drawText(in: rect.inset(by: padding))
-        }
+        let padding = UIEdgeInsets.init(top: top, left: left, bottom: bottom, right: right)
+        super.drawText(in: rect.inset(by: padding))
+    }
     
     override var intrinsicContentSize: CGSize {
-            var contentSize = super.intrinsicContentSize
-            contentSize.width += self.left + self.right
-            contentSize.height += self.top + self.bottom
+        var contentSize = super.intrinsicContentSize
+        contentSize.width += self.left + self.right
+        contentSize.height += self.top + self.bottom
         
-            return contentSize
-        }
+        return contentSize
+    }
 }

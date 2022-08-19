@@ -34,13 +34,15 @@ final class ProfileCell: UICollectionViewCell {
         $0.tintColor = .mainColor
     }
     
-    private lazy var profileImageView = UIButton().then {
+    private lazy var profileImageView = UIButton(frame: CGRect(x: 0, y: 0, width: 90, height: 90)).then {
         $0.tintColor = .customGray
-        $0.imageView?.contentMode = .scaleAspectFill
-        $0.setImage(UIImage(named: "DefaultProfile")?.withRenderingMode(.alwaysOriginal), for: .normal)
+        $0.contentVerticalAlignment = .fill
+        $0.contentHorizontalAlignment = .fill
+        $0.imageView?.contentMode = .scaleToFill
         $0.addTarget(self, action: #selector(didTapEditProfileImageButton), for: .touchUpInside)
         $0.layer.cornerRadius = 45
-        
+        $0.backgroundColor = .clear
+        $0.setImage(UIImage(named: "DefaultProfile")?.withRenderingMode(.alwaysOriginal), for: .normal)
         $0.layer.masksToBounds = true
     }
     
@@ -132,6 +134,7 @@ final class ProfileCell: UICollectionViewCell {
             make.height.equalTo(74)
             make.width.equalTo(172)
         }
+        print(profileImageView.bounds.width)
     }
     
     

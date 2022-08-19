@@ -13,9 +13,19 @@ import NaverThirdPartyLogin
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        KakaoSDK.initSDK(appKey: "a45de08bf74de9630747bd72021eb355") //Kakao SDK Init
+        KakaoSDK.initSDK(appKey: Storage().kakaoAppKey) //Kakao SDK Init
         
-        
+        if #available(iOS 15.0, *) {
+            let tabbarAppearance = UITabBarAppearance()
+            tabbarAppearance.configureWithOpaqueBackground()
+            
+            tabbarAppearance.backgroundColor = .white
+            UITabBar.appearance().standardAppearance = tabbarAppearance
+            UITabBar.appearance().scrollEdgeAppearance = tabbarAppearance
+            
+            //tabbar upper line remove
+            UITabBar.appearance().clipsToBounds = true
+        }
         //Naver
         let instance = NaverThirdPartyLoginConnection.getSharedInstance()
                 

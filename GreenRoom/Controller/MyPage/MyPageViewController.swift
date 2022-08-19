@@ -13,25 +13,38 @@ import PhotosUI
 
 final class MyPageViewController: UIViewController {
     
-    private var viewModel: MyPageViewModel!
+    private var viewModel: MyPageViewModel
     private var disposeBag = DisposeBag()
     
     private var collectionView: UICollectionView!
     private let imagePickerView = UIImagePickerController()
     
+    //MARK: - Lifecycle
+    init(viewModel: MyPageViewModel){
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.viewModel = MyPageViewModel()
         configureCollectionView()
         configureUI()
         bind()
     }
     
-    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.navigationBar.topItem?.title = ""
+        navigationController?.navigationBar.isHidden = true
+    }
+    //MARK: - Configure
     private func configureUI(){
         
-        navigationController?.navigationBar.isHidden = true
-        view.backgroundColor = UIColor(red: 249/255.0, green: 249/255.0, blue: 249/255.0, alpha: 1.0)
+        view.backgroundColor = .backgroundGary
         self.view.addSubview(self.collectionView)
         collectionView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
@@ -54,6 +67,24 @@ final class MyPageViewController: UIViewController {
         let dataSource = dataSource()
         viewModel.MyPageDataSource.bind(to: collectionView.rx.items(dataSource: dataSource))
             .disposed(by: disposeBag)
+        
+        Observable.zip(collectionView.rx.itemSelected, collectionView.rx.modelSelected(MyPageSectionModel.Item.self))
+            .subscribe(onNext: { [weak self] indexPath, item in
+                guard let self = self else { return }
+                switch item {
+                case .setting(settingInfo: let info):
+                    switch info.setting {
+                    case .QNA:
+                        let vc = QNAViewController(viewModel: self.viewModel)
+                        self.navigationController?.pushViewController(vc, animated: true)
+                    case .FAQ:
+                        let vc = FAQViewController(viewModel: self.viewModel)
+                        self.navigationController?.pushViewController(vc, animated: true)
+                    default: return 
+                    }
+                default : return
+                }
+            }).disposed(by: disposeBag)
     }
 }
 
@@ -152,7 +183,6 @@ extension MyPageViewController: ProfileCellDelegate, PHPickerViewControllerDeleg
         }
         viewModel.profileImageObservable.onNext(newImage)// 받아온 이미지를 update
         picker.dismiss(animated: true, completion: nil) // picker를 닫아줌
-        
     }
     
     //MARK: - PHPickerView

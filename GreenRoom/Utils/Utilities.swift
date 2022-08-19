@@ -43,4 +43,28 @@ final class Utilities {
         
         return attributedString
     }
+    
+    func heightForView(text:String, font:UIFont, width:CGFloat) -> CGFloat{
+        
+        let attributedString = NSMutableAttributedString(string: text)
+
+        // *** Create instance of `NSMutableParagraphStyle`
+        let paragraphStyle = NSMutableParagraphStyle()
+
+        // *** set LineSpacing property in points ***
+        paragraphStyle.lineSpacing = 6 // Whatever line spacing you want in points
+
+        // *** Apply attribute to string ***
+        attributedString.addAttribute(NSAttributedString.Key.paragraphStyle, value:paragraphStyle, range:NSMakeRange(0, attributedString.length))
+        
+        let label:UILabel = UILabel(frame: CGRect(x: 0, y: 0, width: width, height: CGFloat.greatestFiniteMagnitude))
+        label.numberOfLines = 0
+        label.lineBreakMode = NSLineBreakMode.byWordWrapping
+        label.font = font
+        label.attributedText = attributedString
+
+        label.sizeToFit()
+        return label.frame.height
+    }
+    
 }
