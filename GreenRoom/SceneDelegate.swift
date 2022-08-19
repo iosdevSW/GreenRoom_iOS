@@ -26,7 +26,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         let greenRoomController = UINavigationController(rootViewController: GreenRoomViewController())
         let keywordController = UINavigationController(rootViewController: KeywordViewController())
-        let mypageController = UINavigationController(rootViewController: MyPageViewController())
+        let mypageController = UINavigationController(rootViewController: MyPageViewController(viewModel: MyPageViewModel()))
         
         greenRoomController.title = "그린룸"
         greenRoomController.tabBarItem.image = UIImage(named: "greenroom")
