@@ -13,9 +13,9 @@ class MyPageViewModel {
     
     private var disposeBag = DisposeBag()
     
+    //MARK: - MyPageViewController
     private var profileObervable = BehaviorSubject<[MyPageSectionModel]>(value: [])
-    var profileImageObservable = BehaviorSubject<UIImage?>(value:UIImage(named: "프로필이미지"))
-    
+    var profileImageObservable = BehaviorSubject<UIImage?>(value:UIImage(named: "ProfileSample"))
     var MyPageDataSource = BehaviorSubject<[MyPageSectionModel]>(value:[])
     
     private let settingsObservable = Observable<[MyPageSectionModel]>.create { observer in
@@ -34,6 +34,26 @@ class MyPageViewModel {
                     MyPageSectionModel.SectionItem.setting(settingInfo:InfoItem(iconImage: UIImage(named: "QNA")!, title: "직접 문의", setting: .QNA))])])
         return Disposables.create()
     }
+    
+    
+    //MARK: - QNAViewController
+    private let defaultQNAImage = Observable<UIImage?>.create { observer in
+        observer.onNext(UIImage(systemName: "plus.circle"))
+        return Disposables.create()
+    }
+    
+    //MARK: - FAQ
+    var shownFAQ = BehaviorSubject<[FAQ]>(value: [])
+    
+    var presetFAQ: [FAQ] = [
+        FAQ(question: "이 어플은 누구를 위해 만들어졌나요?",
+            answer: "예시답변1입니다,예시답변1입니다예시답변1입니다,예시답변1입니다,예시답변1입니다,예시답변1입니다,예시답변1입니다,예시답변1입니다,예시답변1입니다,예시답변1입니다,예시답변1입니다,예시답변1입니다"),
+        FAQ(question: "면접 질문은 누구나 만들 수 있나요?", answer: "answer2"),
+        FAQ(question: "언어설정은 어떻게 하나요?", answer: "answer3"),
+        FAQ(question: "면접 초보자도 이용할 수 있나요?", answer: "answer4"),
+        FAQ(question: "무성의한 답변을 단 사람은 어떻게 하나요?", answer: "answer5"),
+        FAQ(question: "면접이 너무 부담스러운데 어떡하죠?", answer: "answer6")
+    ]
     
     init(){
         bind()

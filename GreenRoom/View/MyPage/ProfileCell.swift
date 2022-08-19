@@ -43,6 +43,7 @@ final class ProfileCell: UICollectionViewCell {
         $0.layer.cornerRadius = 45
         $0.backgroundColor = .clear
         $0.setImage(UIImage(named: "DefaultProfile")?.withRenderingMode(.alwaysOriginal), for: .normal)
+        $0.layer.masksToBounds = true
     }
     
     private var nameLabel = UILabel().then {

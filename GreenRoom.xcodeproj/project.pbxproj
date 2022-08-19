@@ -35,9 +35,11 @@
 		DBD0826E289808030092241F /* SFProText-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = DBD082682898078F0092241F /* SFProText-Regular.otf */; };
 		DBE7A54A28996BCE00E9A4E9 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBE7A54928996BCE00E9A4E9 /* LoginViewController.swift */; };
 		DBE7A54F28996C2000E9A4E9 /* CheckLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBE7A54E28996C2000E9A4E9 /* CheckLabel.swift */; };
-		E4141AAE28AEA43A004D74B3 /* QNAViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4141AAD28AEA43A004D74B3 /* QNAViewController.swift */; };
-		E4141AB028AEB8B4004D74B3 /* FAQViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4141AAF28AEB8B4004D74B3 /* FAQViewController.swift */; };
 		E4141AB328AF4499004D74B3 /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4141AB228AF4499004D74B3 /* Storage.swift */; };
+		E4141ABA28AF5199004D74B3 /* FAQModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4141AB928AF5199004D74B3 /* FAQModel.swift */; };
+		E4141ABC28AF528E004D74B3 /* FAQCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4141ABB28AF528E004D74B3 /* FAQCell.swift */; };
+		E4141ACA28AF79E7004D74B3 /* QNAViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4141AC828AF79E7004D74B3 /* QNAViewController.swift */; };
+		E4141ACB28AF79E7004D74B3 /* FAQViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4141AC928AF79E7004D74B3 /* FAQViewController.swift */; };
 		E46539D928ACD77600F17A6C /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E46539D828ACD77600F17A6C /* Utilities.swift */; };
 		E46539DC28ACDAD100F17A6C /* SetNotificationRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = E46539DB28ACDAD100F17A6C /* SetNotificationRow.swift */; };
 		E46539E428AD33C700F17A6C /* EditProfileInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E46539E328AD33C700F17A6C /* EditProfileInfoViewController.swift */; };
@@ -55,7 +57,7 @@
 		C657AA73E3298A49BA775B7C /* Pods-GreenRoom.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GreenRoom.release.xcconfig"; path = "Target Support Files/Pods-GreenRoom/Pods-GreenRoom.release.xcconfig"; sourceTree = "<group>"; };
 		DB53AE9E289F967700E9A5CC /* RegisterCompleteViewControlller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterCompleteViewControlller.swift; sourceTree = "<group>"; };
 		DB563F9928ABADDF00E7193D /* RxNaverThirdPartyLoginProxy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RxNaverThirdPartyLoginProxy.swift; sourceTree = "<group>"; };
-		DB563F9B28AD407400E7193D /* Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Extension.swift; path = GreenRoom/Extension.swift; sourceTree = SOURCE_ROOT; };
+		DB563F9B28AD407400E7193D /* Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Extension.swift; path = GreenRoom/Utils/Extension.swift; sourceTree = SOURCE_ROOT; };
 		DB6AABB9289FEEEA0061D716 /* GreenRoom.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = GreenRoom.entitlements; sourceTree = "<group>"; };
 		DB797A98289B9BFF00ADF65F /* RegisterNameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNameViewController.swift; sourceTree = "<group>"; };
 		DB797A9A289BC0D800ADF65F /* RegisterCategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterCategoryViewController.swift; sourceTree = "<group>"; };
@@ -83,15 +85,17 @@
 		DBD082682898078F0092241F /* SFProText-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SFProText-Regular.otf"; path = "GreenRoom/Resource/Font/SFProText-Regular.otf"; sourceTree = SOURCE_ROOT; };
 		DBE7A54928996BCE00E9A4E9 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		DBE7A54E28996C2000E9A4E9 /* CheckLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckLabel.swift; sourceTree = "<group>"; };
-		E4141AAD28AEA43A004D74B3 /* QNAViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QNAViewController.swift; sourceTree = "<group>"; };
-		E4141AAF28AEB8B4004D74B3 /* FAQViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAQViewController.swift; sourceTree = "<group>"; };
 		E4141AB228AF4499004D74B3 /* Storage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Storage.swift; sourceTree = "<group>"; };
+		E4141AB928AF5199004D74B3 /* FAQModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAQModel.swift; sourceTree = "<group>"; };
+		E4141ABB28AF528E004D74B3 /* FAQCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAQCell.swift; sourceTree = "<group>"; };
+		E4141AC828AF79E7004D74B3 /* QNAViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QNAViewController.swift; sourceTree = "<group>"; };
+		E4141AC928AF79E7004D74B3 /* FAQViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FAQViewController.swift; sourceTree = "<group>"; };
 		E46539D828ACD77600F17A6C /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		E46539DB28ACDAD100F17A6C /* SetNotificationRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetNotificationRow.swift; sourceTree = "<group>"; };
 		E46539E328AD33C700F17A6C /* EditProfileInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileInfoViewController.swift; sourceTree = "<group>"; };
 		E46539E628AD3F2800F17A6C /* SFProText-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SFProText-Regular.otf"; path = "GreenRoom/Resource/Font/SFProText-Regular.otf"; sourceTree = SOURCE_ROOT; };
-		E46539E728AD3F2800F17A6C /* SFPro.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = SFPro.ttf; path = GreenRoom/Resource/Font/SFPro.ttf; sourceTree = SOURCE_ROOT; };
-		E46539E828AD3F2800F17A6C /* SFProText-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SFProText-Bold.otf"; path = "GreenRoom/Resource/Font/SFProText-Bold.otf"; sourceTree = SOURCE_ROOT; };
+		E46539E728AD3F2800F17A6C /* SFPro.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = SFPro.ttf; sourceTree = "<group>"; };
+		E46539E828AD3F2800F17A6C /* SFProText-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFProText-Bold.otf"; sourceTree = "<group>"; };
 		E470539428AB81EC00884B56 /* MyPageModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageModel.swift; sourceTree = "<group>"; };
 		E470539628AB856D00884B56 /* SettingHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingHeader.swift; sourceTree = "<group>"; };
 		E470539828AB882900884B56 /* SettingRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingRow.swift; sourceTree = "<group>"; };
@@ -215,9 +219,9 @@
 		DBD082402897E75A0092241F /* MyPage */ = {
 			isa = PBXGroup;
 			children = (
+				E4141AC728AF79E7004D74B3 /* Inquiry */,
 				DBD082412897E75A0092241F /* MyPageViewController.swift */,
 				E46539E328AD33C700F17A6C /* EditProfileInfoViewController.swift */,
-				E4141AB128AEB8CF004D74B3 /* Inquiry */,
 			);
 			path = MyPage;
 			sourceTree = "<group>";
@@ -257,6 +261,7 @@
 				E470539628AB856D00884B56 /* SettingHeader.swift */,
 				E470539828AB882900884B56 /* SettingRow.swift */,
 				E46539DB28ACDAD100F17A6C /* SetNotificationRow.swift */,
+				E4141ABB28AF528E004D74B3 /* FAQCell.swift */,
 			);
 			path = MyPage;
 			sourceTree = "<group>";
@@ -274,6 +279,7 @@
 			children = (
 				DBD082502897E75B0092241F /* LoginModel.swift */,
 				E470539428AB81EC00884B56 /* MyPageModel.swift */,
+				E4141AB928AF5199004D74B3 /* FAQModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -325,11 +331,11 @@
 			path = Authentication;
 			sourceTree = "<group>";
 		};
-		E4141AB128AEB8CF004D74B3 /* Inquiry */ = {
+		E4141AC728AF79E7004D74B3 /* Inquiry */ = {
 			isa = PBXGroup;
 			children = (
-				E4141AAD28AEA43A004D74B3 /* QNAViewController.swift */,
-				E4141AAF28AEB8B4004D74B3 /* FAQViewController.swift */,
+				E4141AC828AF79E7004D74B3 /* QNAViewController.swift */,
+				E4141AC928AF79E7004D74B3 /* FAQViewController.swift */,
 			);
 			path = Inquiry;
 			sourceTree = "<group>";
@@ -471,16 +477,17 @@
 				E470539928AB882900884B56 /* SettingRow.swift in Sources */,
 				DB563F9C28AD407400E7193D /* Extension.swift in Sources */,
 				DBE7A54A28996BCE00E9A4E9 /* LoginViewController.swift in Sources */,
-				E4141AB028AEB8B4004D74B3 /* FAQViewController.swift in Sources */,
 				E470539528AB81EC00884B56 /* MyPageModel.swift in Sources */,
 				DBD0825D2897E75B0092241F /* LoginModel.swift in Sources */,
 				DBE7A54F28996C2000E9A4E9 /* CheckLabel.swift in Sources */,
 				DBD082572897E75B0092241F /* KeywordViewController.swift in Sources */,
 				DBD082522897E75B0092241F /* GreenViewModel.swift in Sources */,
+				E4141ABC28AF528E004D74B3 /* FAQCell.swift in Sources */,
+				E4141ABA28AF5199004D74B3 /* FAQModel.swift in Sources */,
 				DBBA9481289968CD00264405 /* PaddingLabel.swift in Sources */,
 				DBD082542897E75B0092241F /* MyPageViewModel.swift in Sources */,
+				E4141ACB28AF79E7004D74B3 /* FAQViewController.swift in Sources */,
 				DB9CF9BC289E27850091B705 /* CategoryView.swift in Sources */,
-				E4141AAE28AEA43A004D74B3 /* QNAViewController.swift in Sources */,
 				DBD082602897E7740092241F /* LoginService.swift in Sources */,
 				DBD082592897E75B0092241F /* TempGreen.swift in Sources */,
 				DBD0821D2897E6EE0092241F /* AppDelegate.swift in Sources */,
@@ -491,6 +498,7 @@
 				DBD082532897E75B0092241F /* KeywordViewModel.swift in Sources */,
 				DB797A9B289BC0D800ADF65F /* RegisterCategoryViewController.swift in Sources */,
 				DBD0821F2897E6EE0092241F /* SceneDelegate.swift in Sources */,
+				E4141ACA28AF79E7004D74B3 /* QNAViewController.swift in Sources */,
 				DBD0825A2897E75B0092241F /* ProfileCell.swift in Sources */,
 				DBD082552897E75B0092241F /* GreenRoomViewController.swift in Sources */,
 				DB563F9A28ABADDF00E7193D /* RxNaverThirdPartyLoginProxy.swift in Sources */,
