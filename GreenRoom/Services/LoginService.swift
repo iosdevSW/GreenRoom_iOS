@@ -13,10 +13,9 @@ import KakaoSDKUser
 import SwiftKeychainWrapper
 
 class LoginService{
-    static let serviceURL = "https://green-room.link"
     
     func loginAPI(_ accessToken: String)->Observable<LoginModel> {
-        let urlString = LoginService.serviceURL + "/api/auth/login"
+        let urlString = Storage().baseURL + "/api/auth/login"
         let url = URL(string: urlString)!
         
         let param: Parameters = [
@@ -41,7 +40,7 @@ class LoginService{
     }
     
     static func registUser(accessToken: String, oauthType: Int, category: Int, name: String){
-        let urlString = serviceURL + "/api/users/join"
+        let urlString = Storage().baseURL + "/api/users/join"
         let url = URL(string: urlString)!
         
         let param: Parameters = [
@@ -80,7 +79,7 @@ class LoginService{
     }
    
     static func checkName(name: String) -> Observable<Bool> {
-        let urlString = serviceURL + "/api/users/name"
+        let urlString = Storage().baseURL + "/api/users/name"
         let url = URL(string: urlString)!
         
         let param: Parameters = [

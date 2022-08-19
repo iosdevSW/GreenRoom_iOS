@@ -77,6 +77,8 @@ final class SettingRow: UICollectionViewCell {
             self.infoLabel.attributedText = Utilities.shared.textWithIcon(text: "한국어", image: UIImage(systemName: "globe"),imageColor: .mainColor,iconPosition: .right)
         case .interest:
             self.infoLabel.attributedText = Utilities.shared.textWithIcon(text: "디자인", image: UIImage(named: "interestIcon"),imageColor: nil,iconPosition: .right)
+        case .version:
+            return
         default:
             self.infoLabel.isHidden = true
         }

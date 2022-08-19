@@ -17,18 +17,20 @@ extension UIColor {
     class var point: UIColor! { return UIColor(named: "point") ?? UIColor.black}
     class var customGray: UIColor! { return UIColor(named: "customGray") ?? UIColor.black}
     class var customDarkGray: UIColor! { return UIColor(named: "customDarkGray") ?? UIColor.red}
+    
+    static let backgroundGary = UIColor(red: 249/255.0, green: 249/255.0, blue: 249/255.0, alpha: 1.0)
 }
 
 extension UIView {
     //그라데이션 컬러 입히기
     func setGradientColor() {
         let layer = CAGradientLayer()
-
+        
         layer.colors = [
-          UIColor(red: 0.431, green: 0.918, blue: 0.682, alpha: 1).cgColor,
-          UIColor(red: 0.341, green: 0.757, blue: 0.718, alpha: 1).cgColor
+            UIColor(red: 0.431, green: 0.918, blue: 0.682, alpha: 1).cgColor,
+            UIColor(red: 0.341, green: 0.757, blue: 0.718, alpha: 1).cgColor
         ]
-
+        
         layer.locations = [0, 1]
         
         layer.startPoint = CGPoint(x: 0.25, y: 0.5)
@@ -40,7 +42,7 @@ extension UIView {
         layer.bounds = self.bounds.insetBy(dx: -0.5*self.bounds.size.width, dy: -0.5*self.bounds.size.height)
         
         layer.position = self.center
-
+        
         self.layer.addSublayer(layer)
     }
     
@@ -51,7 +53,7 @@ extension UIView {
         layer.frame = CGRect(x: margin, y: viewHeight/2, width: UIScreen.main.bounds.width-(margin*2), height: 1)
         
         self.layer.addSublayer(layer)
-        self.layer.masksToBounds = true        
+        self.layer.masksToBounds = true
     }
 }
 
@@ -90,7 +92,7 @@ extension UIViewController{
         //즉 제스쳐가 동작하면 뷰의 터치이벤트는 발생하지 않는것 false면 둘 다 작동한다는 뜻
         view.addGestureRecognizer(tap) //view에 제스쳐추가
     }
-
+    
     @objc func dismissKeyboard(){
         self.view.endEditing(true)
     }
