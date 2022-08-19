@@ -9,13 +9,9 @@ import Foundation
 import UIKit
 
 class EditProfileInfoViewController: UIViewController {
-    //MARK: - properties
     
-    private lazy var backbutton = UIButton().then {
-        $0.setImage(UIImage(systemName: "chevron.backward"), for: .normal)
-        $0.imageView?.tintColor = .mainColor
-        $0.addTarget(self, action: #selector(handleDismissal), for: .touchUpInside)
-    }
+    //MARK: - properties
+
     //MARK: - lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,10 +20,11 @@ class EditProfileInfoViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.navigationBar.isTranslucent = false
-        navigationController?.navigationBar.barTintColor = .mainColor
-        navigationController?.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: backbutton)
+        self.navigationController?.navigationBar.isHidden = false
+        self.navigationController?.navigationBar.shadowImage = UIImage()
+        navigationController?.navigationBar.tintColor = .mainColor
     }
+    
     func configureUI(){
         view.backgroundColor = .white
         
