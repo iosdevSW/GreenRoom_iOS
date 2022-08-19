@@ -11,9 +11,10 @@
 		DB53AE9F289F967800E9A5CC /* RegisterCompleteViewControlller.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB53AE9E289F967700E9A5CC /* RegisterCompleteViewControlller.swift */; };
 		DB563F9A28ABADDF00E7193D /* RxNaverThirdPartyLoginProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB563F9928ABADDF00E7193D /* RxNaverThirdPartyLoginProxy.swift */; };
 		DB563F9C28AD407400E7193D /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB563F9B28AD407400E7193D /* Extension.swift */; };
+		DB563F9E28AE266D00E7193D /* CategoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB563F9D28AE266D00E7193D /* CategoryViewModel.swift */; };
+		DB563FA028AF841400E7193D /* RxAppleLoginProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB563F9F28AF841400E7193D /* RxAppleLoginProxy.swift */; };
 		DB797A99289B9BFF00ADF65F /* RegisterNameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB797A98289B9BFF00ADF65F /* RegisterNameViewController.swift */; };
 		DB797A9B289BC0D800ADF65F /* RegisterCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB797A9A289BC0D800ADF65F /* RegisterCategoryViewController.swift */; };
-		DB9CF9BC289E27850091B705 /* CategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9CF9BB289E27850091B705 /* CategoryView.swift */; };
 		DB9CF9BE289E81FE0091B705 /* CateogryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9CF9BD289E81FE0091B705 /* CateogryCell.swift */; };
 		DBBA9481289968CD00264405 /* PaddingLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBBA9480289968CD00264405 /* PaddingLabel.swift */; };
 		DBD0821D2897E6EE0092241F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD0821C2897E6EE0092241F /* AppDelegate.swift */; };
@@ -52,10 +53,11 @@
 		DB53AE9E289F967700E9A5CC /* RegisterCompleteViewControlller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterCompleteViewControlller.swift; sourceTree = "<group>"; };
 		DB563F9928ABADDF00E7193D /* RxNaverThirdPartyLoginProxy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RxNaverThirdPartyLoginProxy.swift; sourceTree = "<group>"; };
 		DB563F9B28AD407400E7193D /* Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Extension.swift; path = GreenRoom/Extension.swift; sourceTree = SOURCE_ROOT; };
+		DB563F9D28AE266D00E7193D /* CategoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryViewModel.swift; sourceTree = "<group>"; };
+		DB563F9F28AF841400E7193D /* RxAppleLoginProxy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RxAppleLoginProxy.swift; sourceTree = "<group>"; };
 		DB6AABB9289FEEEA0061D716 /* GreenRoom.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = GreenRoom.entitlements; sourceTree = "<group>"; };
 		DB797A98289B9BFF00ADF65F /* RegisterNameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNameViewController.swift; sourceTree = "<group>"; };
 		DB797A9A289BC0D800ADF65F /* RegisterCategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterCategoryViewController.swift; sourceTree = "<group>"; };
-		DB9CF9BB289E27850091B705 /* CategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryView.swift; sourceTree = "<group>"; };
 		DB9CF9BD289E81FE0091B705 /* CateogryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CateogryCell.swift; sourceTree = "<group>"; };
 		DBBA9480289968CD00264405 /* PaddingLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaddingLabel.swift; sourceTree = "<group>"; };
 		DBD082192897E6EE0092241F /* GreenRoom.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GreenRoom.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -122,7 +124,6 @@
 		DB9CF9BA289E27650091B705 /* Category */ = {
 			isa = PBXGroup;
 			children = (
-				DB9CF9BB289E27850091B705 /* CategoryView.swift */,
 				DB9CF9BD289E81FE0091B705 /* CateogryCell.swift */,
 			);
 			path = Category;
@@ -133,6 +134,7 @@
 			children = (
 				DBBA9480289968CD00264405 /* PaddingLabel.swift */,
 				DB563F9928ABADDF00E7193D /* RxNaverThirdPartyLoginProxy.swift */,
+				DB563F9F28AF841400E7193D /* RxAppleLoginProxy.swift */,
 			);
 			path = Custom;
 			sourceTree = "<group>";
@@ -182,6 +184,7 @@
 				DBD0823A2897E75A0092241F /* GreenViewModel.swift */,
 				DBD0823B2897E75A0092241F /* KeywordViewModel.swift */,
 				DBD0823C2897E75A0092241F /* MyPageViewModel.swift */,
+				DB563F9D28AE266D00E7193D /* CategoryViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -448,6 +451,8 @@
 				E46539DC28ACDAD100F17A6C /* SetNotificationRow.swift in Sources */,
 				E46539D928ACD77600F17A6C /* Utilities.swift in Sources */,
 				E470539728AB856D00884B56 /* SettingHeader.swift in Sources */,
+				DB563FA028AF841400E7193D /* RxAppleLoginProxy.swift in Sources */,
+				DB563F9E28AE266D00E7193D /* CategoryViewModel.swift in Sources */,
 				DB53AE9F289F967800E9A5CC /* RegisterCompleteViewControlller.swift in Sources */,
 				E470539928AB882900884B56 /* SettingRow.swift in Sources */,
 				DB563F9C28AD407400E7193D /* Extension.swift in Sources */,
@@ -459,7 +464,6 @@
 				DBD082522897E75B0092241F /* GreenViewModel.swift in Sources */,
 				DBBA9481289968CD00264405 /* PaddingLabel.swift in Sources */,
 				DBD082542897E75B0092241F /* MyPageViewModel.swift in Sources */,
-				DB9CF9BC289E27850091B705 /* CategoryView.swift in Sources */,
 				DBD082602897E7740092241F /* LoginService.swift in Sources */,
 				DBD082592897E75B0092241F /* TempGreen.swift in Sources */,
 				DBD0821D2897E6EE0092241F /* AppDelegate.swift in Sources */,

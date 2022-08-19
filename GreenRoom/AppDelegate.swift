@@ -7,13 +7,14 @@
 
 import UIKit
 import KakaoSDKCommon
+import RxKakaoSDKCommon
 import NaverThirdPartyLogin
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        KakaoSDK.initSDK(appKey: "a45de08bf74de9630747bd72021eb355") //Kakao SDK Init
+        RxKakaoSDK.initSDK(appKey: "a45de08bf74de9630747bd72021eb355") //Kakao SDK Init
         
         
         //Naver
@@ -50,7 +51,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
     }
     
-    // 모든 뷰에서 세로 화면 고정
+//     모든 뷰에서 세로 화면 고정
     func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
         return UIInterfaceOrientationMask.portrait
     }

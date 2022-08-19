@@ -4,19 +4,20 @@
 //
 //  Created by SangWoo's MacBook on 2022/08/01.
 //
-import Alamofire
 
+
+import AuthenticationServices
 import UIKit
-import SnapKit
+
+import Alamofire
+import KakaoSDKUser
+import NaverThirdPartyLogin
 import Then
 import RxCocoa
 import RxSwift
 import RxKakaoSDKUser
 import RxKakaoSDKAuth
-import KakaoSDKUser
-import KakaoSDKAuth
-import NaverThirdPartyLogin
-import AuthenticationServices
+import SnapKit
 import SwiftKeychainWrapper
 
 
@@ -25,7 +26,7 @@ class LoginViewController: UIViewController{
     let loginViewModel: LoginViewModel
     var oauthTokenInfo  = OAuthTokenModel()
     let disposeBag = DisposeBag()
-
+    
     //MARK: - ViewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -85,8 +86,18 @@ class LoginViewController: UIViewController{
         navigationVC.modalPresentationStyle = .fullScreen
         self.present(navigationVC, animated: true, completion: {})
     }
+    
+    @objc func apple(_: UIButton) {
+        let appleIDProvider = ASAuthorizationAppleIDProvider()
+        let request = appleIDProvider.createRequest()
+        request.requestedScopes = [.fullName, .email]
+        
+        let authorizationController = ASAuthorizationController(authorizationRequests: [request])
+        authorizationController.delegate = self
+        authorizationController.presentationContextProvider = self
+        authorizationController.performRequests()
+    }
 }
-
 
 
 
@@ -204,13 +215,13 @@ extension LoginViewController {
             let button = ASAuthorizationAppleIDButton(type: .signIn, style: .black)
             button.cornerRadius = 15
             button.tag = 2
-//            let button = configureButton(button: UIButton(),
-//                                         title: "Apple로 로그인",
-//                                         icon: "apple",
-//                                         tag: 2,
-//                                         titleColor: .white,
-//                                         backgroundColor: .black)
-            button.addTarget(self, action: #selector(didClickedLoginButton(_:)), for: .touchUpInside)
+            //            let button = configureButton(button: UIButton(),
+            //                                         title: "Apple로 로그인",
+            //                                         icon: "apple",
+            //                                         tag: 2,
+            //                                         titleColor: .white,
+            //                                         backgroundColor: .black)
+            button.addTarget(self, action: #selector(self.apple(_:)), for: .touchUpInside)
             frameView.addSubview(button)
             button.snp.makeConstraints{ make in
                 make.leading.equalToSuperview().offset(24)
@@ -252,4 +263,46 @@ extension LoginViewController {
         
         return button
     }
+}
+
+extension LoginViewController:ASAuthorizationControllerDelegate, ASAuthorizationControllerPresentationContextProviding {
+    func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
+        return self.view.window!
+    }
+    
+    func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
+        switch authorization.credential {
+        case let appleIDCredential as ASAuthorizationAppleIDCredential:
+            // Create an account in your system.
+            let userIdentifier = appleIDCredential.user
+            let fullName = appleIDCredential.fullName
+            let email = appleIDCredential.email
+        
+            if  let authorizationCode = appleIDCredential.authorizationCode,
+                let identityToken = appleIDCredential.identityToken,
+                let authString = String(data: authorizationCode, encoding: .utf8),
+                let tokenString = String(data: identityToken, encoding: .utf8) {
+                print("authorizationCode: \(authorizationCode)")
+                print("identityToken: \(identityToken)")
+                print("authString: \(authString)")
+                print("tokenString: \(tokenString)")
+            }
+            
+            print("useridentifier: \(userIdentifier)")
+            print("fullName: \(fullName)")
+            print("email: \(email)")
+            
+        case let passwordCredential as ASPasswordCredential:
+            // Sign in using an existing iCloud Keychain credential.
+            let username = passwordCredential.user
+            let password = passwordCredential.password
+            
+            print("username: \(username)")
+            print("password: \(password)")
+            
+        default:
+            break
+        }
+    }
+    
 }

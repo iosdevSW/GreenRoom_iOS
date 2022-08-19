@@ -40,22 +40,27 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         mainTabbarController.viewControllers = [keywordController,greenRoomController,mypageController]
         mainTabbarController.selectedIndex = 1
         
+        
         window?.rootViewController = mainTabbarController
         window?.makeKeyAndVisible()
+        
     }
     
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
         //kakao
-        if let url = URLContexts.first?.url {
+        guard let url =  URLContexts.first?.url else { return }
+        
+        let str = url.absoluteString
+        
+        if str.hasPrefix("kakao"){ // kakao
             if (AuthApi.isKakaoTalkLoginUrl(url)) {
                 _ = AuthController.rx.handleOpenUrl(url: url)
             }
+        }else{ // naver
+            NaverThirdPartyLoginConnection
+              .getSharedInstance()?
+              .receiveAccessToken(url)
         }
-        
-        //naver
-        NaverThirdPartyLoginConnection
-          .getSharedInstance()?
-          .receiveAccessToken(URLContexts.first?.url)
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

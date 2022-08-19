@@ -7,6 +7,7 @@
 
 import UIKit
 import SwiftKeychainWrapper
+import NaverThirdPartyLogin
 
 class KeywordViewController: UIViewController{
     
@@ -33,6 +34,8 @@ class KeywordViewController: UIViewController{
                   }else {
                   }
               })
+        
+        
     }
     
     func configureUI(){

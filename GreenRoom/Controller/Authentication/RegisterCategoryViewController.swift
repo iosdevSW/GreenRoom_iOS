@@ -12,9 +12,10 @@ import SwiftKeychainWrapper
 class RegisterCategoryViewController: UIViewController{
     // MARK: - Properties
     var nextButton: UIButton!
-    var categoryView: CategoryView!
+    var categoryView: UICollectionView!
     
     let disposeBag = DisposeBag()
+    let viewModel = CategoryViewModel()
     
     let name: String
     var categoryId: Int?
@@ -36,8 +37,8 @@ class RegisterCategoryViewController: UIViewController{
         super.viewDidLoad()
         view.backgroundColor = .white
         self.setNavigationItem()
-        configureUI()
-        subscribe()
+        self.configureUI()
+        self.bind()
     }
     
     init(name: String, oauthTokenInfo: OAuthTokenModel){
@@ -50,24 +51,22 @@ class RegisterCategoryViewController: UIViewController{
         fatalError("init(coder:) has not been implemented")
     }
     
-    func subscribe(){
+    func bind(){
         self.categoryView.rx.itemSelected
-            .subscribe(on: MainScheduler.instance)
-            .subscribe(onNext: { indexPath in
+            .bind(onNext: { indexPath in
                 let cell = self.categoryView.cellForItem(at: indexPath) as! CategoryCell
                 let index = indexPath.row+1
                 
                 guard let category = CategoryID(rawValue: index) else { return }
                 cell.frameView.layer.borderColor = UIColor.mainColor.cgColor
                 cell.imageView.image = category.SelectedImage
+                
                 self.selectedCategory = category.title
                 self.categoryId = index
-                
-            }).disposed(by: disposeBag)
+        }).disposed(by: disposeBag)
         
         self.categoryView.rx.itemDeselected
-            .subscribe(on: MainScheduler.instance)
-            .subscribe(onNext: { indexPath in
+            .bind(onNext: { indexPath in
                 let cell = self.categoryView.cellForItem(at: indexPath) as! CategoryCell
                 let index = indexPath.row+1
                 
@@ -76,6 +75,13 @@ class RegisterCategoryViewController: UIViewController{
                 cell.imageView.image = category.nonSelectedImage
                 
             }).disposed(by: disposeBag)
+        
+        self.viewModel.categories
+            .bind(to: self.categoryView.rx.items(cellIdentifier: "categoryCell", cellType: CategoryCell.self)) {index, title ,cell in
+                guard let category = CategoryID(rawValue: index+1) else { return }
+                cell.imageView.image = category.nonSelectedImage
+                cell.titleLabel.text = category.title
+            }.disposed(by: disposeBag)
     }
 }
 
@@ -107,7 +113,7 @@ extension RegisterCategoryViewController {
             $0.itemSize = CGSize(width: cellWidth, height: 90)
         }
         
-        self.categoryView = CategoryView(frame: .zero, collectionViewLayout: layout).then{
+        self.categoryView = UICollectionView(frame: .zero, collectionViewLayout: layout).then{
             $0.translatesAutoresizingMaskIntoConstraints = false
             $0.register(CategoryCell.self, forCellWithReuseIdentifier: "categoryCell")
             $0.backgroundColor = .white
@@ -119,11 +125,6 @@ extension RegisterCategoryViewController {
                 make.trailing.equalToSuperview().offset(-margin)
                 make.height.equalTo(340)
             }
-            $0.title.bind(to: $0.rx.items(cellIdentifier: "categoryCell", cellType: CategoryCell.self)) {index, title ,cell in
-                guard let category = CategoryID(rawValue: index+1) else { return }
-                cell.imageView.image = category.nonSelectedImage
-                cell.titleLabel.text = category.title
-            }.disposed(by: disposeBag)
         }
         
         self.nextButton = UIButton(type: .system).then{
