@@ -30,7 +30,7 @@
 		DBD082572897E75B0092241F /* KeywordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD082432897E75A0092241F /* KeywordViewController.swift */; };
 		DBD082592897E75B0092241F /* TempGreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD082482897E75A0092241F /* TempGreen.swift */; };
 		DBD0825A2897E75B0092241F /* ProfileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD0824A2897E75A0092241F /* ProfileCell.swift */; };
-		DBD0825B2897E75B0092241F /* TempKeyword.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD0824C2897E75A0092241F /* TempKeyword.swift */; };
+		DBD0825B2897E75B0092241F /* SearchBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD0824C2897E75A0092241F /* SearchBarView.swift */; };
 		DBD0825D2897E75B0092241F /* LoginModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD082502897E75B0092241F /* LoginModel.swift */; };
 		DBD082602897E7740092241F /* LoginService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD0825F2897E7740092241F /* LoginService.swift */; };
 		DBD0826E289808030092241F /* SFProText-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = DBD082682898078F0092241F /* SFProText-Regular.otf */; };
@@ -81,7 +81,7 @@
 		DBD082432897E75A0092241F /* KeywordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeywordViewController.swift; sourceTree = "<group>"; };
 		DBD082482897E75A0092241F /* TempGreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TempGreen.swift; sourceTree = "<group>"; };
 		DBD0824A2897E75A0092241F /* ProfileCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileCell.swift; sourceTree = "<group>"; };
-		DBD0824C2897E75A0092241F /* TempKeyword.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TempKeyword.swift; sourceTree = "<group>"; };
+		DBD0824C2897E75A0092241F /* SearchBarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchBarView.swift; sourceTree = "<group>"; };
 		DBD082502897E75B0092241F /* LoginModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginModel.swift; sourceTree = "<group>"; };
 		DBD0825F2897E7740092241F /* LoginService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginService.swift; sourceTree = "<group>"; };
 		DBD082682898078F0092241F /* SFProText-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SFProText-Regular.otf"; path = "GreenRoom/Resource/Font/SFProText-Regular.otf"; sourceTree = SOURCE_ROOT; };
@@ -272,7 +272,7 @@
 		DBD0824B2897E75A0092241F /* Keyword */ = {
 			isa = PBXGroup;
 			children = (
-				DBD0824C2897E75A0092241F /* TempKeyword.swift */,
+				DBD0824C2897E75A0092241F /* SearchBarView.swift */,
 			);
 			path = Keyword;
 			sourceTree = "<group>";
@@ -492,14 +492,13 @@
 				DBBA9481289968CD00264405 /* PaddingLabel.swift in Sources */,
 				DBD082542897E75B0092241F /* MyPageViewModel.swift in Sources */,
 				E4141ACB28AF79E7004D74B3 /* FAQViewController.swift in Sources */,
-				DB9CF9BC289E27850091B705 /* CategoryView.swift in Sources */,
 				DBD082602897E7740092241F /* LoginService.swift in Sources */,
 				DBD082592897E75B0092241F /* TempGreen.swift in Sources */,
 				DBD0821D2897E6EE0092241F /* AppDelegate.swift in Sources */,
 				E46539E428AD33C700F17A6C /* EditProfileInfoViewController.swift in Sources */,
 				E4141AB328AF4499004D74B3 /* Storage.swift in Sources */,
 				DB797A99289B9BFF00ADF65F /* RegisterNameViewController.swift in Sources */,
-				DBD0825B2897E75B0092241F /* TempKeyword.swift in Sources */,
+				DBD0825B2897E75B0092241F /* SearchBarView.swift in Sources */,
 				DBD082532897E75B0092241F /* KeywordViewModel.swift in Sources */,
 				DB797A9B289BC0D800ADF65F /* RegisterCategoryViewController.swift in Sources */,
 				DBD0821F2897E6EE0092241F /* SceneDelegate.swift in Sources */,

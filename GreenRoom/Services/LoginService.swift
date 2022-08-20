@@ -54,9 +54,10 @@ class LoginService{
         
         req.responseJSON(){ response in
             switch response.result {
-                case .success(let data):
+            case .success(let data):
                 print(data)
-                case .failure(let error):
+                print("회원가입 완료")
+            case .failure(let error):
                 print(error)
             }
         }
@@ -77,7 +78,7 @@ class LoginService{
         }
         
     }
-   
+    
     static func checkName(name: String) -> Observable<Bool> {
         let urlString = Storage().baseURL + "/api/users/name"
         let url = URL(string: urlString)!
@@ -85,7 +86,7 @@ class LoginService{
         let param: Parameters = [
             "name" : name
         ]
-
+        
         return Observable.create{ emitter in
             let req = AF.request(url, method: .get, parameters: param, encoding: URLEncoding.default).validate(statusCode: 200..<300)
             req.responseString{ response in
@@ -101,44 +102,44 @@ class LoginService{
         }
     }
     
-//    func naverLoginPaser() {
-//        let naverLoginInstance = NaverThirdPartyLoginConnection.getSharedInstance()
-//
-//        guard let accessToken = naverLoginInstance?.isValidAccessTokenExpireTimeNow() else { return }
-//
-//        if !accessToken { // 액세스 토큰이 유효하지않음
-//            return
-//        }
-//
-//        guard let tokenType = naverLoginInstance?.tokenType else { return }
-//
-//        guard let accessToken = naverLoginInstance?.accessToken else { return }
-//
-//        let requestUrl = "https://openapi.naver.com/v1/nid/me"
-//        let url = URL(string: requestUrl)!
-//
-//        let authorization = "\(tokenType) \(accessToken)"
-//
-//        let req = AF.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: ["Authorization": authorization])
-//
-//        req.responseJSON { response in
-//
-//            guard let body = response.value as? [String: Any] else { return }
-//
-//            if let resultCode = body["message"] as? String{
-//                if resultCode.trimmingCharacters(in: .whitespaces) == "success"{
-//                    let resultJson = body["response"] as! [String: Any]
-//
-//                    let name = resultJson["name"] as? String ?? ""
-//                    let id = resultJson["id"] as? String ?? ""
-//                    let nickName = resultJson["nickname"] as? String ?? ""
-//
-//                }else {
-//                    //실패
-//                }
-//            }
-//        }
-//    }
+    //    func naverLoginPaser() {
+    //        let naverLoginInstance = NaverThirdPartyLoginConnection.getSharedInstance()
+    //
+    //        guard let accessToken = naverLoginInstance?.isValidAccessTokenExpireTimeNow() else { return }
+    //
+    //        if !accessToken { // 액세스 토큰이 유효하지않음
+    //            return
+    //        }
+    //
+    //        guard let tokenType = naverLoginInstance?.tokenType else { return }
+    //
+    //        guard let accessToken = naverLoginInstance?.accessToken else { return }
+    //
+    //        let requestUrl = "https://openapi.naver.com/v1/nid/me"
+    //        let url = URL(string: requestUrl)!
+    //
+    //        let authorization = "\(tokenType) \(accessToken)"
+    //
+    //        let req = AF.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: ["Authorization": authorization])
+    //
+    //        req.responseJSON { response in
+    //
+    //            guard let body = response.value as? [String: Any] else { return }
+    //
+    //            if let resultCode = body["message"] as? String{
+    //                if resultCode.trimmingCharacters(in: .whitespaces) == "success"{
+    //                    let resultJson = body["response"] as! [String: Any]
+    //
+    //                    let name = resultJson["name"] as? String ?? ""
+    //                    let id = resultJson["id"] as? String ?? ""
+    //                    let nickName = resultJson["nickname"] as? String ?? ""
+    //
+    //                }else {
+    //                    //실패
+    //                }
+    //            }
+    //        }
+    //    }
     
     static func generateRandomName()-> Observable<String> {
         struct Name: Codable {
@@ -153,12 +154,12 @@ class LoginService{
             
             req.responseDecodable(of: Name.self){ response in
                 switch response.result{
-                    case .success(let data):
-                        emitter.onNext(data.words.first!) // 이름만 보내기
-                        emitter.onCompleted()
-                    case .failure(let error):
-                        print(error.localizedDescription)
-                        break
+                case .success(let data):
+                    emitter.onNext(data.words.first!) // 이름만 보내기
+                    emitter.onCompleted()
+                case .failure(let error):
+                    print(error.localizedDescription)
+                    break
                 }
             }
             
