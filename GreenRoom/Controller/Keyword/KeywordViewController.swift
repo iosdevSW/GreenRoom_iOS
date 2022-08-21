@@ -35,21 +35,16 @@ class KeywordViewController: UIViewController{
         $0.layer.cornerRadius = 15
     }
     
-    let SegmentControl = UISegmentedControl(items: ["기본질문","그린룸 질문"]).then{
-        if #available(iOS 13.0, *) {
-            $0.layer.borderColor = UIColor.white.cgColor
-    
-            $0.selectedSegmentTintColor = UIColor.white
-            $0.layer.borderWidth = 1
-            
-            let titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.black]
-            $0.setTitleTextAttributes(titleTextAttributes, for:.normal)
-            
-            let titleTextAttributes1 = [NSAttributedString.Key.foregroundColor: UIColor.mainColor]
-            $0.setTitleTextAttributes(titleTextAttributes1, for:.selected)
-        } else {
-            // Fallback on earlier versions
-        }
+    let segmentControl = UISegmentedControl(items: ["기본질문","그린룸 질문"]).then{
+        $0.layer.backgroundColor = UIColor.white.cgColor
+        $0.selectedSegmentTintColor = UIColor.white
+        $0.setBackgroundImage(UIImage(named: "filter"), for: .normal, barMetrics: .default)
+        let titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.customGray]
+        $0.setTitleTextAttributes(titleTextAttributes, for:.normal)
+        
+        let selectedTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.mainColor]
+        $0.setTitleTextAttributes(selectedTitleTextAttributes, for:.selected)
+        
     }
     
     let btn = UIButton(type: .roundedRect).then{
@@ -62,6 +57,7 @@ class KeywordViewController: UIViewController{
         super.viewDidLoad()
         self.view.backgroundColor = .white
         configureUI()
+        hideKeyboardWhenTapped()
         btn.addTarget(self, action: #selector(logout(_:)), for: .touchUpInside)
     }
     
@@ -102,12 +98,10 @@ extension KeywordViewController {
             make.width.equalTo(63)
         }
         
-        self.view.addSubview(SegmentControl)
-        self.SegmentControl.snp.makeConstraints{ make in
-            make.top.equalTo(searchBarView.snp.bottom).offset(14)
+        self.view.addSubview(segmentControl)
+        self.segmentControl.snp.makeConstraints{ make in
+            make.centerY.equalTo(filterButton.snp.centerY)
             make.trailing.equalToSuperview().offset(-48)
-//            make.width.equalTo(120)
-//            make.height.equalTo(22)
         }
         
         
