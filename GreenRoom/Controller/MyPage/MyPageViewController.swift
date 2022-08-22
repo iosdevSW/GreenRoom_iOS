@@ -43,7 +43,7 @@ final class MyPageViewController: UIViewController {
     }
     //MARK: - Configure
     private func configureUI(){
-        
+
         view.backgroundColor = .backgroundGary
         self.view.addSubview(self.collectionView)
         collectionView.snp.makeConstraints { make in
@@ -71,9 +71,11 @@ final class MyPageViewController: UIViewController {
         Observable.zip(collectionView.rx.itemSelected, collectionView.rx.modelSelected(MyPageSectionModel.Item.self))
             .subscribe(onNext: { [weak self] indexPath, item in
                 guard let self = self else { return }
+                
                 switch item {
                 case .setting(settingInfo: let info):
                     switch info.setting {
+                        
                     case .QNA:
                         let vc = QNAViewController(viewModel: self.viewModel)
                         self.navigationController?.pushViewController(vc, animated: true)
@@ -95,20 +97,21 @@ extension MyPageViewController {
             dataSource, collectionView, indexPath, item in
             switch item {
                 
-            case .profile(profileInfo: let profile) :
+            case .profile(profileInfo: let user) :
                 guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ProfileCell.reuseIdentifier, for: indexPath) as? ProfileCell else {
                     return UICollectionViewCell()
                 }
-                cell.profile = profile
+                cell.user = user
                 cell.delegate = self
                 return cell
             case .setting(settingInfo: let setting) :
+                
+                
                 switch setting.setting {
                 case .notification:
                     guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SetNotificationRow.reuseIdentifier, for: indexPath) as? SetNotificationRow else { return UICollectionViewCell() }
                     cell.setting = setting
                     return cell
-                    
                 default:
                     guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SettingRow.reuseIdentifier, for: indexPath) as? SettingRow else {
                         return UICollectionViewCell()
@@ -181,6 +184,7 @@ extension MyPageViewController: ProfileCellDelegate, PHPickerViewControllerDeleg
         } else if let possibleImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
             newImage = possibleImage // 원본 이미지가 있을 경우
         }
+        
         viewModel.profileImageObservable.onNext(newImage)// 받아온 이미지를 update
         picker.dismiss(animated: true, completion: nil) // picker를 닫아줌
     }
@@ -195,6 +199,7 @@ extension MyPageViewController: ProfileCellDelegate, PHPickerViewControllerDeleg
            itemProvider.canLoadObject(ofClass: UIImage.self) {
             itemProvider.loadObject(ofClass: UIImage.self) { [weak self] image, error in
                 guard let image = image as? UIImage else { return }
+                print(image)
                 self?.viewModel.profileImageObservable.onNext(image)
             }
         }
@@ -240,7 +245,7 @@ extension MyPageViewController: ProfileCellDelegate, PHPickerViewControllerDeleg
     }
     
     func didTapEditProfileInfo() {
-        let vc = EditProfileInfoViewController()
+        let vc = EditProfileInfoViewController(viewModel: viewModel)
         navigationController?.pushViewController(vc, animated: false)
     }
     

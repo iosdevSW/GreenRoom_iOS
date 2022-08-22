@@ -39,7 +39,7 @@
 		DBFB296A28B2267A00B1DAC9 /* FilterItemsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBFB296928B2267A00B1DAC9 /* FilterItemsCell.swift */; };
 		DBFB296E28B26F5B00B1DAC9 /* CustomSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBFB296D28B26F5B00B1DAC9 /* CustomSegmentedControl.swift */; };
 		E4141AB328AF4499004D74B3 /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4141AB228AF4499004D74B3 /* Storage.swift */; };
-		E4141ABA28AF5199004D74B3 /* FAQModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4141AB928AF5199004D74B3 /* FAQModel.swift */; };
+		E4141ABA28AF5199004D74B3 /* FAQ.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4141AB928AF5199004D74B3 /* FAQ.swift */; };
 		E4141ABC28AF528E004D74B3 /* FAQCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4141ABB28AF528E004D74B3 /* FAQCell.swift */; };
 		E4141ACA28AF79E7004D74B3 /* QNAViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4141AC828AF79E7004D74B3 /* QNAViewController.swift */; };
 		E4141ACB28AF79E7004D74B3 /* FAQViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4141AC928AF79E7004D74B3 /* FAQViewController.swift */; };
@@ -52,6 +52,8 @@
 		E470539528AB81EC00884B56 /* MyPageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E470539428AB81EC00884B56 /* MyPageModel.swift */; };
 		E470539728AB856D00884B56 /* SettingHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = E470539628AB856D00884B56 /* SettingHeader.swift */; };
 		E470539928AB882900884B56 /* SettingRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = E470539828AB882900884B56 /* SettingRow.swift */; };
+		E4C8AE6928B35519007E010D /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4C8AE6828B35519007E010D /* UserService.swift */; };
+		E4C8AE6B28B35533007E010D /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4C8AE6A28B35533007E010D /* User.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -92,7 +94,7 @@
 		DBFB296928B2267A00B1DAC9 /* FilterItemsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterItemsCell.swift; sourceTree = "<group>"; };
 		DBFB296D28B26F5B00B1DAC9 /* CustomSegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSegmentedControl.swift; sourceTree = "<group>"; };
 		E4141AB228AF4499004D74B3 /* Storage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Storage.swift; sourceTree = "<group>"; };
-		E4141AB928AF5199004D74B3 /* FAQModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAQModel.swift; sourceTree = "<group>"; };
+		E4141AB928AF5199004D74B3 /* FAQ.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAQ.swift; sourceTree = "<group>"; };
 		E4141ABB28AF528E004D74B3 /* FAQCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAQCell.swift; sourceTree = "<group>"; };
 		E4141AC828AF79E7004D74B3 /* QNAViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QNAViewController.swift; sourceTree = "<group>"; };
 		E4141AC928AF79E7004D74B3 /* FAQViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FAQViewController.swift; sourceTree = "<group>"; };
@@ -105,6 +107,8 @@
 		E470539428AB81EC00884B56 /* MyPageModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageModel.swift; sourceTree = "<group>"; };
 		E470539628AB856D00884B56 /* SettingHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingHeader.swift; sourceTree = "<group>"; };
 		E470539828AB882900884B56 /* SettingRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingRow.swift; sourceTree = "<group>"; };
+		E4C8AE6828B35519007E010D /* UserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
+		E4C8AE6A28B35533007E010D /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -196,10 +200,10 @@
 			isa = PBXGroup;
 			children = (
 				DBD082392897E75A0092241F /* LoginViewModel.swift */,
+				DB563F9D28AE266D00E7193D /* CategoryViewModel.swift */,
 				DBD0823A2897E75A0092241F /* GreenViewModel.swift */,
 				DBD0823B2897E75A0092241F /* KeywordViewModel.swift */,
 				DBD0823C2897E75A0092241F /* MyPageViewModel.swift */,
-				DB563F9D28AE266D00E7193D /* CategoryViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -288,7 +292,8 @@
 			children = (
 				DBD082502897E75B0092241F /* LoginModel.swift */,
 				E470539428AB81EC00884B56 /* MyPageModel.swift */,
-				E4141AB928AF5199004D74B3 /* FAQModel.swift */,
+				E4141AB928AF5199004D74B3 /* FAQ.swift */,
+				E4C8AE6A28B35533007E010D /* User.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -297,6 +302,7 @@
 			isa = PBXGroup;
 			children = (
 				DBD0825F2897E7740092241F /* LoginService.swift */,
+				E4C8AE6828B35519007E010D /* UserService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -496,7 +502,7 @@
 				DBD082572897E75B0092241F /* KeywordViewController.swift in Sources */,
 				DBD082522897E75B0092241F /* GreenViewModel.swift in Sources */,
 				E4141ABC28AF528E004D74B3 /* FAQCell.swift in Sources */,
-				E4141ABA28AF5199004D74B3 /* FAQModel.swift in Sources */,
+				E4141ABA28AF5199004D74B3 /* FAQ.swift in Sources */,
 				DBBA9481289968CD00264405 /* PaddingLabel.swift in Sources */,
 				DBD082542897E75B0092241F /* MyPageViewModel.swift in Sources */,
 				E4141ACB28AF79E7004D74B3 /* FAQViewController.swift in Sources */,
@@ -505,10 +511,12 @@
 				DBD0821D2897E6EE0092241F /* AppDelegate.swift in Sources */,
 				E46539E428AD33C700F17A6C /* EditProfileInfoViewController.swift in Sources */,
 				E4141AB328AF4499004D74B3 /* Storage.swift in Sources */,
+				E4C8AE6B28B35533007E010D /* User.swift in Sources */,
 				DB797A99289B9BFF00ADF65F /* RegisterNameViewController.swift in Sources */,
 				DBD0825B2897E75B0092241F /* SearchBarView.swift in Sources */,
 				DBD082532897E75B0092241F /* KeywordViewModel.swift in Sources */,
 				DB797A9B289BC0D800ADF65F /* RegisterCategoryViewController.swift in Sources */,
+				E4C8AE6928B35519007E010D /* UserService.swift in Sources */,
 				DBD0821F2897E6EE0092241F /* SceneDelegate.swift in Sources */,
 				E4141ACA28AF79E7004D74B3 /* QNAViewController.swift in Sources */,
 				DBD0825A2897E75B0092241F /* ProfileCell.swift in Sources */,
@@ -655,7 +663,7 @@
 				CODE_SIGN_ENTITLEMENTS = GreenRoom/GreenRoom.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = V2YNV9QV27;
+				DEVELOPMENT_TEAM = 9R39BMBYFW;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = GreenRoom/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -684,7 +692,7 @@
 				CODE_SIGN_ENTITLEMENTS = GreenRoom/GreenRoom.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = V2YNV9QV27;
+				DEVELOPMENT_TEAM = 9R39BMBYFW;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = GreenRoom/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

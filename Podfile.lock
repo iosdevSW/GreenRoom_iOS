@@ -12,6 +12,7 @@ PODS:
     - KakaoSDKCommon/Common (= 2.11.1)
   - KakaoSDKUser (2.11.1):
     - KakaoSDKAuth (= 2.11.1)
+  - Kingfisher (7.3.2)
   - naveridlogin-sdk-ios (4.1.5)
   - RxAlamofire (6.1.1):
     - RxAlamofire/Core (= 6.1.1)
@@ -50,6 +51,7 @@ PODS:
   - Then (3.0.0)
 
 DEPENDENCIES:
+  - Kingfisher (~> 7.0)
   - naveridlogin-sdk-ios
   - RxCocoa (= 6.5.0)
   - RxDataSources (~> 5.0)
@@ -67,6 +69,7 @@ SPEC REPOS:
     - KakaoSDKAuth
     - KakaoSDKCommon
     - KakaoSDKUser
+    - Kingfisher
     - naveridlogin-sdk-ios
     - RxAlamofire
     - RxCocoa
@@ -86,6 +89,7 @@ SPEC CHECKSUMS:
   KakaoSDKAuth: bb2dfa7be30daa8403c9cfc8001aa6fde7a5b779
   KakaoSDKCommon: 555e1bb46595b842ded01cf7888cc17bbae4e113
   KakaoSDKUser: 08c0a4f40bebdebdf948a9e3d0e44ed5c2754f99
+  Kingfisher: 0086ad83719761ba9b2cdaf6ef4d5b4878cbae23
   naveridlogin-sdk-ios: 4351fe7162cd6b8b6dbb37bd7cc205304fa1d889
   RxAlamofire: beb75a1c452d0de225651db4903f5d29d034a620
   RxCocoa: 94f817b71c07517321eb4f9ad299112ca8af743b
@@ -99,6 +103,6 @@ SPEC CHECKSUMS:
   SwiftKeychainWrapper: 807ba1d63c33a7d0613288512399cd1eda1e470c
   Then: 844265ae87834bbe1147d91d5d41a404da2ec27d
 
-PODFILE CHECKSUM: ae05c5f05e902b1b593ac40b50b98783a710b0ab
+PODFILE CHECKSUM: d8efef53204b796344422e830f832be2553cdb07
 
 COCOAPODS: 1.11.3

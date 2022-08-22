@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 import Then
+import Kingfisher
 
 protocol ProfileCellDelegate: AnyObject {
     func didTapEditProfileImage()
@@ -21,9 +22,11 @@ final class ProfileCell: UICollectionViewCell {
     
     weak var delegate: ProfileCellDelegate?
     
-    var profile: ProfileItem? {
+    var user: User? {
         didSet {
-            configure()
+            DispatchQueue.main.async {
+                self.configure()
+            }
         }
     }
     
@@ -34,27 +37,17 @@ final class ProfileCell: UICollectionViewCell {
         $0.tintColor = .mainColor
     }
     
-    private lazy var profileImageView = UIButton(frame: CGRect(x: 0, y: 0, width: 90, height: 90)).then {
+    private lazy var profileImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 90, height: 90)).then {
         $0.tintColor = .customGray
-        $0.contentVerticalAlignment = .fill
-        $0.contentHorizontalAlignment = .fill
-        $0.imageView?.contentMode = .scaleToFill
-        $0.addTarget(self, action: #selector(didTapEditProfileImageButton), for: .touchUpInside)
+        $0.contentMode = .scaleToFill
         $0.layer.cornerRadius = 45
         $0.backgroundColor = .clear
-        $0.setImage(UIImage(named: "DefaultProfile")?.withRenderingMode(.alwaysOriginal), for: .normal)
         $0.layer.masksToBounds = true
     }
     
     private var nameLabel = UILabel().then {
         $0.text = "김면접"
         $0.font = .sfPro(size: 16, family: .Bold)
-        $0.textAlignment = .center
-    }
-    
-    private var emailLabel = UILabel().then {
-        $0.text = "greenroom@gmail.com"
-        $0.font = .sfPro(size: 12, family: .Regular)
         $0.textAlignment = .center
     }
     
@@ -71,7 +64,7 @@ final class ProfileCell: UICollectionViewCell {
         
         $0.addTarget(self, action: #selector(didTapEditProfileInfo), for: .touchUpInside)
     }
-
+    
     //MARK: - LifeCycle
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -84,22 +77,25 @@ final class ProfileCell: UICollectionViewCell {
     
     //MARK: - Configure
     private func configure() {
-        guard let profile = profile else {
+        guard let user = user, let category = CategoryID(rawValue: user.categoryID) else {
             return
         }
-        nameLabel.attributedText = Utilities.shared.textWithIcon(text: " \(profile.nameText)", image: UIImage(named: "interestIcon"), font: .sfPro(size: 12, family: .Regular), textColor: .black, imageColor: nil, iconPosition: .left)
-        emailLabel.text = profile.emailText ?? "1234@naver.com"
         
-        guard let image = profile.profileImage else {
-            return
-        }
-        editIconView.isHidden = true
-        profileImageView.setImage(image, for: .normal)
+        nameLabel.attributedText = Utilities.shared.textWithIcon(text: " \(user.name)", image: category.SelectedImage, font: .sfPro(size: 12, family: .Regular), textColor: .black, imageColor: nil, iconPosition: .left)
         profileImageView.layer.borderColor = UIColor.white.cgColor
         profileImageView.layer.borderWidth = 4
+        
+        guard let url = URL(string: user.profileImage) else { return }
+        profileImageView.kf.indicatorType = .activity
+        profileImageView.kf.setImage(with: url,placeholder: UIImage(named:"DefaultProfile"))
     }
     
     private func configureUI(){
+        
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTapEditProfileImageButton(tapGestureRecognizer:)))
+        profileImageView.isUserInteractionEnabled = true
+        profileImageView.addGestureRecognizer(tapGestureRecognizer)
+        
         contentView.backgroundColor = UIColor(red: 249/255.0, green: 249/255.0, blue: 249/255.0, alpha: 1.0)
         contentView.clipsToBounds = true
         contentView.layer.cornerRadius = 15
@@ -120,26 +116,25 @@ final class ProfileCell: UICollectionViewCell {
         }
         
         
-        let stackView = UIStackView(arrangedSubviews: [nameLabel,emailLabel,editButton])
+        let stackView = UIStackView(arrangedSubviews: [nameLabel,editButton])
         stackView.axis = .vertical
         stackView.alignment = .center
         stackView.distribution = .fillProportionally
-        stackView.spacing = 8
+        stackView.spacing = 4
         
         contentView.addSubview(stackView)
-
+        
         stackView.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.top.equalTo(profileImageView.snp.bottom).offset(8)
-            make.height.equalTo(74)
+            make.height.equalTo(60)
             make.width.equalTo(172)
         }
-        print(profileImageView.bounds.width)
     }
     
     
     //MARK: - Selector
-    @objc func didTapEditProfileImageButton(){
+    @objc func didTapEditProfileImageButton(tapGestureRecognizer: UITapGestureRecognizer){
         delegate?.didTapEditProfileImage()
     }
     

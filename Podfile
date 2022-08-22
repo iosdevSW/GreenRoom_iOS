@@ -15,4 +15,5 @@ target 'GreenRoom' do
 	pod 'naveridlogin-sdk-ios'
 	pod 'SwiftKeychainWrapper'
 	pod 'RxDataSources', '~> 5.0'
+  pod 'Kingfisher', '~> 7.0'
 end

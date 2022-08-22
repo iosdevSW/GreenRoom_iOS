@@ -17,7 +17,7 @@ enum MyPageSectionModel: SectionModelType {
     case setting(header: String, items: [Item])
     
     enum SectionItem {
-        case profile(profileInfo: ProfileItem)
+        case profile(profileInfo: User)
         case setting(settingInfo: InfoItem)
     }
     
@@ -38,12 +38,6 @@ enum MyPageSectionModel: SectionModelType {
             self = .setting(header: header, items: items)
         }
     }
-}
-
-struct ProfileItem: Equatable {
-    let profileImage: UIImage?
-    let nameText: String
-    let emailText: String?
 }
 
 struct InfoItem: Equatable{
