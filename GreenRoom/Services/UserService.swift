@@ -80,7 +80,6 @@ class UserService {
 extension UserService {
     
     func updateProfileImage(image: UIImage?,completion:@escaping() -> Void){
-        print("DEBUG: \(image)")
         
         guard let imageData = convertImage(image: image) else { return }
         
@@ -147,5 +146,47 @@ extension UserService {
             return .PNG(image: pngData)
         }
         return nil
+    }
+}
+
+//MARK: - update user info
+extension UserService {
+    
+    func updateUserInfo(parameter: [String: Any], completion: @escaping(Bool) -> Void) {
+        guard let url = URL(string: Storage().baseURL + "/api/users") else { return }
+        
+        guard let accessToken = KeychainWrapper.standard.string(forKey: "accessToken") else {
+            return
+        }
+        
+        let headers: HTTPHeaders = [
+            "Authorization": "Bearer \(accessToken)"
+        ]
+        if let name = parameter as? [String: String] {
+            AF.request(url, method: .put,parameters: name, encoder: JSONParameterEncoder.default , headers: headers).validate(statusCode: 200..<300).response { response in
+                switch response.result {
+                case .success(_):
+                    print("Success to upload user info")
+                    completion(true)
+                case .failure(let error):
+                    completion(false)
+                    print(error.localizedDescription)
+                }
+                
+            }
+        } else if let category = parameter as? [String: Int] {
+            AF.request(url, method: .put,parameters: category, encoder: JSONParameterEncoder.default , headers: headers).validate(statusCode: 200..<300).response { response in
+                switch response.result {
+                case .success(_):
+                    print("Success to upload user info")
+                    completion(true)
+                case .failure(let error):
+                    completion(false)
+                    print(error.localizedDescription)
+                }
+                
+            }
+        }
+        
     }
 }

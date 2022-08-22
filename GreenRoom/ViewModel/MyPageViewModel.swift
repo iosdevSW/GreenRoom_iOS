@@ -17,12 +17,13 @@ class MyPageViewModel {
     private var disposeBag = DisposeBag()
     
     //MARK: - MyPageViewController
-    let signal = PublishRelay<Void>()
+//    let signal = PublishRelay<Void>()
     
     var userObservable = BehaviorSubject<[MyPageSectionModel]>(value: [])
     var profileImageObservable = PublishSubject<UIImage?>()
     var MyPageDataSource = BehaviorSubject<[MyPageSectionModel]>(value:[])
-    
+    var usernameObservable = BehaviorSubject<String>(value: "")
+
     private let settingsObservable = Observable<[MyPageSectionModel]>.create { observer in
         observer.onNext(
             [
@@ -86,12 +87,33 @@ class MyPageViewModel {
                 let userModel = MyPageSectionModel.profile(items: [
                     MyPageSectionModel.Item.profile(profileInfo: user)
                 ])
-                
+                self?.usernameObservable.onNext(user.name)
                 self?.userObservable.onNext([userModel])
             case .failure(let error):
                 print(error)
             }
         }
+    }
+    
+    //MARK: - update user info
+    func updateUserInfo(nickName: String? = nil, cateogryId: Int? = nil) {
+        var parameter: [String: Any] = [:]
+        
+        if let nickName = nickName {
+            parameter["name"] = nickName
+        }
+        
+        if let cateogryId = cateogryId {
+            parameter["categoryId"] = cateogryId
+        }
+        
+        self.userService.updateUserInfo(parameter: parameter) { [weak self] isCompleted in
+            if isCompleted {
+                self?.loadUserInfo()
+            }
+            
+        }
+
     }
 }
 
