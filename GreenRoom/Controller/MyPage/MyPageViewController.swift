@@ -95,11 +95,11 @@ extension MyPageViewController {
             dataSource, collectionView, indexPath, item in
             switch item {
                 
-            case .profile(profileInfo: let profile) :
+            case .profile(profileInfo: let user) :
                 guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ProfileCell.reuseIdentifier, for: indexPath) as? ProfileCell else {
                     return UICollectionViewCell()
                 }
-                cell.profile = profile
+                cell.user = user
                 cell.delegate = self
                 return cell
             case .setting(settingInfo: let setting) :
@@ -181,6 +181,7 @@ extension MyPageViewController: ProfileCellDelegate, PHPickerViewControllerDeleg
         } else if let possibleImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
             newImage = possibleImage // 원본 이미지가 있을 경우
         }
+        print(newImage)
         viewModel.profileImageObservable.onNext(newImage)// 받아온 이미지를 update
         picker.dismiss(animated: true, completion: nil) // picker를 닫아줌
     }
@@ -195,6 +196,7 @@ extension MyPageViewController: ProfileCellDelegate, PHPickerViewControllerDeleg
            itemProvider.canLoadObject(ofClass: UIImage.self) {
             itemProvider.loadObject(ofClass: UIImage.self) { [weak self] image, error in
                 guard let image = image as? UIImage else { return }
+                print(image)
                 self?.viewModel.profileImageObservable.onNext(image)
             }
         }

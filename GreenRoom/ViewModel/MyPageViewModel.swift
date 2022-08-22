@@ -8,14 +8,19 @@
 import Foundation
 import UIKit
 import RxSwift
+import RxCocoa
 
 class MyPageViewModel {
+    
+    let userService = UserService()
     
     private var disposeBag = DisposeBag()
     
     //MARK: - MyPageViewController
-    private var profileObervable = BehaviorSubject<[MyPageSectionModel]>(value: [])
-    var profileImageObservable = BehaviorSubject<UIImage?>(value:UIImage(named: "ProfileSample"))
+    let signal = PublishRelay<Void>()
+    
+    var userObservable = BehaviorSubject<[MyPageSectionModel]>(value: [])
+    var profileImageObservable = PublishSubject<UIImage?>()
     var MyPageDataSource = BehaviorSubject<[MyPageSectionModel]>(value:[])
     
     private let settingsObservable = Observable<[MyPageSectionModel]>.create { observer in
@@ -54,23 +59,40 @@ class MyPageViewModel {
         FAQ(question: "무성의한 답변을 단 사람은 어떻게 하나요?", answer: "answer5"),
         FAQ(question: "면접이 너무 부담스러운데 어떡하죠?", answer: "answer6")
     ]
-    
     init(){
-        bind()
+        self.bind()
     }
-    
     func bind(){
+        loadUserInfo()
         
-        let userName = "정해성"
-        let email = "Greenroom@gmail.com"
-        
-        profileImageObservable.subscribe(onNext: { [weak self] profileImage in
-            let profile = MyPageSectionModel.profile(items: [MyPageSectionModel.SectionItem.profile(profileInfo: ProfileItem(profileImage: profileImage, nameText: userName, emailText: email))])
-            self?.profileObervable.onNext([profile])
+        profileImageObservable.subscribe(onNext: { [weak self] image in
+            self?.userService.updateProfileImage(image: image) {
+                self?.loadUserInfo()
+            }
+            
         }).disposed(by: disposeBag)
-
-        Observable.combineLatest(profileObervable.asObserver(), settingsObservable.asObservable()).subscribe(onNext: { [weak self] datasource in
+        
+        Observable.combineLatest(userObservable.asObserver(), settingsObservable.asObservable()).subscribe(onNext: { [weak self] datasource in
             self?.MyPageDataSource.onNext(datasource.0 + datasource.1)
         }).disposed(by: disposeBag)
     }
+    
+    //MARK: - fetchUserinfo
+    private func loadUserInfo(){
+        
+        self.userService.fetchUserInfo() { [weak self] result in
+            switch result {
+            case .success(let user):
+                let userModel = MyPageSectionModel.profile(items: [
+                    MyPageSectionModel.Item.profile(profileInfo: user)
+                ])
+                
+                self?.userObservable.onNext([userModel])
+            case .failure(let error):
+                print(error)
+            }
+        }
+    }
 }
+
+
