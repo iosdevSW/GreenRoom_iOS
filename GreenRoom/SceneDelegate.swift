@@ -25,7 +25,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let mainTabbarController = UITabBarController()
         
         let greenRoomController = UINavigationController(rootViewController: GreenRoomViewController())
-        let keywordController = UINavigationController(rootViewController: KeywordViewController())
+        let keywordController = UINavigationController(rootViewController: KeywordViewController(viewModel: KeywordViewModel()))
         let mypageController = UINavigationController(rootViewController: MyPageViewController(viewModel: MyPageViewModel()))
         
         greenRoomController.title = "그린룸"

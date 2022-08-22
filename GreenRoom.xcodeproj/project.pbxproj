@@ -39,6 +39,7 @@
 		DBFB296A28B2267A00B1DAC9 /* FilterItemsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBFB296928B2267A00B1DAC9 /* FilterItemsCell.swift */; };
 		DBFB296E28B26F5B00B1DAC9 /* CustomSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBFB296D28B26F5B00B1DAC9 /* CustomSegmentedControl.swift */; };
 		DBFB297028B351F400B1DAC9 /* QuestionListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBFB296F28B351F400B1DAC9 /* QuestionListCell.swift */; };
+		DBFB297228B377EB00B1DAC9 /* CategoryFilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBFB297128B377EA00B1DAC9 /* CategoryFilterView.swift */; };
 		E4141AB328AF4499004D74B3 /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4141AB228AF4499004D74B3 /* Storage.swift */; };
 		E4141ABA28AF5199004D74B3 /* FAQModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4141AB928AF5199004D74B3 /* FAQModel.swift */; };
 		E4141ABC28AF528E004D74B3 /* FAQCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4141ABB28AF528E004D74B3 /* FAQCell.swift */; };
@@ -93,6 +94,7 @@
 		DBFB296928B2267A00B1DAC9 /* FilterItemsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterItemsCell.swift; sourceTree = "<group>"; };
 		DBFB296D28B26F5B00B1DAC9 /* CustomSegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSegmentedControl.swift; sourceTree = "<group>"; };
 		DBFB296F28B351F400B1DAC9 /* QuestionListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionListCell.swift; sourceTree = "<group>"; };
+		DBFB297128B377EA00B1DAC9 /* CategoryFilterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryFilterView.swift; sourceTree = "<group>"; };
 		E4141AB228AF4499004D74B3 /* Storage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Storage.swift; sourceTree = "<group>"; };
 		E4141AB928AF5199004D74B3 /* FAQModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAQModel.swift; sourceTree = "<group>"; };
 		E4141ABB28AF528E004D74B3 /* FAQCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAQCell.swift; sourceTree = "<group>"; };
@@ -282,6 +284,7 @@
 				DBFB296D28B26F5B00B1DAC9 /* CustomSegmentedControl.swift */,
 				DBFB296928B2267A00B1DAC9 /* FilterItemsCell.swift */,
 				DBFB296F28B351F400B1DAC9 /* QuestionListCell.swift */,
+				DBFB297128B377EA00B1DAC9 /* CategoryFilterView.swift */,
 			);
 			path = Keyword;
 			sourceTree = "<group>";
@@ -328,8 +331,8 @@
 			isa = PBXGroup;
 			children = (
 				DBE7A54928996BCE00E9A4E9 /* LoginViewController.swift */,
-				DB797A9A289BC0D800ADF65F /* RegisterCategoryViewController.swift */,
 				DB797A98289B9BFF00ADF65F /* RegisterNameViewController.swift */,
+				DB797A9A289BC0D800ADF65F /* RegisterCategoryViewController.swift */,
 				DB53AE9E289F967700E9A5CC /* RegisterCompleteViewControlller.swift */,
 			);
 			path = Authentication;
@@ -482,6 +485,7 @@
 			files = (
 				DBD082512897E75B0092241F /* LoginViewModel.swift in Sources */,
 				DBFB296E28B26F5B00B1DAC9 /* CustomSegmentedControl.swift in Sources */,
+				DBFB297228B377EB00B1DAC9 /* CategoryFilterView.swift in Sources */,
 				DB9CF9BE289E81FE0091B705 /* CateogryCell.swift in Sources */,
 				E46539DC28ACDAD100F17A6C /* SetNotificationRow.swift in Sources */,
 				E46539D928ACD77600F17A6C /* Utilities.swift in Sources */,
