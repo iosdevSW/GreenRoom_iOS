@@ -14,11 +14,9 @@ final class SettingRow: UICollectionViewCell {
     
     var setting: InfoItem? {
         didSet{
-            guard let setting = setting else { return }
-            iconImageView.image = setting.iconImage
-            
-            titleLabel.text = setting.title
-            configureSettingOption(setting: setting.setting)
+            DispatchQueue.main.async {
+                self.configureSettingOption(setting: self.setting)
+            }
         }
     }
     
@@ -71,8 +69,14 @@ final class SettingRow: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func configureSettingOption(setting: Setting){
-        switch setting {
+    private func configureSettingOption(setting: InfoItem?){
+        
+        guard let setting = setting else { return }
+        iconImageView.image = setting.iconImage
+        
+        titleLabel.text = setting.title
+        
+        switch setting.setting {
         case .language:
             self.infoLabel.attributedText = Utilities.shared.textWithIcon(text: "한국어", image: UIImage(systemName: "globe"),imageColor: .mainColor,iconPosition: .right)
         case .interest:
