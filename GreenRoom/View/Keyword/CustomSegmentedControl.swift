@@ -90,6 +90,7 @@ class CustomSegmentedControl: UIView {
     @objc func buttonAction(sender: UIButton) {
         for (btnIndex, btn) in buttons.enumerated() {
             btn.setTitleColor(textColor, for: .normal)
+            btn.titleLabel?.font = .sfPro(size: 16, family: .Semibold)
             btn.layer.borderWidth = 0
             if btn == sender {
                 btn.layer.borderWidth = 2

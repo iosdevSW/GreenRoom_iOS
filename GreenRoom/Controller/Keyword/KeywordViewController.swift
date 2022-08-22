@@ -49,8 +49,16 @@ class KeywordViewController: UIViewController{
         $0.setTitleTextAttributes(selectedTitleTextAttributes as [NSAttributedString.Key : Any], for:.selected)
     }
     
-    let seg = CustomSegmentedControl(frame: .zero, buttonTitles: ["키워드 ON","키워드 OFF"])
+    let keywordOnOffSegmentControl = CustomSegmentedControl(frame: .zero, buttonTitles: ["키워드 ON","키워드 OFF"])
+    
     var filterCollectionView: UICollectionView!
+    
+    var questionListTableView = UITableView().then{
+        $0.backgroundColor = .white
+        $0.register(QuestionListCell.self, forCellReuseIdentifier: "QuestionListCell")
+        $0.allowsMultipleSelection = true
+        $0.showsVerticalScrollIndicator = true
+    }
     
     let btn = UIButton(type: .roundedRect).then{
         $0.translatesAutoresizingMaskIntoConstraints = false
@@ -61,9 +69,11 @@ class KeywordViewController: UIViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
+        
         configureUI()
         bind()
         hideKeyboardWhenTapped()
+        
         self.filterCollectionView.delegate = self
         btn.addTarget(self, action: #selector(logout(_:)), for: .touchUpInside)
     }
@@ -96,7 +106,30 @@ class KeywordViewController: UIViewController{
                 attributedString.addAttribute(NSAttributedString.Key.underlineStyle, value: 1, range: NSRange(location: 0, length: title.count))
                 cell.itemLabel.attributedText = attributedString
             }
+        let tabelTemp = Observable.of(["테스트면접질문1","테스트면접질문2는 조금 긴 질문 항목입니다. 공백 포함해 35자가 넘어가면","테스트면접질문3"])
+            .bind(to: questionListTableView.rx.items(cellIdentifier: "QuestionListCell", cellType: QuestionListCell.self)) { index, title, cell in
+                cell.mainLabel.text = title
+                
+                let image = UIImage(systemName: "chevron.right")!
+                let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 12, height: 20))
+                imageView.image = image
+                imageView.tintColor = .customGray
+                cell.accessoryView = imageView
+                cell.selectionStyle = .none
+            }
         
+        questionListTableView.rx.itemSelected
+            .bind(onNext: { indexPath in
+                let cell = self.questionListTableView.cellForRow(at: indexPath) as! QuestionListCell
+                cell.mainLabel.textColor = .darken
+            })
+        
+        questionListTableView.rx.itemDeselected
+            .bind(onNext: { indexPath in
+                let cell = self.questionListTableView.cellForRow(at: indexPath) as! QuestionListCell
+                cell.mainLabel.textColor = .black
+            })
+            
     }
 }
 
@@ -143,18 +176,26 @@ extension KeywordViewController {
             }
         }
         
-        self.view.addSubview(seg)
-        seg.snp.makeConstraints{ make in
+        self.view.addSubview(keywordOnOffSegmentControl)
+        keywordOnOffSegmentControl.snp.makeConstraints{ make in
             make.top.equalTo(filterCollectionView.snp.bottom).offset(15)
             make.leading.equalToSuperview().offset(48)
             make.trailing.equalToSuperview().offset(-48)
-            make.height.equalTo(40)
+            make.height.equalTo(47)
         }
         
-        self.view.addSubview(btn)
-        btn.snp.makeConstraints{ make in
-            make.centerX.centerY.equalToSuperview()
+        self.view.addSubview(self.questionListTableView)        
+        self.questionListTableView.snp.makeConstraints{ make in
+            make.top.equalTo(keywordOnOffSegmentControl.snp.bottom).offset(38)
+            make.leading.equalToSuperview()
+            make.trailing.equalToSuperview().offset(-20)
+            make.bottom.equalToSuperview()
         }
+        
+//        self.view.addSubview(btn)
+//        btn.snp.makeConstraints{ make in
+//            make.centerX.centerY.equalToSuperview()
+//        }
         
     }
 }
