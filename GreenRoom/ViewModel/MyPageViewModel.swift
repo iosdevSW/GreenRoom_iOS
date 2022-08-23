@@ -67,13 +67,17 @@ class MyPageViewModel {
         loadUserInfo()
         
         profileImageObservable.subscribe(onNext: { [weak self] image in
-            self?.userService.updateProfileImage(image: image) {
-                self?.loadUserInfo()
+            self?.userService.updateProfileImage(image: image) { completeUpload in
+                if completeUpload {
+                    self?.loadUserInfo()
+                }
+                
             }
-            
         }).disposed(by: disposeBag)
         
-        Observable.combineLatest(userObservable.asObserver(), settingsObservable.asObservable()).subscribe(onNext: { [weak self] datasource in
+    
+        Observable.combineLatest(userObservable.asObserver(), settingsObservable.asObservable())
+            .subscribe(onNext: { [weak self] datasource in
             self?.MyPageDataSource.onNext(datasource.0 + datasource.1)
         }).disposed(by: disposeBag)
     }
@@ -84,6 +88,9 @@ class MyPageViewModel {
         self.userService.fetchUserInfo() { [weak self] result in
             switch result {
             case .success(let user):
+                
+                UserDefaults.standard.set(user.categoryID, forKey: "CategoryID")
+                
                 let userModel = MyPageSectionModel.profile(items: [
                     MyPageSectionModel.Item.profile(profileInfo: user)
                 ])

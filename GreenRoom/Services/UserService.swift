@@ -79,7 +79,7 @@ class UserService {
 //MARK: - /api/users/profile-image
 extension UserService {
     
-    func updateProfileImage(image: UIImage?,completion:@escaping() -> Void){
+    func updateProfileImage(image: UIImage?,completion:@escaping(Bool) -> Void){
         
         guard let imageData = convertImage(image: image) else { return }
         
@@ -87,12 +87,13 @@ extension UserService {
         
         self.fetchPresignedURL(parameters: param) { url in
             guard let presignedURL = URL(string: url) else { return }
-            self.uploadImage(imageData: imageData.data, url: presignedURL, type: imageData.description)
-            completion()
+            self.uploadImage(imageData: imageData.data, url: presignedURL, type: imageData.description) { completed in
+                completion(completed)
+            }
         }
     }
     
-    private func uploadImage(imageData: Data, url: URL, type: String){
+    private func uploadImage(imageData: Data, url: URL, type: String,completion: @escaping(Bool) -> Void){
         
         let headers: HTTPHeaders = [
             "Content-Type": "image/\(type)"
@@ -102,10 +103,11 @@ extension UserService {
             switch response.result {
             case .success(_):
                 print("DEBUG: image upload success with AWS S3")
+                completion(true)
                 break
             case .failure(let error):
-                print("여기여기")
                 print("DEBUG: \(error.localizedDescription)")
+                completion(false)
                 break
             }
         }
