@@ -121,4 +121,3 @@ extension UIView{
         layer.addSublayer(gradient)
     }
 }
-
