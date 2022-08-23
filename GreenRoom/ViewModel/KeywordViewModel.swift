@@ -10,5 +10,12 @@ import RxCocoa
 import RxSwift
 
 class KeywordViewModel {
-    let filteringObservable = BehaviorSubject<[Int]>.of([])
+    let filteringObservable = PublishSubject<[Int]>()
+    
+    var filteringList = [Int]() {
+        didSet{
+            filteringObservable.onNext(filteringList)
+        }
+    }
+    
 }

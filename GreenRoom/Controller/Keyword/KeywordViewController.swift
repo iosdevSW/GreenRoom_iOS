@@ -17,12 +17,12 @@ class KeywordViewController: UIViewController{
     
     let searchBarView = UISearchBar().then{
         $0.placeholder = "키워드로 검색해보세요!"
-        $0.layer.borderWidth = 2
         $0.searchBarStyle = .minimal
         $0.searchTextField.borderStyle = .none
         $0.searchTextField.textColor = .customGray
-        $0.layer.borderColor = UIColor.mainColor.cgColor
         $0.searchTextField.leftView?.tintColor = .customGray
+        $0.layer.borderColor = UIColor.mainColor.cgColor
+        $0.layer.borderWidth = 2
         $0.layer.masksToBounds = true
         $0.layer.cornerRadius = 10
     }
@@ -30,8 +30,8 @@ class KeywordViewController: UIViewController{
     let filterButton = UIButton(type: .roundedRect).then{
         $0.backgroundColor = .mainColor
         $0.setTitle("필터 ", for: .normal)
-        $0.titleLabel?.font = .sfPro(size: 12, family: .Semibold)
         $0.setTitleColor(.white, for: .normal)
+        $0.titleLabel?.font = .sfPro(size: 12, family: .Semibold)
         $0.setImage(UIImage(named: "filter"), for: .normal)
         $0.tintColor = .white
         $0.semanticContentAttribute = .forceRightToLeft
@@ -43,6 +43,7 @@ class KeywordViewController: UIViewController{
         $0.selectedSegmentTintColor = UIColor.white
         $0.setBackgroundImage(UIImage(named: "filter"), for: .normal, barMetrics: .default)
         $0.selectedSegmentIndex = 0
+        
         let titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.customGray]
         $0.setTitleTextAttributes(titleTextAttributes as [NSAttributedString.Key : Any], for:.normal)
         
@@ -93,6 +94,16 @@ class KeywordViewController: UIViewController{
         btn.addTarget(self, action: #selector(logout(_:)), for: .touchUpInside)
     }
     
+    //MARK: - Method
+    func closeFilteringView(){
+        self.filteringView?.removeFromSuperview()
+        self.blurView?.removeFromSuperview()
+        self.filteringView = nil
+        self.blurView = nil
+        
+        self.tabBarController?.tabBar.isHidden = false
+    }
+    
     
     //MARK: - Selector
     @objc func logout(_ sender: UIButton){
@@ -126,7 +137,10 @@ class KeywordViewController: UIViewController{
         
         filteringView = CategoryFilterView().then{
             self.view.addSubview($0)
+            $0.selectedCategories = viewmodel.filteringList
+            $0.filteringCollectionView.delegate = self
             $0.cancelButton.addTarget(self, action: #selector(didClickCancelButton(_:)), for: .touchUpInside)
+            $0.applyButton.addTarget(self, action: #selector(didClickApplyButton(_:)), for: .touchUpInside)
             
             $0.snp.makeConstraints{ make in
                 make.leading.trailing.equalToSuperview()
@@ -137,23 +151,22 @@ class KeywordViewController: UIViewController{
     }
     
     @objc func didClickCancelButton(_ sender: UIButton) {
-        self.filteringView?.removeFromSuperview()
-        self.blurView?.removeFromSuperview()
-        self.filteringView = nil
-        self.blurView = nil
+        self.closeFilteringView()
     }
     
     @objc func didClickApplyButton(_ sender: UIButton) {
+        self.viewmodel.filteringList = self.filteringView!.selectedCategories
         
+        self.closeFilteringView()
     }
     
     //MARK: - Bind
     func bind(){
-        let tempObservable = Observable.of(["공통","인턴","대외활동","디자인","경영기획","회계","생산/품질관리","인사","마케팅","영업","IT/개발","연구개발(R&D)"])
-        _ = tempObservable
-            .bind(to: filteredCategoryView.rx.items(cellIdentifier: "ItemsCell", cellType: FilterItemsCell.self)) {index, title ,cell in
-                let attributedString = NSMutableAttributedString.init(string: title)
-                attributedString.addAttribute(NSAttributedString.Key.underlineStyle, value: 1, range: NSRange(location: 0, length: title.count))
+        viewmodel.filteringObservable.asObserver()
+            .bind(to: filteredCategoryView.rx.items(cellIdentifier: "ItemsCell", cellType: FilterItemsCell.self)) {index, id ,cell in
+                guard let category = CategoryID(rawValue: id) else { return }
+                let attributedString = NSMutableAttributedString.init(string: category.title)
+                attributedString.addAttribute(NSAttributedString.Key.underlineStyle, value: 1, range: NSRange(location: 0, length: category.title.count))
                 cell.itemLabel.attributedText = attributedString
             }
         
@@ -256,11 +269,30 @@ extension KeywordViewController {
 
 extension KeywordViewController: UICollectionViewDelegateFlowLayout{
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let categories = ["공통","인턴","대외활동","디자인","경영기획","회계","생산/품질관리","인사","마케팅","영업","IT/개발","연구개발(R&D)"]
-        let tempLabel = UILabel()
-        tempLabel.font = .sfPro(size: 12, family: .Regular)
-        tempLabel.text = categories[indexPath.item]
+        switch collectionView {
+        case self.filteredCategoryView:
+            let categories = ["공통","인턴","대외활동","디자인","경영기획","회계","생산/품질관리","인사","마케팅","영업","IT/개발","연구개발(R&D)"]
+            let tempLabel = UILabel()
+            tempLabel.font = .sfPro(size: 12, family: .Regular)
+            tempLabel.text = categories[indexPath.item]
+            
+            return CGSize(width: tempLabel.intrinsicContentSize.width, height: 22)
+            
+        case self.filteringView?.filteringCollectionView:
+            
+            let items = Array(filteringView!.selectedCategories)
+            let id = items[indexPath.item]
+            let category = CategoryID(rawValue: id)
+            
+            let tempLabel = UILabel()
+            tempLabel.font = .sfPro(size: 12, family: .Regular)
+            tempLabel.text = category?.title
+            
+            return CGSize(width: tempLabel.intrinsicContentSize.width, height: 22)
+        default:
+            return CGSize(width: 0, height: 0)
+        }
+    
         
-        return CGSize(width: tempLabel.intrinsicContentSize.width, height: 22)
     }
 }
