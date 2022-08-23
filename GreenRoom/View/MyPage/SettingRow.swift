@@ -23,7 +23,7 @@ final class SettingRow: UICollectionViewCell {
     private var iconImageView = UIImageView().then {
         $0.tintColor = .customGray
         $0.contentMode = .scaleAspectFit
-        $0.image = UIImage(systemName: "mail")
+        $0.image = UIImage(systemName: "mail")?.withRenderingMode(.alwaysOriginal)
     }
     
     private var titleLabel = UILabel().then {
@@ -80,7 +80,10 @@ final class SettingRow: UICollectionViewCell {
         case .language:
             self.infoLabel.attributedText = Utilities.shared.textWithIcon(text: "한국어", image: UIImage(systemName: "globe"),imageColor: .mainColor,iconPosition: .right)
         case .interest:
-            self.infoLabel.attributedText = Utilities.shared.textWithIcon(text: "디자인", image: UIImage(named: "interestIcon"),imageColor: nil,iconPosition: .right)
+            let cateogryId = UserDefaults.standard.object(forKey: "CategoryID") as? Int ?? 1
+            let category = CategoryID(rawValue: cateogryId) ?? .common
+            
+            self.infoLabel.attributedText = Utilities.shared.textWithIcon(text: category.title, image: category.SelectedImage, imageColor: nil, iconPosition: .right)
         case .version:
             return
         default:

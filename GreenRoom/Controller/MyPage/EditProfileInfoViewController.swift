@@ -32,7 +32,7 @@ class EditProfileInfoViewController: UIViewController {
         var configuration = UIButton.Configuration.plain()
         configuration.title = "로그아웃"
         configuration.image = UIImage(systemName: "chevron.right")
-        configuration.imagePadding = 240
+        configuration.imagePadding = 235
         configuration.imagePlacement = .trailing
         configuration.baseForegroundColor = .black
         configuration.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 46, bottom: 0, trailing: 63)

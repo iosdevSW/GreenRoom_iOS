@@ -106,7 +106,7 @@ final class QNAViewController: UIViewController {
         layout.minimumInteritemSpacing = 11
         
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.backgroundColor = .red
+        collectionView.backgroundColor = .white
     }
     
     //MARK: - Selector
