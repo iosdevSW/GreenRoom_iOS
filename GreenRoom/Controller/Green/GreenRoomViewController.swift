@@ -21,8 +21,8 @@ class GreenRoomViewController: UIViewController {
     func subscribe(){
         greenRoomViewModel.isLogin()
             .subscribe(on: MainScheduler.instance)
-            .subscribe(onNext: { bool in
-                if bool {
+            .subscribe(onNext: { isToken in
+                if isToken {
                     print("자동로그인")
                 }else {
                     print("로그인필요")

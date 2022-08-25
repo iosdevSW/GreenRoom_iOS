@@ -15,9 +15,9 @@ class CategoryFilterView: UIView {
     let disposeBag = DisposeBag()
     
     let margin = 42
-    var selectedCategories: Set<Int> = []{
+    var selectedCategories: [Int] = []{
         didSet{
-            selectedCategoriesObservable.onNext(Array(self.selectedCategories))
+            selectedCategoriesObservable.onNext(self.selectedCategories)
         }
     }
     var selectedCategoriesObservable = PublishSubject<[Int]>()
@@ -36,6 +36,7 @@ class CategoryFilterView: UIView {
         $0.setTitle("적용하기", for: .normal)
         $0.setTitleColor(.white, for: .normal)
         $0.titleLabel?.font = .sfPro(size: 20, family: .Semibold)
+        $0.layer.cornerRadius = 30
         $0.backgroundColor = .mainColor
     }
     
@@ -43,6 +44,7 @@ class CategoryFilterView: UIView {
         $0.setTitle("선택취소", for: .normal)
         $0.setTitleColor(.white, for: .normal)
         $0.titleLabel?.font = .sfPro(size: 20, family: .Semibold)
+        $0.layer.cornerRadius = 30
         $0.backgroundColor = .customGray
     }
     
@@ -66,42 +68,58 @@ class CategoryFilterView: UIView {
         self.categoryCollectionView.rx.itemSelected
             .bind(onNext: { indexPath in
                 let cell = self.categoryCollectionView.cellForItem(at: indexPath) as! CategoryCell
-                let id = indexPath.row+1
+                let id = indexPath.row + 1
                 
                 guard let category = CategoryID(rawValue: id) else { return }
+                
                 cell.frameView.layer.borderColor = UIColor.mainColor.cgColor
                 cell.imageView.image = category.SelectedImage
-                
-                self.selectedCategories.insert(id)
-                print(self.selectedCategories)
+                self.selectedCategories.append(id)
                 
         }).disposed(by: disposeBag)
         
         self.categoryCollectionView.rx.itemDeselected
-            .bind(onNext: { indexPath in
+            .bind(onNext: { [self] indexPath in
                 let cell = self.categoryCollectionView.cellForItem(at: indexPath) as! CategoryCell
-                let id = indexPath.row+1
+                let id = indexPath.row + 1
                 
                 guard let category = CategoryID(rawValue: id) else { return }
                 cell.frameView.layer.borderColor = UIColor.customGray.cgColor
                 cell.imageView.image = category.nonSelectedImage
                 
-                self.selectedCategories.remove(id)
+                if let index = self.selectedCategories.firstIndex(of: id) {
+                    self.selectedCategories.remove(at: index)
+                }
                 
             }).disposed(by: disposeBag)
         
         self.viewModel.categories
             .bind(to: self.categoryCollectionView.rx.items(cellIdentifier: "categoryCell", cellType: CategoryCell.self)) {index, title ,cell in
-                guard let category = CategoryID(rawValue: index+1) else { return }
-                cell.imageView.image = category.nonSelectedImage
+                let id = index + 1
+                guard let category = CategoryID(rawValue: id) else { return }
+                
+                if self.selectedCategories.contains(id){
+                    cell.isSelected = true
+                    self.categoryCollectionView.selectItem(at: IndexPath(item: index, section: 0), animated: false, scrollPosition: .centeredVertically)
+                    cell.frameView.layer.borderColor = UIColor.mainColor.cgColor
+                    cell.imageView.image = category.SelectedImage
+                }else {
+                    cell.imageView.image = category.nonSelectedImage
+                    cell.frameView.layer.borderColor = UIColor.customGray.cgColor
+                }
                 cell.titleLabel.text = category.title
+                
             }.disposed(by: disposeBag)
         
         self.selectedCategoriesObservable
             .bind(to: self.filteringCollectionView.rx.items(cellIdentifier: "ItemsCell", cellType: FilterItemsCell.self)) { index, id, cell in
                 guard let category = CategoryID(rawValue: id) else { return }
-                cell.itemLabel.text = category.title
-            }
+                let title = category.title
+                let attributedString = NSMutableAttributedString.init(string: title)
+                attributedString.addAttribute(NSAttributedString.Key.underlineStyle, value: 1, range: NSRange(location: 0, length: title.count))
+                cell.itemLabel.attributedText = attributedString
+                
+            }.disposed(by: disposeBag)
     }
     
     //MARK: - ConfigureUI
@@ -123,6 +141,7 @@ class CategoryFilterView: UIView {
         self.categoryCollectionView = UICollectionView(frame: .zero, collectionViewLayout: layout).then{
             $0.translatesAutoresizingMaskIntoConstraints = false
             $0.allowsMultipleSelection = true
+            $0.allowsSelection = true
             $0.register(CategoryCell.self, forCellWithReuseIdentifier: "categoryCell")
             $0.backgroundColor = .white
             
@@ -137,18 +156,18 @@ class CategoryFilterView: UIView {
         
         self.addSubview(self.cancelButton)
         self.cancelButton.snp.makeConstraints{ make in
-            make.leading.equalToSuperview()
+            make.leading.equalToSuperview().offset(24)
             make.bottom.equalToSuperview().offset(-20)
-            make.height.equalTo(86)
-            make.width.equalTo(170)
+            make.height.equalTo(60)
+            make.width.equalTo(150)
         }
         
         self.addSubview(self.applyButton)
         self.applyButton.snp.makeConstraints{ make in
-            make.trailing.equalToSuperview()
+            make.trailing.equalToSuperview().offset(-24)
             make.bottom.equalToSuperview().offset(-20)
-            make.leading.equalTo(cancelButton.snp.trailing).offset(5)
-            make.height.equalTo(86)
+            make.leading.equalTo(cancelButton.snp.trailing).offset(20)
+            make.height.equalTo(60)
         }
         
         let filteringLayout = UICollectionViewFlowLayout().then{
@@ -159,6 +178,7 @@ class CategoryFilterView: UIView {
         self.filteringCollectionView = UICollectionView(frame: .zero, collectionViewLayout: filteringLayout).then{
             $0.backgroundColor = .white
             $0.register(FilterItemsCell.self, forCellWithReuseIdentifier: "ItemsCell")
+            $0.allowsSelection = true
             
             self.addSubview($0)
             $0.snp.makeConstraints{ make in
