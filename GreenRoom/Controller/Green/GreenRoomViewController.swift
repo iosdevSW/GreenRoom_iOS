@@ -12,7 +12,7 @@ import SwiftKeychainWrapper
 class GreenRoomViewController: UIViewController {
     
     //MARK: - Properties
-    let greenRoomViewModel = GreenRoomViewModel()
+    let viewModel = GreenRoomViewModel()
     let disposeBag = DisposeBag()
     
     private var collectionView: UICollectionView!
@@ -25,7 +25,7 @@ class GreenRoomViewController: UIViewController {
         $0.addTarget(self, action: #selector(filterGreenRoom), for: .touchUpInside)
         $0.tag = 0
     }
-    
+     
     private lazy var questionListButton = UIButton().then {
         $0.setTitle("질문리스트", for: .normal)
         $0.setTitleColor(.customGray, for: .normal)
@@ -60,7 +60,7 @@ class GreenRoomViewController: UIViewController {
     }
     
     func subscribe(){
-        greenRoomViewModel.isLogin()
+        viewModel.isLogin()
             .subscribe(on: MainScheduler.instance)
             .subscribe(onNext: { bool in
                 if bool {
@@ -137,19 +137,16 @@ class GreenRoomViewController: UIViewController {
     }
     
     @objc func filterGreenRoom(_ sender: UIButton){
+        let questionColor: UIColor = sender.tag == 0 ? .customGray : .mainColor
+        let greenRoomColor: UIColor = sender.tag == 0 ? .mainColor : .customGray
         
-        if sender.tag == 0 {
-            self.questionListButton.setTitleColor(.customGray, for: .normal)
-            self.greenRoomButton.setTitleColor(.mainColor, for: .normal)
-        } else {
-            self.questionListButton.setTitleColor(.mainColor, for: .normal)
-            self.greenRoomButton.setTitleColor(.customGray, for: .normal)
-        }
-        
+        self.questionListButton.setTitleColor(questionColor, for: .normal)
+        self.greenRoomButton.setTitleColor(greenRoomColor, for: .normal)
     }
     
     @objc func didTapSearch(){
-        print("Didtap serachButton")
+        let vc = GRSearchViewController(viewModel: viewModel)
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     @objc func didTapScrap(){
@@ -175,62 +172,64 @@ extension GreenRoomViewController {
             return nil
         }
     }
+    
+    func generatePopularQuestionLayout() -> NSCollectionLayoutSection {
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.4))
+        
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalWidth(0.4))
+        
+        let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitem: item, count: 2)
+        
+        let section = NSCollectionLayoutSection(group: group)
+        section.orthogonalScrollingBehavior = .groupPaging
+        
+        return section
+    }
+
+    func generateRecentQuestionLayout() -> NSCollectionLayoutSection {
+        let itemSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1.0),
+            heightDimension: .fractionalWidth(1.0))
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        
+        let groupSize = NSCollectionLayoutSize(
+            widthDimension: .absolute(155),
+            heightDimension: .absolute(172))
+        
+        let group = NSCollectionLayoutGroup.vertical(
+            layoutSize: groupSize,
+            subitem: item,
+            count: 1)
+        group.contentInsets = NSDirectionalEdgeInsets(
+            top: 5,
+            leading: 5,
+            bottom: 5,
+            trailing: 5)
+        
+        let headerSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1.0),
+            heightDimension: .estimated(50))
+        
+        let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(
+            layoutSize: headerSize,
+            elementKind: "AlbumsViewController.sectionHeaderElementKind",
+            alignment: .top)
+        
+        let section = NSCollectionLayoutSection(group: group)
+        section.boundarySupplementaryItems = [sectionHeader]
+        section.orthogonalScrollingBehavior = .groupPaging
+        
+        return section
+        
+        
+        //    func generateMyGRLayout() -> NSCollectionLayoutSection {
+        //        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
+        //
+        //        let item = NSCollectionLayoutItem(layoutSize: <#T##NSCollectionLayoutSize#>)
+        //    }
+    }
+
 }
 
-func generatePopularQuestionLayout() -> NSCollectionLayoutSection {
-    let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.4))
-    
-    let item = NSCollectionLayoutItem(layoutSize: itemSize)
-    
-    let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalWidth(0.4))
-    
-    let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitem: item, count: 2)
-    
-    let section = NSCollectionLayoutSection(group: group)
-    section.orthogonalScrollingBehavior = .groupPaging
-    
-    return section
-}
-
-func generateRecentQuestionLayout() -> NSCollectionLayoutSection {
-    let itemSize = NSCollectionLayoutSize(
-        widthDimension: .fractionalWidth(1.0),
-        heightDimension: .fractionalWidth(1.0))
-    let item = NSCollectionLayoutItem(layoutSize: itemSize)
-    
-    let groupSize = NSCollectionLayoutSize(
-        widthDimension: .absolute(155),
-        heightDimension: .absolute(172))
-    
-    let group = NSCollectionLayoutGroup.vertical(
-        layoutSize: groupSize,
-        subitem: item,
-        count: 1)
-    group.contentInsets = NSDirectionalEdgeInsets(
-        top: 5,
-        leading: 5,
-        bottom: 5,
-        trailing: 5)
-    
-    let headerSize = NSCollectionLayoutSize(
-        widthDimension: .fractionalWidth(1.0),
-        heightDimension: .estimated(50))
-    
-    let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(
-        layoutSize: headerSize,
-        elementKind: "AlbumsViewController.sectionHeaderElementKind",
-        alignment: .top)
-    
-    let section = NSCollectionLayoutSection(group: group)
-    section.boundarySupplementaryItems = [sectionHeader]
-    section.orthogonalScrollingBehavior = .groupPaging
-    
-    return section
-    
-    
-    //    func generateMyGRLayout() -> NSCollectionLayoutSection {
-    //        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
-    //
-    //        let item = NSCollectionLayoutItem(layoutSize: <#T##NSCollectionLayoutSize#>)
-    //    }
-}
