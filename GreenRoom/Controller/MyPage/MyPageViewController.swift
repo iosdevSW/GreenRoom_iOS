@@ -11,10 +11,9 @@ import RxSwift
 import RxDataSources
 import PhotosUI
 
-final class MyPageViewController: UIViewController {
+final class MyPageViewController: BaseViewController {
     
     private var viewModel: MyPageViewModel
-    private var disposeBag = DisposeBag()
     
     private var collectionView: UICollectionView!
     private let imagePickerView = UIImagePickerController()
@@ -31,9 +30,6 @@ final class MyPageViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureCollectionView()
-        configureUI()
-        bind()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -41,9 +37,9 @@ final class MyPageViewController: UIViewController {
         navigationController?.navigationBar.topItem?.title = ""
         navigationController?.navigationBar.isHidden = true
     }
+    
     //MARK: - Configure
-    private func configureUI(){
-
+    override func configureUI(){
         view.backgroundColor = .backgroundGary
         self.view.addSubview(self.collectionView)
         collectionView.snp.makeConstraints { make in
@@ -52,18 +48,11 @@ final class MyPageViewController: UIViewController {
         }
     }
     
-    private func configureCollectionView() {
-        self.collectionView = UICollectionView(frame: .zero, collectionViewLayout: generateLayout())
-        self.collectionView.backgroundColor = .white
-        collectionView.register(ProfileCell.self, forCellWithReuseIdentifier: ProfileCell.reuseIdentifier)
-        collectionView.register(SettingHeader.self, forSupplementaryViewOfKind: SettingHeader.reuseIdentifier, withReuseIdentifier: SettingHeader.reuseIdentifier)
-        collectionView.register(SettingRow.self, forCellWithReuseIdentifier: SettingRow.reuseIdentifier)
-        collectionView.register(SetNotificationRow.self, forCellWithReuseIdentifier: SetNotificationRow.reuseIdentifier)
-        collectionView.isScrollEnabled = false
-        
+    override func setupAttributes() {
+        configureCollectionView()
     }
     
-    private func bind() {
+    override func setupBinding() {
         let dataSource = dataSource()
         viewModel.MyPageDataSource.bind(to: collectionView.rx.items(dataSource: dataSource))
             .disposed(by: disposeBag)
@@ -82,16 +71,30 @@ final class MyPageViewController: UIViewController {
                     case .FAQ:
                         let vc = FAQViewController(viewModel: self.viewModel)
                         self.navigationController?.pushViewController(vc, animated: true)
-                    default: return 
+                    default: return
                     }
                 default : return
                 }
             }).disposed(by: disposeBag)
     }
+    
 }
 
-//MARK: - CollectionViewDataSoruce
+
+//MARK: - CollectionView
 extension MyPageViewController {
+    
+    private func configureCollectionView() {
+        self.collectionView = UICollectionView(frame: .zero, collectionViewLayout: generateLayout())
+        self.collectionView.backgroundColor = .white
+        collectionView.register(ProfileCell.self, forCellWithReuseIdentifier: ProfileCell.reuseIdentifier)
+        collectionView.register(SettingHeader.self, forSupplementaryViewOfKind: SettingHeader.reuseIdentifier, withReuseIdentifier: SettingHeader.reuseIdentifier)
+        collectionView.register(SettingRow.self, forCellWithReuseIdentifier: SettingRow.reuseIdentifier)
+        collectionView.register(SetNotificationRow.self, forCellWithReuseIdentifier: SetNotificationRow.reuseIdentifier)
+        collectionView.isScrollEnabled = false
+    }
+    
+    //MARK: - CollectionViewDataSoruce
     private func dataSource() -> RxCollectionViewSectionedReloadDataSource<MyPageSectionModel> {
         return RxCollectionViewSectionedReloadDataSource<MyPageSectionModel> {
             dataSource, collectionView, indexPath, item in
@@ -128,9 +131,8 @@ extension MyPageViewController {
             }
         }
     }
-}
-//MARK: - collectionViewLayout
-extension MyPageViewController {
+    
+    //MARK: - collectionViewLayout
     private func generateLayout() -> UICollectionViewLayout {
         return UICollectionViewCompositionalLayout { (sectionNumber, env) -> NSCollectionLayoutSection? in
             if sectionNumber == 0 {
@@ -246,6 +248,5 @@ extension MyPageViewController: ProfileCellDelegate, PHPickerViewControllerDeleg
         let vc = EditProfileInfoViewController(viewModel: viewModel)
         navigationController?.pushViewController(vc, animated: false)
     }
-    
     
 }

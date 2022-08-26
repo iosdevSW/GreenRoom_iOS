@@ -9,11 +9,10 @@ import UIKit
 import RxSwift
 import SwiftKeychainWrapper
 
-class GreenRoomViewController: UIViewController {
+class GreenRoomViewController: BaseViewController {
     
     //MARK: - Properties
     let viewModel = GreenRoomViewModel()
-    let disposeBag = DisposeBag()
     
     private var collectionView: UICollectionView!
     
@@ -49,9 +48,6 @@ class GreenRoomViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureNavigationBar()
-        configureUI()
-        self.subscribe()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -59,7 +55,7 @@ class GreenRoomViewController: UIViewController {
         configureNavigationBar()
     }
     
-    func subscribe(){
+    override func setupBinding() {
         viewModel.isLogin()
             .subscribe(on: MainScheduler.instance)
             .subscribe(onNext: { isToken in
@@ -99,7 +95,7 @@ class GreenRoomViewController: UIViewController {
         
     }
     
-    private func configureUI(){
+    override func configureUI(){
         
         self.view.backgroundColor = .white
         
@@ -134,6 +130,10 @@ class GreenRoomViewController: UIViewController {
             make.leading.equalToSuperview().offset(33)
         }
         
+    }
+    
+    override func setupAttributes() {
+        self.configureNavigationBar()
     }
     
     @objc func filterGreenRoom(_ sender: UIButton){

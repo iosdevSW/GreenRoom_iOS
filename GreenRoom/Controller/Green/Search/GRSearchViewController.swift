@@ -9,11 +9,11 @@ import UIKit
 import RxSwift
 import RxDataSources
 import RxCocoa
-final class GRSearchViewController: UIViewController {
+final class GRSearchViewController: BaseViewController {
     
     private var searchBar: UISearchBar!
     private var collectionView: UICollectionView!
-    private var disposeBag = DisposeBag()
+    
     var viewModel: GreenRoomViewModel
     
     //MARK: - LifeCycle
@@ -28,11 +28,6 @@ final class GRSearchViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-  
-        configureCollectionView()
-        configureSearchBar()
-        configureUI()
-        bind()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -40,9 +35,8 @@ final class GRSearchViewController: UIViewController {
         self.tabBarController?.tabBar.isHidden = true
     }
     
-    private func configureUI(){
+    override func configureUI(){
         self.view.backgroundColor = .white
-        self.collectionView.backgroundColor = .white
         self.view.addSubview(collectionView)
         collectionView.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(25)
@@ -50,13 +44,18 @@ final class GRSearchViewController: UIViewController {
             make.top.bottom.equalTo(view.safeAreaLayoutGuide)
         }
     }
+
+    override func setupAttributes() {
+        configureCollectionView()
+        configureSearchBar()
+    }
     
     private func configureCollectionView(){
         
         let layout = generateLayout()
         self.collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.isScrollEnabled = false
-
+        self.collectionView.backgroundColor = .white
         self.collectionView.register(SearchWordCell.self, forCellWithReuseIdentifier: SearchWordCell.reuseIdentifier)
         self.collectionView.register(SearchWordHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: SearchWordHeaderView.reuseIdentifier)
         
@@ -92,16 +91,12 @@ final class GRSearchViewController: UIViewController {
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: searchBar)
     }
     
-    private func bind(){
-        
-        self.collectionView.delegate = nil
-        self.collectionView.dataSource = nil
-        
+    override func setupBinding() {
         viewModel.observable
             .bind(to: collectionView.rx.items(dataSource: self.dataSource()))
             .disposed(by: disposeBag)
-        
     }
+
 }
 
 extension GRSearchViewController: UITextFieldDelegate {

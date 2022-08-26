@@ -5,10 +5,9 @@
 //  Created by Doyun Park on 2022/08/19.
 //
 
-import Foundation
 import UIKit
 
-final class QNAViewController: UIViewController {
+final class QNAViewController: BaseViewController {
     
     //MARK: - Properties
     private let viewModel: MyPageViewModel
@@ -52,8 +51,6 @@ final class QNAViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureCollectionView()
-        configureUI()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -67,7 +64,7 @@ final class QNAViewController: UIViewController {
     }
     
     //MARK: - configure
-    private func configureUI(){
+    override func configureUI(){
         self.view.backgroundColor = .white
         
         self.view.addSubview(imageTitle)
@@ -99,6 +96,19 @@ final class QNAViewController: UIViewController {
         }
     }
     
+    override func setupAttributes() {
+        configureCollectionView()
+    }
+    
+    //MARK: - Selector
+    @objc func handleDoneButton(){
+        
+    }
+}
+
+//MARK: - CollectionView {
+extension QNAViewController {
+    
     private func configureCollectionView(){
         let layout = UICollectionViewFlowLayout()
         layout.itemSize = CGSize(width: 107, height: 107)
@@ -108,13 +118,8 @@ final class QNAViewController: UIViewController {
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.backgroundColor = .white
     }
-    
-    //MARK: - Selector
-    @objc func handleDoneButton(){
-        
-    }
 }
-
+//MARK: - UITextField
 extension QNAViewController: UITextViewDelegate {
     
     func textViewDidBeginEditing(_ textView: UITextView) {

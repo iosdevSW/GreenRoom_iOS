@@ -7,10 +7,9 @@
 import UIKit
 import RxSwift
 
-class EditProfileInfoViewController: UIViewController {
+class EditProfileInfoViewController: BaseViewController {
     
     //MARK: - properties
-    private var disposeBag = DisposeBag()
     private let viewModel: MyPageViewModel
     
     private let nameLabel = UILabel().then{
@@ -59,7 +58,6 @@ class EditProfileInfoViewController: UIViewController {
     }
     
     //MARK: - lifecycle
-    
     init(viewModel: MyPageViewModel){
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -71,8 +69,6 @@ class EditProfileInfoViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureUI()
-        bind()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -83,7 +79,7 @@ class EditProfileInfoViewController: UIViewController {
         navigationController?.navigationBar.tintColor = .mainColor
     }
     
-    func configureUI(){
+    override func configureUI(){
         view.backgroundColor = .white
         
         self.view.addSubview(nameLabel)
@@ -115,7 +111,7 @@ class EditProfileInfoViewController: UIViewController {
         }
     }
     
-    func bind(){
+    override func setupBinding() {
         
         viewModel.usernameObservable.subscribe(onNext: { [weak self] name in
             self?.nameTextField.text = name
