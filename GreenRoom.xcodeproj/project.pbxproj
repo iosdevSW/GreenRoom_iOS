@@ -69,6 +69,7 @@
 		01F73F46BE997DB9539026B9 /* Pods-GreenRoom.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GreenRoom.debug.xcconfig"; path = "Target Support Files/Pods-GreenRoom/Pods-GreenRoom.debug.xcconfig"; sourceTree = "<group>"; };
 		48A2A5400036D7B484D9CF77 /* Pods_GreenRoom.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GreenRoom.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C657AA73E3298A49BA775B7C /* Pods-GreenRoom.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GreenRoom.release.xcconfig"; path = "Target Support Files/Pods-GreenRoom/Pods-GreenRoom.release.xcconfig"; sourceTree = "<group>"; };
+		DB05246728B47F58003209D4 /* SFProText-Semibold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFProText-Semibold.otf"; sourceTree = "<group>"; };
 		DB53AE9E289F967700E9A5CC /* RegisterCompleteViewControlller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterCompleteViewControlller.swift; sourceTree = "<group>"; };
 		DB563F9928ABADDF00E7193D /* RxNaverThirdPartyLoginProxy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RxNaverThirdPartyLoginProxy.swift; sourceTree = "<group>"; };
 		DB563F9B28AD407400E7193D /* Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Extension.swift; path = GreenRoom/Utils/Extension.swift; sourceTree = SOURCE_ROOT; };
@@ -332,6 +333,7 @@
 		DBD082612897E77F0092241F /* Font */ = {
 			isa = PBXGroup;
 			children = (
+
 				E40BC6DB28B7CB8700FB557D /* SFPro.ttf */,
 				E40BC6DC28B7CB8700FB557D /* SFProText-Bold.otf */,
 				E40BC6DA28B7CB8700FB557D /* SFProText-Semibold.otf */,
