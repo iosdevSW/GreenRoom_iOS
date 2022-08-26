@@ -9,9 +9,8 @@ import Foundation
 import UIKit
 import RxSwift
 
-final class FAQViewController: UIViewController {
+final class FAQViewController: BaseViewController {
     
-    private var disposeBag = DisposeBag()
     private var viewModel: MyPageViewModel!
     private var searchBar = UISearchBar()
     private var tableView: UITableView!
@@ -19,10 +18,6 @@ final class FAQViewController: UIViewController {
     //MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureSearchBar()
-        configureTableView()
-        configureUI()
-        bind()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -42,7 +37,8 @@ final class FAQViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func configureUI(){
+    override func configureUI(){
+
         self.view.backgroundColor = .white
         self.view.addSubview(searchBar)
         searchBar.snp.makeConstraints { make in
@@ -59,10 +55,39 @@ final class FAQViewController: UIViewController {
         }
     }
     
+    override func setupAttributes() {
+        self.configureSearchBar()
+        self.configureTableView()
+    }
+    
+    override func setupBinding() {
+        searchBar.rx.text.orEmpty
+        //0.5초 기다림
+            .debounce(RxTimeInterval.microseconds(5), scheduler: MainScheduler.instance)   .distinctUntilChanged()
+            .subscribe(onNext: { [weak self] query in
+                if let searchFAQ = self?.viewModel.presetFAQ.filter({ $0.question.hasPrefix(query) })  {
+                    self?.viewModel.shownFAQ.onNext(searchFAQ)
+                }
+            }).disposed(by: disposeBag)
+        
+        viewModel.shownFAQ.bind(to: tableView.rx.items(cellIdentifier: FAQCell.reuseIdentifier, cellType: FAQCell.self)) { (index: Int, element: FAQ, cell: FAQCell) in
+            cell.data = element
+        }.disposed(by: disposeBag)
+        
+        tableView.rx.itemSelected.subscribe(onNext: { [weak self] indexPath in
+            guard let cell = self?.tableView.cellForRow(at: indexPath) as? FAQCell else { return }
+            self?.tableView.beginUpdates()
+            cell.isShowing.toggle()
+            self?.tableView.endUpdates()
+            
+        }).disposed(by: disposeBag)
+    }
+}
+
+//MARK: - SetAttribute
+extension FAQViewController {
     private func configureSearchBar(){
-        
         searchBar.backgroundColor = .white
-        
         searchBar.setImage(UIImage(systemName: "megaphone"), for: .search, state: .normal)
         searchBar.setImage(UIImage(systemName: "xmark"), for: .clear, state: .normal)
         searchBar.placeholder = "궁금한 건 무엇이든 물어보세요!"
@@ -89,38 +114,15 @@ final class FAQViewController: UIViewController {
         
         tableView = UITableView()
         tableView.rx.setDelegate(self).disposed(by: disposeBag)
+        tableView.backgroundColor = .white
         tableView.separatorStyle = .none
         tableView.rowHeight = UITableView.automaticDimension
         tableView.allowsMultipleSelection = true
         tableView.register(FAQCell.self, forCellReuseIdentifier: FAQCell.reuseIdentifier)
     }
-    
-    private func bind(){
-        
-        searchBar.rx.text.orEmpty
-        //0.5초 기다림
-            .debounce(RxTimeInterval.microseconds(5), scheduler: MainScheduler.instance)   .distinctUntilChanged()
-            .subscribe(onNext: { [weak self] query in
-                if let searchFAQ = self?.viewModel.presetFAQ.filter({ $0.question.hasPrefix(query) })  {
-                    self?.viewModel.shownFAQ.onNext(searchFAQ)
-                }
-            }).disposed(by: disposeBag)
-        
-        viewModel.shownFAQ.bind(to: tableView.rx.items(cellIdentifier: FAQCell.reuseIdentifier, cellType: FAQCell.self)) { (index: Int, element: FAQ, cell: FAQCell) in
-            cell.data = element
-        }.disposed(by: disposeBag)
-        
-        tableView.rx.itemSelected.subscribe(onNext: { [weak self] indexPath in
-            guard let cell = self?.tableView.cellForRow(at: indexPath) as? FAQCell else { return }
-            self?.tableView.beginUpdates()
-            cell.isShowing.toggle()
-            self?.tableView.endUpdates()
-            
-        }).disposed(by: disposeBag)
-    }
 }
-
-extension FAQViewController: UITableViewDelegate{
+//MARK: - UITableViewDelegate
+extension FAQViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         guard let cell = tableView.cellForRow(at: indexPath) as? FAQCell else { return 52 }
         return CGFloat(cell.isShowing ? 68 + cell.data.height : 52)

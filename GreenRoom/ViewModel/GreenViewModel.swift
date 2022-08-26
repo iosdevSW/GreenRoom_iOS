@@ -10,7 +10,29 @@ import SwiftKeychainWrapper
 import RxSwift
 
 class GreenRoomViewModel {
+    
+    var keywords = BehaviorSubject<[GRSearchModel]>(value: [
+        GRSearchModel.recent(header: "최근 검색어",items: []),
+        GRSearchModel.popular(header: "인기 검색어", items: [])
+    ])
 
+    init(){
+        self.bind()
+    }
+    
+    func bind(){
+        keywords.onNext(
+            [GRSearchModel.recent(header: "최근 검색어", items:
+                                    CoreDataManager.shared.loadFromCoreData(request: RecentSearchKeyword.fetchRequest()).sorted {
+                                        $0.date! > $1.date!
+                                    }.map {
+                                        SearchTagItem(text: $0.keyword!, type: .recent)
+                                    })
+             ,GRSearchModel.popular(header: "인기 검색어", items: [])
+            ]
+        )
+        
+    }
     func isLogin()->Observable<Bool> {
         if let accessToken = KeychainWrapper.standard.string(forKey: "accessToken"){
             return Observable.create{ emitter in

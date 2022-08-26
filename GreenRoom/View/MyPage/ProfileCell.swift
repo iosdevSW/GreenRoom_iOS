@@ -39,7 +39,7 @@ final class ProfileCell: UICollectionViewCell {
     
     private lazy var profileImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 90, height: 90)).then {
         $0.tintColor = .customGray
-        $0.contentMode = .scaleToFill
+        $0.contentMode = .scaleAspectFill
         $0.layer.cornerRadius = 45
         $0.backgroundColor = .clear
         $0.layer.masksToBounds = true
@@ -48,6 +48,7 @@ final class ProfileCell: UICollectionViewCell {
     private var nameLabel = UILabel().then {
         $0.text = "김면접"
         $0.font = .sfPro(size: 16, family: .Bold)
+        $0.textColor = .black
         $0.textAlignment = .center
     }
     
@@ -57,7 +58,7 @@ final class ProfileCell: UICollectionViewCell {
         
         $0.titleLabel?.font = .sfProText(size: 12, family: .Regular)
         $0.titleLabel?.textAlignment = .center
-        
+        $0.titleLabel?.textColor = .black
         $0.setImage(UIImage(systemName: "chevron.right"), for: .normal)
         $0.imageView?.tintColor = .customGray
         $0.semanticContentAttribute = .forceRightToLeft
@@ -86,6 +87,8 @@ final class ProfileCell: UICollectionViewCell {
         profileImageView.layer.borderWidth = 4
         
         guard let url = URL(string: user.profileImage) else { return }
+        
+        
         profileImageView.kf.indicatorType = .activity
         profileImageView.kf.setImage(with: url,placeholder: UIImage(named:"DefaultProfile"))
     }

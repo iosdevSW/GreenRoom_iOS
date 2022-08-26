@@ -53,6 +53,9 @@ class FAQCell: UITableViewCell {
     }
     
     private func configureUI(){
+        
+        self.backgroundColor = .white
+        
         contentView.addSubview(questionLabel)
         questionLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(42)

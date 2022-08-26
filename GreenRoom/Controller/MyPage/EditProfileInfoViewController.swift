@@ -7,10 +7,9 @@
 import UIKit
 import RxSwift
 
-class EditProfileInfoViewController: UIViewController {
+class EditProfileInfoViewController: BaseViewController {
     
     //MARK: - properties
-    private var disposeBag = DisposeBag()
     private let viewModel: MyPageViewModel
     
     private let nameLabel = UILabel().then{
@@ -32,7 +31,7 @@ class EditProfileInfoViewController: UIViewController {
         var configuration = UIButton.Configuration.plain()
         configuration.title = "로그아웃"
         configuration.image = UIImage(systemName: "chevron.right")
-        configuration.imagePadding = 240
+        configuration.imagePadding = 230
         configuration.imagePlacement = .trailing
         configuration.baseForegroundColor = .black
         configuration.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 46, bottom: 0, trailing: 63)
@@ -49,7 +48,7 @@ class EditProfileInfoViewController: UIViewController {
         var configuration = UIButton.Configuration.plain()
         configuration.title = "회원 탈퇴"
         configuration.baseForegroundColor = .black
-        configuration.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 280)
+        configuration.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 15, bottom: 0, trailing: 280)
         
         $0.titleLabel?.textColor = .black
         $0.titleLabel?.font = .sfPro(size: 16, family: .Regular)
@@ -59,7 +58,6 @@ class EditProfileInfoViewController: UIViewController {
     }
     
     //MARK: - lifecycle
-    
     init(viewModel: MyPageViewModel){
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -71,8 +69,6 @@ class EditProfileInfoViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureUI()
-        bind()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -83,7 +79,7 @@ class EditProfileInfoViewController: UIViewController {
         navigationController?.navigationBar.tintColor = .mainColor
     }
     
-    func configureUI(){
+    override func configureUI(){
         view.backgroundColor = .white
         
         self.view.addSubview(nameLabel)
@@ -115,7 +111,7 @@ class EditProfileInfoViewController: UIViewController {
         }
     }
     
-    func bind(){
+    override func setupBinding() {
         
         viewModel.usernameObservable.subscribe(onNext: { [weak self] name in
             self?.nameTextField.text = name
