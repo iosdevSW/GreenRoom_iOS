@@ -32,7 +32,7 @@ class EditProfileInfoViewController: UIViewController {
         var configuration = UIButton.Configuration.plain()
         configuration.title = "로그아웃"
         configuration.image = UIImage(systemName: "chevron.right")
-        configuration.imagePadding = 240
+        configuration.imagePadding = 230
         configuration.imagePlacement = .trailing
         configuration.baseForegroundColor = .black
         configuration.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 46, bottom: 0, trailing: 63)
@@ -49,7 +49,7 @@ class EditProfileInfoViewController: UIViewController {
         var configuration = UIButton.Configuration.plain()
         configuration.title = "회원 탈퇴"
         configuration.baseForegroundColor = .black
-        configuration.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 280)
+        configuration.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 15, bottom: 0, trailing: 280)
         
         $0.titleLabel?.textColor = .black
         $0.titleLabel?.font = .sfPro(size: 16, family: .Regular)

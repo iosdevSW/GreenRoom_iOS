@@ -43,7 +43,9 @@ final class FAQViewController: UIViewController {
     }
     
     private func configureUI(){
+
         self.view.backgroundColor = .white
+        
         self.view.addSubview(searchBar)
         searchBar.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide)
@@ -61,8 +63,8 @@ final class FAQViewController: UIViewController {
     
     private func configureSearchBar(){
         
-        searchBar.backgroundColor = .white
         
+        searchBar.backgroundColor = .white
         searchBar.setImage(UIImage(systemName: "megaphone"), for: .search, state: .normal)
         searchBar.setImage(UIImage(systemName: "xmark"), for: .clear, state: .normal)
         searchBar.placeholder = "궁금한 건 무엇이든 물어보세요!"
@@ -89,6 +91,7 @@ final class FAQViewController: UIViewController {
         
         tableView = UITableView()
         tableView.rx.setDelegate(self).disposed(by: disposeBag)
+        tableView.backgroundColor = .white
         tableView.separatorStyle = .none
         tableView.rowHeight = UITableView.automaticDimension
         tableView.allowsMultipleSelection = true

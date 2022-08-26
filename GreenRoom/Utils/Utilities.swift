@@ -67,4 +67,23 @@ final class Utilities {
         return label.frame.height
     }
     
+    func generateProfileImage(frame: CGRect) -> UIImageView {
+        let imageView = UIImageView()
+        imageView.tintColor = .customGray
+        imageView.contentMode = .scaleAspectFill
+        imageView.frame = frame
+        imageView.layer.cornerRadius = frame.width / 2
+        imageView.backgroundColor = .clear
+        imageView.layer.masksToBounds = true
+        
+        return imageView
+    }
+    
+    func generateLabel(text: String, color: UIColor?,font: UIFont?) -> UILabel {
+        return UILabel().then {
+            $0.text = text
+            $0.font = font
+            $0.textColor = color
+        }
+    }
 }

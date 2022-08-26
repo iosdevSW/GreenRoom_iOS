@@ -28,7 +28,6 @@
 		DBD082552897E75B0092241F /* GreenRoomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD0823F2897E75A0092241F /* GreenRoomViewController.swift */; };
 		DBD082562897E75B0092241F /* MyPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD082412897E75A0092241F /* MyPageViewController.swift */; };
 		DBD082572897E75B0092241F /* KeywordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD082432897E75A0092241F /* KeywordViewController.swift */; };
-		DBD082592897E75B0092241F /* TempGreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD082482897E75A0092241F /* TempGreen.swift */; };
 		DBD0825A2897E75B0092241F /* ProfileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD0824A2897E75A0092241F /* ProfileCell.swift */; };
 		DBD0825B2897E75B0092241F /* SearchBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD0824C2897E75A0092241F /* SearchBarView.swift */; };
 		DBD0825D2897E75B0092241F /* LoginModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD082502897E75B0092241F /* LoginModel.swift */; };
@@ -39,6 +38,12 @@
 		DBFB296E28B26F5B00B1DAC9 /* CustomSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBFB296D28B26F5B00B1DAC9 /* CustomSegmentedControl.swift */; };
 		DBFB297028B351F400B1DAC9 /* QuestionListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBFB296F28B351F400B1DAC9 /* QuestionListCell.swift */; };
 		DBFB297228B377EB00B1DAC9 /* CategoryFilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBFB297128B377EA00B1DAC9 /* CategoryFilterView.swift */; };
+		E40BC69D28B5F35A00FB557D /* SearchWordCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E40BC69C28B5F35A00FB557D /* SearchWordCell.swift */; };
+		E40BC6B328B7548E00FB557D /* SearchWordHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E40BC6B228B7548E00FB557D /* SearchWordHeaderView.swift */; };
+		E40BC6B528B756EE00FB557D /* GRSearchModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E40BC6B428B756EE00FB557D /* GRSearchModel.swift */; };
+		E40BC6DD28B7CB8700FB557D /* SFProText-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = E40BC6DA28B7CB8700FB557D /* SFProText-Semibold.otf */; };
+		E40BC6DE28B7CB8700FB557D /* SFPro.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E40BC6DB28B7CB8700FB557D /* SFPro.ttf */; };
+		E40BC6DF28B7CB8700FB557D /* SFProText-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = E40BC6DC28B7CB8700FB557D /* SFProText-Bold.otf */; };
 		E4141AB328AF4499004D74B3 /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4141AB228AF4499004D74B3 /* Storage.swift */; };
 		E4141ABA28AF5199004D74B3 /* FAQ.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4141AB928AF5199004D74B3 /* FAQ.swift */; };
 		E4141ABC28AF528E004D74B3 /* FAQCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4141ABB28AF528E004D74B3 /* FAQCell.swift */; };
@@ -48,11 +53,14 @@
 		E46539DC28ACDAD100F17A6C /* SetNotificationRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = E46539DB28ACDAD100F17A6C /* SetNotificationRow.swift */; };
 		E46539E428AD33C700F17A6C /* EditProfileInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E46539E328AD33C700F17A6C /* EditProfileInfoViewController.swift */; };
 		E46539E928AD3F2800F17A6C /* SFProText-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = E46539E628AD3F2800F17A6C /* SFProText-Regular.otf */; };
-		E46539EA28AD3F2800F17A6C /* SFPro.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E46539E728AD3F2800F17A6C /* SFPro.ttf */; };
-		E46539EB28AD3F2800F17A6C /* SFProText-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = E46539E828AD3F2800F17A6C /* SFProText-Bold.otf */; };
 		E470539528AB81EC00884B56 /* MyPageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E470539428AB81EC00884B56 /* MyPageModel.swift */; };
 		E470539728AB856D00884B56 /* SettingHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = E470539628AB856D00884B56 /* SettingHeader.swift */; };
 		E470539928AB882900884B56 /* SettingRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = E470539828AB882900884B56 /* SettingRow.swift */; };
+		E49EF3D028B5361000358340 /* PopularHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = E49EF3CF28B5361000358340 /* PopularHeader.swift */; };
+		E49EF3D228B5375D00358340 /* Question.swift in Sources */ = {isa = PBXBuildFile; fileRef = E49EF3D128B5375D00358340 /* Question.swift */; };
+		E49EF3D428B5377900358340 /* GreenRoomSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E49EF3D328B5377900358340 /* GreenRoomSection.swift */; };
+		E49EF3D928B539FF00358340 /* PopularQuestionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E49EF3D828B539FF00358340 /* PopularQuestionCell.swift */; };
+		E49EF3DC28B5E9AC00358340 /* GRSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E49EF3DB28B5E9AC00358340 /* GRSearchViewController.swift */; };
 		E4C8AE6928B35519007E010D /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4C8AE6828B35519007E010D /* UserService.swift */; };
 		E4C8AE6B28B35533007E010D /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4C8AE6A28B35533007E010D /* User.swift */; };
 /* End PBXBuildFile section */
@@ -85,7 +93,6 @@
 		DBD0823F2897E75A0092241F /* GreenRoomViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GreenRoomViewController.swift; sourceTree = "<group>"; };
 		DBD082412897E75A0092241F /* MyPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyPageViewController.swift; sourceTree = "<group>"; };
 		DBD082432897E75A0092241F /* KeywordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeywordViewController.swift; sourceTree = "<group>"; };
-		DBD082482897E75A0092241F /* TempGreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TempGreen.swift; sourceTree = "<group>"; };
 		DBD0824A2897E75A0092241F /* ProfileCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileCell.swift; sourceTree = "<group>"; };
 		DBD0824C2897E75A0092241F /* SearchBarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchBarView.swift; sourceTree = "<group>"; };
 		DBD082502897E75B0092241F /* LoginModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginModel.swift; sourceTree = "<group>"; };
@@ -96,6 +103,12 @@
 		DBFB296D28B26F5B00B1DAC9 /* CustomSegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSegmentedControl.swift; sourceTree = "<group>"; };
 		DBFB296F28B351F400B1DAC9 /* QuestionListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionListCell.swift; sourceTree = "<group>"; };
 		DBFB297128B377EA00B1DAC9 /* CategoryFilterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryFilterView.swift; sourceTree = "<group>"; };
+		E40BC69C28B5F35A00FB557D /* SearchWordCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchWordCell.swift; sourceTree = "<group>"; };
+		E40BC6B228B7548E00FB557D /* SearchWordHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchWordHeaderView.swift; sourceTree = "<group>"; };
+		E40BC6B428B756EE00FB557D /* GRSearchModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GRSearchModel.swift; sourceTree = "<group>"; };
+		E40BC6DA28B7CB8700FB557D /* SFProText-Semibold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFProText-Semibold.otf"; sourceTree = "<group>"; };
+		E40BC6DB28B7CB8700FB557D /* SFPro.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = SFPro.ttf; sourceTree = "<group>"; };
+		E40BC6DC28B7CB8700FB557D /* SFProText-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFProText-Bold.otf"; sourceTree = "<group>"; };
 		E4141AB228AF4499004D74B3 /* Storage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Storage.swift; sourceTree = "<group>"; };
 		E4141AB928AF5199004D74B3 /* FAQ.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAQ.swift; sourceTree = "<group>"; };
 		E4141ABB28AF528E004D74B3 /* FAQCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAQCell.swift; sourceTree = "<group>"; };
@@ -105,11 +118,14 @@
 		E46539DB28ACDAD100F17A6C /* SetNotificationRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetNotificationRow.swift; sourceTree = "<group>"; };
 		E46539E328AD33C700F17A6C /* EditProfileInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileInfoViewController.swift; sourceTree = "<group>"; };
 		E46539E628AD3F2800F17A6C /* SFProText-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SFProText-Regular.otf"; path = "GreenRoom/Resource/Font/SFProText-Regular.otf"; sourceTree = SOURCE_ROOT; };
-		E46539E728AD3F2800F17A6C /* SFPro.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = SFPro.ttf; sourceTree = "<group>"; };
-		E46539E828AD3F2800F17A6C /* SFProText-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFProText-Bold.otf"; sourceTree = "<group>"; };
 		E470539428AB81EC00884B56 /* MyPageModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageModel.swift; sourceTree = "<group>"; };
 		E470539628AB856D00884B56 /* SettingHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingHeader.swift; sourceTree = "<group>"; };
 		E470539828AB882900884B56 /* SettingRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingRow.swift; sourceTree = "<group>"; };
+		E49EF3CF28B5361000358340 /* PopularHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopularHeader.swift; sourceTree = "<group>"; };
+		E49EF3D128B5375D00358340 /* Question.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Question.swift; sourceTree = "<group>"; };
+		E49EF3D328B5377900358340 /* GreenRoomSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GreenRoomSection.swift; sourceTree = "<group>"; };
+		E49EF3D828B539FF00358340 /* PopularQuestionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopularQuestionCell.swift; sourceTree = "<group>"; };
+		E49EF3DB28B5E9AC00358340 /* GRSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GRSearchViewController.swift; sourceTree = "<group>"; };
 		E4C8AE6828B35519007E010D /* UserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
 		E4C8AE6A28B35533007E010D /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -226,6 +242,7 @@
 			isa = PBXGroup;
 			children = (
 				DBD0823F2897E75A0092241F /* GreenRoomViewController.swift */,
+				E49EF3DA28B5E98D00358340 /* Search */,
 			);
 			path = Green;
 			sourceTree = "<group>";
@@ -263,7 +280,7 @@
 		DBD082472897E75A0092241F /* Green */ = {
 			isa = PBXGroup;
 			children = (
-				DBD082482897E75A0092241F /* TempGreen.swift */,
+				E49EF3CE28B5360600358340 /* Popular */,
 			);
 			path = Green;
 			sourceTree = "<group>";
@@ -295,10 +312,11 @@
 		DBD0824F2897E75B0092241F /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				E49EF3D528B5377C00358340 /* SectionModel */,
 				DBD082502897E75B0092241F /* LoginModel.swift */,
-				E470539428AB81EC00884B56 /* MyPageModel.swift */,
 				E4141AB928AF5199004D74B3 /* FAQ.swift */,
 				E4C8AE6A28B35533007E010D /* User.swift */,
+				E49EF3D128B5375D00358340 /* Question.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -315,9 +333,10 @@
 		DBD082612897E77F0092241F /* Font */ = {
 			isa = PBXGroup;
 			children = (
-				E46539E728AD3F2800F17A6C /* SFPro.ttf */,
-				E46539E828AD3F2800F17A6C /* SFProText-Bold.otf */,
-				DB05246728B47F58003209D4 /* SFProText-Semibold.otf */,
+
+				E40BC6DB28B7CB8700FB557D /* SFPro.ttf */,
+				E40BC6DC28B7CB8700FB557D /* SFProText-Bold.otf */,
+				E40BC6DA28B7CB8700FB557D /* SFProText-Semibold.otf */,
 				E46539E628AD3F2800F17A6C /* SFProText-Regular.otf */,
 			);
 			path = Font;
@@ -368,6 +387,35 @@
 				E4141AB228AF4499004D74B3 /* Storage.swift */,
 			);
 			path = Utils;
+			sourceTree = "<group>";
+		};
+		E49EF3CE28B5360600358340 /* Popular */ = {
+			isa = PBXGroup;
+			children = (
+				E49EF3CF28B5361000358340 /* PopularHeader.swift */,
+				E49EF3D828B539FF00358340 /* PopularQuestionCell.swift */,
+				E40BC69C28B5F35A00FB557D /* SearchWordCell.swift */,
+				E40BC6B228B7548E00FB557D /* SearchWordHeaderView.swift */,
+			);
+			path = Popular;
+			sourceTree = "<group>";
+		};
+		E49EF3D528B5377C00358340 /* SectionModel */ = {
+			isa = PBXGroup;
+			children = (
+				E470539428AB81EC00884B56 /* MyPageModel.swift */,
+				E49EF3D328B5377900358340 /* GreenRoomSection.swift */,
+				E40BC6B428B756EE00FB557D /* GRSearchModel.swift */,
+			);
+			path = SectionModel;
+			sourceTree = "<group>";
+		};
+		E49EF3DA28B5E98D00358340 /* Search */ = {
+			isa = PBXGroup;
+			children = (
+				E49EF3DB28B5E9AC00358340 /* GRSearchViewController.swift */,
+			);
+			path = Search;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -430,9 +478,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E46539EB28AD3F2800F17A6C /* SFProText-Bold.otf in Resources */,
+				E40BC6DF28B7CB8700FB557D /* SFProText-Bold.otf in Resources */,
+				E40BC6DD28B7CB8700FB557D /* SFProText-Semibold.otf in Resources */,
+				E40BC6DE28B7CB8700FB557D /* SFPro.ttf in Resources */,
 				E46539E928AD3F2800F17A6C /* SFProText-Regular.otf in Resources */,
-				E46539EA28AD3F2800F17A6C /* SFPro.ttf in Resources */,
 				DBD082262897E6F30092241F /* Assets.xcassets in Resources */,
 				DBD082292897E6F30092241F /* LaunchScreen.storyboard in Resources */,
 			);
@@ -490,6 +539,7 @@
 				DBD082512897E75B0092241F /* LoginViewModel.swift in Sources */,
 				DBFB296E28B26F5B00B1DAC9 /* CustomSegmentedControl.swift in Sources */,
 				DBFB297228B377EB00B1DAC9 /* CategoryFilterView.swift in Sources */,
+				E49EF3D928B539FF00358340 /* PopularQuestionCell.swift in Sources */,
 				DB9CF9BE289E81FE0091B705 /* CateogryCell.swift in Sources */,
 				E46539DC28ACDAD100F17A6C /* SetNotificationRow.swift in Sources */,
 				E46539D928ACD77600F17A6C /* Utilities.swift in Sources */,
@@ -498,7 +548,10 @@
 				DBFB296A28B2267A00B1DAC9 /* FilterItemsCell.swift in Sources */,
 				DB563F9E28AE266D00E7193D /* CategoryViewModel.swift in Sources */,
 				DB53AE9F289F967800E9A5CC /* RegisterCompleteViewControlller.swift in Sources */,
+				E49EF3D228B5375D00358340 /* Question.swift in Sources */,
+				E49EF3D028B5361000358340 /* PopularHeader.swift in Sources */,
 				E470539928AB882900884B56 /* SettingRow.swift in Sources */,
+				E40BC6B528B756EE00FB557D /* GRSearchModel.swift in Sources */,
 				DB563F9C28AD407400E7193D /* Extension.swift in Sources */,
 				DBE7A54A28996BCE00E9A4E9 /* LoginViewController.swift in Sources */,
 				DBFB297028B351F400B1DAC9 /* QuestionListCell.swift in Sources */,
@@ -507,17 +560,20 @@
 				DBE7A54F28996C2000E9A4E9 /* CheckLabel.swift in Sources */,
 				DBD082572897E75B0092241F /* KeywordViewController.swift in Sources */,
 				DBD082522897E75B0092241F /* GreenViewModel.swift in Sources */,
+				E49EF3DC28B5E9AC00358340 /* GRSearchViewController.swift in Sources */,
 				E4141ABC28AF528E004D74B3 /* FAQCell.swift in Sources */,
 				E4141ABA28AF5199004D74B3 /* FAQ.swift in Sources */,
 				DBBA9481289968CD00264405 /* PaddingLabel.swift in Sources */,
 				DBD082542897E75B0092241F /* MyPageViewModel.swift in Sources */,
 				E4141ACB28AF79E7004D74B3 /* FAQViewController.swift in Sources */,
 				DBD082602897E7740092241F /* LoginService.swift in Sources */,
-				DBD082592897E75B0092241F /* TempGreen.swift in Sources */,
+				E49EF3D428B5377900358340 /* GreenRoomSection.swift in Sources */,
 				DBD0821D2897E6EE0092241F /* AppDelegate.swift in Sources */,
+				E40BC6B328B7548E00FB557D /* SearchWordHeaderView.swift in Sources */,
 				E46539E428AD33C700F17A6C /* EditProfileInfoViewController.swift in Sources */,
 				E4141AB328AF4499004D74B3 /* Storage.swift in Sources */,
 				E4C8AE6B28B35533007E010D /* User.swift in Sources */,
+				E40BC69D28B5F35A00FB557D /* SearchWordCell.swift in Sources */,
 				DB797A99289B9BFF00ADF65F /* RegisterNameViewController.swift in Sources */,
 				DBD0825B2897E75B0092241F /* SearchBarView.swift in Sources */,
 				DBD082532897E75B0092241F /* KeywordViewModel.swift in Sources */,
@@ -667,11 +723,14 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = GreenRoom/GreenRoom.entitlements;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = V2YNV9QV27;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = GreenRoom/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "사진첩 접근";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "카메라 접근";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -683,6 +742,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = GreenRoom.GreenRoom;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = GreenRoomProfile;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -696,11 +756,14 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = GreenRoom/GreenRoom.entitlements;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = V2YNV9QV27;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = GreenRoom/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "사진첩 접근";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "카메라 접근";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -712,6 +775,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = GreenRoom.GreenRoom;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = GreenRoomProfile;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

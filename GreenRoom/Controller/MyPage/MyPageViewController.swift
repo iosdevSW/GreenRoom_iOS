@@ -105,8 +105,6 @@ extension MyPageViewController {
                 cell.delegate = self
                 return cell
             case .setting(settingInfo: let setting) :
-                
-                
                 switch setting.setting {
                 case .notification:
                     guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SetNotificationRow.reuseIdentifier, for: indexPath) as? SetNotificationRow else { return UICollectionViewCell() }

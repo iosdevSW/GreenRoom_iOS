@@ -26,7 +26,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             
             //tabbar upper line remove
             UITabBar.appearance().clipsToBounds = true
+            
+            let navAppearance = UINavigationBarAppearance()
+            navAppearance.configureWithOpaqueBackground()
+            
+            tabbarAppearance.backgroundColor = .white
+            UINavigationBar().compactAppearance = navAppearance
+            UINavigationBar().scrollEdgeAppearance = navAppearance
+            UINavigationBar().standardAppearance = navAppearance
         }
+        
         //Naver
         let instance = NaverThirdPartyLoginConnection.getSharedInstance()
                 
