@@ -96,7 +96,7 @@ class KeywordViewController: UIViewController{
         fatalError("init(coder:) has not been implemented")
     }
     
-    //MARK: - ViewdidLoad
+    //MARK: - LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
@@ -109,6 +109,11 @@ class KeywordViewController: UIViewController{
         btn.addTarget(self, action: #selector(logout(_:)), for: .touchUpInside)
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.tabBarController?.tabBar.isHidden = false
+    }
+    
     //MARK: - Method
     func closeFilteringView(){
         self.filteringView?.removeFromSuperview()
@@ -119,9 +124,9 @@ class KeywordViewController: UIViewController{
         self.tabBarController?.tabBar.isHidden = false
     }
     
-    
     //MARK: - Selector
     @objc func logout(_ sender: UIButton){
+        
         LoginService.logout()
             .subscribe(onNext: { isSuccess in
                 let oauthType = KeychainWrapper.standard.integer(forKey: "oauthType")!
@@ -173,6 +178,10 @@ class KeywordViewController: UIViewController{
                 make.height.equalTo(560)
             }
         }
+    }
+    
+    @objc func didClickPracticeButton(_ sender: UIButton){
+        self.navigationController?.pushViewController(PrepareKeywordPracticeViewController(viewmodel: viewmodel), animated: true)
     }
     
     @objc func didClickCancelButton(_ sender: UIButton) {
@@ -298,6 +307,7 @@ extension KeywordViewController {
         }
         
         self.view.addSubview(self.practiceInterviewButton)
+        self.practiceInterviewButton.addTarget(self, action: #selector(self.didClickPracticeButton(_:)), for: .touchUpInside)
         self.practiceInterviewButton.snp.makeConstraints{ make in
             make.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.bottom).offset(-10)
             make.leading.equalToSuperview().offset(35)
@@ -316,30 +326,21 @@ extension KeywordViewController {
 
 extension KeywordViewController: UICollectionViewDelegateFlowLayout{
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        switch collectionView {
-        case self.filteredCategoryView:
-            let categories = ["공통","인턴","대외활동","디자인","경영기획","회계","생산/품질관리","인사","마케팅","영업","IT/개발","연구개발(R&D)"]
-            let tempLabel = UILabel()
-            tempLabel.font = .sfPro(size: 12, family: .Regular)
-            tempLabel.text = categories[indexPath.item]
-            
-            return CGSize(width: tempLabel.intrinsicContentSize.width, height: 22)
-            
-        case self.filteringView?.filteringCollectionView:
-            
-            let items = Array(filteringView!.selectedCategories)
-            let id = items[indexPath.item]
-            let category = CategoryID(rawValue: id)
-            
-            let tempLabel = UILabel()
-            tempLabel.font = .sfPro(size: 12, family: .Regular)
-            tempLabel.text = category?.title
-            
-            return CGSize(width: tempLabel.intrinsicContentSize.width, height: 22)
-        default:
-            return CGSize(width: 0, height: 0)
-        }
-    
+        var items = [Int]()
         
+        if collectionView == self.filteredCategoryView{
+            items = viewmodel.filteringList
+        }else {
+            items = filteringView!.selectedCategories
+        }
+        
+        let id = items[indexPath.item]
+        let category = CategoryID(rawValue: id)
+        
+        let tempLabel = UILabel()
+        tempLabel.font = .sfPro(size: 12, family: .Regular)
+        tempLabel.text = category?.title
+        
+        return CGSize(width: tempLabel.intrinsicContentSize.width, height: 22)
     }
 }

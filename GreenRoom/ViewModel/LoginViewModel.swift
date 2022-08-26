@@ -95,7 +95,7 @@ class LoginViewModel {
                 switch auth.credential {
                 case let appleIDCredential as ASAuthorizationAppleIDCredential:
 
-                    let userIdentifier = appleIDCredential.user
+//                    let userIdentifier = appleIDCredential.user
 
                     guard let identityToken = appleIDCredential.identityToken else { return }
     

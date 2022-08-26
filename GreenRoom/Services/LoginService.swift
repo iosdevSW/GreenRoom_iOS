@@ -53,10 +53,9 @@ class LoginService{
         
         let req = AF.request(url, method: .post, parameters: param,encoding: JSONEncoding.default)
         
-        req.responseJSON(){ response in
+        req.response(){ response in
             switch response.result {
-            case .success(let data):
-                print(data)
+            case .success(_):
                 print("회원가입 완료")
             case .failure(let error):
                 print(error)
@@ -65,13 +64,19 @@ class LoginService{
     }
     
     static func logout()->Observable<Bool>{
+        let accessToken = KeychainWrapper.standard.string(forKey: "accessToken")!
+        
+        let headers: HTTPHeaders = [
+            "Authorization": "Bearer \(accessToken)"
+        ]
+        
         let urlString = Storage().baseURL + "/api/auth/logout"
         let url = URL(string: urlString)!
         
         return Observable.create{ emitter in
-            let req = AF.request(url, method: .post, encoding: JSONEncoding.default).validate(statusCode: 200..<300)
+            let req = AF.request(url, method: .post, headers: headers).validate(statusCode: 200..<300)
             
-            req.responseData{ res in
+            req.response() { res in
                 switch res.result {
                 case .success(_):
                     emitter.onNext(true)
