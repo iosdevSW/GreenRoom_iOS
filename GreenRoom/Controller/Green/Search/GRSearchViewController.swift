@@ -50,6 +50,16 @@ final class GRSearchViewController: BaseViewController {
         configureSearchBar()
     }
     
+    override func setupBinding() {
+        viewModel.keywords
+            .bind(to: collectionView.rx.items(dataSource: self.dataSource()))
+            .disposed(by: disposeBag)
+    }
+
+}
+//MARK: - SetAttributes
+extension GRSearchViewController {
+    
     private func configureCollectionView(){
         
         let layout = generateLayout()
@@ -60,6 +70,7 @@ final class GRSearchViewController: BaseViewController {
         self.collectionView.register(SearchWordHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: SearchWordHeaderView.reuseIdentifier)
         
     }
+    
     private func configureSearchBar(){
         self.navigationController?.navigationBar.tintColor = .customGray
         self.searchBar = UISearchBar(frame: CGRect(x: 0, y: 0, width: view.frame.width - 100, height: 0))
@@ -90,18 +101,15 @@ final class GRSearchViewController: BaseViewController {
         
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: searchBar)
     }
-    
-    override func setupBinding() {
-        viewModel.observable
-            .bind(to: collectionView.rx.items(dataSource: self.dataSource()))
-            .disposed(by: disposeBag)
-    }
-
 }
 
+//MARK: - UITextFieldDelegate
 extension GRSearchViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         guard let text = textField.text else { return true }
+        CoreDataManager.shared.saveRecentSearch(keyword: text, date: Date()) { completed in
+            print(completed)
+        }
         return true
     }
 }
@@ -129,6 +137,7 @@ extension GRSearchViewController {
         }
     }
 }
+
 //MARK: - CollectionViewLayout
 extension GRSearchViewController {
     func generateLayout() -> UICollectionViewLayout {
