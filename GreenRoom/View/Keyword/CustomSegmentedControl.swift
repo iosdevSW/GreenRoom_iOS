@@ -50,8 +50,7 @@ class CustomSegmentedControl: UIView {
         stackView.insertArrangedSubview(view, at: 1)
         view.snp.makeConstraints{make in
             make.centerX.centerY.equalToSuperview()
-            make.height.equalTo(40)
-            make.width.equalTo(40)
+            make.width.equalTo(26)
         }
     }
     

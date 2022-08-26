@@ -10,10 +10,13 @@ import SwiftKeychainWrapper
 import NaverThirdPartyLogin
 import RxSwift
 import RxCocoa
+import KakaoSDKUser
 
 class KeywordViewController: UIViewController{
     //MARK: - Properties
     let viewmodel: KeywordViewModel
+    
+    let disposeBag = DisposeBag()
     
     let searchBarView = UISearchBar().then{
         $0.placeholder = "키워드로 검색해보세요!"
@@ -66,6 +69,18 @@ class KeywordViewController: UIViewController{
         $0.showsVerticalScrollIndicator = true
     }
     
+    let practiceInterviewButton = UIButton(type: .system).then{
+        $0.backgroundColor = .mainColor
+        $0.setTitle("n개의 면접 연습하기", for: .normal)
+        $0.setTitleColor(.white, for: .normal)
+        $0.titleLabel?.font = .sfPro(size: 20, family: .Semibold)
+        $0.isHidden = true
+        $0.layer.cornerRadius = 15
+        $0.layer.shadowColor = UIColor.customGray.cgColor
+        $0.layer.shadowOpacity = 1
+        $0.layer.shadowOffset = CGSize(width: 0, height: 5)
+    }
+    
     let btn = UIButton(type: .roundedRect).then{
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.setTitle("logout", for: .normal)
@@ -107,20 +122,30 @@ class KeywordViewController: UIViewController{
     
     //MARK: - Selector
     @objc func logout(_ sender: UIButton){
-        _ = LoginService.logout()
-            .subscribe(onNext: { isToken in
-                if isToken {
-                    KeychainWrapper.standard.removeObject(forKey: "accessToken")
-                    KeychainWrapper.standard.removeObject(forKey: "refreshToken")
-                    
-                    let loginVC = LoginViewController(loginViewModel: LoginViewModel())
-                    loginVC.modalPresentationStyle = .fullScreen
-                    
-                    self.present(loginVC, animated: false)
-                }else {
-                    
+        LoginService.logout()
+            .subscribe(onNext: { isSuccess in
+                let oauthType = KeychainWrapper.standard.integer(forKey: "oauthType")!
+                switch oauthType {
+                case 0:
+                    UserApi.shared.logout(){_ in () }
+                case 1:
+                    NaverThirdPartyLoginConnection.getSharedInstance().requestDeleteToken()
+                default:
+                    print("애플로그아웃")
                 }
-            })
+                
+                KeychainWrapper.standard.removeObject(forKey: "accessToken")
+                KeychainWrapper.standard.removeObject(forKey: "refreshToken")
+                KeychainWrapper.standard.removeObject(forKey: "oauthType")
+                
+                let loginVC = LoginViewController(loginViewModel: LoginViewModel())
+                loginVC.modalPresentationStyle = .fullScreen
+                
+                self.present(loginVC, animated: false)
+            }, onError: { error in
+                //로그아웃 실패
+                print(error)
+            }).disposed(by: disposeBag)
     }
     
     @objc func didClickFilterButton(_ sender: UIButton) {
@@ -168,10 +193,9 @@ class KeywordViewController: UIViewController{
                 let attributedString = NSMutableAttributedString.init(string: category.title)
                 attributedString.addAttribute(NSAttributedString.Key.underlineStyle, value: 1, range: NSRange(location: 0, length: category.title.count))
                 cell.itemLabel.attributedText = attributedString
-            }
+            }.disposed(by: disposeBag)
         
-        let tabelTemp = Observable.of(["테스트면접질문1","테스트면접질문2는 조금 긴 질문 항목입니다. 공백 포함해 35자가 넘어가면","테스트면접질문3"])
-        _ = tabelTemp
+        _ = viewmodel.tabelTemp // 서비스 로직 호출할땐 응답받는 구조체로 대체 (아직 서비스API 미구현 임시로 string배열로 받음)
             .bind(to: questionListTableView.rx.items(cellIdentifier: "QuestionListCell", cellType: QuestionListCell.self)) { index, title, cell in
                 cell.mainLabel.text = title
                 
@@ -184,17 +208,32 @@ class KeywordViewController: UIViewController{
             }
         
         _ = questionListTableView.rx.itemSelected
-            .bind(onNext: { indexPath in
+            .bind(onNext: { indexPath in // 서비스 로직시엔 Id로 다룰 것 같음
                 let cell = self.questionListTableView.cellForRow(at: indexPath) as! QuestionListCell
                 cell.mainLabel.textColor = .darken
+                let title = cell.mainLabel.text!
+                self.viewmodel.selectedQuestionTemp.append(title)
             })
         
         _ = questionListTableView.rx.itemDeselected
-            .bind(onNext: { indexPath in
+            .bind(onNext: { indexPath in // 서비스 로직시엔 Id로 다룰 것 같음
                 let cell = self.questionListTableView.cellForRow(at: indexPath) as! QuestionListCell
                 cell.mainLabel.textColor = .black
+                let title = cell.mainLabel.text!
+                if let index = self.viewmodel.selectedQuestionTemp.firstIndex(of: title){
+                    self.viewmodel.selectedQuestionTemp.remove(at: index)
+                }
             })
             
+        _ = viewmodel.selectedQuestionObservable
+            .bind(onNext: { titles in // 서비스 로직 호출할땐 응답받는 구조체로 대체 (아직 서비스API 미구현 임시로 string배열로 받음)
+                if titles.count == 0 {
+                    self.practiceInterviewButton.isHidden = true
+                }else {
+                    self.practiceInterviewButton.setTitle("\(titles.count)개의 면접 연습하기", for: .normal)
+                    self.practiceInterviewButton.isHidden = false
+                }
+            })
     }
 }
 
@@ -256,6 +295,14 @@ extension KeywordViewController {
             make.leading.equalToSuperview()
             make.trailing.equalToSuperview().offset(-20)
             make.bottom.equalToSuperview()
+        }
+        
+        self.view.addSubview(self.practiceInterviewButton)
+        self.practiceInterviewButton.snp.makeConstraints{ make in
+            make.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.bottom).offset(-10)
+            make.leading.equalToSuperview().offset(35)
+            make.trailing.equalToSuperview().offset(-35)
+            make.height.equalTo(53)
         }
         
         self.view.addSubview(btn)

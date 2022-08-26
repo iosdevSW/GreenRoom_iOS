@@ -28,7 +28,7 @@ class LoginViewModel {
         oauthToken.asObserver() // oauth 토큰 발급 옵저버
             .take(1)
             .subscribe(onNext: { [self]token in
-                _ = self.loginService.loginAPI(token.accessToken!)
+                _ = self.loginService.loginAPI(token.accessToken!, authType: token.oauthType!)
                     .take(1)
                     .bind(to: loginObservable)
             }).disposed(by: disposeBag)
@@ -86,41 +86,34 @@ class LoginViewModel {
         request.requestedScopes = [.fullName, .email]
         
         let authorizationController = ASAuthorizationController(authorizationRequests: [request])
-        authorizationController.presentationContextProvider
         authorizationController.performRequests()
+        
         
         authorizationController.rx.didCompleteWithAuthorization
             .take(1)
             .subscribe(onNext: { (controller,auth) in
                 switch auth.credential {
                 case let appleIDCredential as ASAuthorizationAppleIDCredential:
-                    // Create an account in your system.
+
                     let userIdentifier = appleIDCredential.user
-                    let fullName = appleIDCredential.fullName
-                    let email = appleIDCredential.email
-                
-                    if  let authorizationCode = appleIDCredential.authorizationCode,
-                        let identityToken = appleIDCredential.identityToken,
-                        let authString = String(data: authorizationCode, encoding: .utf8),
-                        let tokenString = String(data: identityToken, encoding: .utf8) {
-                        print("authorizationCode: \(authorizationCode)")
-                        print("identityToken: \(identityToken)")
-                        print("authString: \(authString)")
-                        print("tokenString: \(tokenString)")
-                    }
-                    
-                    print("useridentifier: \(userIdentifier)")
-//                    print("fullName: \(fullName)")
-//                    print("email: \(email)")
-                    
+
+                    guard let identityToken = appleIDCredential.identityToken else { return }
+    
+                    guard let tokenString = String(data: identityToken, encoding: .utf8) else { return }
+
+                    let oauthToken = OAuthTokenModel(oauthType: 2,
+                                                     accessToken: tokenString,
+                                                     refreshToken: nil)
+                    self.oauthToken.onNext(oauthToken)
+
                 case let passwordCredential as ASPasswordCredential:
                     // Sign in using an existing iCloud Keychain credential.
                     let username = passwordCredential.user
                     let password = passwordCredential.password
-                    
+
                     print("username: \(username)")
                     print("password: \(password)")
-                    
+
                 default:
                     break
                 }

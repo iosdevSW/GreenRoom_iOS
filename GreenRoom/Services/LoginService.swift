@@ -14,13 +14,13 @@ import SwiftKeychainWrapper
 
 class LoginService{
     
-    func loginAPI(_ accessToken: String)->Observable<LoginModel> {
+    func loginAPI(_ accessToken: String, authType: Int)->Observable<LoginModel> {
         let urlString = Storage().baseURL + "/api/auth/login"
         let url = URL(string: urlString)!
         
         let param: Parameters = [
             "accessToken" : accessToken,
-            "oauthType" : 0
+            "oauthType" : authType
         ]
         
         return Observable.create{ emitter in
@@ -28,6 +28,7 @@ class LoginService{
             req.responseDecodable(of: LoginModel.self){ res in
                 switch res.result {
                 case .success(let data):
+                    KeychainWrapper.standard.set(authType, forKey: "oauthType")
                     emitter.onNext(data)
                     emitter.onCompleted()
                 case .failure(let error):
@@ -64,14 +65,19 @@ class LoginService{
     }
     
     static func logout()->Observable<Bool>{
+        let urlString = Storage().baseURL + "/api/auth/logout"
+        let url = URL(string: urlString)!
+        
         return Observable.create{ emitter in
-            UserApi.shared.logout{ error in
-                if let err = error {
-                    emitter.onNext(false)
-                    emitter.onError(err)
-                }else {
+            let req = AF.request(url, method: .post, encoding: JSONEncoding.default).validate(statusCode: 200..<300)
+            
+            req.responseData{ res in
+                switch res.result {
+                case .success(_):
                     emitter.onNext(true)
                     emitter.onCompleted()
+                case .failure(let error):
+                    emitter.onError(error)
                 }
             }
             return Disposables.create()
