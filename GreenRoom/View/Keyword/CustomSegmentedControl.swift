@@ -50,8 +50,7 @@ class CustomSegmentedControl: UIView {
         stackView.insertArrangedSubview(view, at: 1)
         view.snp.makeConstraints{make in
             make.centerX.centerY.equalToSuperview()
-            make.height.equalTo(40)
-            make.width.equalTo(40)
+            make.width.equalTo(26)
         }
     }
     
@@ -88,7 +87,7 @@ class CustomSegmentedControl: UIView {
     }
     
     @objc func buttonAction(sender: UIButton) {
-        for (btnIndex, btn) in buttons.enumerated() {
+        for (_, btn) in buttons.enumerated() {
             btn.setTitleColor(textColor, for: .normal)
             btn.titleLabel?.font = .sfPro(size: 16, family: .Semibold)
             btn.layer.borderWidth = 0

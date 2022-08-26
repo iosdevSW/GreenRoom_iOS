@@ -57,14 +57,15 @@ class LoginViewController: UIViewController{
             .subscribe(onNext: { tokenModel in
                 self.oauthTokenInfo = tokenModel
             })
+        
         // JWT토큰 받아 키체인에 저장하고 예외처리
         loginViewModel.loginObservable
             .take(1)
             .subscribe(on: MainScheduler.instance)
             .subscribe(onNext: { res in
+                print(res.accessToken)
                 KeychainWrapper.standard.set(res.accessToken, forKey: "accessToken")
                 KeychainWrapper.standard.set(res.refreshToken, forKey: "refreshToken")
-                
                 self.dismiss(animated: true)
             },onError: { error in
                 guard let statusCode = error.asAFError?.responseCode else { return }
@@ -85,17 +86,6 @@ class LoginViewController: UIViewController{
         let navigationVC = UINavigationController(rootViewController: RegisterNameViewController(loginViewModel: loginViewModel, oauthTokenInfo: oauthTokenInfo))
         navigationVC.modalPresentationStyle = .fullScreen
         self.present(navigationVC, animated: true, completion: {})
-    }
-    
-    @objc func apple(_: UIButton) {
-        let appleIDProvider = ASAuthorizationAppleIDProvider()
-        let request = appleIDProvider.createRequest()
-        request.requestedScopes = [.fullName, .email]
-        
-        let authorizationController = ASAuthorizationController(authorizationRequests: [request])
-        authorizationController.delegate = self
-        authorizationController.presentationContextProvider = self
-        authorizationController.performRequests()
     }
 }
 
@@ -221,7 +211,7 @@ extension LoginViewController {
             //                                         tag: 2,
             //                                         titleColor: .white,
             //                                         backgroundColor: .black)
-            button.addTarget(self, action: #selector(self.apple(_:)), for: .touchUpInside)
+            button.addTarget(self, action: #selector(didClickedLoginButton(_:)), for: .touchUpInside)
             frameView.addSubview(button)
             button.snp.makeConstraints{ make in
                 make.leading.equalToSuperview().offset(24)
@@ -265,44 +255,44 @@ extension LoginViewController {
     }
 }
 
-extension LoginViewController:ASAuthorizationControllerDelegate, ASAuthorizationControllerPresentationContextProviding {
-    func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
-        return self.view.window!
-    }
-    
-    func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
-        switch authorization.credential {
-        case let appleIDCredential as ASAuthorizationAppleIDCredential:
-            // Create an account in your system.
-            let userIdentifier = appleIDCredential.user
-            let fullName = appleIDCredential.fullName
-            let email = appleIDCredential.email
-        
-            if  let authorizationCode = appleIDCredential.authorizationCode,
-                let identityToken = appleIDCredential.identityToken,
-                let authString = String(data: authorizationCode, encoding: .utf8),
-                let tokenString = String(data: identityToken, encoding: .utf8) {
-                print("authorizationCode: \(authorizationCode)")
-                print("identityToken: \(identityToken)")
-                print("authString: \(authString)")
-                print("tokenString: \(tokenString)")
-            }
-            
-            print("useridentifier: \(userIdentifier)")
-            print("fullName: \(fullName)")
-            print("email: \(email)")
-            
-        case let passwordCredential as ASPasswordCredential:
-            // Sign in using an existing iCloud Keychain credential.
-            let username = passwordCredential.user
-            let password = passwordCredential.password
-            
-            print("username: \(username)")
-            print("password: \(password)")
-            
-        default:
-            break
-        }
-    }
-    
-}
+//extension LoginViewController:ASAuthorizationControllerDelegate, ASAuthorizationControllerPresentationContextProviding {
+//    func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
+//        return self.view.window!
+//    }
+//    
+//    func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
+//        switch authorization.credential {
+//        case let appleIDCredential as ASAuthorizationAppleIDCredential:
+//            // Create an account in your system.
+//            let userIdentifier = appleIDCredential.user
+//            let fullName = appleIDCredential.fullName
+//            let email = appleIDCredential.email
+//        
+//            if  let authorizationCode = appleIDCredential.authorizationCode,
+//                let identityToken = appleIDCredential.identityToken,
+//                let authString = String(data: authorizationCode, encoding: .utf8),
+//                let tokenString = String(data: identityToken, encoding: .utf8) {
+//                print("authorizationCode: \(authorizationCode)")
+//                print("identityToken: \(identityToken)")
+//                print("authString: \(authString)")
+//                print("tokenString: \(tokenString)")
+//            }
+//            
+//            print("useridentifier: \(userIdentifier)")
+//            print("fullName: \(fullName)")
+//            print("email: \(email)")
+//            
+//        case let passwordCredential as ASPasswordCredential:
+//            // Sign in using an existing iCloud Keychain credential.
+//            let username = passwordCredential.user
+//            let password = passwordCredential.password
+//            
+//            print("username: \(username)")
+//            print("password: \(password)")
+//            
+//        default:
+//            break
+//        }
+//    }
+//    
+//}

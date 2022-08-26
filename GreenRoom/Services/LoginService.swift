@@ -14,13 +14,13 @@ import SwiftKeychainWrapper
 
 class LoginService{
     
-    func loginAPI(_ accessToken: String)->Observable<LoginModel> {
+    func loginAPI(_ accessToken: String, authType: Int)->Observable<LoginModel> {
         let urlString = Storage().baseURL + "/api/auth/login"
         let url = URL(string: urlString)!
         
         let param: Parameters = [
             "accessToken" : accessToken,
-            "oauthType" : 0
+            "oauthType" : authType
         ]
         
         return Observable.create{ emitter in
@@ -28,6 +28,7 @@ class LoginService{
             req.responseDecodable(of: LoginModel.self){ res in
                 switch res.result {
                 case .success(let data):
+                    KeychainWrapper.standard.set(authType, forKey: "oauthType")
                     emitter.onNext(data)
                     emitter.onCompleted()
                 case .failure(let error):
@@ -52,10 +53,9 @@ class LoginService{
         
         let req = AF.request(url, method: .post, parameters: param,encoding: JSONEncoding.default)
         
-        req.responseJSON(){ response in
+        req.response(){ response in
             switch response.result {
-            case .success(let data):
-                print(data)
+            case .success(_):
                 print("회원가입 완료")
             case .failure(let error):
                 print(error)
@@ -64,14 +64,25 @@ class LoginService{
     }
     
     static func logout()->Observable<Bool>{
+        let accessToken = KeychainWrapper.standard.string(forKey: "accessToken")!
+        
+        let headers: HTTPHeaders = [
+            "Authorization": "Bearer \(accessToken)"
+        ]
+        
+        let urlString = Storage().baseURL + "/api/auth/logout"
+        let url = URL(string: urlString)!
+        
         return Observable.create{ emitter in
-            UserApi.shared.logout{ error in
-                if let err = error {
-                    emitter.onNext(false)
-                    emitter.onError(err)
-                }else {
+            let req = AF.request(url, method: .post, headers: headers).validate(statusCode: 200..<300)
+            
+            req.response() { res in
+                switch res.result {
+                case .success(_):
                     emitter.onNext(true)
                     emitter.onCompleted()
+                case .failure(let error):
+                    emitter.onError(error)
                 }
             }
             return Disposables.create()

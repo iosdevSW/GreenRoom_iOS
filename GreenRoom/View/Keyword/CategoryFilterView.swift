@@ -157,7 +157,7 @@ class CategoryFilterView: UIView {
         self.addSubview(self.cancelButton)
         self.cancelButton.snp.makeConstraints{ make in
             make.leading.equalToSuperview().offset(24)
-            make.bottom.equalToSuperview().offset(-20)
+            make.bottom.equalToSuperview().offset(-30)
             make.height.equalTo(60)
             make.width.equalTo(150)
         }
@@ -165,7 +165,7 @@ class CategoryFilterView: UIView {
         self.addSubview(self.applyButton)
         self.applyButton.snp.makeConstraints{ make in
             make.trailing.equalToSuperview().offset(-24)
-            make.bottom.equalToSuperview().offset(-20)
+            make.bottom.equalToSuperview().offset(-30)
             make.leading.equalTo(cancelButton.snp.trailing).offset(20)
             make.height.equalTo(60)
         }

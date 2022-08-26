@@ -155,7 +155,7 @@ extension RegisterCategoryViewController {
         guard let oauthType = oauthTokenInfo.oauthType else { return }
         
         LoginService.registUser(accessToken: accessToken, oauthType: oauthType, category: categoryId!, name: name)
-        let vc = RegisterCompleteViewControlller()
+        let vc = RegisterCompleteViewControlller(oauthTokenInfo: self.oauthTokenInfo)
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
