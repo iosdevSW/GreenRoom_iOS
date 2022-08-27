@@ -104,6 +104,7 @@ class KeywordViewController: UIViewController{
         configureUI()
         bind()
         hideKeyboardWhenTapped()
+        setNavigationItem()
         
         self.filteredCategoryView.delegate = self
         btn.addTarget(self, action: #selector(logout(_:)), for: .touchUpInside)
@@ -122,6 +123,12 @@ class KeywordViewController: UIViewController{
         self.blurView = nil
         
         self.tabBarController?.tabBar.isHidden = false
+    }
+    
+    override func setNavigationItem() {
+        super.setNavigationItem()
+        self.navigationItem.backButtonTitle = ""
+        self.navigationController?.navigationBar.tintColor = .mainColor
     }
     
     //MARK: - Selector

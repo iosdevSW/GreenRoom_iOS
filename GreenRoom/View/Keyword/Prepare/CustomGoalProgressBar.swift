@@ -32,8 +32,12 @@ class CustomProgressBar: UIView {
     //MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.backgroundColor = UIColor(red: 0.196, green: 0.196, blue: 0.196, alpha: 0.2)
+        self.backgroundColor = .customGray.withAlphaComponent(0.2)
         layer.addSublayer(self.progressLayer)
+        layer.borderWidth = 1
+        layer.borderColor = UIColor.customGray.cgColor
+        layer.cornerRadius = 15
+        
     }
     
     required init?(coder: NSCoder) {
@@ -44,7 +48,7 @@ class CustomProgressBar: UIView {
     //MARK: - Draw
     override func draw(_ rect: CGRect) {
         let backgroundMask = CAShapeLayer()
-        backgroundMask.path = UIBezierPath(roundedRect: rect, cornerRadius: rect.height * 0.5).cgPath
+        backgroundMask.path = UIBezierPath(roundedRect: rect, cornerRadius: 15).cgPath
         layer.mask = backgroundMask
         
         let progressRect = CGRect(origin: .zero,

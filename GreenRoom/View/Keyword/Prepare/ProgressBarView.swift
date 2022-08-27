@@ -99,7 +99,7 @@ class ProgressBarView: UIView {
         }
         
         UILabel().then{
-            $0.text = "목표를 설정해보세요."
+            $0.text = "목표를 설정해보세요!"
             $0.textColor = .point
             $0.font = .sfPro(size: 12, family: .Regular)
             
