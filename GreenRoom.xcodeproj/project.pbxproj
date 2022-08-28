@@ -19,6 +19,9 @@
 		DB8D163828B8ABC700E3F237 /* CustomGoalProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8D163728B8ABC700E3F237 /* CustomGoalProgressBar.swift */; };
 		DB8D163A28B8D79900E3F237 /* ProgressBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8D163928B8D79900E3F237 /* ProgressBarView.swift */; };
 		DB9CF9BE289E81FE0091B705 /* CateogryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9CF9BD289E81FE0091B705 /* CateogryCell.swift */; };
+		DBA8ED6428B9D336007526CF /* RecentSearchKeyword+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA8ED6328B9D336007526CF /* RecentSearchKeyword+CoreDataClass.swift */; };
+		DBA8ED6628B9D347007526CF /* RecentSearchKeyword+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA8ED6528B9D347007526CF /* RecentSearchKeyword+CoreDataProperties.swift */; };
+		DBA8ED6A28B9D621007526CF /* PracticeQuestionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA8ED6928B9D621007526CF /* PracticeQuestionCell.swift */; };
 		DBBA9481289968CD00264405 /* PaddingLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBBA9480289968CD00264405 /* PaddingLabel.swift */; };
 		DBD0821D2897E6EE0092241F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD0821C2897E6EE0092241F /* AppDelegate.swift */; };
 		DBD0821F2897E6EE0092241F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD0821E2897E6EE0092241F /* SceneDelegate.swift */; };
@@ -32,7 +35,6 @@
 		DBD082562897E75B0092241F /* MyPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD082412897E75A0092241F /* MyPageViewController.swift */; };
 		DBD082572897E75B0092241F /* KeywordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD082432897E75A0092241F /* KeywordViewController.swift */; };
 		DBD0825A2897E75B0092241F /* ProfileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD0824A2897E75A0092241F /* ProfileCell.swift */; };
-		DBD0825B2897E75B0092241F /* SearchBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD0824C2897E75A0092241F /* SearchBarView.swift */; };
 		DBD0825D2897E75B0092241F /* LoginModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD082502897E75B0092241F /* LoginModel.swift */; };
 		DBD082602897E7740092241F /* LoginService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD0825F2897E7740092241F /* LoginService.swift */; };
 		DBE7A54A28996BCE00E9A4E9 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBE7A54928996BCE00E9A4E9 /* LoginViewController.swift */; };
@@ -50,8 +52,6 @@
 		E40BC6E828B8868D00FB557D /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E40BC6E728B8868C00FB557D /* BaseViewController.swift */; };
 		E40BC6F928B88FB600FB557D /* RecentSearchModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E40BC6F728B88FB600FB557D /* RecentSearchModel.xcdatamodeld */; };
 		E40BC6FB28B892C400FB557D /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E40BC6FA28B892C400FB557D /* CoreDataManager.swift */; };
-		E40BC6FE28B8941E00FB557D /* RecentSearchKeyword+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = E40BC6FD28B8941E00FB557D /* RecentSearchKeyword+CoreDataProperties.swift */; };
-		E40BC6FF28B8941E00FB557D /* RecentSearchKeyword+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = E40BC6FC28B8941D00FB557D /* RecentSearchKeyword+CoreDataClass.swift */; };
 		E40BC70928B894B800FB557D /* SFProText-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = E40BC70628B894B800FB557D /* SFProText-Semibold.otf */; };
 		E40BC70A28B894B800FB557D /* SFPro.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E40BC70728B894B800FB557D /* SFPro.ttf */; };
 		E40BC70B28B894B800FB557D /* SFProText-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = E40BC70828B894B800FB557D /* SFProText-Bold.otf */; };
@@ -80,10 +80,7 @@
 		01F73F46BE997DB9539026B9 /* Pods-GreenRoom.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GreenRoom.debug.xcconfig"; path = "Target Support Files/Pods-GreenRoom/Pods-GreenRoom.debug.xcconfig"; sourceTree = "<group>"; };
 		48A2A5400036D7B484D9CF77 /* Pods_GreenRoom.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GreenRoom.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C657AA73E3298A49BA775B7C /* Pods-GreenRoom.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GreenRoom.release.xcconfig"; path = "Target Support Files/Pods-GreenRoom/Pods-GreenRoom.release.xcconfig"; sourceTree = "<group>"; };
-
-		DB05246728B47F58003209D4 /* SFProText-Semibold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFProText-Semibold.otf"; sourceTree = "<group>"; };
 		DB05246828B5FE50003209D4 /* PrepareKeywordPracticeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrepareKeywordPracticeViewController.swift; sourceTree = "<group>"; };
-
 		DB53AE9E289F967700E9A5CC /* RegisterCompleteViewControlller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterCompleteViewControlller.swift; sourceTree = "<group>"; };
 		DB563F9928ABADDF00E7193D /* RxNaverThirdPartyLoginProxy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RxNaverThirdPartyLoginProxy.swift; sourceTree = "<group>"; };
 		DB563F9B28AD407400E7193D /* Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Extension.swift; path = GreenRoom/Utils/Extension.swift; sourceTree = SOURCE_ROOT; };
@@ -95,6 +92,9 @@
 		DB8D163728B8ABC700E3F237 /* CustomGoalProgressBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomGoalProgressBar.swift; sourceTree = "<group>"; };
 		DB8D163928B8D79900E3F237 /* ProgressBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressBarView.swift; sourceTree = "<group>"; };
 		DB9CF9BD289E81FE0091B705 /* CateogryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CateogryCell.swift; sourceTree = "<group>"; };
+		DBA8ED6328B9D336007526CF /* RecentSearchKeyword+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "RecentSearchKeyword+CoreDataClass.swift"; path = "GreenRoom/Model/RecentSearchKeyword+CoreDataClass.swift"; sourceTree = SOURCE_ROOT; };
+		DBA8ED6528B9D347007526CF /* RecentSearchKeyword+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "RecentSearchKeyword+CoreDataProperties.swift"; path = "GreenRoom/Model/RecentSearchKeyword+CoreDataProperties.swift"; sourceTree = SOURCE_ROOT; };
+		DBA8ED6928B9D621007526CF /* PracticeQuestionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PracticeQuestionCell.swift; sourceTree = "<group>"; };
 		DBBA9480289968CD00264405 /* PaddingLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaddingLabel.swift; sourceTree = "<group>"; };
 		DBD082192897E6EE0092241F /* GreenRoom.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GreenRoom.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DBD0821C2897E6EE0092241F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -110,7 +110,6 @@
 		DBD082412897E75A0092241F /* MyPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyPageViewController.swift; sourceTree = "<group>"; };
 		DBD082432897E75A0092241F /* KeywordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeywordViewController.swift; sourceTree = "<group>"; };
 		DBD0824A2897E75A0092241F /* ProfileCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileCell.swift; sourceTree = "<group>"; };
-		DBD0824C2897E75A0092241F /* SearchBarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchBarView.swift; sourceTree = "<group>"; };
 		DBD082502897E75B0092241F /* LoginModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginModel.swift; sourceTree = "<group>"; };
 		DBD0825F2897E7740092241F /* LoginService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginService.swift; sourceTree = "<group>"; };
 		DBE7A54928996BCE00E9A4E9 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
@@ -128,8 +127,6 @@
 		E40BC6E728B8868C00FB557D /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		E40BC6F828B88FB600FB557D /* RecentSearchModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = RecentSearchModel.xcdatamodel; sourceTree = "<group>"; };
 		E40BC6FA28B892C400FB557D /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
-		E40BC6FC28B8941D00FB557D /* RecentSearchKeyword+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "RecentSearchKeyword+CoreDataClass.swift"; path = "/Users/doyunpark/Desktop/GreenRoom/GreenRoom/Model/RecentSearchKeyword+CoreDataClass.swift"; sourceTree = "<absolute>"; };
-		E40BC6FD28B8941E00FB557D /* RecentSearchKeyword+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "RecentSearchKeyword+CoreDataProperties.swift"; path = "/Users/doyunpark/Desktop/GreenRoom/GreenRoom/Model/RecentSearchKeyword+CoreDataProperties.swift"; sourceTree = "<absolute>"; };
 		E40BC70628B894B800FB557D /* SFProText-Semibold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFProText-Semibold.otf"; sourceTree = "<group>"; };
 		E40BC70728B894B800FB557D /* SFPro.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = SFPro.ttf; sourceTree = "<group>"; };
 		E40BC70828B894B800FB557D /* SFProText-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFProText-Bold.otf"; sourceTree = "<group>"; };
@@ -189,6 +186,27 @@
 				DB9CF9BD289E81FE0091B705 /* CateogryCell.swift */,
 			);
 			path = Category;
+			sourceTree = "<group>";
+		};
+		DBA8ED6728B9D539007526CF /* KeywordMain */ = {
+			isa = PBXGroup;
+			children = (
+				DBFB297128B377EA00B1DAC9 /* CategoryFilterView.swift */,
+				DBFB296F28B351F400B1DAC9 /* QuestionListCell.swift */,
+				DBFB296928B2267A00B1DAC9 /* FilterItemsCell.swift */,
+				DBFB296D28B26F5B00B1DAC9 /* CustomSegmentedControl.swift */,
+			);
+			path = KeywordMain;
+			sourceTree = "<group>";
+		};
+		DBA8ED6828B9D599007526CF /* Prepare */ = {
+			isa = PBXGroup;
+			children = (
+				DB8D163728B8ABC700E3F237 /* CustomGoalProgressBar.swift */,
+				DB8D163928B8D79900E3F237 /* ProgressBarView.swift */,
+				DBA8ED6928B9D621007526CF /* PracticeQuestionCell.swift */,
+			);
+			path = Prepare;
 			sourceTree = "<group>";
 		};
 		DBBA947F289968CD00264405 /* Custom */ = {
@@ -328,13 +346,8 @@
 		DBD0824B2897E75A0092241F /* Keyword */ = {
 			isa = PBXGroup;
 			children = (
-				DBD0824C2897E75A0092241F /* SearchBarView.swift */,
-				DBFB296D28B26F5B00B1DAC9 /* CustomSegmentedControl.swift */,
-				DBFB296928B2267A00B1DAC9 /* FilterItemsCell.swift */,
-				DBFB296F28B351F400B1DAC9 /* QuestionListCell.swift */,
-				DBFB297128B377EA00B1DAC9 /* CategoryFilterView.swift */,
-				DB8D163728B8ABC700E3F237 /* CustomGoalProgressBar.swift */,
-				DB8D163928B8D79900E3F237 /* ProgressBarView.swift */,
+				DBA8ED6728B9D539007526CF /* KeywordMain */,
+				DBA8ED6828B9D599007526CF /* Prepare */,
 			);
 			path = Keyword;
 			sourceTree = "<group>";
@@ -422,8 +435,8 @@
 		E40BC70D28B8990700FB557D /* CoreDataModel */ = {
 			isa = PBXGroup;
 			children = (
-				E40BC6FC28B8941D00FB557D /* RecentSearchKeyword+CoreDataClass.swift */,
-				E40BC6FD28B8941E00FB557D /* RecentSearchKeyword+CoreDataProperties.swift */,
+				DBA8ED6528B9D347007526CF /* RecentSearchKeyword+CoreDataProperties.swift */,
+				DBA8ED6328B9D336007526CF /* RecentSearchKeyword+CoreDataClass.swift */,
 				E40BC6F728B88FB600FB557D /* RecentSearchModel.xcdatamodeld */,
 			);
 			path = CoreDataModel;
@@ -596,16 +609,11 @@
 			files = (
 				DBD082512897E75B0092241F /* LoginViewModel.swift in Sources */,
 				DBFB296E28B26F5B00B1DAC9 /* CustomSegmentedControl.swift in Sources */,
-
 				DB8D163828B8ABC700E3F237 /* CustomGoalProgressBar.swift in Sources */,
-
-				E40BC6FF28B8941E00FB557D /* RecentSearchKeyword+CoreDataClass.swift in Sources */,
-
 				DBFB297228B377EB00B1DAC9 /* CategoryFilterView.swift in Sources */,
 				E49EF3D928B539FF00358340 /* PopularQuestionCell.swift in Sources */,
 				DB9CF9BE289E81FE0091B705 /* CateogryCell.swift in Sources */,
 				E46539DC28ACDAD100F17A6C /* SetNotificationRow.swift in Sources */,
-				E40BC6FE28B8941E00FB557D /* RecentSearchKeyword+CoreDataProperties.swift in Sources */,
 				E46539D928ACD77600F17A6C /* Utilities.swift in Sources */,
 				E470539728AB856D00884B56 /* SettingHeader.swift in Sources */,
 				DB563FA028AF841400E7193D /* RxAppleLoginProxy.swift in Sources */,
@@ -626,6 +634,8 @@
 				DBE7A54F28996C2000E9A4E9 /* CheckLabel.swift in Sources */,
 				DB8D163A28B8D79900E3F237 /* ProgressBarView.swift in Sources */,
 				DBD082572897E75B0092241F /* KeywordViewController.swift in Sources */,
+				DBA8ED6428B9D336007526CF /* RecentSearchKeyword+CoreDataClass.swift in Sources */,
+				DBA8ED6A28B9D621007526CF /* PracticeQuestionCell.swift in Sources */,
 				DBD082522897E75B0092241F /* GreenViewModel.swift in Sources */,
 				E49EF3DC28B5E9AC00358340 /* GRSearchViewController.swift in Sources */,
 				E4141ABC28AF528E004D74B3 /* FAQCell.swift in Sources */,
@@ -635,21 +645,18 @@
 				E4141ACB28AF79E7004D74B3 /* FAQViewController.swift in Sources */,
 				DBD082602897E7740092241F /* LoginService.swift in Sources */,
 				E49EF3D428B5377900358340 /* GreenRoomSection.swift in Sources */,
+				DBA8ED6628B9D347007526CF /* RecentSearchKeyword+CoreDataProperties.swift in Sources */,
 				E40BC6E128B8802700FB557D /* SearchResultViewController.swift in Sources */,
 				DBD0821D2897E6EE0092241F /* AppDelegate.swift in Sources */,
 				E40BC6B328B7548E00FB557D /* SearchWordHeaderView.swift in Sources */,
 				E46539E428AD33C700F17A6C /* EditProfileInfoViewController.swift in Sources */,
 				E4141AB328AF4499004D74B3 /* Storage.swift in Sources */,
 				E4C8AE6B28B35533007E010D /* User.swift in Sources */,
-
 				DB05246928B5FE50003209D4 /* PrepareKeywordPracticeViewController.swift in Sources */,
-
 				E40BC69D28B5F35A00FB557D /* SearchWordCell.swift in Sources */,
-
 				DB797A99289B9BFF00ADF65F /* RegisterNameViewController.swift in Sources */,
 				E40BC6E428B880FE00FB557D /* SearchResultNotFountCell.swift in Sources */,
 				E40BC6FB28B892C400FB557D /* CoreDataManager.swift in Sources */,
-				DBD0825B2897E75B0092241F /* SearchBarView.swift in Sources */,
 				DBD082532897E75B0092241F /* KeywordViewModel.swift in Sources */,
 				DB797A9B289BC0D800ADF65F /* RegisterCategoryViewController.swift in Sources */,
 				E40BC6F928B88FB600FB557D /* RecentSearchModel.xcdatamodeld in Sources */,
