@@ -52,9 +52,6 @@
 		E40BC6E828B8868D00FB557D /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E40BC6E728B8868C00FB557D /* BaseViewController.swift */; };
 		E40BC6F928B88FB600FB557D /* RecentSearchModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E40BC6F728B88FB600FB557D /* RecentSearchModel.xcdatamodeld */; };
 		E40BC6FB28B892C400FB557D /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E40BC6FA28B892C400FB557D /* CoreDataManager.swift */; };
-		E40BC70928B894B800FB557D /* SFProText-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = E40BC70628B894B800FB557D /* SFProText-Semibold.otf */; };
-		E40BC70A28B894B800FB557D /* SFPro.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E40BC70728B894B800FB557D /* SFPro.ttf */; };
-		E40BC70B28B894B800FB557D /* SFProText-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = E40BC70828B894B800FB557D /* SFProText-Bold.otf */; };
 		E4141AB328AF4499004D74B3 /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4141AB228AF4499004D74B3 /* Storage.swift */; };
 		E4141ABA28AF5199004D74B3 /* FAQ.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4141AB928AF5199004D74B3 /* FAQ.swift */; };
 		E4141ABC28AF528E004D74B3 /* FAQCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4141ABB28AF528E004D74B3 /* FAQCell.swift */; };
@@ -72,6 +69,15 @@
 		E49EF3D428B5377900358340 /* GreenRoomSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E49EF3D328B5377900358340 /* GreenRoomSection.swift */; };
 		E49EF3D928B539FF00358340 /* PopularQuestionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E49EF3D828B539FF00358340 /* PopularQuestionCell.swift */; };
 		E49EF3DC28B5E9AC00358340 /* GRSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E49EF3DB28B5E9AC00358340 /* GRSearchViewController.swift */; };
+		E49F7D8928BC7D7E000AB49B /* CreateQuestionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E49F7D8828BC7D7E000AB49B /* CreateQuestionViewController.swift */; };
+		E4C4C4AE28BCA53D008826AB /* GreenRoomService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4C4C4AD28BCA53D008826AB /* GreenRoomService.swift */; };
+		E4C4C4B828BCF6A9008826AB /* SFProText-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = E4C4C4B528BCF6A9008826AB /* SFProText-Semibold.otf */; };
+		E4C4C4B928BCF6A9008826AB /* SFPro.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E4C4C4B628BCF6A9008826AB /* SFPro.ttf */; };
+		E4C4C4BA28BCF6A9008826AB /* SFProText-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = E4C4C4B728BCF6A9008826AB /* SFProText-Bold.otf */; };
+		E4C4C4BC28BD1172008826AB /* CustomTabbarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4C4C4BB28BD1172008826AB /* CustomTabbarController.swift */; };
+		E4C4C4BE28BD1ACD008826AB /* CreatePopOverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4C4C4BD28BD1ACD008826AB /* CreatePopOverViewController.swift */; };
+		E4C4C4C028BDE8AB008826AB /* CreateGreenRoomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4C4C4BF28BDE8AB008826AB /* CreateGreenRoomViewController.swift */; };
+		E4C4C4C228BE029F008826AB /* CreateViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4C4C4C128BE029F008826AB /* CreateViewModel.swift */; };
 		E4C8AE6928B35519007E010D /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4C8AE6828B35519007E010D /* UserService.swift */; };
 		E4C8AE6B28B35533007E010D /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4C8AE6A28B35533007E010D /* User.swift */; };
 /* End PBXBuildFile section */
@@ -127,9 +133,6 @@
 		E40BC6E728B8868C00FB557D /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		E40BC6F828B88FB600FB557D /* RecentSearchModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = RecentSearchModel.xcdatamodel; sourceTree = "<group>"; };
 		E40BC6FA28B892C400FB557D /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
-		E40BC70628B894B800FB557D /* SFProText-Semibold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFProText-Semibold.otf"; sourceTree = "<group>"; };
-		E40BC70728B894B800FB557D /* SFPro.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = SFPro.ttf; sourceTree = "<group>"; };
-		E40BC70828B894B800FB557D /* SFProText-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFProText-Bold.otf"; sourceTree = "<group>"; };
 		E4141AB228AF4499004D74B3 /* Storage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Storage.swift; sourceTree = "<group>"; };
 		E4141AB928AF5199004D74B3 /* FAQ.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAQ.swift; sourceTree = "<group>"; };
 		E4141ABB28AF528E004D74B3 /* FAQCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAQCell.swift; sourceTree = "<group>"; };
@@ -147,6 +150,15 @@
 		E49EF3D328B5377900358340 /* GreenRoomSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GreenRoomSection.swift; sourceTree = "<group>"; };
 		E49EF3D828B539FF00358340 /* PopularQuestionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopularQuestionCell.swift; sourceTree = "<group>"; };
 		E49EF3DB28B5E9AC00358340 /* GRSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GRSearchViewController.swift; sourceTree = "<group>"; };
+		E49F7D8828BC7D7E000AB49B /* CreateQuestionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateQuestionViewController.swift; sourceTree = "<group>"; };
+		E4C4C4AD28BCA53D008826AB /* GreenRoomService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GreenRoomService.swift; sourceTree = "<group>"; };
+		E4C4C4B528BCF6A9008826AB /* SFProText-Semibold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFProText-Semibold.otf"; sourceTree = "<group>"; };
+		E4C4C4B628BCF6A9008826AB /* SFPro.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = SFPro.ttf; sourceTree = "<group>"; };
+		E4C4C4B728BCF6A9008826AB /* SFProText-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFProText-Bold.otf"; sourceTree = "<group>"; };
+		E4C4C4BB28BD1172008826AB /* CustomTabbarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabbarController.swift; sourceTree = "<group>"; };
+		E4C4C4BD28BD1ACD008826AB /* CreatePopOverViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePopOverViewController.swift; sourceTree = "<group>"; };
+		E4C4C4BF28BDE8AB008826AB /* CreateGreenRoomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateGreenRoomViewController.swift; sourceTree = "<group>"; };
+		E4C4C4C128BE029F008826AB /* CreateViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateViewModel.swift; sourceTree = "<group>"; };
 		E4C8AE6828B35519007E010D /* UserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
 		E4C8AE6A28B35533007E010D /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -216,6 +228,7 @@
 				DB563F9928ABADDF00E7193D /* RxNaverThirdPartyLoginProxy.swift */,
 				DB563F9F28AF841400E7193D /* RxAppleLoginProxy.swift */,
 				E40BC6E728B8868C00FB557D /* BaseViewController.swift */,
+				E4C4C4BB28BD1172008826AB /* CustomTabbarController.swift */,
 			);
 			path = Custom;
 			sourceTree = "<group>";
@@ -267,6 +280,7 @@
 				DBD0823A2897E75A0092241F /* GreenViewModel.swift */,
 				DBD0823B2897E75A0092241F /* KeywordViewModel.swift */,
 				DBD0823C2897E75A0092241F /* MyPageViewModel.swift */,
+				E4C4C4C128BE029F008826AB /* CreateViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -286,6 +300,7 @@
 			isa = PBXGroup;
 			children = (
 				DBD0823F2897E75A0092241F /* GreenRoomViewController.swift */,
+				E49F7D8728BC7D5E000AB49B /* Create */,
 				E49EF3DA28B5E98D00358340 /* Search */,
 			);
 			path = Green;
@@ -370,6 +385,7 @@
 			children = (
 				DBD0825F2897E7740092241F /* LoginService.swift */,
 				E4C8AE6828B35519007E010D /* UserService.swift */,
+				E4C4C4AD28BCA53D008826AB /* GreenRoomService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -377,9 +393,9 @@
 		DBD082612897E77F0092241F /* Font */ = {
 			isa = PBXGroup;
 			children = (
-				E40BC70728B894B800FB557D /* SFPro.ttf */,
-				E40BC70828B894B800FB557D /* SFProText-Bold.otf */,
-				E40BC70628B894B800FB557D /* SFProText-Semibold.otf */,
+				E4C4C4B628BCF6A9008826AB /* SFPro.ttf */,
+				E4C4C4B728BCF6A9008826AB /* SFProText-Bold.otf */,
+				E4C4C4B528BCF6A9008826AB /* SFProText-Semibold.otf */,
 				E46539E628AD3F2800F17A6C /* SFProText-Regular.otf */,
 			);
 			path = Font;
@@ -489,6 +505,16 @@
 			path = Search;
 			sourceTree = "<group>";
 		};
+		E49F7D8728BC7D5E000AB49B /* Create */ = {
+			isa = PBXGroup;
+			children = (
+				E4C4C4BD28BD1ACD008826AB /* CreatePopOverViewController.swift */,
+				E4C4C4BF28BDE8AB008826AB /* CreateGreenRoomViewController.swift */,
+				E49F7D8828BC7D7E000AB49B /* CreateQuestionViewController.swift */,
+			);
+			path = Create;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -549,9 +575,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E40BC70B28B894B800FB557D /* SFProText-Bold.otf in Resources */,
-				E40BC70928B894B800FB557D /* SFProText-Semibold.otf in Resources */,
-				E40BC70A28B894B800FB557D /* SFPro.ttf in Resources */,
+				E4C4C4BA28BCF6A9008826AB /* SFProText-Bold.otf in Resources */,
+				E4C4C4B828BCF6A9008826AB /* SFProText-Semibold.otf in Resources */,
+				E4C4C4B928BCF6A9008826AB /* SFPro.ttf in Resources */,
 				E46539E928AD3F2800F17A6C /* SFProText-Regular.otf in Resources */,
 				DBD082262897E6F30092241F /* Assets.xcassets in Resources */,
 				DBD082292897E6F30092241F /* LaunchScreen.storyboard in Resources */,
@@ -617,9 +643,11 @@
 				E46539D928ACD77600F17A6C /* Utilities.swift in Sources */,
 				E470539728AB856D00884B56 /* SettingHeader.swift in Sources */,
 				DB563FA028AF841400E7193D /* RxAppleLoginProxy.swift in Sources */,
+				E4C4C4AE28BCA53D008826AB /* GreenRoomService.swift in Sources */,
 				DBFB296A28B2267A00B1DAC9 /* FilterItemsCell.swift in Sources */,
 				DB563F9E28AE266D00E7193D /* CategoryViewModel.swift in Sources */,
 				DB53AE9F289F967800E9A5CC /* RegisterCompleteViewControlller.swift in Sources */,
+				E4C4C4BE28BD1ACD008826AB /* CreatePopOverViewController.swift in Sources */,
 				E40BC6E628B8834100FB557D /* SearchResultHeaderView.swift in Sources */,
 				E49EF3D228B5375D00358340 /* Question.swift in Sources */,
 				E49EF3D028B5361000358340 /* PopularHeader.swift in Sources */,
@@ -639,7 +667,9 @@
 				DBD082522897E75B0092241F /* GreenViewModel.swift in Sources */,
 				E49EF3DC28B5E9AC00358340 /* GRSearchViewController.swift in Sources */,
 				E4141ABC28AF528E004D74B3 /* FAQCell.swift in Sources */,
+				E4C4C4BC28BD1172008826AB /* CustomTabbarController.swift in Sources */,
 				E4141ABA28AF5199004D74B3 /* FAQ.swift in Sources */,
+				E4C4C4C228BE029F008826AB /* CreateViewModel.swift in Sources */,
 				DBBA9481289968CD00264405 /* PaddingLabel.swift in Sources */,
 				DBD082542897E75B0092241F /* MyPageViewModel.swift in Sources */,
 				E4141ACB28AF79E7004D74B3 /* FAQViewController.swift in Sources */,
@@ -653,11 +683,13 @@
 				E4141AB328AF4499004D74B3 /* Storage.swift in Sources */,
 				E4C8AE6B28B35533007E010D /* User.swift in Sources */,
 				DB05246928B5FE50003209D4 /* PrepareKeywordPracticeViewController.swift in Sources */,
+				E49F7D8928BC7D7E000AB49B /* CreateQuestionViewController.swift in Sources */,
 				E40BC69D28B5F35A00FB557D /* SearchWordCell.swift in Sources */,
 				DB797A99289B9BFF00ADF65F /* RegisterNameViewController.swift in Sources */,
 				E40BC6E428B880FE00FB557D /* SearchResultNotFountCell.swift in Sources */,
 				E40BC6FB28B892C400FB557D /* CoreDataManager.swift in Sources */,
 				DBD082532897E75B0092241F /* KeywordViewModel.swift in Sources */,
+				E4C4C4C028BDE8AB008826AB /* CreateGreenRoomViewController.swift in Sources */,
 				DB797A9B289BC0D800ADF65F /* RegisterCategoryViewController.swift in Sources */,
 				E40BC6F928B88FB600FB557D /* RecentSearchModel.xcdatamodeld in Sources */,
 				E4C8AE6928B35519007E010D /* UserService.swift in Sources */,

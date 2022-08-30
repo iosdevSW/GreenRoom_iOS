@@ -15,18 +15,18 @@ final class CustomTabbarController: UITabBarController {
         $0.contentMode = .scaleAspectFit
         $0.imageView?.tintColor = .white
         $0.layer.cornerRadius = view.frame.width / 14
-        $0.addTarget(self, action: #selector(didTapCreateQuestion), for: .touchUpInside)
+        $0.addTarget(self, action: #selector(didTapCreateQuestion(_ :)), for: .touchUpInside)
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         initView()
     }
-
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
     }
-
+    
     private func initView() {
         view.addSubview(createButton)
         createButton.snp.makeConstraints { make in
@@ -47,8 +47,36 @@ final class CustomTabbarController: UITabBarController {
             self.createButton.isHidden = item.tag != 1
         }
     }
-                
-    @objc func didTapCreateQuestion(){
-        print("didTapCreateQuestion")
+    
+    @objc func didTapCreateQuestion(_ sender: UIButton){
+        let popoverVC = CreatePopOverViewController()
+        popoverVC.modalPresentationStyle = .popover
+        popoverVC.popoverPresentationController?.sourceView = sender
+        popoverVC.popoverPresentationController?.delegate = self
+        popoverVC.popoverPresentationController?.sourceRect = CGRect(x: 0, y: -115, width: 200, height: 100)
+        popoverVC.popoverPresentationController?.permittedArrowDirections = .init(rawValue: 0)
+        popoverVC.delegate = self
+        self.present(popoverVC, animated: true, completion: nil)
     }
+}
+extension CustomTabbarController: UIPopoverPresentationControllerDelegate {
+    public func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
+        return .none
+    }
+}
+extension CustomTabbarController: CreatePopOverDeleagte {
+    func didTapGreenRoomCreate() {
+        
+        let vc = UINavigationController(rootViewController: CreateGreenRoomViewController())
+        vc.modalPresentationStyle = .overFullScreen
+        present(vc, animated: true)
+    }
+    
+    func didTapQuestionListCreate() {
+        let vc = UINavigationController(rootViewController: CreateQuestionViewController())
+        vc.modalPresentationStyle = .overFullScreen
+        present(vc, animated: true)
+    }
+    
+    
 }
