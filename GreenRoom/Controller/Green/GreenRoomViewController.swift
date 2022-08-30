@@ -34,6 +34,13 @@ class GreenRoomViewController: BaseViewController {
         $0.tag = 1
     }
     
+    private let underline = UIView().then {
+        $0.backgroundColor = .mainColor
+        $0.setGradient(
+            color1: UIColor(red: 110/255.0, green: 234/255.0, blue: 174/255.0, alpha: 1.0),
+            color2: UIColor(red: 87/255.0, green: 193/255.0, blue: 183/255.0, alpha: 1.0))
+    }
+    
     private let filterLabel = UILabel().then {
         $0.numberOfLines = 0
         let attributeString = NSMutableAttributedString(string: "빠르게 필터링\n", attributes: [
@@ -48,12 +55,25 @@ class GreenRoomViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+//        KeychainWrapper.standard.remove(forKey: "accessToken")
+//        KeychainWrapper.standard.remove(forKey: "refreshToten")
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.tabBarController?.tabBar.isHidden = false
+        
+        
+        
         configureNavigationBar()
+    }
+    
+    override func viewWillLayoutSubviews() {
+        self.underline.setGradient(
+            color1: UIColor(red: 110/255.0, green: 234/255.0, blue: 174/255.0, alpha: 1.0),
+            color2: UIColor(red: 87/255.0, green: 193/255.0, blue: 183/255.0, alpha: 1.0))
+        super.viewWillLayoutSubviews()
+        
     }
     
     override func setupBinding() {
@@ -97,8 +117,15 @@ class GreenRoomViewController: BaseViewController {
     }
     
     override func configureUI(){
-        
+
         self.view.backgroundColor = .white
+        
+//        self.view.addSubview(customVIew)
+//        customVIew.snp.makeConstraints { make in
+//            make.leading.trailing.equalToSuperview()
+//            make.bottom.equalToSuperview()
+//            make.height.equalTo(CGFloat(self.tabBarController?.tabBar.frame.height ?? 84))
+//        }
         
         let buttonStack = UIStackView(arrangedSubviews: [greenRoomButton,questionListButton])
         buttonStack.axis = .horizontal
@@ -110,15 +137,9 @@ class GreenRoomViewController: BaseViewController {
             make.trailing.equalToSuperview().offset(-view.frame.width / 5)
             make.height.equalTo(30)
         }
-        
-        let line = UIView()
-        line.backgroundColor = .mainColor
-        line.setGradient(
-            color1: UIColor(red: 110/255.0, green: 234/255.0, blue: 174/255.0, alpha: 1.0),
-            color2: UIColor(red: 87/255.0, green: 193/255.0, blue: 183/255.0, alpha: 1.0))
-        
-        self.view.addSubview(line)
-        line.snp.makeConstraints { make in
+     
+        self.view.addSubview(underline)
+        underline.snp.makeConstraints { make in
             make.top.equalTo(buttonStack.snp.bottom).offset(5)
             make.leading.equalToSuperview().offset(view.frame.width/15)
             make.trailing.equalToSuperview().offset(-view.frame.width/15)
@@ -127,10 +148,10 @@ class GreenRoomViewController: BaseViewController {
         
         self.view.addSubview(filterLabel)
         filterLabel.snp.makeConstraints { make in
-            make.top.equalTo(line.snp.bottom).offset(25)
+            make.top.equalTo(underline.snp.bottom).offset(25)
             make.leading.equalToSuperview().offset(33)
         }
-        
+    
     }
     
     override func setupAttributes() {
@@ -157,7 +178,7 @@ class GreenRoomViewController: BaseViewController {
 
 //MARK: - collectionView
 extension GreenRoomViewController {
-    func configureCollecitonView(){
+    private func configureCollecitonView(){
         let layout = self.generateLayout()
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
 
@@ -174,7 +195,7 @@ extension GreenRoomViewController {
         }
     }
     
-    func generatePopularQuestionLayout() -> NSCollectionLayoutSection {
+    private func generatePopularQuestionLayout() -> NSCollectionLayoutSection {
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.4))
         
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
@@ -189,7 +210,7 @@ extension GreenRoomViewController {
         return section
     }
 
-    func generateRecentQuestionLayout() -> NSCollectionLayoutSection {
+    private func generateRecentQuestionLayout() -> NSCollectionLayoutSection {
         let itemSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1.0),
             heightDimension: .fractionalWidth(1.0))
@@ -234,3 +255,10 @@ extension GreenRoomViewController {
 
 }
 
+extension GreenRoomViewController {
+    @objc func didTap() {
+        tabBarController?.selectedIndex = 2
+//        let vc = MyPageViewController(viewModel: MyPageViewModel())
+//        navigationController?.pushViewController(vc, animated: false)
+    }
+}
