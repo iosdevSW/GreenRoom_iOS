@@ -39,7 +39,7 @@ final class CreateQuestionViewController: BaseViewController {
         $0.layer.borderWidth = 2
     }
     
-    private let seletedLabel = UILabel().then {
+    private let selectedLabel = UILabel().then {
         $0.text = "직무선택"
         $0.font = .sfPro(size: 12, family: .Regular)
         $0.textColor = .customGray
@@ -73,7 +73,7 @@ final class CreateQuestionViewController: BaseViewController {
         self.view.addSubview(titleLabel)
         self.view.addSubview(questionLabel)
         self.view.addSubview(questionTextView)
-        self.view.addSubview(seletedLabel)
+        self.view.addSubview(selectedLabel)
         self.view.addSubview(collectionView)
         self.view.addSubview(doneButton)
         
@@ -99,7 +99,7 @@ final class CreateQuestionViewController: BaseViewController {
             make.height.equalTo(100)
         }
         
-        seletedLabel.snp.makeConstraints { make in
+        selectedLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(34)
             make.top.equalTo(questionTextView.snp.bottom).offset(39)
         }
@@ -107,7 +107,7 @@ final class CreateQuestionViewController: BaseViewController {
         collectionView.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(42)
             make.trailing.equalToSuperview().offset(-42)
-            make.top.equalTo(seletedLabel.snp.bottom).offset(12)
+            make.top.equalTo(selectedLabel.snp.bottom).offset(12)
             make.bottom.equalTo(view.safeAreaLayoutGuide).offset(-40)
         }
         doneButton.snp.makeConstraints { make in
@@ -136,6 +136,11 @@ final class CreateQuestionViewController: BaseViewController {
     
     
     override func setupBinding() {
+        
+        let input = CreateViewModel.Input(question: questionTextView.rx.text.orEmpty.asObservable(),
+                                          category: collectionView.rx.itemSelected.map { $0.row + 1}.asObservable(),
+                                          submit: doneButton.rx.tap.asObservable())
+        
         questionTextView.rx.didBeginEditing
             .bind { [weak self] _ in
                 if self?.questionTextView.text == "면접자 분들은 나에게 어떤 질문을 줄까요?"{
@@ -149,14 +154,9 @@ final class CreateQuestionViewController: BaseViewController {
             .bind { [weak self] _ in
                 if self?.questionTextView.text == nil || self?.questionTextView.text == "" {
                     self?.questionTextView.text = "면접자 분들은 나에게 어떤 질문을 줄까요?"
-                    self?.questionTextView.textColor = .customGray        //다시 placeholder 글자색으로(연한색)
+                    self?.questionTextView.textColor = .customGray 
                 }
             }.disposed(by: disposeBag)
-        
-        questionTextView.rx.text
-            .orEmpty
-            .bind(to: viewModel.questionObserver)
-            .disposed(by: disposeBag)
         
         collectionView.rx.itemSelected
             .bind(onNext: { [weak self] indexPath in
@@ -167,7 +167,6 @@ final class CreateQuestionViewController: BaseViewController {
                 cell.frameView.layer.borderColor = UIColor.mainColor.cgColor
                 cell.imageView.image = category.SelectedImage
                 
-                self?.viewModel.selectedCategoryObserver.onNext(index)
             }).disposed(by: disposeBag)
         
         collectionView.rx.itemDeselected
@@ -179,7 +178,6 @@ final class CreateQuestionViewController: BaseViewController {
                 cell.frameView.layer.borderColor = UIColor.customGray.cgColor
                 cell.imageView.image = category.nonSelectedImage
                 
-                self?.viewModel.selectedCategoryObserver.onNext(index)
             }).disposed(by: disposeBag)
         
         
@@ -189,19 +187,48 @@ final class CreateQuestionViewController: BaseViewController {
             cell.titleLabel.text = category.title
         }.disposed(by: disposeBag)
         
-        viewModel.isValid
+        let output = viewModel.transform(input: input)
+  
+        output.isValid
             .bind(to: self.doneButton.rx.isEnabled)
             .disposed(by: disposeBag)
         
-        viewModel.isValid
+        output.isValid
             .map { $0 ? 1.0 : 0.3}
             .bind(to: doneButton.rx.alpha)
             .disposed(by: disposeBag)
         
+        output.successMessage.emit(onNext: { [weak self] message in
+            guard let self = self else { return }
+            
+            let alert = self.comfirmAlert(title: "작성 완료", subtitle: message) { _ in
+                self.dismiss(animated: true)
+            }
+            self.present(alert, animated: true)
+        }).disposed(by: disposeBag)
+        
+        output.failMessage.emit(onNext: { [weak self] message in
+            guard let self = self else { return }
+            
+            let alert = self.comfirmAlert(title: "작성 실패", subtitle: message) { _ in
+                print("다시 작성")
+            }
+            self.present(alert, animated: true)
+        }).disposed(by: disposeBag)
     }
     
     @objc func dismissal(){
         self.dismiss(animated: false)
+    }
+}
+
+extension CreateQuestionViewController {
+    
+    func comfirmAlert(title: String, subtitle: String,completion:@escaping(UIAlertAction) -> Void) -> UIAlertController{
+        let alert = UIAlertController(title: title, message: subtitle, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "확인", style: .default, handler: completion))
+        
+        return alert
     }
 }
 
