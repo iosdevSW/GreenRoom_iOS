@@ -83,6 +83,7 @@ final class Utilities {
         return UILabel().then {
             $0.text = text
             $0.font = font
+            $0.numberOfLines = 0
             $0.textColor = color
         }
     }

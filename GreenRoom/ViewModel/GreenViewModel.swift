@@ -11,27 +11,50 @@ import RxSwift
 
 class GreenRoomViewModel {
     
-    var keywords = BehaviorSubject<[GRSearchModel]>(value: [
-        GRSearchModel.recent(header: "최근 검색어",items: []),
-        GRSearchModel.popular(header: "인기 검색어", items: [])
+    var recentKeywords = BehaviorSubject<[GRSearchModel]>(value: [
+        GRSearchModel.recent(header: "최근 검색어",items: [])
     ])
-
+    
+    var popularKeywords = BehaviorSubject<[GRSearchModel]>(value: [
+        GRSearchModel.recent(header: "인기 검색어",items: [])
+    ])
+    
+    private var greenroomService = GreenRoomService()
+    
     init(){
         self.bind()
     }
     
     func bind(){
-        keywords.onNext(
+        self.fetchKeywords()
+    }
+    
+    private func fetchKeywords() {
+        recentKeywords.onNext(
             [GRSearchModel.recent(header: "최근 검색어", items:
                                     CoreDataManager.shared.loadFromCoreData(request: RecentSearchKeyword.fetchRequest()).sorted {
                                         $0.date! > $1.date!
                                     }.map {
                                         SearchTagItem(text: $0.keyword!, type: .recent)
                                     })
-             ,GRSearchModel.popular(header: "인기 검색어", items: [])
             ]
         )
         
+        
+        greenroomService.fetchPopularKeywords { [weak self] result in
+            switch result {
+            case .success(let keywords):
+                self?.popularKeywords.onNext(
+                    [GRSearchModel.popular(header: "인기 검색어", items:
+                                            keywords.map {
+                                                GRSearchModel.Item(text: $0, type: .popular)
+                                            })
+                    ]
+                )
+            case .failure(_):
+                break
+            }
+        }
     }
     func isLogin()->Observable<Bool> {
         if let accessToken = KeychainWrapper.standard.string(forKey: "accessToken"){

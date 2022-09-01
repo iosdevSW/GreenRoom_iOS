@@ -11,3 +11,8 @@ struct Question: Codable {
     let id: Int
     let profileImage, category, question: String
 }
+
+struct UploadQuestionModel: Codable {
+    let categoryId: Int
+    let question: String
+}
