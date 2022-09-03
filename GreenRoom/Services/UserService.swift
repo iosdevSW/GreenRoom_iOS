@@ -54,22 +54,20 @@ class UserService {
     //        }
     //    }
     
-    func fetchUserInfo(completion:@escaping (Result<User,Error>) -> Void) {
-        guard let url = URL(string: Storage().baseURL + "/api/users") else { return }
-        guard let accessToken = KeychainWrapper.standard.string(forKey: "accessToken") else { return }
+    func fetchUserInfo() -> Observable<User> {
+        let url = URL(string: Storage.baseURL + "/api/users")!
         
-        let headers: HTTPHeaders = [
-            "Authorization": "Bearer \(accessToken)"
-        ]
-        
-        AF.request(url,headers: headers).responseDecodable(of: User.self) { response in
-            switch response.result {
-            case .success(let user):
-                completion(.success(user))
-            case .failure(let error):
-                completion(.failure(error))
-                
+        return Observable.create { emitter in
+            AF.request(url,interceptor: AuthManager()).validate().responseDecodable(of: User.self) { response in
+                switch response.result {
+                case .success(let user):
+                    UserDefaults.standard.set(user.categoryID, forKey: "CategoryID")
+                    emitter.onNext(user)
+                case .failure(let error):
+                    emitter.onError(error)
+                }
             }
+            return Disposables.create()
         }
     }
     
@@ -114,7 +112,7 @@ extension UserService {
     }
     
     private func fetchPresignedURL(parameters: [String: String], completion:@escaping(String) -> Void) {
-        guard let url = URL(string: Storage().baseURL + "/api/users/profile-image") else {
+        guard let url = URL(string: Storage.baseURL + "/api/users/profile-image") else {
             return
             
         }
@@ -155,7 +153,7 @@ extension UserService {
 extension UserService {
     
     func updateUserInfo(parameter: [String: Any], completion: @escaping(Bool) -> Void) {
-        guard let url = URL(string: Storage().baseURL + "/api/users") else { return }
+        guard let url = URL(string: Storage.baseURL + "/api/users") else { return }
         
         guard let accessToken = KeychainWrapper.standard.string(forKey: "accessToken") else {
             return

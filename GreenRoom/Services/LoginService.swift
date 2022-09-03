@@ -15,7 +15,7 @@ import SwiftKeychainWrapper
 class LoginService{
     
     func loginAPI(_ accessToken: String, authType: Int)->Observable<LoginModel> {
-        let urlString = Storage().baseURL + "/api/auth/login"
+        let urlString = Storage.baseURL + "/api/auth/login"
         let url = URL(string: urlString)!
         
         let param: Parameters = [
@@ -41,7 +41,7 @@ class LoginService{
     }
     
     static func registUser(accessToken: String, oauthType: Int, category: Int, name: String){
-        let urlString = Storage().baseURL + "/api/users/join"
+        let urlString = Storage.baseURL + "/api/users/join"
         let url = URL(string: urlString)!
         
         let param: Parameters = [
@@ -70,7 +70,7 @@ class LoginService{
             "Authorization": "Bearer \(accessToken)"
         ]
         
-        let urlString = Storage().baseURL + "/api/auth/logout"
+        let urlString = Storage.baseURL + "/api/auth/logout"
         let url = URL(string: urlString)!
         
         return Observable.create{ emitter in
@@ -91,7 +91,7 @@ class LoginService{
     }
     
     static func checkName(name: String) -> Observable<Bool> {
-        let urlString = Storage().baseURL + "/api/users/name"
+        let urlString = Storage.baseURL + "/api/users/name"
         let url = URL(string: urlString)!
         
         let param: Parameters = [
