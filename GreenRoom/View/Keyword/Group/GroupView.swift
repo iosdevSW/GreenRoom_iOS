@@ -9,7 +9,10 @@ import UIKit
 
 class GroupView: UIView {
     //MARK: - Properties
-    let groupTableView = UITableView()
+    lazy var groupTableView = UITableView().then {
+        $0.backgroundColor = .clear
+        $0.register(GroupCell.self, forCellReuseIdentifier: "GroupCell")
+    }
     
     let groupCountingLabel = UILabel().then {
         $0.font = .sfPro(size: 16, family: .Semibold)
@@ -80,7 +83,6 @@ class GroupView: UIView {
             make.top.equalTo(self.notFoundImageView.snp.bottom).offset(20)
         }
         self.addSubview(self.groupTableView)
-        self.groupTableView.register(GroupCell.self, forCellReuseIdentifier: "GroupCell")
         self.groupTableView.snp.makeConstraints{ make in
             make.leading.equalToSuperview().offset(38)
             make.trailing.equalToSuperview().offset(-38)

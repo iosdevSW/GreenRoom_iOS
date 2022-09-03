@@ -12,6 +12,8 @@
 		DB006B8828C2430400867013 /* GroupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB006B8728C2430400867013 /* GroupView.swift */; };
 		DB006B8A28C31F4200867013 /* GroupCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB006B8928C31F4200867013 /* GroupCell.swift */; };
 		DB006B8E28C3282700867013 /* KPGroupEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB006B8D28C3282700867013 /* KPGroupEditViewController.swift */; };
+		DB006B9128C33FDA00867013 /* KPGroupsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB006B9028C33FDA00867013 /* KPGroupsViewController.swift */; };
+		DB006B9328C342E200867013 /* KPQuestionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB006B9228C342E200867013 /* KPQuestionsViewController.swift */; };
 		DB05246928B5FE50003209D4 /* PrepareKeywordPracticeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB05246828B5FE50003209D4 /* PrepareKeywordPracticeViewController.swift */; };
 		DB53AE9F289F967800E9A5CC /* RegisterCompleteViewControlller.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB53AE9E289F967700E9A5CC /* RegisterCompleteViewControlller.swift */; };
 		DB563F9A28ABADDF00E7193D /* RxNaverThirdPartyLoginProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB563F9928ABADDF00E7193D /* RxNaverThirdPartyLoginProxy.swift */; };
@@ -35,7 +37,7 @@
 		DBA8ED7828BF7457007526CF /* KPReviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA8ED7728BF7457007526CF /* KPReviewViewController.swift */; };
 		DBA8ED7A28BF8009007526CF /* KPReviewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA8ED7928BF8009007526CF /* KPReviewModel.swift */; };
 		DBA8ED7C28BF931F007526CF /* ReviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA8ED7B28BF931F007526CF /* ReviewCell.swift */; };
-		DBA8ED7E28C0A4D7007526CF /* KPGroupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA8ED7D28C0A4D7007526CF /* KPGroupViewController.swift */; };
+		DBA8ED7E28C0A4D7007526CF /* KPMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA8ED7D28C0A4D7007526CF /* KPMainViewController.swift */; };
 		DBBA9481289968CD00264405 /* PaddingLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBBA9480289968CD00264405 /* PaddingLabel.swift */; };
 		DBD0821D2897E6EE0092241F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD0821C2897E6EE0092241F /* AppDelegate.swift */; };
 		DBD0821F2897E6EE0092241F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD0821E2897E6EE0092241F /* SceneDelegate.swift */; };
@@ -47,7 +49,7 @@
 		DBD082542897E75B0092241F /* MyPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD0823C2897E75A0092241F /* MyPageViewModel.swift */; };
 		DBD082552897E75B0092241F /* GreenRoomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD0823F2897E75A0092241F /* GreenRoomViewController.swift */; };
 		DBD082562897E75B0092241F /* MyPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD082412897E75A0092241F /* MyPageViewController.swift */; };
-		DBD082572897E75B0092241F /* KeywordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD082432897E75A0092241F /* KeywordViewController.swift */; };
+		DBD082572897E75B0092241F /* KPFindQuestionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD082432897E75A0092241F /* KPFindQuestionViewController.swift */; };
 		DBD0825A2897E75B0092241F /* ProfileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD0824A2897E75A0092241F /* ProfileCell.swift */; };
 		DBD0825D2897E75B0092241F /* LoginModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD082502897E75B0092241F /* LoginModel.swift */; };
 		DBD082602897E7740092241F /* LoginService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD0825F2897E7740092241F /* LoginService.swift */; };
@@ -98,6 +100,8 @@
 		DB006B8728C2430400867013 /* GroupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupView.swift; sourceTree = "<group>"; };
 		DB006B8928C31F4200867013 /* GroupCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupCell.swift; sourceTree = "<group>"; };
 		DB006B8D28C3282700867013 /* KPGroupEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KPGroupEditViewController.swift; sourceTree = "<group>"; };
+		DB006B9028C33FDA00867013 /* KPGroupsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KPGroupsViewController.swift; sourceTree = "<group>"; };
+		DB006B9228C342E200867013 /* KPQuestionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KPQuestionsViewController.swift; sourceTree = "<group>"; };
 		DB05246828B5FE50003209D4 /* PrepareKeywordPracticeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrepareKeywordPracticeViewController.swift; sourceTree = "<group>"; };
 		DB53AE9E289F967700E9A5CC /* RegisterCompleteViewControlller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterCompleteViewControlller.swift; sourceTree = "<group>"; };
 		DB563F9928ABADDF00E7193D /* RxNaverThirdPartyLoginProxy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RxNaverThirdPartyLoginProxy.swift; sourceTree = "<group>"; };
@@ -122,7 +126,7 @@
 		DBA8ED7728BF7457007526CF /* KPReviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KPReviewViewController.swift; sourceTree = "<group>"; };
 		DBA8ED7928BF8009007526CF /* KPReviewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KPReviewModel.swift; sourceTree = "<group>"; };
 		DBA8ED7B28BF931F007526CF /* ReviewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewCell.swift; sourceTree = "<group>"; };
-		DBA8ED7D28C0A4D7007526CF /* KPGroupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KPGroupViewController.swift; sourceTree = "<group>"; };
+		DBA8ED7D28C0A4D7007526CF /* KPMainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KPMainViewController.swift; sourceTree = "<group>"; };
 		DBBA9480289968CD00264405 /* PaddingLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaddingLabel.swift; sourceTree = "<group>"; };
 		DBD082192897E6EE0092241F /* GreenRoom.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GreenRoom.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DBD0821C2897E6EE0092241F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -136,7 +140,7 @@
 		DBD0823C2897E75A0092241F /* MyPageViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyPageViewModel.swift; sourceTree = "<group>"; };
 		DBD0823F2897E75A0092241F /* GreenRoomViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GreenRoomViewController.swift; sourceTree = "<group>"; };
 		DBD082412897E75A0092241F /* MyPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyPageViewController.swift; sourceTree = "<group>"; };
-		DBD082432897E75A0092241F /* KeywordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeywordViewController.swift; sourceTree = "<group>"; };
+		DBD082432897E75A0092241F /* KPFindQuestionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KPFindQuestionViewController.swift; sourceTree = "<group>"; };
 		DBD0824A2897E75A0092241F /* ProfileCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileCell.swift; sourceTree = "<group>"; };
 		DBD082502897E75B0092241F /* LoginModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginModel.swift; sourceTree = "<group>"; };
 		DBD0825F2897E7740092241F /* LoginService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginService.swift; sourceTree = "<group>"; };
@@ -211,8 +215,9 @@
 		DB006B8B28C3275E00867013 /* Group */ = {
 			isa = PBXGroup;
 			children = (
-				DBA8ED7D28C0A4D7007526CF /* KPGroupViewController.swift */,
+				DBA8ED7D28C0A4D7007526CF /* KPMainViewController.swift */,
 				DB006B8D28C3282700867013 /* KPGroupEditViewController.swift */,
+				DB006B9028C33FDA00867013 /* KPGroupsViewController.swift */,
 			);
 			path = Group;
 			sourceTree = "<group>";
@@ -224,6 +229,15 @@
 				DB006B8928C31F4200867013 /* GroupCell.swift */,
 			);
 			path = Group;
+			sourceTree = "<group>";
+		};
+		DB006B8F28C333C700867013 /* Questions */ = {
+			isa = PBXGroup;
+			children = (
+				DBD082432897E75A0092241F /* KPFindQuestionViewController.swift */,
+				DB006B9228C342E200867013 /* KPQuestionsViewController.swift */,
+			);
+			path = Questions;
 			sourceTree = "<group>";
 		};
 		DB9CF9BA289E27650091B705 /* Category */ = {
@@ -354,7 +368,7 @@
 			isa = PBXGroup;
 			children = (
 				DB006B8B28C3275E00867013 /* Group */,
-				DBD082432897E75A0092241F /* KeywordViewController.swift */,
+				DB006B8F28C333C700867013 /* Questions */,
 				DB05246828B5FE50003209D4 /* PrepareKeywordPracticeViewController.swift */,
 				DBA8ED6B28BB4A4C007526CF /* KPRecordingViewController.swift */,
 				DBA8ED6D28BB89C3007526CF /* KPFinishViewController.swift */,
@@ -684,6 +698,7 @@
 				DBA8ED7828BF7457007526CF /* KPReviewViewController.swift in Sources */,
 				E40BC6E628B8834100FB557D /* SearchResultHeaderView.swift in Sources */,
 				DBA8ED7428BDDCA1007526CF /* DetailCell.swift in Sources */,
+				DB006B9328C342E200867013 /* KPQuestionsViewController.swift in Sources */,
 				E49EF3D228B5375D00358340 /* Question.swift in Sources */,
 				E49EF3D028B5361000358340 /* PopularHeader.swift in Sources */,
 				E40BC6E828B8868D00FB557D /* BaseViewController.swift in Sources */,
@@ -697,7 +712,7 @@
 				DBD0825D2897E75B0092241F /* LoginModel.swift in Sources */,
 				DBE7A54F28996C2000E9A4E9 /* CheckLabel.swift in Sources */,
 				DB8D163A28B8D79900E3F237 /* ProgressBarView.swift in Sources */,
-				DBD082572897E75B0092241F /* KeywordViewController.swift in Sources */,
+				DBD082572897E75B0092241F /* KPFindQuestionViewController.swift in Sources */,
 				DBA8ED6428B9D336007526CF /* RecentSearchKeyword+CoreDataClass.swift in Sources */,
 				DBA8ED6A28B9D621007526CF /* PracticeQuestionCell.swift in Sources */,
 				DBD082522897E75B0092241F /* GreenViewModel.swift in Sources */,
@@ -706,7 +721,7 @@
 				DBA8ED7228BDC945007526CF /* KPDetailViewController.swift in Sources */,
 				E4141ABA28AF5199004D74B3 /* FAQ.swift in Sources */,
 				DBBA9481289968CD00264405 /* PaddingLabel.swift in Sources */,
-				DBA8ED7E28C0A4D7007526CF /* KPGroupViewController.swift in Sources */,
+				DBA8ED7E28C0A4D7007526CF /* KPMainViewController.swift in Sources */,
 				DBD082542897E75B0092241F /* MyPageViewModel.swift in Sources */,
 				DBA8ED7A28BF8009007526CF /* KPReviewModel.swift in Sources */,
 				E4141ACB28AF79E7004D74B3 /* FAQViewController.swift in Sources */,
@@ -734,6 +749,7 @@
 				E40BC6F928B88FB600FB557D /* RecentSearchModel.xcdatamodeld in Sources */,
 				E4C8AE6928B35519007E010D /* UserService.swift in Sources */,
 				DBD0821F2897E6EE0092241F /* SceneDelegate.swift in Sources */,
+				DB006B9128C33FDA00867013 /* KPGroupsViewController.swift in Sources */,
 				E4141ACA28AF79E7004D74B3 /* QNAViewController.swift in Sources */,
 				DBD0825A2897E75B0092241F /* ProfileCell.swift in Sources */,
 				DBD082552897E75B0092241F /* GreenRoomViewController.swift in Sources */,

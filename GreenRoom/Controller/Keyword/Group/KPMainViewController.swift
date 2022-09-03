@@ -7,11 +7,12 @@
 
 import UIKit
 
-class KPGroupViewController: BaseViewController {
+class KPMainViewController: BaseViewController {
     //MARK: - Properties
     let viewModel: KeywordViewModel
-    let groupView = GroupView().then {
+    lazy var groupView = GroupView().then {
         $0.groupCountingLabel.text = "그룹을 추가해주세요 :)"
+        $0.addGroupButton.addTarget(self, action: #selector(self.didClickAddGroupButton(_:)), for: .touchUpInside)
     }
     
     //MARK: - Init
@@ -36,6 +37,15 @@ class KPGroupViewController: BaseViewController {
         print("didTapScrap")
     }
     
+    @objc func didClickAddGroupButton(_ sender: UIButton) {
+        self.navigationController?.pushViewController(KPGroupEditViewController(), animated: true)
+    }
+    
+    @objc func didclickFindButton(_ sender: UIButton) {
+        let vc = sender.tag == 0 ? KPFindQuestionViewController(viewModel: viewModel) : KPFindQuestionViewController(viewModel: viewModel)
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+    
     override func setupBinding() {
         //그룹뷰 테이블 뷰 바인딩
     }
@@ -58,8 +68,9 @@ class KPGroupViewController: BaseViewController {
             $0.setConfigure(title: "면접 질문 찾기",
                             bgColor: .mainColor,
                             radius: 15)
-            
+            $0.tag = 0
             self.view.addSubview($0)
+            $0.addTarget(self, action: #selector(didclickFindButton(_:)), for: .touchUpInside)
             $0.snp.makeConstraints{ make in
                 make.leading.equalToSuperview().offset(38)
                 make.trailing.equalToSuperview().offset(-38)
@@ -72,8 +83,9 @@ class KPGroupViewController: BaseViewController {
             $0.setConfigure(title: "참여한 질문",
                             bgColor: .sub,
                             radius: 15)
-        
+            $0.tag = 1
             self.view.addSubview($0)
+            $0.addTarget(self, action: #selector(didclickFindButton(_:)), for: .touchUpInside)
             $0.snp.makeConstraints{ make in
                 make.leading.equalToSuperview().offset(38)
                 make.trailing.equalToSuperview().offset(-38)

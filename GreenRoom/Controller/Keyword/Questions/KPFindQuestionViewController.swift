@@ -12,9 +12,9 @@ import RxSwift
 import RxCocoa
 import KakaoSDKUser
 
-class KeywordViewController: UIViewController{
+class KPFindQuestionViewController: UIViewController{
     //MARK: - Properties
-    let viewmodel: KeywordViewModel
+    let viewModel: KeywordViewModel
     
     let disposeBag = DisposeBag()
     
@@ -54,33 +54,6 @@ class KeywordViewController: UIViewController{
         $0.setTitleTextAttributes(selectedTitleTextAttributes as [NSAttributedString.Key : Any], for:.selected)
     }
     
-    let keywordOnButton = UIButton(type: .system).then{
-        $0.setTitle("키워드 ON", for: .normal)
-        $0.setTitleColor(.mainColor, for: .normal)
-        $0.titleLabel?.font = .sfPro(size: 16, family: .Semibold)
-        $0.backgroundColor = .white
-        $0.tag = 0
-        $0.layer.borderColor = UIColor.mainColor.cgColor
-        $0.layer.borderWidth = 2
-        $0.layer.cornerRadius = 15
-        $0.layer.shadowColor = UIColor(red: 0.769, green: 0.769, blue: 0.769, alpha: 1).cgColor
-        $0.layer.shadowOpacity = 1
-        $0.layer.shadowOffset = CGSize(width: 0, height: 5)
-    }
-    
-    let keywordOffButton = UIButton(type: .system).then{
-        $0.setTitle("키워드 OFF", for: .normal)
-        $0.setTitleColor(.customGray, for: .normal)
-        $0.titleLabel?.font = .sfPro(size: 16, family: .Semibold)
-        $0.backgroundColor = .white
-        $0.tag = 1
-        $0.layer.borderColor = UIColor.mainColor.cgColor
-        $0.layer.cornerRadius = 15
-        $0.layer.shadowColor = UIColor(red: 0.769, green: 0.769, blue: 0.769, alpha: 1).cgColor
-        $0.layer.shadowOpacity = 1
-        $0.layer.shadowOffset = CGSize(width: 0, height: 5)
-    }
-    
     var filteredCategoryView: UICollectionView!
     
     var filteringView: CategoryFilterView?
@@ -90,7 +63,6 @@ class KeywordViewController: UIViewController{
     var questionListTableView = UITableView().then{
         $0.backgroundColor = .white
         $0.register(QuestionListCell.self, forCellReuseIdentifier: "QuestionListCell")
-        $0.allowsMultipleSelection = true
         $0.showsVerticalScrollIndicator = true
     }
     
@@ -113,7 +85,7 @@ class KeywordViewController: UIViewController{
     
     //MARK: - Init
     init(viewModel: KeywordViewModel){
-        self.viewmodel = viewModel
+        self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -197,7 +169,7 @@ class KeywordViewController: UIViewController{
         
         filteringView = CategoryFilterView().then{
             self.view.addSubview($0)
-            $0.selectedCategories = viewmodel.filteringList
+            $0.selectedCategories = viewModel.filteringList
             $0.filteringCollectionView.delegate = self
             $0.cancelButton.addTarget(self, action: #selector(didClickCancelButton(_:)), for: .touchUpInside)
             $0.applyButton.addTarget(self, action: #selector(didClickApplyButton(_:)), for: .touchUpInside)
@@ -210,23 +182,8 @@ class KeywordViewController: UIViewController{
         }
     }
     
-    @objc func didClickKeywordButton(_ sender: UIButton) {
-        let onButtonColor: UIColor = sender.tag == 0 ? .mainColor : .customGray
-        let offButtonColor: UIColor = sender.tag == 0 ? .customGray : .mainColor
-        let onButtonBorderWidth: CGFloat = sender.tag == 0 ? 2 : 0
-        let offButtonBorderWidth: CGFloat = sender.tag == 0 ? 0 : 2
-        let isKeywordOn = sender.tag == 0 ? true : false
-            
-        self.viewmodel.keywordOnOff = isKeywordOn
-        self.keywordOnButton.setTitleColor(onButtonColor, for: .normal)
-        self.keywordOnButton.layer.borderWidth = onButtonBorderWidth
-        
-        self.keywordOffButton.setTitleColor(offButtonColor, for: .normal)
-        self.keywordOffButton.layer.borderWidth = offButtonBorderWidth
-    }
-    
     @objc func didClickPracticeButton(_ sender: UIButton) {
-        self.navigationController?.pushViewController(PrepareKeywordPracticeViewController(viewmodel: viewmodel), animated: true)
+        self.navigationController?.pushViewController(PrepareKeywordPracticeViewController(viewmodel: viewModel), animated: true)
     }
     
     @objc func didClickCancelButton(_ sender: UIButton) {
@@ -234,14 +191,14 @@ class KeywordViewController: UIViewController{
     }
     
     @objc func didClickApplyButton(_ sender: UIButton) {
-        self.viewmodel.filteringList = self.filteringView!.selectedCategories
+        self.viewModel.filteringList = self.filteringView!.selectedCategories
         
         self.closeFilteringView()
     }
     
     //MARK: - Bind
     func bind(){
-        viewmodel.filteringObservable.asObserver()
+        viewModel.filteringObservable.asObserver()
             .bind(to: filteredCategoryView.rx.items(cellIdentifier: "ItemsCell", cellType: FilterItemsCell.self)) {index, id ,cell in
                 guard let category = CategoryID(rawValue: id) else { return }
                 let attributedString = NSMutableAttributedString.init(string: category.title)
@@ -249,7 +206,7 @@ class KeywordViewController: UIViewController{
                 cell.itemLabel.attributedText = attributedString
             }.disposed(by: disposeBag)
         
-        _ = viewmodel.tabelTemp // 서비스 로직 호출할땐 응답받는 구조체로 대체 (아직 서비스API 미구현 임시로 string배열로 받음)
+        _ = viewModel.tabelTemp // 서비스 로직 호출할땐 응답받는 구조체로 대체 (아직 서비스API 미구현 임시로 string배열로 받음)
             .bind(to: questionListTableView.rx.items(cellIdentifier: "QuestionListCell", cellType: QuestionListCell.self)) { index, title, cell in
                 cell.mainLabel.text = title
                 
@@ -263,40 +220,17 @@ class KeywordViewController: UIViewController{
         
         _ = questionListTableView.rx.itemSelected
             .bind(onNext: { indexPath in // 서비스 로직시엔 Id로 다룰 것 같음
-                let cell = self.questionListTableView.cellForRow(at: indexPath) as! QuestionListCell
-                cell.mainLabel.textColor = .darken
-                let title = cell.mainLabel.text!
-                self.viewmodel.selectedQuestionTemp.append(title)
-            })
-        
-        _ = questionListTableView.rx.itemDeselected
-            .bind(onNext: { indexPath in // 서비스 로직시엔 Id로 다룰 것 같음
-                let cell = self.questionListTableView.cellForRow(at: indexPath) as! QuestionListCell
-                cell.mainLabel.textColor = .black
-                let title = cell.mainLabel.text!
-                if let index = self.viewmodel.selectedQuestionTemp.firstIndex(of: title){
-                    self.viewmodel.selectedQuestionTemp.remove(at: index)
-                }
-            })
-            
-        _ = viewmodel.selectedQuestionObservable
-            .bind(onNext: { titles in // 서비스 로직 호출할땐 응답받는 구조체로 대체 (아직 서비스API 미구현 임시로 string배열로 받음)
-                if titles.count == 0 {
-                    self.practiceInterviewButton.isHidden = true
-                }else {
-                    self.practiceInterviewButton.setTitle("\(titles.count)개의 면접 연습하기", for: .normal)
-                    self.practiceInterviewButton.isHidden = false
-                }
+                self.navigationController?.pushViewController(KPGroupsViewController(viewModel: self.viewModel), animated: true)
             })
     }
 }
 
 //MARK: - ConfigureUI
-extension KeywordViewController {
+extension KPFindQuestionViewController {
     func configureUI(){
         self.view.addSubview(searchBarView)
         self.searchBarView.snp.makeConstraints{ make in
-            make.top.equalToSuperview().offset(74)
+            make.top.equalTo(self.view.safeAreaLayoutGuide.snp.top).offset(15)
             make.leading.equalToSuperview().offset(34)
             make.trailing.equalToSuperview().offset(-34)
             make.height.equalTo(36)
@@ -311,11 +245,11 @@ extension KeywordViewController {
             make.width.equalTo(63)
         }
         
-        self.view.addSubview(segmentControl)
-        self.segmentControl.snp.makeConstraints{ make in
-            make.centerY.equalTo(filterButton.snp.centerY)
-            make.trailing.equalToSuperview().offset(-48)
-        }
+//        self.view.addSubview(segmentControl)
+//        self.segmentControl.snp.makeConstraints{ make in
+//            make.centerY.equalTo(filterButton.snp.centerY)
+//            make.trailing.equalToSuperview().offset(-48)
+//        }
         
         let flowLayout = UICollectionViewFlowLayout().then{
             $0.scrollDirection = .horizontal
@@ -335,27 +269,9 @@ extension KeywordViewController {
             }
         }
         
-        self.view.addSubview(keywordOnButton)
-        keywordOnButton.addTarget(self, action: #selector(didClickKeywordButton(_:)), for: .touchUpInside)
-        keywordOnButton.snp.makeConstraints{ make in
-            make.leading.equalToSuperview().offset(46)
-            make.top.equalTo(filteredCategoryView.snp.bottom).offset(15)
-            make.height.equalTo(47)
-        }
-        
-        self.view.addSubview(keywordOffButton)
-        keywordOffButton.addTarget(self, action: #selector(didClickKeywordButton(_:)), for: .touchUpInside)
-        keywordOffButton.snp.makeConstraints{ make in
-            make.leading.equalTo(keywordOnButton.snp.trailing).offset(42)
-            make.width.equalTo(keywordOnButton.snp.width)
-            make.trailing.equalToSuperview().offset(-46)
-            make.top.equalTo(filteredCategoryView.snp.bottom).offset(15)
-            make.height.equalTo(47)
-        }
-        
         self.view.addSubview(self.questionListTableView)        
         self.questionListTableView.snp.makeConstraints{ make in
-            make.top.equalTo(keywordOnButton.snp.bottom).offset(38)
+            make.top.equalTo(filteredCategoryView.snp.bottom)
             make.leading.equalToSuperview()
             make.trailing.equalToSuperview().offset(-20)
             make.bottom.equalToSuperview()
@@ -380,12 +296,12 @@ extension KeywordViewController {
 }
 
 //MARK: - CollectionViewLayoutDelegate
-extension KeywordViewController: UICollectionViewDelegateFlowLayout{
+extension KPFindQuestionViewController: UICollectionViewDelegateFlowLayout{
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         var items = [Int]()
         
         if collectionView == self.filteredCategoryView{
-            items = viewmodel.filteringList
+            items = viewModel.filteringList
         }else {
             items = filteringView!.selectedCategories
         }

@@ -181,7 +181,7 @@ class PrepareKeywordPracticeViewController: UIViewController{
             make.top.equalToSuperview().offset(10)
         }
         
-        let cameraLabel = UILabel().then {
+        _ = UILabel().then {
             $0.text = "카메라 설정"
             $0.textColor = .customDarkGray
             $0.font = .sfPro(size: 16, family: .Semibold)
