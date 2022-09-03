@@ -22,19 +22,22 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: windowScene)
         
-        let mainTabbarController = UITabBarController()
+        let mainTabbarController = CustomTabbarController()
         
         let greenRoomController = UINavigationController(rootViewController: GreenRoomViewController())
         let keywordController = UINavigationController(rootViewController: KPMainViewController(viewModel: KeywordViewModel()))
         let mypageController = UINavigationController(rootViewController: MyPageViewController(viewModel: MyPageViewModel()))
-        
+
         greenRoomController.title = "그린룸"
         greenRoomController.tabBarItem.image = UIImage(named: "greenroom")
+        greenRoomController.tabBarItem.tag = 1
         keywordController.title = "키워드연습"
         keywordController.tabBarItem.image = UIImage(named: "keyword")
+        keywordController.tabBarItem.tag = 2
         mypageController.title = "마이페이지"
         mypageController.tabBarItem.image = UIImage(named: "mypage")
-        
+        mypageController.tabBarItem.tag = 3
+
         mainTabbarController.tabBar.tintColor = .darken
         mainTabbarController.tabBar.unselectedItemTintColor = .customGray
         mainTabbarController.viewControllers = [keywordController,greenRoomController,mypageController]

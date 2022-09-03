@@ -16,4 +16,5 @@ target 'GreenRoom' do
 	pod 'SwiftKeychainWrapper'
 	pod 'RxDataSources', '~> 5.0'
   pod 'Kingfisher', '~> 7.0'
+  pod 'RxViewController'
 end

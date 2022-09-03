@@ -51,9 +51,11 @@ final class GRSearchViewController: BaseViewController {
     }
     
     override func setupBinding() {
-        viewModel.keywords
+        Observable.combineLatest(viewModel.recentKeywords.asObserver(), viewModel.popularKeywords.asObserver())
+            .map { $0.0 + $0.1 }
             .bind(to: collectionView.rx.items(dataSource: self.dataSource()))
             .disposed(by: disposeBag)
+            
     }
 
 }

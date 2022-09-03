@@ -9,7 +9,7 @@ import Foundation
 
 struct Storage {
     
-    let kakaoAppKey = "a45de08bf74de9630747bd72021eb355"
+    static let kakaoAppKey = "a45de08bf74de9630747bd72021eb355"
     
-    let baseURL = "https://green-room.link"
+    static let baseURL = "https://green-room.link"
 }

@@ -37,39 +37,20 @@ enum ImageType {
 class UserService {
     
     //MARK: - 회원정보 조회
-    //    func fetchUserInfo() -> Observable<[MyPageSectionModel]> {
-    //        return Observable.create { [weak self] emmiter in
-    //            self?.fetchUserInfo(completion: { result in
-    //                switch result {
-    //                case .success(let user):
-    //                    let userModel = MyPageSectionModel.profile(items: [
-    //                        MyPageSectionModel.Item.profile(profileInfo: user)
-    //                    ])
-    //                    emmiter.onNext([userModel])
-    //                case .failure(let error):
-    //                    emmiter.onError(error)
-    //                }
-    //            })
-    //            return Disposables.create()
-    //        }
-    //    }
-    
-    func fetchUserInfo(completion:@escaping (Result<User,Error>) -> Void) {
-        guard let url = URL(string: Storage().baseURL + "/api/users") else { return }
-        guard let accessToken = KeychainWrapper.standard.string(forKey: "accessToken") else { return }
+    func fetchUserInfo() -> Observable<User> {
+        let url = URL(string: Storage.baseURL + "/api/users")!
         
-        let headers: HTTPHeaders = [
-            "Authorization": "Bearer \(accessToken)"
-        ]
-        
-        AF.request(url,headers: headers).responseDecodable(of: User.self) { response in
-            switch response.result {
-            case .success(let user):
-                completion(.success(user))
-            case .failure(let error):
-                completion(.failure(error))
-                
+        return Observable.create { emitter in
+            AF.request(url,interceptor: AuthManager()).validate().responseDecodable(of: User.self) { response in
+                switch response.result {
+                case .success(let user):
+                    UserDefaults.standard.set(user.categoryID, forKey: "CategoryID")
+                    emitter.onNext(user)
+                case .failure(let error):
+                    emitter.onError(error)
+                }
             }
+            return Disposables.create()
         }
     }
     
@@ -114,20 +95,12 @@ extension UserService {
     }
     
     private func fetchPresignedURL(parameters: [String: String], completion:@escaping(String) -> Void) {
-        guard let url = URL(string: Storage().baseURL + "/api/users/profile-image") else {
+        guard let url = URL(string: Storage.baseURL + "/api/users/profile-image") else {
             return
             
         }
-        
-        guard let accessToken = KeychainWrapper.standard.string(forKey: "accessToken") else {
-            return
-        }
-        
-        let headers: HTTPHeaders = [
-            "Authorization": "Bearer \(accessToken)"
-        ]
-        
-        AF.request(url, method: .put, parameters: parameters, encoder: .json, headers: headers).validate(statusCode: 200..<300).responseDecodable(of: PresignedURL.self) { response in
+
+        AF.request(url, method: .put, parameters: parameters, encoder: .json, interceptor: AuthManager()).validate(statusCode: 200..<300).responseDecodable(of: PresignedURL.self) { response in
             switch response.result {
             case .success(let url):
                 completion(url.profileImage)
@@ -155,17 +128,10 @@ extension UserService {
 extension UserService {
     
     func updateUserInfo(parameter: [String: Any], completion: @escaping(Bool) -> Void) {
-        guard let url = URL(string: Storage().baseURL + "/api/users") else { return }
+        guard let url = URL(string: Storage.baseURL + "/api/users") else { return }
         
-        guard let accessToken = KeychainWrapper.standard.string(forKey: "accessToken") else {
-            return
-        }
-        
-        let headers: HTTPHeaders = [
-            "Authorization": "Bearer \(accessToken)"
-        ]
         if let name = parameter as? [String: String] {
-            AF.request(url, method: .put,parameters: name, encoder: JSONParameterEncoder.default , headers: headers).validate(statusCode: 200..<300).response { response in
+            AF.request(url, method: .put,parameters: name, encoder: JSONParameterEncoder.default, interceptor: AuthManager()).validate(statusCode: 200..<300).response { response in
                 switch response.result {
                 case .success(_):
                     print("Success to upload user info")
@@ -177,7 +143,7 @@ extension UserService {
                 
             }
         } else if let category = parameter as? [String: Int] {
-            AF.request(url, method: .put,parameters: category, encoder: JSONParameterEncoder.default , headers: headers).validate(statusCode: 200..<300).response { response in
+            AF.request(url, method: .put,parameters: category, encoder: JSONParameterEncoder.default, interceptor: AuthManager()).validate(statusCode: 200..<300).response { response in
                 switch response.result {
                 case .success(_):
                     print("Success to upload user info")
