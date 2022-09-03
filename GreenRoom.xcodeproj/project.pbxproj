@@ -66,7 +66,6 @@
 		E470539728AB856D00884B56 /* SettingHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = E470539628AB856D00884B56 /* SettingHeader.swift */; };
 		E470539928AB882900884B56 /* SettingRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = E470539828AB882900884B56 /* SettingRow.swift */; };
 		E48F8B4F28C26864007AAF40 /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E48F8B4E28C26864007AAF40 /* AuthManager.swift */; };
-		E48F8B5128C26BED007AAF40 /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E48F8B5028C26BED007AAF40 /* APIManager.swift */; };
 		E49CC15628C326DA009216E1 /* EditProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E49CC15528C326DA009216E1 /* EditProfileViewModel.swift */; };
 		E49CC16C28C331E4009216E1 /* SFPro.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E49CC16A28C331E4009216E1 /* SFPro.ttf */; };
 		E49CC16D28C331E4009216E1 /* SFProText-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = E49CC16B28C331E4009216E1 /* SFProText-Semibold.otf */; };
@@ -151,7 +150,6 @@
 		E470539628AB856D00884B56 /* SettingHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingHeader.swift; sourceTree = "<group>"; };
 		E470539828AB882900884B56 /* SettingRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingRow.swift; sourceTree = "<group>"; };
 		E48F8B4E28C26864007AAF40 /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
-		E48F8B5028C26BED007AAF40 /* APIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
 		E49CC15528C326DA009216E1 /* EditProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewModel.swift; sourceTree = "<group>"; };
 		E49CC16A28C331E4009216E1 /* SFPro.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = SFPro.ttf; sourceTree = "<group>"; };
 		E49CC16B28C331E4009216E1 /* SFProText-Semibold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFProText-Semibold.otf"; sourceTree = "<group>"; };
@@ -454,7 +452,6 @@
 			children = (
 				E40BC6FA28B892C400FB557D /* CoreDataManager.swift */,
 				E48F8B4E28C26864007AAF40 /* AuthManager.swift */,
-				E48F8B5028C26BED007AAF40 /* APIManager.swift */,
 			);
 			path = Manager;
 			sourceTree = "<group>";
@@ -720,7 +717,6 @@
 				E4141ACA28AF79E7004D74B3 /* QNAViewController.swift in Sources */,
 				DBD0825A2897E75B0092241F /* ProfileCell.swift in Sources */,
 				DBD082552897E75B0092241F /* GreenRoomViewController.swift in Sources */,
-				E48F8B5128C26BED007AAF40 /* APIManager.swift in Sources */,
 				DB563F9A28ABADDF00E7193D /* RxNaverThirdPartyLoginProxy.swift in Sources */,
 				DBD082562897E75B0092241F /* MyPageViewController.swift in Sources */,
 			);

@@ -72,16 +72,15 @@ class LoginService{
         
         let urlString = Storage.baseURL + "/api/auth/logout"
         let url = URL(string: urlString)!
-        
         return Observable.create{ emitter in
-            let req = AF.request(url, method: .post, headers: headers).validate(statusCode: 200..<300)
-            
-            req.response() { res in
-                switch res.result {
+            AF.request(url, method: .post, headers: headers,interceptor: AuthManager()).validate().response { response in
+                switch response.result {
                 case .success(_):
+                    print("성공")
                     emitter.onNext(true)
                     emitter.onCompleted()
                 case .failure(let error):
+                    print(error.localizedDescription)
                     emitter.onError(error)
                 }
             }

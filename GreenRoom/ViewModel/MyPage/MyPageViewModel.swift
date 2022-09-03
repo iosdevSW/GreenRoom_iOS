@@ -57,11 +57,6 @@ class MyPageViewModel: ViewModelType {
             self?.updateProfileImage(image: image)
         }).disposed(by: disposeBag)
         
-//        input.userName.subscribe(onNext: { [weak self] name in
-//            self?.updateUserInfo(nickName: name)
-//        }).disposed(by: disposeBag)
-        
-//        let combine = Observable.combineLatest(userObservable, settingsObservable).map{ $0.0 + $0.1}
         return Output(MyPageDataSource: Observable.combineLatest(userObservable, settingsObservable).map{ $0.0 + $0.1})
     }
     //MARK: - QNAViewController
