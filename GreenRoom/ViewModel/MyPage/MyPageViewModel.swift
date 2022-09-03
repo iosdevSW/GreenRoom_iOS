@@ -10,19 +10,22 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-class MyPageViewModel {
+class MyPageViewModel: ViewModelType {
+
+    struct Input {
+        let viewTrigger: Observable<Bool>
+        let profileImage: Observable<UIImage?>
+    }
+    
+    struct Output {
+        var MyPageDataSource: Observable<[MyPageSectionModel]>
+    }
     
     let userService = UserService()
-    
-    private var disposeBag = DisposeBag()
+    var disposeBag = DisposeBag()
     
     //MARK: - MyPageViewController
-//    let signal = PublishRelay<Void>()
-    
-    var userObservable = BehaviorSubject<[MyPageSectionModel]>(value: [])
-    var profileImageObservable = PublishSubject<UIImage?>()
-    var MyPageDataSource = BehaviorSubject<[MyPageSectionModel]>(value:[])
-    var usernameObservable = BehaviorSubject<String>(value: "")
+    private let userObservable = BehaviorSubject<[MyPageSectionModel]>(value: [MyPageSectionModel.profile(items: [MyPageSectionModel.Item.profile(profileInfo: User(categoryID: 1, category: "공통", name: "박면접", profileImage: ""))])])
 
     private let settingsObservable = Observable<[MyPageSectionModel]>.create { observer in
         observer.onNext(
@@ -41,12 +44,23 @@ class MyPageViewModel {
         return Disposables.create()
     }
     
-    
-    //MARK: - QNAViewController
-    private let defaultQNAImage = Observable<UIImage?>.create { observer in
-        observer.onNext(UIImage(systemName: "plus.circle"))
-        return Disposables.create()
+    func transform(input: Input) -> Output {
+        input.viewTrigger.flatMap { _ in
+            return self.userService.fetchUserInfo()
+        }.map {
+            return [MyPageSectionModel.profile(items: [
+                MyPageSectionModel.Item.profile(profileInfo: $0)
+            ])]
+        }.bind(to: self.userObservable).disposed(by: disposeBag)
+
+        input.profileImage.subscribe(onNext: { [weak self] image in
+            self?.updateProfileImage(image: image)
+        }).disposed(by: disposeBag)
+        
+        return Output(MyPageDataSource: Observable.combineLatest(userObservable, settingsObservable).map{ $0.0 + $0.1})
     }
+    //MARK: - QNAViewController
+    private let defaultQNAImage = Observable<UIImage?>.of(UIImage(systemName: "plus.circle"))
     
     //MARK: - FAQ
     var shownFAQ = BehaviorSubject<[FAQ]>(value: [])
@@ -86,67 +100,20 @@ class MyPageViewModel {
                     6. 타인의 답변을 베껴 작성하는 행위는 삼가해주세요.
                     """)
     ]
-    init(){
-        self.bind()
-    }
-    func bind(){
-        loadUserInfo()
-        
-        profileImageObservable.subscribe(onNext: { [weak self] image in
-            self?.userService.updateProfileImage(image: image) { completeUpload in
-                if completeUpload {
-                    self?.loadUserInfo()
-                }
-                
-            }
-        }).disposed(by: disposeBag)
-        
     
-        Observable.combineLatest(userObservable.asObserver(), settingsObservable.asObservable())
-            .subscribe(onNext: { [weak self] datasource in
-            self?.MyPageDataSource.onNext(datasource.0 + datasource.1)
-        }).disposed(by: disposeBag)
-    }
-    
-    //MARK: - fetchUserinfo
-    private func loadUserInfo(){
-        
-        self.userService.fetchUserInfo() { [weak self] result in
-            switch result {
-            case .success(let user):
-                
-                UserDefaults.standard.set(user.categoryID, forKey: "CategoryID")
-                
-                let userModel = MyPageSectionModel.profile(items: [
-                    MyPageSectionModel.Item.profile(profileInfo: user)
-                ])
-                self?.usernameObservable.onNext(user.name)
-                self?.userObservable.onNext([userModel])
-            case .failure(let error):
-                print(error)
-            }
+    private func fetchUserInfo() -> Observable<[MyPageSectionModel]> {
+        return self.userService.fetchUserInfo().compactMap {
+            return [MyPageSectionModel.profile(items: [
+                MyPageSectionModel.Item.profile(profileInfo: $0)
+            ])]
         }
     }
-    
     //MARK: - update user info
-    func updateUserInfo(nickName: String? = nil, cateogryId: Int? = nil) {
-        var parameter: [String: Any] = [:]
-        
-        if let nickName = nickName {
-            parameter["name"] = nickName
+    private func updateProfileImage(image: UIImage?){
+        self.userService.updateProfileImage(image: image) { [weak self] _ in
+            guard let self = self else { return }
+            self.fetchUserInfo().bind(to: self.userObservable).disposed(by: self.disposeBag)
         }
-        
-        if let cateogryId = cateogryId {
-            parameter["categoryId"] = cateogryId
-        }
-        
-        self.userService.updateUserInfo(parameter: parameter) { [weak self] isCompleted in
-            if isCompleted {
-                self?.loadUserInfo()
-            }
-            
-        }
-
     }
 }
 

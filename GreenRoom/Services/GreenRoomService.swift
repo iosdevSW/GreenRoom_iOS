@@ -13,7 +13,7 @@ import RxCocoa
 final class GreenRoomService {
     
     func fetchPopularKeywords(completion:@escaping (Result<[String],Error>) -> Void){
-        guard let url = URL(string: "\(Storage().baseURL)/api/public-questions/popular-search-words") else { return }
+        guard let url = URL(string: "\(Storage.baseURL)/api/public-questions/popular-search-words") else { return }
         
         guard let accessToken = KeychainWrapper.standard.string(forKey: "accessToken") else {
             return

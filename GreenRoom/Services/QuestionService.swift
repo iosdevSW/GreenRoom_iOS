@@ -31,17 +31,12 @@ final class QuestionService {
     func uploadQuestionList(categoryId: Int, question: String) -> Observable<Bool> {
         
         print("DEBUG: \(categoryId),, \(question)")
-        let url = URL(string: "\(Storage().baseURL)/api/private-questions")!
-        let accessToken = KeychainWrapper.standard.string(forKey: "accessToken")!
-        
-        let headers: HTTPHeaders = [
-            "Authorization": "Bearer \(accessToken)"
-        ]
+        let url = URL(string: "\(Storage.baseURL)/api/private-questions")!
         
         let parameters = UploadQuestionModel(categoryId: categoryId, question: question)
         
         return Observable.create { emitter in
-            AF.request(url, method: .post, parameters: parameters, encoder: .json, headers: headers).responseData { response in
+            AF.request(url, method: .post, parameters: parameters, encoder: .json, interceptor: AuthManager()).responseData { response in
                 switch response.result {
                 case .success(_):
                     if response.response?.statusCode == 400 {
