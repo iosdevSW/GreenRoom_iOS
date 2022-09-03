@@ -14,6 +14,7 @@
 		DB006B8E28C3282700867013 /* KPGroupEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB006B8D28C3282700867013 /* KPGroupEditViewController.swift */; };
 		DB006B9128C33FDA00867013 /* KPGroupsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB006B9028C33FDA00867013 /* KPGroupsViewController.swift */; };
 		DB006B9328C342E200867013 /* KPQuestionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB006B9228C342E200867013 /* KPQuestionsViewController.swift */; };
+		DB006B9528C39D3C00867013 /* CustomSwitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB006B9428C39D3C00867013 /* CustomSwitch.swift */; };
 		DB05246928B5FE50003209D4 /* PrepareKeywordPracticeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB05246828B5FE50003209D4 /* PrepareKeywordPracticeViewController.swift */; };
 		DB53AE9F289F967800E9A5CC /* RegisterCompleteViewControlller.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB53AE9E289F967700E9A5CC /* RegisterCompleteViewControlller.swift */; };
 		DB563F9A28ABADDF00E7193D /* RxNaverThirdPartyLoginProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB563F9928ABADDF00E7193D /* RxNaverThirdPartyLoginProxy.swift */; };
@@ -111,6 +112,7 @@
 		DB006B8D28C3282700867013 /* KPGroupEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KPGroupEditViewController.swift; sourceTree = "<group>"; };
 		DB006B9028C33FDA00867013 /* KPGroupsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KPGroupsViewController.swift; sourceTree = "<group>"; };
 		DB006B9228C342E200867013 /* KPQuestionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KPQuestionsViewController.swift; sourceTree = "<group>"; };
+		DB006B9428C39D3C00867013 /* CustomSwitch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSwitch.swift; sourceTree = "<group>"; };
 		DB05246828B5FE50003209D4 /* PrepareKeywordPracticeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrepareKeywordPracticeViewController.swift; sourceTree = "<group>"; };
 		DB53AE9E289F967700E9A5CC /* RegisterCompleteViewControlller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterCompleteViewControlller.swift; sourceTree = "<group>"; };
 		DB563F9928ABADDF00E7193D /* RxNaverThirdPartyLoginProxy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RxNaverThirdPartyLoginProxy.swift; sourceTree = "<group>"; };
@@ -298,6 +300,7 @@
 				E40BC6E728B8868C00FB557D /* BaseViewController.swift */,
 				DB006B8528C23A4300867013 /* ChevronButton.swift */,
 				E4C4C4BB28BD1172008826AB /* CustomTabbarController.swift */,
+				DB006B9428C39D3C00867013 /* CustomSwitch.swift */,
 			);
 			path = Custom;
 			sourceTree = "<group>";
@@ -724,6 +727,7 @@
 			files = (
 				DBD082512897E75B0092241F /* LoginViewModel.swift in Sources */,
 				DBFB296E28B26F5B00B1DAC9 /* CustomSegmentedControl.swift in Sources */,
+				DB006B9528C39D3C00867013 /* CustomSwitch.swift in Sources */,
 				DB006B8828C2430400867013 /* GroupView.swift in Sources */,
 				DB8D163828B8ABC700E3F237 /* CustomGoalProgressBar.swift in Sources */,
 				DBFB297228B377EB00B1DAC9 /* CategoryFilterView.swift in Sources */,
@@ -735,7 +739,6 @@
 				DBA8ED6E28BB89C3007526CF /* KPFinishViewController.swift in Sources */,
 				E470539728AB856D00884B56 /* SettingHeader.swift in Sources */,
 				DB563FA028AF841400E7193D /* RxAppleLoginProxy.swift in Sources */,
-
 				DB006B8628C23A4300867013 /* ChevronButton.swift in Sources */,
 				DB53AE9F289F967800E9A5CC /* RegisterCompleteViewControlller.swift in Sources */,
 				DBA8ED7828BF7457007526CF /* KPReviewViewController.swift in Sources */,
