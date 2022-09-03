@@ -6,11 +6,15 @@
 //
 import UIKit
 import RxSwift
+import RxCocoa
 
+protocol EditProfileInfoDelegate {
+    func editNickName(textField: Observable<String>)
+}
 class EditProfileInfoViewController: BaseViewController {
     
     //MARK: - properties
-    private let viewModel: MyPageViewModel
+    private let viewModel: EditProfileViewModel
     
     private let nameLabel = UILabel().then{
         $0.text = "이름"
@@ -34,7 +38,7 @@ class EditProfileInfoViewController: BaseViewController {
         configuration.imagePadding = 230
         configuration.imagePlacement = .trailing
         configuration.baseForegroundColor = .black
-        configuration.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 46, bottom: 0, trailing: 63)
+        configuration.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 30, bottom: 0, trailing: 63)
         $0.titleLabel?.font = .sfPro(size: 16, family: .Regular)
         $0.addTarget(self, action: #selector(didTapLogout), for: .touchUpInside)
         $0.imageView?.tintColor = .black
@@ -58,7 +62,7 @@ class EditProfileInfoViewController: BaseViewController {
     }
     
     //MARK: - lifecycle
-    init(viewModel: MyPageViewModel){
+    init(viewModel: EditProfileViewModel){
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
@@ -112,10 +116,11 @@ class EditProfileInfoViewController: BaseViewController {
     }
     
     override func setupBinding() {
+        let input = EditProfileViewModel.Input(trigger: self.rx.viewWillAppear.asObservable())
         
-        viewModel.usernameObservable.subscribe(onNext: { [weak self] name in
-            self?.nameTextField.text = name
-        }).disposed(by: disposeBag)
+        let output = viewModel.transform(input: input)
+        
+        output.userName.bind(to: self.nameTextField.rx.text).disposed(by: disposeBag)
         
         nameTextField.rx.controlEvent(.editingDidEndOnExit)
             .subscribe(onNext: { [weak self] _ in
@@ -128,7 +133,7 @@ class EditProfileInfoViewController: BaseViewController {
     }
     
     @objc func didTapLogout(){
-//        nameTextField.rx.bind()
+        //        nameTextField.rx.bind()
     }
     
     @objc func didTapWithdrawal(){

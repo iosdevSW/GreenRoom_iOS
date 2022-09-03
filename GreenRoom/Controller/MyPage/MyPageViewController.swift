@@ -8,8 +8,10 @@
 import UIKit
 import SwiftKeychainWrapper
 import RxSwift
+import RxCocoa
 import RxDataSources
 import PhotosUI
+import RxViewController
 
 final class MyPageViewController: BaseViewController {
     
@@ -17,6 +19,7 @@ final class MyPageViewController: BaseViewController {
     
     private var collectionView: UICollectionView!
     private let imagePickerView = UIImagePickerController()
+    private let profile = PublishRelay<UIImage?>()
     
     //MARK: - Lifecycle
     init(viewModel: MyPageViewModel){
@@ -53,8 +56,14 @@ final class MyPageViewController: BaseViewController {
     }
     
     override func setupBinding() {
+        
+        let input = MyPageViewModel.Input(viewTrigger: rx.viewWillAppear.asObservable(), profileImage: profile.asObservable())
+        
         let dataSource = dataSource()
-        viewModel.MyPageDataSource.bind(to: collectionView.rx.items(dataSource: dataSource))
+        
+        let output = self.viewModel.transform(input: input)
+        
+        output.MyPageDataSource.bind(to: collectionView.rx.items(dataSource: dataSource))
             .disposed(by: disposeBag)
         
         Observable.zip(collectionView.rx.itemSelected, collectionView.rx.modelSelected(MyPageSectionModel.Item.self))
@@ -185,7 +194,8 @@ extension MyPageViewController: ProfileCellDelegate, PHPickerViewControllerDeleg
             newImage = possibleImage // 원본 이미지가 있을 경우
         }
         
-        viewModel.profileImageObservable.onNext(newImage)// 받아온 이미지를 update
+        self.profile.accept(newImage)// 받아온 이미지를 update
+//        viewModel.profileImageObservable.onNext(newImage)
         picker.dismiss(animated: true, completion: nil) // picker를 닫아줌
     }
     
@@ -199,8 +209,8 @@ extension MyPageViewController: ProfileCellDelegate, PHPickerViewControllerDeleg
            itemProvider.canLoadObject(ofClass: UIImage.self) {
             itemProvider.loadObject(ofClass: UIImage.self) { [weak self] image, error in
                 guard let image = image as? UIImage else { return }
-                print(image)
-                self?.viewModel.profileImageObservable.onNext(image)
+                self?.profile.accept(image)
+//                self?.viewModel.profileImageObservable.onNext(image)
             }
         }
     }
@@ -223,14 +233,12 @@ extension MyPageViewController: ProfileCellDelegate, PHPickerViewControllerDeleg
     
     
     func didTapOpenCamera() {
-        
         imagePickerView.delegate = self
         imagePickerView.sourceType = .camera
         present(imagePickerView,animated: true)
     }
     
     func didTapopenGallery(){
-        
         if #available(iOS 14.0, *) {
             var configuration = PHPickerConfiguration()
             configuration.filter = .images
@@ -245,7 +253,7 @@ extension MyPageViewController: ProfileCellDelegate, PHPickerViewControllerDeleg
     }
     
     func didTapEditProfileInfo() {
-        let vc = EditProfileInfoViewController(viewModel: viewModel)
+        let vc = EditProfileInfoViewController(viewModel: EditProfileViewModel(userService: UserService()))
         navigationController?.pushViewController(vc, animated: false)
     }
     
