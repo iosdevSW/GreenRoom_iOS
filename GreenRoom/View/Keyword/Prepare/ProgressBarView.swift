@@ -22,6 +22,12 @@ class ProgressBarView: UIView {
         $0.font = .sfPro(size: 12, family: .Regular)
     }
     
+    let guideLabel = UILabel().then{
+        $0.text = "목표를 설정해보세요!"
+        $0.textColor = .point
+        $0.font = .sfPro(size: 12, family: .Regular)
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.configureUI()
@@ -60,7 +66,13 @@ class ProgressBarView: UIView {
             })
     }
     
-    func drawDottedLine(){
+    func removeGesture() {
+        if let gesture = self.goalView.gestureRecognizers?.first {
+            goalView.removeGestureRecognizer(gesture)
+        }
+    }
+    
+    private func drawDottedLine(){
         let layer = CAShapeLayer()
         layer.strokeColor = UIColor.black.cgColor
         layer.lineDashPattern = [4,2]
@@ -72,7 +84,7 @@ class ProgressBarView: UIView {
         path.addLine(to: CGPoint(x: 20, y: goalView.frame.height))
         
         layer.path = path.cgPath
-        goalView.layer.addSublayer(layer)
+        goalView.layer.insertSublayer(layer, at: 0)
     }
     
     func configureUI(){
@@ -98,17 +110,12 @@ class ProgressBarView: UIView {
             $0.frame.size = CGSize(width: 40, height: 20)
         }
         
-        UILabel().then{
-            $0.text = "목표를 설정해보세요!"
-            $0.textColor = .point
-            $0.font = .sfPro(size: 12, family: .Regular)
-            
-            self.addSubview($0)
-            $0.snp.makeConstraints{ make in
-                make.top.equalTo(self.progressBar.snp.bottom).offset(8)
-                make.leading.equalTo(self.progressBar.snp.leading).offset(10)
-            }
+        self.addSubview(guideLabel)
+        guideLabel.snp.makeConstraints{ make in
+            make.top.equalTo(self.progressBar.snp.bottom).offset(8)
+            make.leading.equalTo(self.progressBar.snp.leading).offset(10)
         }
+        
         
         self.addSubview(self.persentLabel)
         self.persentLabel.snp.makeConstraints{ make in

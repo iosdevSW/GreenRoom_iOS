@@ -54,7 +54,32 @@ class KeywordViewController: UIViewController{
         $0.setTitleTextAttributes(selectedTitleTextAttributes as [NSAttributedString.Key : Any], for:.selected)
     }
     
-    let keywordOnOffSegmentControl = CustomSegmentedControl(frame: .zero, buttonTitles: ["키워드 ON","키워드 OFF"])
+    let keywordOnButton = UIButton(type: .system).then{
+        $0.setTitle("키워드 ON", for: .normal)
+        $0.setTitleColor(.mainColor, for: .normal)
+        $0.titleLabel?.font = .sfPro(size: 16, family: .Semibold)
+        $0.backgroundColor = .white
+        $0.tag = 0
+        $0.layer.borderColor = UIColor.mainColor.cgColor
+        $0.layer.borderWidth = 2
+        $0.layer.cornerRadius = 15
+        $0.layer.shadowColor = UIColor(red: 0.769, green: 0.769, blue: 0.769, alpha: 1).cgColor
+        $0.layer.shadowOpacity = 1
+        $0.layer.shadowOffset = CGSize(width: 0, height: 5)
+    }
+    
+    let keywordOffButton = UIButton(type: .system).then{
+        $0.setTitle("키워드 OFF", for: .normal)
+        $0.setTitleColor(.customGray, for: .normal)
+        $0.titleLabel?.font = .sfPro(size: 16, family: .Semibold)
+        $0.backgroundColor = .white
+        $0.tag = 1
+        $0.layer.borderColor = UIColor.mainColor.cgColor
+        $0.layer.cornerRadius = 15
+        $0.layer.shadowColor = UIColor(red: 0.769, green: 0.769, blue: 0.769, alpha: 1).cgColor
+        $0.layer.shadowOpacity = 1
+        $0.layer.shadowOffset = CGSize(width: 0, height: 5)
+    }
     
     var filteredCategoryView: UICollectionView!
     
@@ -126,14 +151,12 @@ class KeywordViewController: UIViewController{
     }
     
     override func setNavigationItem() {
-        super.setNavigationItem()
         self.navigationItem.backButtonTitle = ""
         self.navigationController?.navigationBar.tintColor = .mainColor
     }
     
     //MARK: - Selector
     @objc func logout(_ sender: UIButton){
-        
         LoginService.logout()
             .subscribe(onNext: { isSuccess in
                 let oauthType = KeychainWrapper.standard.integer(forKey: "oauthType")!
@@ -187,7 +210,22 @@ class KeywordViewController: UIViewController{
         }
     }
     
-    @objc func didClickPracticeButton(_ sender: UIButton){
+    @objc func didClickKeywordButton(_ sender: UIButton) {
+        let onButtonColor: UIColor = sender.tag == 0 ? .mainColor : .customGray
+        let offButtonColor: UIColor = sender.tag == 0 ? .customGray : .mainColor
+        let onButtonBorderWidth: CGFloat = sender.tag == 0 ? 2 : 0
+        let offButtonBorderWidth: CGFloat = sender.tag == 0 ? 0 : 2
+        let isKeywordOn = sender.tag == 0 ? true : false
+            
+        self.viewmodel.keywordOnOff = isKeywordOn
+        self.keywordOnButton.setTitleColor(onButtonColor, for: .normal)
+        self.keywordOnButton.layer.borderWidth = onButtonBorderWidth
+        
+        self.keywordOffButton.setTitleColor(offButtonColor, for: .normal)
+        self.keywordOffButton.layer.borderWidth = offButtonBorderWidth
+    }
+    
+    @objc func didClickPracticeButton(_ sender: UIButton) {
         self.navigationController?.pushViewController(PrepareKeywordPracticeViewController(viewmodel: viewmodel), animated: true)
     }
     
@@ -297,17 +335,27 @@ extension KeywordViewController {
             }
         }
         
-        self.view.addSubview(keywordOnOffSegmentControl)
-        keywordOnOffSegmentControl.snp.makeConstraints{ make in
+        self.view.addSubview(keywordOnButton)
+        keywordOnButton.addTarget(self, action: #selector(didClickKeywordButton(_:)), for: .touchUpInside)
+        keywordOnButton.snp.makeConstraints{ make in
+            make.leading.equalToSuperview().offset(46)
             make.top.equalTo(filteredCategoryView.snp.bottom).offset(15)
-            make.leading.equalToSuperview().offset(48)
-            make.trailing.equalToSuperview().offset(-48)
+            make.height.equalTo(47)
+        }
+        
+        self.view.addSubview(keywordOffButton)
+        keywordOffButton.addTarget(self, action: #selector(didClickKeywordButton(_:)), for: .touchUpInside)
+        keywordOffButton.snp.makeConstraints{ make in
+            make.leading.equalTo(keywordOnButton.snp.trailing).offset(42)
+            make.width.equalTo(keywordOnButton.snp.width)
+            make.trailing.equalToSuperview().offset(-46)
+            make.top.equalTo(filteredCategoryView.snp.bottom).offset(15)
             make.height.equalTo(47)
         }
         
         self.view.addSubview(self.questionListTableView)        
         self.questionListTableView.snp.makeConstraints{ make in
-            make.top.equalTo(keywordOnOffSegmentControl.snp.bottom).offset(38)
+            make.top.equalTo(keywordOnButton.snp.bottom).offset(38)
             make.leading.equalToSuperview()
             make.trailing.equalToSuperview().offset(-20)
             make.bottom.equalToSuperview()
@@ -331,6 +379,7 @@ extension KeywordViewController {
     }
 }
 
+//MARK: - CollectionViewLayoutDelegate
 extension KeywordViewController: UICollectionViewDelegateFlowLayout{
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         var items = [Int]()

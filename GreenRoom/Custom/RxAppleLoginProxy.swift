@@ -22,8 +22,6 @@ class RxAppleLoginProxy: DelegateProxy<ASAuthorizationController,ASAuthorization
     static func setCurrentDelegate(_ delegate: ASAuthorizationControllerDelegate?, to object: ASAuthorizationController) {
         object.delegate = delegate
     }
-    
-    
 }
 
 class RxAppleLoginContextProxy: DelegateProxy<ASAuthorizationController,ASAuthorizationControllerPresentationContextProviding>,DelegateProxyType,ASAuthorizationControllerPresentationContextProviding{
