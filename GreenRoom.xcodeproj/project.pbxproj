@@ -8,6 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		8264C21FBC48D22BCC90B0D5 /* Pods_GreenRoom.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48A2A5400036D7B484D9CF77 /* Pods_GreenRoom.framework */; };
+		DB006B8628C23A4300867013 /* ChevronButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB006B8528C23A4300867013 /* ChevronButton.swift */; };
+		DB006B8828C2430400867013 /* GroupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB006B8728C2430400867013 /* GroupView.swift */; };
+		DB006B8A28C31F4200867013 /* GroupCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB006B8928C31F4200867013 /* GroupCell.swift */; };
+		DB006B8E28C3282700867013 /* KPGroupEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB006B8D28C3282700867013 /* KPGroupEditViewController.swift */; };
+		DB006B9128C33FDA00867013 /* KPGroupsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB006B9028C33FDA00867013 /* KPGroupsViewController.swift */; };
+		DB006B9328C342E200867013 /* KPQuestionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB006B9228C342E200867013 /* KPQuestionsViewController.swift */; };
 		DB05246928B5FE50003209D4 /* PrepareKeywordPracticeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB05246828B5FE50003209D4 /* PrepareKeywordPracticeViewController.swift */; };
 		DB53AE9F289F967800E9A5CC /* RegisterCompleteViewControlller.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB53AE9E289F967700E9A5CC /* RegisterCompleteViewControlller.swift */; };
 		DB563F9A28ABADDF00E7193D /* RxNaverThirdPartyLoginProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB563F9928ABADDF00E7193D /* RxNaverThirdPartyLoginProxy.swift */; };
@@ -22,6 +28,16 @@
 		DBA8ED6428B9D336007526CF /* RecentSearchKeyword+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA8ED6328B9D336007526CF /* RecentSearchKeyword+CoreDataClass.swift */; };
 		DBA8ED6628B9D347007526CF /* RecentSearchKeyword+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA8ED6528B9D347007526CF /* RecentSearchKeyword+CoreDataProperties.swift */; };
 		DBA8ED6A28B9D621007526CF /* PracticeQuestionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA8ED6928B9D621007526CF /* PracticeQuestionCell.swift */; };
+		DBA8ED6C28BB4A4C007526CF /* KPRecordingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA8ED6B28BB4A4C007526CF /* KPRecordingViewController.swift */; };
+		DBA8ED6E28BB89C3007526CF /* KPFinishViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA8ED6D28BB89C3007526CF /* KPFinishViewController.swift */; };
+		DBA8ED7028BD103F007526CF /* PracticeResultCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA8ED6F28BD103F007526CF /* PracticeResultCell.swift */; };
+		DBA8ED7228BDC945007526CF /* KPDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA8ED7128BDC945007526CF /* KPDetailViewController.swift */; };
+		DBA8ED7428BDDCA1007526CF /* DetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA8ED7328BDDCA1007526CF /* DetailCell.swift */; };
+		DBA8ED7628BF1790007526CF /* KPDetailModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA8ED7528BF1790007526CF /* KPDetailModel.swift */; };
+		DBA8ED7828BF7457007526CF /* KPReviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA8ED7728BF7457007526CF /* KPReviewViewController.swift */; };
+		DBA8ED7A28BF8009007526CF /* KPReviewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA8ED7928BF8009007526CF /* KPReviewModel.swift */; };
+		DBA8ED7C28BF931F007526CF /* ReviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA8ED7B28BF931F007526CF /* ReviewCell.swift */; };
+		DBA8ED7E28C0A4D7007526CF /* KPMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA8ED7D28C0A4D7007526CF /* KPMainViewController.swift */; };
 		DBBA9481289968CD00264405 /* PaddingLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBBA9480289968CD00264405 /* PaddingLabel.swift */; };
 		DBD0821D2897E6EE0092241F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD0821C2897E6EE0092241F /* AppDelegate.swift */; };
 		DBD0821F2897E6EE0092241F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD0821E2897E6EE0092241F /* SceneDelegate.swift */; };
@@ -33,7 +49,7 @@
 		DBD082542897E75B0092241F /* MyPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD0823C2897E75A0092241F /* MyPageViewModel.swift */; };
 		DBD082552897E75B0092241F /* GreenRoomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD0823F2897E75A0092241F /* GreenRoomViewController.swift */; };
 		DBD082562897E75B0092241F /* MyPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD082412897E75A0092241F /* MyPageViewController.swift */; };
-		DBD082572897E75B0092241F /* KeywordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD082432897E75A0092241F /* KeywordViewController.swift */; };
+		DBD082572897E75B0092241F /* KPFindQuestionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD082432897E75A0092241F /* KPFindQuestionViewController.swift */; };
 		DBD0825A2897E75B0092241F /* ProfileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD0824A2897E75A0092241F /* ProfileCell.swift */; };
 		DBD0825D2897E75B0092241F /* LoginModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD082502897E75B0092241F /* LoginModel.swift */; };
 		DBD082602897E7740092241F /* LoginService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD0825F2897E7740092241F /* LoginService.swift */; };
@@ -89,6 +105,12 @@
 		01F73F46BE997DB9539026B9 /* Pods-GreenRoom.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GreenRoom.debug.xcconfig"; path = "Target Support Files/Pods-GreenRoom/Pods-GreenRoom.debug.xcconfig"; sourceTree = "<group>"; };
 		48A2A5400036D7B484D9CF77 /* Pods_GreenRoom.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GreenRoom.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C657AA73E3298A49BA775B7C /* Pods-GreenRoom.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GreenRoom.release.xcconfig"; path = "Target Support Files/Pods-GreenRoom/Pods-GreenRoom.release.xcconfig"; sourceTree = "<group>"; };
+		DB006B8528C23A4300867013 /* ChevronButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChevronButton.swift; sourceTree = "<group>"; };
+		DB006B8728C2430400867013 /* GroupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupView.swift; sourceTree = "<group>"; };
+		DB006B8928C31F4200867013 /* GroupCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupCell.swift; sourceTree = "<group>"; };
+		DB006B8D28C3282700867013 /* KPGroupEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KPGroupEditViewController.swift; sourceTree = "<group>"; };
+		DB006B9028C33FDA00867013 /* KPGroupsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KPGroupsViewController.swift; sourceTree = "<group>"; };
+		DB006B9228C342E200867013 /* KPQuestionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KPQuestionsViewController.swift; sourceTree = "<group>"; };
 		DB05246828B5FE50003209D4 /* PrepareKeywordPracticeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrepareKeywordPracticeViewController.swift; sourceTree = "<group>"; };
 		DB53AE9E289F967700E9A5CC /* RegisterCompleteViewControlller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterCompleteViewControlller.swift; sourceTree = "<group>"; };
 		DB563F9928ABADDF00E7193D /* RxNaverThirdPartyLoginProxy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RxNaverThirdPartyLoginProxy.swift; sourceTree = "<group>"; };
@@ -104,6 +126,16 @@
 		DBA8ED6328B9D336007526CF /* RecentSearchKeyword+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "RecentSearchKeyword+CoreDataClass.swift"; path = "GreenRoom/Model/RecentSearchKeyword+CoreDataClass.swift"; sourceTree = SOURCE_ROOT; };
 		DBA8ED6528B9D347007526CF /* RecentSearchKeyword+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "RecentSearchKeyword+CoreDataProperties.swift"; path = "GreenRoom/Model/RecentSearchKeyword+CoreDataProperties.swift"; sourceTree = SOURCE_ROOT; };
 		DBA8ED6928B9D621007526CF /* PracticeQuestionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PracticeQuestionCell.swift; sourceTree = "<group>"; };
+		DBA8ED6B28BB4A4C007526CF /* KPRecordingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KPRecordingViewController.swift; sourceTree = "<group>"; };
+		DBA8ED6D28BB89C3007526CF /* KPFinishViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KPFinishViewController.swift; sourceTree = "<group>"; };
+		DBA8ED6F28BD103F007526CF /* PracticeResultCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PracticeResultCell.swift; sourceTree = "<group>"; };
+		DBA8ED7128BDC945007526CF /* KPDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KPDetailViewController.swift; sourceTree = "<group>"; };
+		DBA8ED7328BDDCA1007526CF /* DetailCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailCell.swift; sourceTree = "<group>"; };
+		DBA8ED7528BF1790007526CF /* KPDetailModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KPDetailModel.swift; sourceTree = "<group>"; };
+		DBA8ED7728BF7457007526CF /* KPReviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KPReviewViewController.swift; sourceTree = "<group>"; };
+		DBA8ED7928BF8009007526CF /* KPReviewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KPReviewModel.swift; sourceTree = "<group>"; };
+		DBA8ED7B28BF931F007526CF /* ReviewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewCell.swift; sourceTree = "<group>"; };
+		DBA8ED7D28C0A4D7007526CF /* KPMainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KPMainViewController.swift; sourceTree = "<group>"; };
 		DBBA9480289968CD00264405 /* PaddingLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaddingLabel.swift; sourceTree = "<group>"; };
 		DBD082192897E6EE0092241F /* GreenRoom.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GreenRoom.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DBD0821C2897E6EE0092241F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -117,7 +149,7 @@
 		DBD0823C2897E75A0092241F /* MyPageViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyPageViewModel.swift; sourceTree = "<group>"; };
 		DBD0823F2897E75A0092241F /* GreenRoomViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GreenRoomViewController.swift; sourceTree = "<group>"; };
 		DBD082412897E75A0092241F /* MyPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyPageViewController.swift; sourceTree = "<group>"; };
-		DBD082432897E75A0092241F /* KeywordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeywordViewController.swift; sourceTree = "<group>"; };
+		DBD082432897E75A0092241F /* KPFindQuestionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KPFindQuestionViewController.swift; sourceTree = "<group>"; };
 		DBD0824A2897E75A0092241F /* ProfileCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileCell.swift; sourceTree = "<group>"; };
 		DBD082502897E75B0092241F /* LoginModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginModel.swift; sourceTree = "<group>"; };
 		DBD0825F2897E7740092241F /* LoginService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginService.swift; sourceTree = "<group>"; };
@@ -198,6 +230,34 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		DB006B8B28C3275E00867013 /* Group */ = {
+			isa = PBXGroup;
+			children = (
+				DBA8ED7D28C0A4D7007526CF /* KPMainViewController.swift */,
+				DB006B8D28C3282700867013 /* KPGroupEditViewController.swift */,
+				DB006B9028C33FDA00867013 /* KPGroupsViewController.swift */,
+			);
+			path = Group;
+			sourceTree = "<group>";
+		};
+		DB006B8C28C327B700867013 /* Group */ = {
+			isa = PBXGroup;
+			children = (
+				DB006B8728C2430400867013 /* GroupView.swift */,
+				DB006B8928C31F4200867013 /* GroupCell.swift */,
+			);
+			path = Group;
+			sourceTree = "<group>";
+		};
+		DB006B8F28C333C700867013 /* Questions */ = {
+			isa = PBXGroup;
+			children = (
+				DBD082432897E75A0092241F /* KPFindQuestionViewController.swift */,
+				DB006B9228C342E200867013 /* KPQuestionsViewController.swift */,
+			);
+			path = Questions;
+			sourceTree = "<group>";
+		};
 		DB9CF9BA289E27650091B705 /* Category */ = {
 			isa = PBXGroup;
 			children = (
@@ -223,6 +283,8 @@
 				DB8D163728B8ABC700E3F237 /* CustomGoalProgressBar.swift */,
 				DB8D163928B8D79900E3F237 /* ProgressBarView.swift */,
 				DBA8ED6928B9D621007526CF /* PracticeQuestionCell.swift */,
+				DBA8ED6F28BD103F007526CF /* PracticeResultCell.swift */,
+				DBA8ED7328BDDCA1007526CF /* DetailCell.swift */,
 			);
 			path = Prepare;
 			sourceTree = "<group>";
@@ -234,6 +296,7 @@
 				DB563F9928ABADDF00E7193D /* RxNaverThirdPartyLoginProxy.swift */,
 				DB563F9F28AF841400E7193D /* RxAppleLoginProxy.swift */,
 				E40BC6E728B8868C00FB557D /* BaseViewController.swift */,
+				DB006B8528C23A4300867013 /* ChevronButton.swift */,
 				E4C4C4BB28BD1172008826AB /* CustomTabbarController.swift */,
 			);
 			path = Custom;
@@ -325,8 +388,13 @@
 		DBD082422897E75A0092241F /* Keyword */ = {
 			isa = PBXGroup;
 			children = (
-				DBD082432897E75A0092241F /* KeywordViewController.swift */,
+				DB006B8B28C3275E00867013 /* Group */,
+				DB006B8F28C333C700867013 /* Questions */,
 				DB05246828B5FE50003209D4 /* PrepareKeywordPracticeViewController.swift */,
+				DBA8ED6B28BB4A4C007526CF /* KPRecordingViewController.swift */,
+				DBA8ED6D28BB89C3007526CF /* KPFinishViewController.swift */,
+				DBA8ED7128BDC945007526CF /* KPDetailViewController.swift */,
+				DBA8ED7728BF7457007526CF /* KPReviewViewController.swift */,
 			);
 			path = Keyword;
 			sourceTree = "<group>";
@@ -367,8 +435,10 @@
 		DBD0824B2897E75A0092241F /* Keyword */ = {
 			isa = PBXGroup;
 			children = (
+				DB006B8C28C327B700867013 /* Group */,
 				DBA8ED6728B9D539007526CF /* KeywordMain */,
 				DBA8ED6828B9D599007526CF /* Prepare */,
+				DBA8ED7B28BF931F007526CF /* ReviewCell.swift */,
 			);
 			path = Keyword;
 			sourceTree = "<group>";
@@ -509,6 +579,8 @@
 				E470539428AB81EC00884B56 /* MyPageModel.swift */,
 				E49EF3D328B5377900358340 /* GreenRoomSection.swift */,
 				E40BC6B428B756EE00FB557D /* GRSearchModel.swift */,
+				DBA8ED7528BF1790007526CF /* KPDetailModel.swift */,
+				DBA8ED7928BF8009007526CF /* KPReviewModel.swift */,
 			);
 			path = SectionModel;
 			sourceTree = "<group>";
@@ -652,6 +724,7 @@
 			files = (
 				DBD082512897E75B0092241F /* LoginViewModel.swift in Sources */,
 				DBFB296E28B26F5B00B1DAC9 /* CustomSegmentedControl.swift in Sources */,
+				DB006B8828C2430400867013 /* GroupView.swift in Sources */,
 				DB8D163828B8ABC700E3F237 /* CustomGoalProgressBar.swift in Sources */,
 				DBFB297228B377EB00B1DAC9 /* CategoryFilterView.swift in Sources */,
 				E44D507E28BE56A10086C447 /* QuestionService.swift in Sources */,
@@ -659,19 +732,26 @@
 				DB9CF9BE289E81FE0091B705 /* CateogryCell.swift in Sources */,
 				E46539DC28ACDAD100F17A6C /* SetNotificationRow.swift in Sources */,
 				E46539D928ACD77600F17A6C /* Utilities.swift in Sources */,
+				DBA8ED6E28BB89C3007526CF /* KPFinishViewController.swift in Sources */,
 				E470539728AB856D00884B56 /* SettingHeader.swift in Sources */,
 				DB563FA028AF841400E7193D /* RxAppleLoginProxy.swift in Sources */,
+
+				DB006B8628C23A4300867013 /* ChevronButton.swift in Sources */,
+				DB53AE9F289F967800E9A5CC /* RegisterCompleteViewControlller.swift in Sources */,
+				DBA8ED7828BF7457007526CF /* KPReviewViewController.swift in Sources */,
 				E4C4C4AE28BCA53D008826AB /* GreenRoomService.swift in Sources */,
 				DBFB296A28B2267A00B1DAC9 /* FilterItemsCell.swift in Sources */,
 				DB563F9E28AE266D00E7193D /* CategoryViewModel.swift in Sources */,
-				DB53AE9F289F967800E9A5CC /* RegisterCompleteViewControlller.swift in Sources */,
 				E4C4C4BE28BD1ACD008826AB /* CreatePopOverViewController.swift in Sources */,
 				E40BC6E628B8834100FB557D /* SearchResultHeaderView.swift in Sources */,
+				DBA8ED7428BDDCA1007526CF /* DetailCell.swift in Sources */,
+				DB006B9328C342E200867013 /* KPQuestionsViewController.swift in Sources */,
 				E49EF3D228B5375D00358340 /* Question.swift in Sources */,
 				E49EF3D028B5361000358340 /* PopularHeader.swift in Sources */,
 				E40BC6E828B8868D00FB557D /* BaseViewController.swift in Sources */,
 				E470539928AB882900884B56 /* SettingRow.swift in Sources */,
 				E40BC6B528B756EE00FB557D /* GRSearchModel.swift in Sources */,
+				DBA8ED7028BD103F007526CF /* PracticeResultCell.swift in Sources */,
 				DB563F9C28AD407400E7193D /* Extension.swift in Sources */,
 				DBE7A54A28996BCE00E9A4E9 /* LoginViewController.swift in Sources */,
 				DBFB297028B351F400B1DAC9 /* QuestionListCell.swift in Sources */,
@@ -679,29 +759,37 @@
 				DBD0825D2897E75B0092241F /* LoginModel.swift in Sources */,
 				DBE7A54F28996C2000E9A4E9 /* CheckLabel.swift in Sources */,
 				DB8D163A28B8D79900E3F237 /* ProgressBarView.swift in Sources */,
-				DBD082572897E75B0092241F /* KeywordViewController.swift in Sources */,
+				DBD082572897E75B0092241F /* KPFindQuestionViewController.swift in Sources */,
 				DBA8ED6428B9D336007526CF /* RecentSearchKeyword+CoreDataClass.swift in Sources */,
 				DBA8ED6A28B9D621007526CF /* PracticeQuestionCell.swift in Sources */,
 				E49CC15628C326DA009216E1 /* EditProfileViewModel.swift in Sources */,
 				DBD082522897E75B0092241F /* GreenViewModel.swift in Sources */,
 				E49EF3DC28B5E9AC00358340 /* GRSearchViewController.swift in Sources */,
 				E4141ABC28AF528E004D74B3 /* FAQCell.swift in Sources */,
+				DBA8ED7228BDC945007526CF /* KPDetailViewController.swift in Sources */,
 				E4C4C4BC28BD1172008826AB /* CustomTabbarController.swift in Sources */,
 				E4141ABA28AF5199004D74B3 /* FAQ.swift in Sources */,
 				E4C4C4C228BE029F008826AB /* CreateViewModel.swift in Sources */,
 				DBBA9481289968CD00264405 /* PaddingLabel.swift in Sources */,
+				DBA8ED7E28C0A4D7007526CF /* KPMainViewController.swift in Sources */,
 				DBD082542897E75B0092241F /* MyPageViewModel.swift in Sources */,
+				DBA8ED7A28BF8009007526CF /* KPReviewModel.swift in Sources */,
 				E4141ACB28AF79E7004D74B3 /* FAQViewController.swift in Sources */,
+				DB006B8E28C3282700867013 /* KPGroupEditViewController.swift in Sources */,
 				E48F8B4F28C26864007AAF40 /* AuthManager.swift in Sources */,
 				DBD082602897E7740092241F /* LoginService.swift in Sources */,
+				DBA8ED7C28BF931F007526CF /* ReviewCell.swift in Sources */,
 				E49EF3D428B5377900358340 /* GreenRoomSection.swift in Sources */,
 				DBA8ED6628B9D347007526CF /* RecentSearchKeyword+CoreDataProperties.swift in Sources */,
+				DBA8ED7628BF1790007526CF /* KPDetailModel.swift in Sources */,
 				E40BC6E128B8802700FB557D /* SearchResultViewController.swift in Sources */,
+				DBA8ED6C28BB4A4C007526CF /* KPRecordingViewController.swift in Sources */,
 				DBD0821D2897E6EE0092241F /* AppDelegate.swift in Sources */,
 				E40BC6B328B7548E00FB557D /* SearchWordHeaderView.swift in Sources */,
 				E46539E428AD33C700F17A6C /* EditProfileInfoViewController.swift in Sources */,
 				E4141AB328AF4499004D74B3 /* Storage.swift in Sources */,
 				E4C8AE6B28B35533007E010D /* User.swift in Sources */,
+				DB006B8A28C31F4200867013 /* GroupCell.swift in Sources */,
 				DB05246928B5FE50003209D4 /* PrepareKeywordPracticeViewController.swift in Sources */,
 				E49F7D8928BC7D7E000AB49B /* CreateQuestionViewController.swift in Sources */,
 				E40BC69D28B5F35A00FB557D /* SearchWordCell.swift in Sources */,
@@ -714,6 +802,7 @@
 				E40BC6F928B88FB600FB557D /* RecentSearchModel.xcdatamodeld in Sources */,
 				E4C8AE6928B35519007E010D /* UserService.swift in Sources */,
 				DBD0821F2897E6EE0092241F /* SceneDelegate.swift in Sources */,
+				DB006B9128C33FDA00867013 /* KPGroupsViewController.swift in Sources */,
 				E4141ACA28AF79E7004D74B3 /* QNAViewController.swift in Sources */,
 				DBD0825A2897E75B0092241F /* ProfileCell.swift in Sources */,
 				DBD082552897E75B0092241F /* GreenRoomViewController.swift in Sources */,

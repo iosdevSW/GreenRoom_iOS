@@ -86,7 +86,6 @@ class LoginService{
             }
             return Disposables.create()
         }
-        
     }
     
     static func checkName(name: String) -> Observable<Bool> {

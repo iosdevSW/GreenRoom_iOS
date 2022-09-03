@@ -30,6 +30,15 @@ class PrepareKeywordPracticeViewController: UIViewController{
     let recordFrameView = UIView().then {
         $0.backgroundColor = .mainColor.withAlphaComponent(0.3)
     }
+    
+    let recordButton = UIButton().then {
+        $0.setImage(UIImage(named: "record"), for: .normal)
+        $0.tintColor = .white
+        $0.layer.masksToBounds = true
+        $0.layer.borderColor = UIColor.white.cgColor
+        $0.layer.cornerRadius = 50
+        $0.layer.borderWidth = 5
+    }
 
     //MARK: - Init
     init(viewmodel: KeywordViewModel) {
@@ -55,6 +64,20 @@ class PrepareKeywordPracticeViewController: UIViewController{
         self.tabBarController?.tabBar.isHidden = true
     }
     
+    override func viewWillLayoutSubviews() {
+        self.recordButton.setGradient(
+            color1: UIColor(red: 110/255.0, green: 234/255.0, blue: 174/255.0, alpha: 1.0),
+            color2: UIColor(red: 87/255.0, green: 193/255.0, blue: 183/255.0, alpha: 1.0))
+    }
+    
+    override func viewDidLayoutSubviews() {
+        
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        
+    }
+    
     //MARK: - Bind
     func bind(){
         viewmodel.selectedQuestionObservable
@@ -74,11 +97,6 @@ class PrepareKeywordPracticeViewController: UIViewController{
                 cell.accessoryView = btn
                 
             }
-        
-        questionsTableView.rx.itemAccessoryButtonTapped
-            .bind (onNext: { a in
-                print(a)
-            })
     }
     
     //MARK: - Gesture
@@ -104,6 +122,12 @@ class PrepareKeywordPracticeViewController: UIViewController{
     
     
     //MARK: - Selector
+    @objc func didClickRecordButton(_ sender: UIButton){
+        let per = goalProgressBarView.progressBar.progress
+        viewmodel.goalPersent = per
+        self.navigationController?.pushViewController(KPRecordingViewController(viewmodel: viewmodel), animated: true)
+    }
+    
 
     
     //MARK: - ConfigureUI
@@ -138,7 +162,7 @@ class PrepareKeywordPracticeViewController: UIViewController{
         self.recordFrameView.snp.makeConstraints{ make in
             make.leading.trailing.equalToSuperview()
             make.height.equalTo(93)
-            make.bottom.equalToSuperview().offset(-80)
+            make.bottom.equalToSuperview().offset(-50)
         }
         
         self.view.addSubview(self.questionsTableView)
@@ -149,19 +173,23 @@ class PrepareKeywordPracticeViewController: UIViewController{
             make.bottom.equalTo(self.recordFrameView.snp.top)
         }
         
-        let recordButton = UIButton().then {
-            $0.setImage(UIImage(named: "mike"), for: .normal)
-            $0.tintColor = .white
-            $0.backgroundColor = .mainColor
-            $0.layer.borderColor = UIColor.white.cgColor
-            $0.layer.cornerRadius = 59.5
-            $0.layer.borderWidth = 5
-
+        self.recordFrameView.addSubview(self.recordButton)
+        self.recordButton.addTarget(self, action: #selector(didClickRecordButton(_:)), for: .touchUpInside)
+        self.recordButton.snp.makeConstraints{ make in
+            make.width.height.equalTo(100)
+            make.centerX.equalToSuperview()
+            make.top.equalToSuperview().offset(10)
+        }
+        
+        _ = UILabel().then {
+            $0.text = "카메라 설정"
+            $0.textColor = .customDarkGray
+            $0.font = .sfPro(size: 16, family: .Semibold)
+            
             self.recordFrameView.addSubview($0)
             $0.snp.makeConstraints{ make in
-                make.width.height.equalTo(119)
-                make.centerX.equalToSuperview()
-                make.top.equalToSuperview().offset(4)
+                make.centerY.equalToSuperview()
+                make.centerX.equalToSuperview().multipliedBy(0.4)
             }
         }
         
@@ -238,7 +266,6 @@ extension PrepareKeywordPracticeViewController {
                 
                 if ((indexPath != nil) && (indexPath != Initial.initialIndexPath)) && Initial.initialIndexPath != nil {
                     // 메모리 관련 이슈때문에 바꿔준 부분
-                    
                     
                     guard var items = self.tempQuestionStorage else { return }
                     items.insert(items.remove(at: Initial.initialIndexPath!.row), at: indexPath!.row)

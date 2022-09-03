@@ -16,10 +16,10 @@ class QuestionListCell: UITableViewCell {
         $0.font = .sfPro(size: 20, family: .Regular)
     }
     
-    let isRegistLabel = UILabel().then {
-        $0.text = "미등록"
+    let questionTypeLabel = UILabel().then {
+        $0.text = "기본질문"
         $0.font = .sfPro(size: 12, family: .Semibold)
-        $0.textColor = .point
+        $0.textColor = .mainColor
         
     }
     
@@ -30,16 +30,6 @@ class QuestionListCell: UITableViewCell {
         
         let attributedString = NSMutableAttributedString.init(string: "공통")
         attributedString.addAttribute(NSAttributedString.Key.underlineStyle, value: 1, range: NSRange(location: 0, length: "공통".count))
-        $0.attributedText = attributedString
-    }
-    
-    let questionTypeLabel = UILabel().then{
-        $0.text = "기본질문"
-        $0.font = .sfPro(size: 12, family: .Regular)
-        $0.textColor = .customGray
-        
-        let attributedString = NSMutableAttributedString.init(string: "기본질문")
-        attributedString.addAttribute(NSAttributedString.Key.underlineStyle, value: 1, range: NSRange(location: 0, length: "기본질문".count))
         $0.attributedText = attributedString
     }
     
@@ -63,8 +53,8 @@ class QuestionListCell: UITableViewCell {
             make.top.equalToSuperview().offset(17)
         }
         
-        self.addSubview(isRegistLabel)
-        self.isRegistLabel.snp.makeConstraints{ make in
+        self.addSubview(questionTypeLabel)
+        self.questionTypeLabel.snp.makeConstraints{ make in
             make.leading.equalToSuperview().offset(40)
             make.top.equalTo(self.mainLabel.snp.bottom).offset(6)
             make.bottom.equalToSuperview().offset(-17)
@@ -72,13 +62,7 @@ class QuestionListCell: UITableViewCell {
         
         self.addSubview(categoryLabel)
         self.categoryLabel.snp.makeConstraints{ make in
-            make.leading.equalTo(isRegistLabel.snp.trailing).offset(10)
-            make.top.equalTo(mainLabel.snp.bottom).offset(6)
-        }
-//
-        self.addSubview(questionTypeLabel)
-        self.questionTypeLabel.snp.makeConstraints{ make in
-            make.leading.equalTo(categoryLabel.snp.trailing).offset(10)
+            make.leading.equalTo(questionTypeLabel.snp.trailing).offset(10)
             make.top.equalTo(mainLabel.snp.bottom).offset(6)
         }
     }
