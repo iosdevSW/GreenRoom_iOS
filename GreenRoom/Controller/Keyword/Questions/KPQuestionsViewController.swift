@@ -11,10 +11,11 @@ class KPQuestionsViewController: BaseViewController {
     //MARK: - Properties
     let viewmodel: KeywordViewModel
     
-    let categoryLabel = PaddingLabel(padding: .init(top: 0, left: 4, bottom: 0, right: 4)).then {
+    let categoryLabel = PaddingLabel(padding: .init(top: 2, left: 10, bottom: 2, right: 10)).then {
         $0.text = "공통"
         $0.backgroundColor = .mainColor
         $0.textColor = .white
+        $0.font = .sfPro(size: 16, family: .Semibold)
     }
     
     let groupNameLabel = UILabel().then {
@@ -36,13 +37,14 @@ class KPQuestionsViewController: BaseViewController {
     
     let keywordOnButton = UIButton(type: .system).then{
         $0.setTitle("키워드 ON", for: .normal)
-        $0.setTitleColor(.mainColor, for: .normal)
+        $0.setTitleColor(.white, for: .normal)
         $0.titleLabel?.font = .sfPro(size: 16, family: .Semibold)
-        $0.backgroundColor = .white
+        $0.backgroundColor = .mainColor
+        $0.isHidden = true
         $0.tag = 0
         $0.layer.borderColor = UIColor.mainColor.cgColor
         $0.layer.borderWidth = 2
-        $0.layer.cornerRadius = 15
+        $0.layer.cornerRadius = 8
         $0.layer.shadowColor = UIColor(red: 0.769, green: 0.769, blue: 0.769, alpha: 1).cgColor
         $0.layer.shadowOpacity = 1
         $0.layer.shadowOffset = CGSize(width: 0, height: 5)
@@ -50,12 +52,13 @@ class KPQuestionsViewController: BaseViewController {
     
     let keywordOffButton = UIButton(type: .system).then{
         $0.setTitle("키워드 OFF", for: .normal)
-        $0.setTitleColor(.customGray, for: .normal)
+        $0.setTitleColor(.white, for: .normal)
         $0.titleLabel?.font = .sfPro(size: 16, family: .Semibold)
-        $0.backgroundColor = .white
+        $0.backgroundColor = .mainColor
+        $0.isHidden = true
         $0.tag = 1
         $0.layer.borderColor = UIColor.mainColor.cgColor
-        $0.layer.cornerRadius = 15
+        $0.layer.cornerRadius = 8
         $0.layer.shadowColor = UIColor(red: 0.769, green: 0.769, blue: 0.769, alpha: 1).cgColor
         $0.layer.shadowOpacity = 1
         $0.layer.shadowOffset = CGSize(width: 0, height: 5)
@@ -74,7 +77,7 @@ class KPQuestionsViewController: BaseViewController {
         $0.setTitleColor(.white, for: .normal)
         $0.titleLabel?.font = .sfPro(size: 20, family: .Semibold)
         $0.isHidden = true
-        $0.layer.cornerRadius = 15
+        $0.layer.cornerRadius = 8
         $0.layer.shadowColor = UIColor.customGray.cgColor
         $0.layer.shadowOpacity = 1
         $0.layer.shadowOffset = CGSize(width: 0, height: 5)
@@ -100,37 +103,40 @@ class KPQuestionsViewController: BaseViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.tabBarController?.tabBar.isHidden = false
+        self.tabBarController?.tabBar.isHidden = true
     }
     
     //MARK: - Method
     override func setNavigationItem() {
         self.navigationItem.backButtonTitle = ""
         self.navigationController?.navigationBar.tintColor = .mainColor
+        
+        let editButton = UIBarButtonItem(title: "편집",
+                                         style: .plain,
+                                         target: self,
+                                         action: #selector(didClickEditButton(_:)))
+        self.navigationItem.rightBarButtonItem = editButton
     }
     
     //MARK: - Selector
     @objc func didClickKeywordButton(_ sender: UIButton) {
-        let onButtonColor: UIColor = sender.tag == 0 ? .mainColor : .customGray
-        let offButtonColor: UIColor = sender.tag == 0 ? .customGray : .mainColor
-        let onButtonBorderWidth: CGFloat = sender.tag == 0 ? 2 : 0
-        let offButtonBorderWidth: CGFloat = sender.tag == 0 ? 0 : 2
         let isKeywordOn = sender.tag == 0 ? true : false
-            
         self.viewmodel.keywordOnOff = isKeywordOn
-        self.keywordOnButton.setTitleColor(onButtonColor, for: .normal)
-        self.keywordOnButton.layer.borderWidth = onButtonBorderWidth
-        
-        self.keywordOffButton.setTitleColor(offButtonColor, for: .normal)
-        self.keywordOffButton.layer.borderWidth = offButtonBorderWidth
+        self.navigationController?.pushViewController(PrepareKeywordPracticeViewController(viewmodel: viewmodel), animated: true)
     }
     
     @objc func didClickPracticeButton(_ sender: UIButton) {
-        self.navigationController?.pushViewController(PrepareKeywordPracticeViewController(viewmodel: viewmodel), animated: true)
+        self.practiceInterviewButton.isHidden = true
+        self.keywordOnButton.isHidden = false
+        self.keywordOffButton.isHidden = false
     }
     
     @objc func didClickAllSelectButton(_ sender: UIButton) {
         print("didClickSelectAll")
+    }
+    
+    @objc func didClickEditButton(_ sender: UIButton) {
+        print("didClickEditButton")
     }
     
     //MARK: - Bind
@@ -138,6 +144,8 @@ class KPQuestionsViewController: BaseViewController {
         _ = viewmodel.tabelTemp // 서비스 로직 호출할땐 응답받는 구조체로 대체 (아직 서비스API 미구현 임시로 string배열로 받음)
             .bind(to: questionListTableView.rx.items(cellIdentifier: "QuestionListCell", cellType: QuestionListCell.self)) { index, title, cell in
                 cell.mainLabel.text = title
+                cell.questionTypeLabel.text = "등록"
+                cell.questionTypeLabel.textColor = .point
                 
                 let image = UIImage(systemName: "chevron.right")!
                 let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 12, height: 20))
@@ -173,12 +181,13 @@ class KPQuestionsViewController: BaseViewController {
                     self.practiceInterviewButton.setTitle("\(titles.count)개의 면접 연습하기", for: .normal)
                     self.practiceInterviewButton.isHidden = false
                 }
+                self.keywordOnButton.isHidden = true
+                self.keywordOffButton.isHidden = true
             })
     }
     
     //MARK: - ConfigureUI
     override func configureUI() {
-        
         self.view.addSubview(self.categoryLabel)
         self.categoryLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(42)
@@ -204,24 +213,6 @@ class KPQuestionsViewController: BaseViewController {
             make.centerY.equalTo(self.groupNameLabel.snp.centerY)
         }
         
-//        self.view.addSubview(keywordOnButton)
-//        keywordOnButton.addTarget(self, action: #selector(didClickKeywordButton(_:)), for: .touchUpInside)
-//        keywordOnButton.snp.makeConstraints{ make in
-//            make.leading.equalToSuperview().offset(46)
-//            make.top.equalTo(filteredCategoryView.snp.bottom).offset(15)
-//            make.height.equalTo(47)
-//        }
-//
-//        self.view.addSubview(keywordOffButton)
-//        keywordOffButton.addTarget(self, action: #selector(didClickKeywordButton(_:)), for: .touchUpInside)
-//        keywordOffButton.snp.makeConstraints{ make in
-//            make.leading.equalTo(keywordOnButton.snp.trailing).offset(42)
-//            make.width.equalTo(keywordOnButton.snp.width)
-//            make.trailing.equalToSuperview().offset(-46)
-//            make.top.equalTo(filteredCategoryView.snp.bottom).offset(15)
-//            make.height.equalTo(47)
-//        }
-        
         self.view.addSubview(self.questionListTableView)
         self.questionListTableView.snp.makeConstraints{ make in
             make.top.equalTo(self.questionCountingLabel.snp.bottom)
@@ -234,9 +225,27 @@ class KPQuestionsViewController: BaseViewController {
         self.practiceInterviewButton.addTarget(self, action: #selector(self.didClickPracticeButton(_:)), for: .touchUpInside)
         self.practiceInterviewButton.snp.makeConstraints{ make in
             make.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.bottom).offset(-10)
-            make.leading.equalToSuperview().offset(35)
-            make.trailing.equalToSuperview().offset(-35)
-            make.height.equalTo(53)
+            make.leading.equalToSuperview().offset(14)
+            make.trailing.equalToSuperview().offset(-14)
+            make.height.equalTo(58)
+        }
+        
+        self.view.addSubview(keywordOnButton)
+        keywordOnButton.addTarget(self, action: #selector(didClickKeywordButton(_:)), for: .touchUpInside)
+        keywordOnButton.snp.makeConstraints{ make in
+            make.leading.equalToSuperview().offset(14)
+            make.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.bottom).offset(-10)
+            make.height.equalTo(58)
+        }
+
+        self.view.addSubview(keywordOffButton)
+        keywordOffButton.addTarget(self, action: #selector(didClickKeywordButton(_:)), for: .touchUpInside)
+        keywordOffButton.snp.makeConstraints{ make in
+            make.leading.equalTo(keywordOnButton.snp.trailing).offset(14)
+            make.trailing.equalToSuperview().offset(-14)
+            make.width.equalTo(keywordOnButton)
+            make.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.bottom).offset(-10)
+            make.height.equalTo(58)
         }
         
     }

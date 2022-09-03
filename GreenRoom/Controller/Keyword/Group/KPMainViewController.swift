@@ -42,7 +42,7 @@ class KPMainViewController: BaseViewController {
     }
     
     @objc func didclickFindButton(_ sender: UIButton) {
-        let vc = sender.tag == 0 ? KPFindQuestionViewController(viewModel: viewModel) : KPFindQuestionViewController(viewModel: viewModel)
+        let vc = sender.tag == 0 ? KPFindQuestionViewController(viewModel: viewModel) : KPQuestionsViewController(viewModel: viewModel)
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
@@ -103,7 +103,9 @@ class KPMainViewController: BaseViewController {
     }
     
     private func configureNavigationBar() {
-        navigationController?.navigationBar.isHidden = false
+        self.navigationController?.navigationBar.isHidden = false
+        self.navigationController?.navigationBar.tintColor = .mainColor
+        self.navigationItem.backButtonTitle = ""
         
         let iconView = UIImageView(frame: CGRect(x: 0, y: 0, width: 35, height: 35))
         iconView.image = UIImage(named: "GreenRoomIcon")?.withRenderingMode(.alwaysOriginal)
@@ -119,6 +121,8 @@ class KPMainViewController: BaseViewController {
         ]
         
         navigationController?.navigationBar.tintColor = .mainColor
+        
+        
     }
     
 }
