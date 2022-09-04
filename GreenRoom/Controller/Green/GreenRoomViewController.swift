@@ -8,13 +8,15 @@
 import UIKit
 import RxSwift
 import SwiftKeychainWrapper
+import RxCocoa
+import RxDataSources
 
 class GreenRoomViewController: BaseViewController {
     
     //MARK: - Properties
     let viewModel = GreenRoomViewModel()
-    
     private var collectionView: UICollectionView!
+    let currentBannerPage = PublishSubject<Int>()
     
     private lazy var greenRoomButton = UIButton().then {
         $0.setTitle("그린룸", for: .normal)
@@ -24,7 +26,7 @@ class GreenRoomViewController: BaseViewController {
         $0.addTarget(self, action: #selector(filterGreenRoom), for: .touchUpInside)
         $0.tag = 0
     }
-     
+    
     private lazy var questionListButton = UIButton().then {
         $0.setTitle("질문리스트", for: .normal)
         $0.setTitleColor(.customGray, for: .normal)
@@ -55,16 +57,13 @@ class GreenRoomViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        KeychainWrapper.standard.remove(forKey: "accessToken")
-//        KeychainWrapper.standard.remove(forKey: "refreshToten")
+        //        KeychainWrapper.standard.remove(forKey: "accessToken")
+        //        KeychainWrapper.standard.remove(forKey: "refreshToten")
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.tabBarController?.tabBar.isHidden = false
-        
-        
-        
         configureNavigationBar()
     }
     
@@ -73,7 +72,6 @@ class GreenRoomViewController: BaseViewController {
             color1: UIColor(red: 110/255.0, green: 234/255.0, blue: 174/255.0, alpha: 1.0),
             color2: UIColor(red: 87/255.0, green: 193/255.0, blue: 183/255.0, alpha: 1.0))
         super.viewWillLayoutSubviews()
-        
     }
     
     override func setupBinding() {
@@ -89,6 +87,10 @@ class GreenRoomViewController: BaseViewController {
                     self.present(loginVC, animated: false)
                 }
             }).disposed(by: disposeBag)
+        
+        let dataSource = self.dataSource()
+        
+        viewModel.greenroom.bind(to: collectionView.rx.items(dataSource: dataSource)).disposed(by: disposeBag)
     }
     
     private func configureNavigationBar() {
@@ -117,15 +119,8 @@ class GreenRoomViewController: BaseViewController {
     }
     
     override func configureUI(){
-
-        self.view.backgroundColor = .white
         
-//        self.view.addSubview(customVIew)
-//        customVIew.snp.makeConstraints { make in
-//            make.leading.trailing.equalToSuperview()
-//            make.bottom.equalToSuperview()
-//            make.height.equalTo(CGFloat(self.tabBarController?.tabBar.frame.height ?? 84))
-//        }
+        self.view.backgroundColor = .white
         
         let buttonStack = UIStackView(arrangedSubviews: [greenRoomButton,questionListButton])
         buttonStack.axis = .horizontal
@@ -137,7 +132,7 @@ class GreenRoomViewController: BaseViewController {
             make.trailing.equalToSuperview().offset(-view.frame.width / 5)
             make.height.equalTo(30)
         }
-     
+        
         self.view.addSubview(underline)
         underline.snp.makeConstraints { make in
             make.top.equalTo(buttonStack.snp.bottom).offset(5)
@@ -151,11 +146,18 @@ class GreenRoomViewController: BaseViewController {
             make.top.equalTo(underline.snp.bottom).offset(25)
             make.leading.equalToSuperview().offset(33)
         }
-    
+        
+        self.view.addSubview(collectionView)
+        collectionView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.top.equalTo(filterLabel.snp.bottom).offset(10)
+            make.bottom.equalTo(view.safeAreaLayoutGuide)
+        }
     }
     
     override func setupAttributes() {
         self.configureNavigationBar()
+        self.configureCollecitonView()
     }
     
     @objc func filterGreenRoom(_ sender: UIButton){
@@ -181,35 +183,109 @@ extension GreenRoomViewController {
     private func configureCollecitonView(){
         let layout = self.generateLayout()
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-
-        collectionView.backgroundColor = .backgroundGary
+        
+        collectionView.backgroundColor = .white
         collectionView.register(PopularQuestionCell.self, forCellWithReuseIdentifier: PopularQuestionCell.reuseIdentifer)
         collectionView.register(PopularHeader.self, forSupplementaryViewOfKind: PopularHeader.reuseIdentifier, withReuseIdentifier: PopularHeader.reuseIdentifier)
+        
+        collectionView.register(RecentQuestionCell.self, forCellWithReuseIdentifier: RecentQuestionCell.reuseIdentifer)
+        collectionView.register(RecentHeader.self,forSupplementaryViewOfKind: RecentHeader.reuseIdentifier, withReuseIdentifier: RecentHeader.reuseIdentifier)
+        collectionView.register(FooterPageView.self, forSupplementaryViewOfKind: FooterPageView.reuseIdentifier, withReuseIdentifier: FooterPageView.reuseIdentifier)
+        
     }
     
-    private func generateLayout() -> UICollectionViewLayout {
-        return UICollectionViewCompositionalLayout { (sectionIndex: Int, layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
+    private func dataSource() -> RxCollectionViewSectionedReloadDataSource<GreenRoomSectionModel> {
+        return RxCollectionViewSectionedReloadDataSource<GreenRoomSectionModel> {
+            (dataSource, collectionView, indexPath, item) in
             
+            switch item {
+            case .popular(question: let question):
+                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PopularQuestionCell.reuseIdentifer, for: indexPath) as? PopularQuestionCell else { return UICollectionViewCell() }
+                cell.question = question
+                return cell
+                
+            case .recent(question: let question):
+                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RecentQuestionCell.reuseIdentifer, for: indexPath) as? RecentQuestionCell else { return UICollectionViewCell() }
+                cell.question = question
+                return cell
+            case .MyGreenRoom(question:_):
+                return UICollectionViewCell()
+            }
+        } configureSupplementaryView: { [weak self] dataSource, collectionView, kind,
+            indexPath in
             
-            return nil
+            guard let self = self else { return UICollectionReusableView() }
+            
+            switch kind {
+            case PopularHeader.reuseIdentifier:
+                guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: PopularHeader.reuseIdentifier, withReuseIdentifier: PopularHeader.reuseIdentifier, for: indexPath) as? PopularHeader else { return UICollectionReusableView() }
+                return header
+            case RecentHeader.reuseIdentifier:
+                guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: RecentHeader.reuseIdentifier, withReuseIdentifier: RecentHeader.reuseIdentifier, for: indexPath) as? RecentHeader else { return UICollectionReusableView() }
+                return header
+            case FooterPageView.reuseIdentifier:
+                guard let footer = collectionView.dequeueReusableSupplementaryView(ofKind: FooterPageView.reuseIdentifier, withReuseIdentifier: FooterPageView.reuseIdentifier, for: indexPath) as? FooterPageView else { return UICollectionReusableView() }
+                footer.bind(input: self.currentBannerPage,pageNumber: 3)
+                return footer
+            default:
+                return UICollectionReusableView()
+            }
         }
     }
-    
+    private func generateLayout() -> UICollectionViewLayout {
+        return UICollectionViewCompositionalLayout { [weak self] (sectionIndex: Int, layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
+            
+            if sectionIndex == 0{
+                return self?.generatePopularQuestionLayout()
+            } else if sectionIndex == 1{
+                return self?.generateRecentQuestionLayout()
+            } else {
+                return self?.generateRecentQuestionLayout()
+            }
+            //
+            
+        }
+    }
     private func generatePopularQuestionLayout() -> NSCollectionLayoutSection {
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.4))
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
         
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalWidth(0.4))
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.5))
         
         let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitem: item, count: 2)
         
+        let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(
+            layoutSize: NSCollectionLayoutSize(
+                widthDimension: .fractionalWidth(1.0),
+                heightDimension: .estimated(60)),
+            elementKind: PopularHeader.reuseIdentifier,
+            alignment: .top)
+        
+        let sectionFooter = NSCollectionLayoutBoundarySupplementaryItem(
+            layoutSize: NSCollectionLayoutSize(
+                widthDimension: .fractionalWidth(1.0),
+                heightDimension: .absolute(40)),
+            elementKind: FooterPageView.reuseIdentifier,
+            alignment: .bottom
+        )
+        
         let section = NSCollectionLayoutSection(group: group)
+        section.boundarySupplementaryItems = [sectionHeader,sectionFooter]
         section.orthogonalScrollingBehavior = .groupPaging
+        
+        section.visibleItemsInvalidationHandler = { [weak self] _, contentOffset, environment in
+
+            let bannerIndex = Int(max(0, round(contentOffset.x /    environment.container.contentSize.width)))
+            
+            if environment.container.contentSize.height == environment.container.contentSize.width {
+                self?.currentBannerPage.onNext(bannerIndex)
+            }
+        }
         
         return section
     }
-
+    
     private func generateRecentQuestionLayout() -> NSCollectionLayoutSection {
         let itemSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1.0),
@@ -217,8 +293,8 @@ extension GreenRoomViewController {
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         
         let groupSize = NSCollectionLayoutSize(
-            widthDimension: .absolute(155),
-            heightDimension: .absolute(172))
+            widthDimension: .fractionalWidth(0.36),
+            heightDimension: .fractionalHeight(0.3))
         
         let group = NSCollectionLayoutGroup.vertical(
             layoutSize: groupSize,
@@ -236,13 +312,13 @@ extension GreenRoomViewController {
         
         let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(
             layoutSize: headerSize,
-            elementKind: "AlbumsViewController.sectionHeaderElementKind",
+            elementKind: RecentHeader.reuseIdentifier,
             alignment: .top)
         
         let section = NSCollectionLayoutSection(group: group)
         section.boundarySupplementaryItems = [sectionHeader]
         section.orthogonalScrollingBehavior = .groupPaging
-        
+        section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 25, bottom: 0, trailing: 0)
         return section
         
         
@@ -252,13 +328,13 @@ extension GreenRoomViewController {
         //        let item = NSCollectionLayoutItem(layoutSize: <#T##NSCollectionLayoutSize#>)
         //    }
     }
-
+    
 }
 
 extension GreenRoomViewController {
     @objc func didTap() {
         tabBarController?.selectedIndex = 2
-//        let vc = MyPageViewController(viewModel: MyPageViewModel())
-//        navigationController?.pushViewController(vc, animated: false)
+        //        let vc = MyPageViewController(viewModel: MyPageViewModel())
+        //        navigationController?.pushViewController(vc, animated: false)
     }
 }

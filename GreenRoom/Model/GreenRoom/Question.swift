@@ -8,8 +8,11 @@
 import Foundation
 
 struct Question: Codable {
-    let id: Int
-    let profileImage, category, question: String
+    let image: String
+    let name: String
+    let participants: Int
+    let category: Int
+    let question: String
 }
 
 struct UploadQuestionModel: Codable {

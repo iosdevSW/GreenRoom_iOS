@@ -5,18 +5,30 @@
 //  Created by Doyun Park on 2022/08/24.
 //
 
-import Foundation
 import UIKit
 
 final class PopularQuestionCell: UICollectionViewCell {
     
     static let reuseIdentifer = "PopularQuestionCell"
     //MARK: - Properties
-    private lazy var profileImageView = Utilities.shared.generateProfileImage(frame: CGRect(x: 0, y: 0, width: 53, height: 53))
+    var question: Question! {
+        didSet {
+            configureUI()
+        }
+    }
+
+    private lazy var profileImageView = UIImageView(frame: .zero).then {
+        $0.contentMode = .scaleAspectFill
+        $0.layer.cornerRadius = bounds.width * 0.08 / 2
+        $0.layer.masksToBounds = true
+        $0.image = UIImage(named: "GreenRoomIcon")
+        $0.tintColor = .mainColor
+        $0.layer.masksToBounds = false
+    }
     
-    private let nameLabel = Utilities.shared.generateLabel(text: "박면접", color: .customGray, font: .sfPro(size: 12, family: .Regular))
+    private let nameLabel = Utilities.shared.generateLabel(text: "박면접", color: .gray, font: .sfPro(size: 12, family: .Regular))
     private let categoryLabel = Utilities.shared.generateLabel(text: "디자인", color: .black, font: .sfPro(size: 12, family: .Regular))
-    private let participantsLabel = Utilities.shared.generateLabel(text: "N명이 참여하고 있습니다.", color: .mainColor, font: .sfPro(size: 12, family: .Regular))
+    private let participantsLabel = Utilities.shared.generateLabel(text: "N명이 참여하고 있습니다.", color: .mainColor, font: .sfPro(size: 12, family: .Bold))
     
     private lazy var questionTextView = UITextView().then {
         $0.backgroundColor = .white
@@ -25,7 +37,12 @@ final class PopularQuestionCell: UICollectionViewCell {
         $0.textContainerInset = UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15)
         $0.layer.cornerRadius = 15
         $0.layer.maskedCorners = [.layerMaxXMaxYCorner,.layerMaxXMinYCorner,.layerMinXMaxYCorner]
-        $0.text = "대부분의 프로젝트는 프로세스는 어떠하며 어떤 롤이 었나요?"
+        
+        let style = NSMutableParagraphStyle()
+        style.lineSpacing = 6
+        
+        $0.attributedText = NSAttributedString(string: "대부분의 프로젝트는 프로세스는 어떠하며 어떤 롤이 었나요?", attributes: [NSAttributedString.Key.paragraphStyle : style])
+        
         $0.isUserInteractionEnabled = false
         $0.layer.borderWidth = 2
         $0.layer.borderColor = UIColor.mainColor.cgColor
@@ -45,37 +62,50 @@ final class PopularQuestionCell: UICollectionViewCell {
     private func configureUI(){
         self.backgroundColor = .backgroundGary
         
-        let userStackView = UIStackView(arrangedSubviews: [profileImageView,nameLabel])
-        userStackView.axis = .vertical
-        userStackView.spacing = 4
-        userStackView.distribution = .equalSpacing
-        
-        self.addSubview(userStackView)
-        userStackView.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(8)
-            make.leading.equalToSuperview().offset(46)
-            make.width.equalTo(53)
-            make.height.equalTo(75)
+   
+        self.contentView.addSubview(profileImageView)
+        profileImageView.snp.makeConstraints { make in
+            make.width.height.equalTo(bounds.width * 0.08)
+            make.top.equalToSuperview().offset(10)
+            make.leading.equalToSuperview().offset(bounds.width * 0.08)
         }
         
-        let infoStackView = UIStackView(arrangedSubviews: [categoryLabel, participantsLabel])
-        infoStackView.axis = .horizontal
-        infoStackView.spacing = 8
-        infoStackView.distribution = .equalSpacing
-        
-        self.addSubview(infoStackView)
-        infoStackView.snp.makeConstraints { make in
-            make.leading.equalTo(userStackView.snp.trailing).offset(18)
-            make.top.equalToSuperview().offset(19)
-            make.trailing.equalToSuperview().offset(-20)
-            make.height.equalTo(22)
+        self.contentView.addSubview(nameLabel)
+        nameLabel.snp.makeConstraints { make in
+            make.centerX.equalTo(profileImageView)
+            make.top.equalTo(profileImageView.snp.bottom).offset(8)
         }
         
-        self.addSubview(questionTextView)
+        self.contentView.addSubview(categoryLabel)
+        categoryLabel.snp.makeConstraints { make in
+            make.leading.equalTo(profileImageView.snp.trailing).offset(15)
+            make.top.equalToSuperview()
+        }
+        
+        self.contentView.addSubview(participantsLabel)
+        participantsLabel.snp.makeConstraints { make in
+            make.leading.equalTo(categoryLabel.snp.trailing).offset(10)
+            make.top.equalToSuperview()
+        }
+
+        self.contentView.addSubview(questionTextView)
         questionTextView.snp.makeConstraints { make in
-            make.leading.equalTo(userStackView.snp.trailing).offset(15)
+            make.top.equalTo(categoryLabel.snp.bottom).offset(5)
+            make.leading.equalTo(profileImageView.snp.trailing).offset(15)
             make.trailing.equalToSuperview().offset(-20)
             make.height.equalTo(83)
         }
+        
+        
+    }
+    
+    private func configure(){
+        guard let category = CategoryID(rawValue: question.category) else { return }
+        self.nameLabel.text = question.name
+        self.questionTextView.text = question.question
+        self.categoryLabel.text = category.title
+        self.participantsLabel.text = "\(question.participants)명이 참여하고 있습니다."
+//        self.profileImageView.image = UIImage(systemName: "plus")
+        
     }
 }

@@ -10,6 +10,7 @@ import SwiftKeychainWrapper
 import RxSwift
 
 class GreenRoomViewModel {
+    private var greenroomService = GreenRoomService()
     
     var recentKeywords = BehaviorSubject<[GRSearchModel]>(value: [
         GRSearchModel.recent(header: "최근 검색어",items: [])
@@ -19,7 +20,28 @@ class GreenRoomViewModel {
         GRSearchModel.recent(header: "인기 검색어",items: [])
     ])
     
-    private var greenroomService = GreenRoomService()
+    let currentBannerPage = PublishRelay<Int>()
+    
+    let greenroom = BehaviorSubject<[GreenRoomSectionModel]>(value: [
+        GreenRoomSectionModel.popular(items: [
+            GreenRoomSectionModel.Item.popular(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
+            GreenRoomSectionModel.Item.popular(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
+            GreenRoomSectionModel.Item.popular(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
+            GreenRoomSectionModel.Item.popular(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
+            GreenRoomSectionModel.Item.popular(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
+            GreenRoomSectionModel.Item.popular(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~"))
+        ]),
+        GreenRoomSectionModel.recent(items: [
+            GreenRoomSectionModel.Item.recent(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
+            GreenRoomSectionModel.Item.recent(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
+            GreenRoomSectionModel.Item.recent(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
+            GreenRoomSectionModel.Item.recent(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
+            GreenRoomSectionModel.Item.recent(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
+            GreenRoomSectionModel.Item.recent(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
+            GreenRoomSectionModel.Item.recent(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~"))
+        ])
+    ])
+    
     
     init(){
         self.bind()

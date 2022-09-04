@@ -32,12 +32,13 @@ final class Utilities {
         }
         imageAttachment.bounds = CGRect(x: 0, y: -4, width: 21, height: 21)
         
+        let str = NSMutableAttributedString(string: "\(text)  ",attributes: [NSAttributedString.Key.foregroundColor: UIColor.black])
         switch iconPosition {
         case .left:
             attributedString.append(NSAttributedString(attachment:imageAttachment))
-            attributedString.append(NSAttributedString(string: "\(text)  "))
+            attributedString.append(str)
         case .right:
-            attributedString.append(NSAttributedString(string: "\(text)  "))
+            attributedString.append(str)
             attributedString.append(NSAttributedString(attachment:imageAttachment))
         }
         
