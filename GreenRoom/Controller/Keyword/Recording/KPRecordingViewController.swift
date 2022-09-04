@@ -16,10 +16,15 @@ class KPRecordingViewController: BaseViewController{
     var urls = [URL]()
     
     private let fileManager = FileManager.default
+    
+    // 녹화를 위한 객체
     private var captureSession: AVCaptureSession?
     private var captureDevice: AVCaptureDevice?
     private var videoPreviewLayer: AVCaptureVideoPreviewLayer?
     private var moviFileOutput: AVCaptureMovieFileOutput!
+    
+    // 녹음을 위한 객체
+    private var audioRecorder: AVAudioRecorder?
     
     private let speechRecognizer = SFSpeechRecognizer(locale: .init(identifier: "ko-KR")) // 한국말 Recognizer 생성
     //음성인식요청을 처리하는 객체
@@ -64,7 +69,14 @@ class KPRecordingViewController: BaseViewController{
     //MARK: - LifCycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupCaptureSession()
+        self.view.backgroundColor = .black
+        
+        if self.viewmodel.cameraOnOff {
+            setupCaptureSession()
+        }else {
+            setupAVAudio()
+        }
+        
         self.keywordLabel.isHidden = true
         self.questionLabel.isHidden = true
         self.recordingButton.isHidden = true
@@ -82,6 +94,15 @@ class KPRecordingViewController: BaseViewController{
     
     //MARK: - Selector
     @objc func didClickRecordingButton(_ sender: UIButton) {
+        if self.viewmodel.cameraOnOff {
+            self.videoRecording()
+        }else {
+            self.audioRecording()
+        }
+    }
+    
+    // 비디오 녹화시
+    func videoRecording() {
         if moviFileOutput.isRecording {
             moviFileOutput.stopRecording() //녹화 중단
             self.darkView.isHidden = false
@@ -97,8 +118,22 @@ class KPRecordingViewController: BaseViewController{
         }
     }
     
-    @objc func didClickRecordingTriggerButton(_ sender: UIButton) {
-        
+    func audioRecording() {
+        if let recorder: AVAudioRecorder = self.audioRecorder {
+            if recorder.isRecording { // 현재 녹음 중이므로, 녹음 정지
+                recorder.stop()
+                self.darkView.isHidden = false
+                self.keywordLabel.isHidden = true
+                self.questionLabel.isHidden = true
+                self.recordingButton.isHidden = true
+            } else { // 녹음 시작
+                recorder.record()
+                self.darkView.isHidden = true
+                self.keywordLabel.isHidden = self.viewmodel.keywordOnOff == true ? false : true
+                self.questionLabel.isHidden = false
+                self.recordingButton.isHidden = false
+            }
+        }
     }
     
     //MARK: - ConfigureUI
@@ -139,7 +174,7 @@ class KPRecordingViewController: BaseViewController{
     }
 }
 
-//MARK: - AVFoundation 관련
+//MARK: - AVFoundation (녹화)관련
 extension KPRecordingViewController: AVCaptureFileOutputRecordingDelegate {
     private func setupCaptureSession() {
         captureSession = AVCaptureSession()
@@ -191,7 +226,6 @@ extension KPRecordingViewController: AVCaptureFileOutputRecordingDelegate {
         }
         
         // preview까지 준비되었으니 captureSession을 시작하도록 설정
-        
         startCaptureSession()
     }
     
@@ -203,10 +237,10 @@ extension KPRecordingViewController: AVCaptureFileOutputRecordingDelegate {
     
     // Recording Methods
     private func startRecording() {
-        moviFileOutput.startRecording(to: tempURL(), recordingDelegate: self)
+        moviFileOutput.startRecording(to: tempURL(extn: "mp4"), recordingDelegate: self)
     }
     
-    private func tempURL()-> URL{
+    private func tempURL(extn: String)-> URL{
         let tempDirectoryURL = URL(fileURLWithPath: NSTemporaryDirectory())
         let directoryURL = tempDirectoryURL.appendingPathComponent("NewDirectory")
         
@@ -219,7 +253,7 @@ extension KPRecordingViewController: AVCaptureFileOutputRecordingDelegate {
             }
         }
         
-        return directoryURL.appendingPathComponent("test\(urls.count+1).mp4")    // 파일이 저장될 경로
+        return directoryURL.appendingPathComponent("test\(urls.count+1).\(extn)")    // 파일이 저장될 경로
     }
     
     //레코딩 시작시 호출
@@ -230,6 +264,53 @@ extension KPRecordingViewController: AVCaptureFileOutputRecordingDelegate {
     //레코딩 끝날시 호출 시작할때 파라미터로 입력한 url 기반으로 저장 작업 수행
     func fileOutput(_ output: AVCaptureFileOutput, didFinishRecordingTo outputFileURL: URL, from connections: [AVCaptureConnection], error: Error?) {
         urls.append(outputFileURL)
+        if urls.count == viewmodel.selectedQuestionTemp.count {
+            if viewmodel.keywordOnOff{
+                self.navigationController?.pushViewController(KPFinishViewController(viewmodel: viewmodel), animated: true)
+            }else {
+                viewmodel.videoURLs = urls
+                self.navigationController?.pushViewController(KPDetailViewController(viewmodel: viewmodel), animated: true)
+            }
+        } else {
+            viewmodel.selectedQuestionObservable
+                .take(1)
+                .subscribe(onNext: { questions in
+                    self.darkView.questionLabel.text = "Q1\n\n\(questions[self.urls.count])"
+                    self.questionLabel.text = "Q1\n\n\(questions[self.urls.count])"
+                }).disposed(by: disposeBag)
+        }
+    }
+}
+
+//MARK: - AVFoundation (녹음)관련
+extension KPRecordingViewController: AVAudioRecorderDelegate {
+    private func setupAVAudio(){
+        let audioSession = AVAudioSession.sharedInstance()
+        do {
+            try audioSession.setCategory(.record)
+            try audioSession.setMode(.measurement)
+            try audioSession.setActive(true)
+                                         
+        } catch let error{
+            print("Failed to set audio session category")
+            print(error.localizedDescription)
+        }
+        
+        let settings: [String: Any] = [
+                AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
+                AVEncoderAudioQualityKey: AVAudioQuality.max.rawValue,
+                AVEncoderBitRateKey: 320_000,
+                AVNumberOfChannelsKey: 2,
+                AVSampleRateKey: 44_100.0
+            ]
+        
+        self.audioRecorder = try? AVAudioRecorder(url: tempURL(extn: "m4a"), settings: settings)
+        audioRecorder?.delegate = self
+        audioRecorder?.prepareToRecord()
+    }
+    
+    func audioRecorderDidFinishRecording(_ recorder: AVAudioRecorder, successfully flag: Bool) {
+        urls.append(recorder.url)
         if urls.count == viewmodel.selectedQuestionTemp.count {
             if viewmodel.keywordOnOff{
                 self.navigationController?.pushViewController(KPFinishViewController(viewmodel: viewmodel), animated: true)

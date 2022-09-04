@@ -33,6 +33,7 @@ class KeywordViewModel {
     }
     
     var keywordOnOff = true
+    var cameraOnOff = true
     var goalPersent: CGFloat?
     
     init(){
