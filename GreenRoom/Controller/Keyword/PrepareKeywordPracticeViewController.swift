@@ -39,6 +39,8 @@ class PrepareKeywordPracticeViewController: UIViewController{
         $0.layer.cornerRadius = 50
         $0.layer.borderWidth = 5
     }
+    
+    let cameraOnOffSwitch = CustomSwitch()
 
     //MARK: - Init
     init(viewmodel: KeywordViewModel) {
@@ -71,11 +73,11 @@ class PrepareKeywordPracticeViewController: UIViewController{
     }
     
     override func viewDidLayoutSubviews() {
-        
+        self.cameraOnOffSwitch.setGradient(color1: UIColor(red: 110/255.0, green: 234/255.0, blue: 174/255.0, alpha: 1.0),
+                                           color2: UIColor(red: 87/255.0, green: 193/255.0, blue: 183/255.0, alpha: 1.0))
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        
     }
     
     //MARK: - Bind
@@ -128,6 +130,11 @@ class PrepareKeywordPracticeViewController: UIViewController{
         self.navigationController?.pushViewController(KPRecordingViewController(viewmodel: viewmodel), animated: true)
     }
     
+    @objc func didChangeCameraIsOnValue(_ sender: UIControl) {
+        guard let cameraSwitch = sender as? CustomSwitch else { return }
+        viewmodel.keywordOnOff = cameraSwitch.isOn
+        print("camera On/Off : \(cameraSwitch.isOn)")
+    }
 
     
     //MARK: - ConfigureUI
@@ -193,9 +200,18 @@ class PrepareKeywordPracticeViewController: UIViewController{
             }
         }
         
+        self.recordFrameView.addSubview(self.cameraOnOffSwitch)
+        self.cameraOnOffSwitch.addTarget(self, action: #selector(didChangeCameraIsOnValue(_:)), for: .valueChanged)
+        self.cameraOnOffSwitch.snp.makeConstraints{ make in
+            make.centerY.equalToSuperview()
+            make.centerX.equalToSuperview().multipliedBy(1.6)
+            make.width.equalTo(86)
+            make.height.equalTo(36)
+        }
     }
 }
 
+//MARK: - LongPress Gesture
 extension PrepareKeywordPracticeViewController {
     @objc func longPressCalled(gestureRecognizer: UIGestureRecognizer) {
         guard let longPress = gestureRecognizer as? UILongPressGestureRecognizer else { return }
