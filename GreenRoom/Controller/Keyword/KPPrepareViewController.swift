@@ -1,5 +1,5 @@
 //
-//  PrepareKeywordPracticeViewController.swift
+//  KPPrepareViewController.swift
 //  GreenRoom
 //
 //  Created by SangWoo's MacBook on 2022/08/24.
@@ -9,7 +9,7 @@ import UIKit
 import RxSwift
 import SwiftUI
 
-class PrepareKeywordPracticeViewController: BaseViewController{
+class KPPrepareViewController: BaseViewController{
     //MARK: - Properties
     let viewmodel: KeywordViewModel
     var tempQuestionStorage: [String]?
@@ -205,7 +205,7 @@ class PrepareKeywordPracticeViewController: BaseViewController{
 }
 
 //MARK: - LongPress Gesture
-extension PrepareKeywordPracticeViewController {
+extension KPPrepareViewController {
     @objc func longPressCalled(gestureRecognizer: UIGestureRecognizer) {
         guard let longPress = gestureRecognizer as? UILongPressGestureRecognizer else { return }
         // 제스쳐의 상태를 입력받음 began(롱프레스시작) changed(눌려진상태) ended(뗀 상태)
