@@ -56,7 +56,7 @@ class KPGroupEditViewController: BaseViewController {
             }
         }
         
-        let inputNameLable = UILabel().then {
+        _ = UILabel().then {
             $0.text = "이름입력"
             $0.font = .sfPro(size: 12, family: .Regular)
             $0.textColor = .customGray

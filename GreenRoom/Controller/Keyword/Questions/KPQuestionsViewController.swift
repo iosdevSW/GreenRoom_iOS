@@ -122,7 +122,7 @@ class KPQuestionsViewController: BaseViewController {
     @objc func didClickKeywordButton(_ sender: UIButton) {
         let isKeywordOn = sender.tag == 0 ? true : false
         self.viewmodel.keywordOnOff = isKeywordOn
-        self.navigationController?.pushViewController(PrepareKeywordPracticeViewController(viewmodel: viewmodel), animated: true)
+        self.navigationController?.pushViewController(KPPrepareViewController(viewmodel: viewmodel), animated: true)
     }
     
     @objc func didClickPracticeButton(_ sender: UIButton) {

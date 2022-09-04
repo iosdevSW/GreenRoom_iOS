@@ -205,12 +205,7 @@ extension LoginViewController {
             let button = ASAuthorizationAppleIDButton(type: .signIn, style: .black)
             button.cornerRadius = 15
             button.tag = 2
-            //            let button = configureButton(button: UIButton(),
-            //                                         title: "Apple로 로그인",
-            //                                         icon: "apple",
-            //                                         tag: 2,
-            //                                         titleColor: .white,
-            //                                         backgroundColor: .black)
+         
             button.addTarget(self, action: #selector(didClickedLoginButton(_:)), for: .touchUpInside)
             frameView.addSubview(button)
             button.snp.makeConstraints{ make in

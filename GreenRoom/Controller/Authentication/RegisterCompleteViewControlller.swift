@@ -113,7 +113,7 @@ extension RegisterCompleteViewControlller {
             }
         }
         
-        let thirdCheckLabel = CheckLabel().then{
+        _ = CheckLabel().then{ // thirdCheckLabel
             $0.translatesAutoresizingMaskIntoConstraints = false
             $0.mainLabel.text = "다양한 면접 연습을 제공받을 수 있어요!"
             $0.descriptionLabel.text = "그린룸에서 제공하는 질문 프리셋과 그린룸 질문을 통해\n다양한 면접 연습이 가능해요."

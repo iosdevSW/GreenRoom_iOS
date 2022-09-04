@@ -19,7 +19,7 @@ class ChevronButton: UIButton {
     }
     
     func configureUI() {
-        let chevronImage = UIImageView().then {
+        _ = UIImageView().then {
             $0.image = UIImage(systemName: "chevron.right")
             $0.tintColor = .white
             

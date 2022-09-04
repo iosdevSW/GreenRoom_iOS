@@ -8,7 +8,7 @@
 import UIKit
 import AVKit
 
-class KPFinishViewController: UIViewController,AVPlayerViewControllerDelegate{
+class KPFinishViewController: BaseViewController, AVPlayerViewControllerDelegate{
     //MARK: - Properties
     let viewmodel: KeywordViewModel
     let urls: [URL]?
@@ -46,8 +46,6 @@ class KPFinishViewController: UIViewController,AVPlayerViewControllerDelegate{
     //MARK: - LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.configureUI()
-        self.bind()
         self.view.backgroundColor = .white
     }
     
@@ -66,7 +64,7 @@ class KPFinishViewController: UIViewController,AVPlayerViewControllerDelegate{
     }
     
     //MARK: - Bind
-    func bind() {
+    override func setupBinding() {
         viewmodel.selectedQuestionObservable
             .bind(to: resultTableView.rx.items(cellIdentifier: "PracticeResultCell", cellType: PracticeResultCell.self)) { index, title, cell in
                 cell.questionLabel.text = "Q\(index+1)\n\(title)"
@@ -75,17 +73,16 @@ class KPFinishViewController: UIViewController,AVPlayerViewControllerDelegate{
                 cell.categoryLabel.text = "공통"
                 
                 cell.selectionStyle = .none
-            }
+            }.disposed(by: disposeBag)
         
         resultTableView.rx.itemSelected
             .bind(onNext: { indexPath in
                 self.navigationController?.pushViewController(KPDetailViewController(viewmodel: self.viewmodel), animated: true)
-            })
+            }).disposed(by: disposeBag)
     }
     
-    
     //MARK: - CofigureUI
-    func configureUI() {
+    override func configureUI() {
         self.view.addSubview(self.goalFrameView)
         self.goalFrameView.snp.makeConstraints{ make in
             make.top.leading.trailing.equalToSuperview()
@@ -104,7 +101,7 @@ class KPFinishViewController: UIViewController,AVPlayerViewControllerDelegate{
             }
         }
         
-        let videoButton = UIButton().then {
+        _ = UIButton().then { // 비디오 버튼
             $0.tintColor = .mainColor
             $0.setImage(UIImage(named: "camera"), for: .normal)
             $0.addTarget(self, action: #selector(didClickReviewButton(_:)), for: .touchUpInside)
