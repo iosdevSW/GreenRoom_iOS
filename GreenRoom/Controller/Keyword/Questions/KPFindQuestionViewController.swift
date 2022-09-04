@@ -183,7 +183,7 @@ class KPFindQuestionViewController: UIViewController{
     }
     
     @objc func didClickPracticeButton(_ sender: UIButton) {
-        self.navigationController?.pushViewController(PrepareKeywordPracticeViewController(viewmodel: viewModel), animated: true)
+        self.navigationController?.pushViewController(KPPrepareViewController(viewmodel: viewModel), animated: true)
     }
     
     @objc func didClickCancelButton(_ sender: UIButton) {

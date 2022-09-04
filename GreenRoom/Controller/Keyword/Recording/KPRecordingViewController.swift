@@ -9,9 +9,10 @@ import UIKit
 import AVFoundation
 import Speech
 
-class KPRecordingViewController: UIViewController{
+class KPRecordingViewController: BaseViewController{
     //MARK: - Properties
     let viewmodel: KeywordViewModel!
+    var questions: [String]!
     var urls = [URL]()
     
     private let fileManager = FileManager.default
@@ -19,7 +20,6 @@ class KPRecordingViewController: UIViewController{
     private var captureDevice: AVCaptureDevice?
     private var videoPreviewLayer: AVCaptureVideoPreviewLayer?
     private var moviFileOutput: AVCaptureMovieFileOutput!
-    private let preView = UIView()
     
     private let speechRecognizer = SFSpeechRecognizer(locale: .init(identifier: "ko-KR")) // 한국말 Recognizer 생성
     //음성인식요청을 처리하는 객체
@@ -27,16 +27,30 @@ class KPRecordingViewController: UIViewController{
     //음성 인식 요청 결과를 제공하는 객체)
     private var recognitionTask: SFSpeechRecognitionTask?
     
-    private let recordingButton = UIButton(type: .system).then {
+    private let preView = UIView()
+    
+    private let darkView = CustomDarkView()
+    
+    private let questionLabel = UILabel().then {
+        $0.textColor = .white
+        $0.font = .sfPro(size: 22, family: .Semibold)
+        $0.textAlignment = .center
+        $0.numberOfLines = 0
+    }
+    
+    private let keywordLabel = UILabel().then {
+        $0.textColor = .mainColor
+        $0.numberOfLines = 0
+        $0.textAlignment = .center
+        $0.font = .sfPro(size: 22, family: .Semibold)
+        $0.text = "천진난만   현실적   적극적    성실함    긍정적"
+    }
+    
+    private let recordingButton = CustomRecordingButton(type: .system).then {
         $0.setTitle("촬영", for: .normal)
         $0.setTitleColor(.red, for: .normal)
     }
     
-    let testButton = UIButton(type: .system).then {
-        $0.setTitle("중단", for: .normal)
-        $0.setTitleColor(.red, for: .normal)
-    }
-
     //MARK: - Init
     init(viewmodel: KeywordViewModel){
         self.viewmodel = viewmodel
@@ -46,29 +60,57 @@ class KPRecordingViewController: UIViewController{
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
     //MARK: - LifCycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureUI()
         setupCaptureSession()
-    }
- 
-    //MARK: - Selector
-    @objc func didClickRecordingButton(_ sender: UIButton) {
-        startRecording() //녹화 녹음시작
+        self.keywordLabel.isHidden = true
+        self.questionLabel.isHidden = true
+        self.recordingButton.isHidden = true
+        self.darkView.keywordLabel.isHidden = self.viewmodel.keywordOnOff == true ? false : true
     }
     
-    @objc func didClickTestButton(_ sender: UIButton) {
+    override func setupBinding() {
+        viewmodel.selectedQuestionObservable
+            .take(1)
+            .subscribe(onNext: { questions in
+                self.darkView.questionLabel.text = "Q1\n\n\(questions[0])"
+                self.questionLabel.text = "Q1\n\n\(questions[0])"
+            }).disposed(by: disposeBag)
+    }
+    
+    //MARK: - Selector
+    @objc func didClickRecordingButton(_ sender: UIButton) {
         if moviFileOutput.isRecording {
-            moviFileOutput.stopRecording()
+            moviFileOutput.stopRecording() //녹화 중단
+            self.darkView.isHidden = false
+            self.keywordLabel.isHidden = true
+            self.questionLabel.isHidden = true
+            self.recordingButton.isHidden = true
+        } else {
+            self.darkView.isHidden = true
+            self.keywordLabel.isHidden = self.viewmodel.keywordOnOff == true ? false : true
+            self.questionLabel.isHidden = false
+            self.recordingButton.isHidden = false
+            startRecording() //녹화 녹음시작
         }
     }
     
+    @objc func didClickRecordingTriggerButton(_ sender: UIButton) {
+        
+    }
     
     //MARK: - ConfigureUI
-    func configureUI() {
+    override func configureUI() {
         self.view.addSubview(preView)
         preView.snp.makeConstraints{ make in
+            make.leading.trailing.top.bottom.equalToSuperview()
+        }
+        
+        self.preView.addSubview(self.darkView)
+        self.darkView.startButton.addTarget(self, action: #selector(didClickRecordingButton(_:)), for: .touchUpInside)
+        self.darkView.snp.makeConstraints{ make in
             make.leading.trailing.top.bottom.equalToSuperview()
         }
         
@@ -76,17 +118,24 @@ class KPRecordingViewController: UIViewController{
         recordingButton.addTarget(self, action: #selector(didClickRecordingButton(_:)), for: .touchUpInside)
         recordingButton.snp.makeConstraints{ make in
             make.centerX.equalToSuperview()
-            make.bottom.equalToSuperview().offset(-30)
-            make.width.height.equalTo(60)
+            make.bottom.equalToSuperview().offset(-47)
+            make.width.height.equalTo(84)
         }
         
-        self.preView.addSubview(testButton)
-        testButton.addTarget(self, action: #selector(didClickTestButton(_:)), for: .touchUpInside)
-        testButton.snp.makeConstraints{ make in
-            make.trailing.equalToSuperview().offset(-20)
-            make.centerY.equalTo(recordingButton.snp.centerY)
-            make.width.height.equalTo(60)
+        self.preView.addSubview(self.questionLabel)
+        self.questionLabel.snp.makeConstraints{ make in
+            make.top.equalToSuperview().offset(77)
+            make.leading.equalToSuperview().offset(50)
+            make.trailing.equalToSuperview().offset(-50)
         }
+
+        self.preView.addSubview(self.keywordLabel)
+        self.keywordLabel.snp.makeConstraints{ make in
+            make.bottom.equalTo(self.recordingButton.snp.top).offset(-46)
+            make.leading.equalToSuperview().offset(56)
+            make.trailing.equalToSuperview().offset(-56)
+        }
+
     }
 }
 
@@ -100,7 +149,7 @@ extension KPRecordingViewController: AVCaptureFileOutputRecordingDelegate {
             deviceTypes: [.builtInTrueDepthCamera , .builtInDualCamera, .builtInWideAngleCamera],
             mediaType: .video,
             position: .front
-            )
+        )
         
         let camera = cameras.devices.filter{ $0.position == .front }.first! // 전방 카메라
         
@@ -108,7 +157,7 @@ extension KPRecordingViewController: AVCaptureFileOutputRecordingDelegate {
         
         do {
             //오디오 장치
-            let audioDevice = try AVCaptureDevice.default(for: AVMediaType.audio)!
+            let audioDevice = AVCaptureDevice.default(for: AVMediaType.audio)!
             let audioInput = try AVCaptureDeviceInput(device: audioDevice)
             if captureSession!.canAddInput(audioInput){
                 captureSession?.addInput(audioInput)
@@ -123,8 +172,6 @@ extension KPRecordingViewController: AVCaptureFileOutputRecordingDelegate {
                 // 여기에서 preview 세팅하는 함수 호출
                 setupLivePreview()
             }
-            
-           
             
         } catch {
             print(error.localizedDescription)
@@ -142,7 +189,7 @@ extension KPRecordingViewController: AVCaptureFileOutputRecordingDelegate {
         DispatchQueue.main.async {
             self.videoPreviewLayer?.frame = self.preView.bounds
         }
-               
+        
         // preview까지 준비되었으니 captureSession을 시작하도록 설정
         
         startCaptureSession()
@@ -182,7 +229,6 @@ extension KPRecordingViewController: AVCaptureFileOutputRecordingDelegate {
     
     //레코딩 끝날시 호출 시작할때 파라미터로 입력한 url 기반으로 저장 작업 수행
     func fileOutput(_ output: AVCaptureFileOutput, didFinishRecordingTo outputFileURL: URL, from connections: [AVCaptureConnection], error: Error?) {
-        print("녹화종료")
         urls.append(outputFileURL)
         if urls.count == viewmodel.selectedQuestionTemp.count {
             if viewmodel.keywordOnOff{
@@ -191,7 +237,13 @@ extension KPRecordingViewController: AVCaptureFileOutputRecordingDelegate {
                 viewmodel.videoURLs = urls
                 self.navigationController?.pushViewController(KPDetailViewController(viewmodel: viewmodel), animated: true)
             }
-            
+        } else {
+            viewmodel.selectedQuestionObservable
+                .take(1)
+                .subscribe(onNext: { questions in
+                    self.darkView.questionLabel.text = "Q1\n\n\(questions[self.urls.count])"
+                    self.questionLabel.text = "Q1\n\n\(questions[self.urls.count])"
+                }).disposed(by: disposeBag)
         }
     }
 }
