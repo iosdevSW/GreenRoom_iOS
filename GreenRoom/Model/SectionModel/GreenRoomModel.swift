@@ -10,11 +10,11 @@ import Foundation
 import UIKit
 import Differentiator
 
-enum QuestionSectionModel: SectionModelType {
+enum GreenRoomSectionModel: SectionModelType {
     
     typealias Item = SectionItem
     
-    init(original: QuestionSectionModel, items: [Item]) {
+    init(original: GreenRoomSectionModel, items: [Item]) {
         switch original {
         case .popular(items: let items):
             self = .popular(items: items)

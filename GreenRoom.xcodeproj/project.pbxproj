@@ -82,14 +82,15 @@
 		E470539528AB81EC00884B56 /* MyPageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E470539428AB81EC00884B56 /* MyPageModel.swift */; };
 		E470539728AB856D00884B56 /* SettingHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = E470539628AB856D00884B56 /* SettingHeader.swift */; };
 		E470539928AB882900884B56 /* SettingRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = E470539828AB882900884B56 /* SettingRow.swift */; };
+		E47EE51428C47F1300618CA6 /* PopularGreenRoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = E47EE51328C47F1300618CA6 /* PopularGreenRoom.swift */; };
+		E47EE51628C48B7800618CA6 /* SFProText-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = E49CC16B28C331E4009216E1 /* SFProText-Semibold.otf */; };
 		E48F8B4F28C26864007AAF40 /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E48F8B4E28C26864007AAF40 /* AuthManager.swift */; };
 		E49CC15628C326DA009216E1 /* EditProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E49CC15528C326DA009216E1 /* EditProfileViewModel.swift */; };
 		E49CC16C28C331E4009216E1 /* SFPro.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E49CC16A28C331E4009216E1 /* SFPro.ttf */; };
-		E49CC16D28C331E4009216E1 /* SFProText-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = E49CC16B28C331E4009216E1 /* SFProText-Semibold.otf */; };
 		E49CC16F28C331EA009216E1 /* SFProText-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = E49CC16E28C331EA009216E1 /* SFProText-Bold.otf */; };
 		E49EF3D028B5361000358340 /* PopularHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = E49EF3CF28B5361000358340 /* PopularHeader.swift */; };
 		E49EF3D228B5375D00358340 /* Question.swift in Sources */ = {isa = PBXBuildFile; fileRef = E49EF3D128B5375D00358340 /* Question.swift */; };
-		E49EF3D428B5377900358340 /* GreenRoomSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E49EF3D328B5377900358340 /* GreenRoomSection.swift */; };
+		E49EF3D428B5377900358340 /* GreenRoomModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E49EF3D328B5377900358340 /* GreenRoomModel.swift */; };
 		E49EF3D928B539FF00358340 /* PopularQuestionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E49EF3D828B539FF00358340 /* PopularQuestionCell.swift */; };
 		E49EF3DC28B5E9AC00358340 /* GRSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E49EF3DB28B5E9AC00358340 /* GRSearchViewController.swift */; };
 		E49F7D8928BC7D7E000AB49B /* CreateQuestionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E49F7D8828BC7D7E000AB49B /* CreateQuestionViewController.swift */; };
@@ -100,6 +101,9 @@
 		E4C4C4C228BE029F008826AB /* CreateViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4C4C4C128BE029F008826AB /* CreateViewModel.swift */; };
 		E4C8AE6928B35519007E010D /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4C8AE6828B35519007E010D /* UserService.swift */; };
 		E4C8AE6B28B35533007E010D /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4C8AE6A28B35533007E010D /* User.swift */; };
+		E4EF361628C4BED700746050 /* RecentHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4EF361528C4BED600746050 /* RecentHeader.swift */; };
+		E4EF361828C4BF0400746050 /* RecentQuestionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4EF361728C4BF0400746050 /* RecentQuestionCell.swift */; };
+		E4EF361A28C4EA3E00746050 /* FooterPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4EF361928C4EA3E00746050 /* FooterPageView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -183,14 +187,15 @@
 		E470539428AB81EC00884B56 /* MyPageModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageModel.swift; sourceTree = "<group>"; };
 		E470539628AB856D00884B56 /* SettingHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingHeader.swift; sourceTree = "<group>"; };
 		E470539828AB882900884B56 /* SettingRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingRow.swift; sourceTree = "<group>"; };
+		E47EE51328C47F1300618CA6 /* PopularGreenRoom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopularGreenRoom.swift; sourceTree = "<group>"; };
 		E48F8B4E28C26864007AAF40 /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
 		E49CC15528C326DA009216E1 /* EditProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewModel.swift; sourceTree = "<group>"; };
 		E49CC16A28C331E4009216E1 /* SFPro.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = SFPro.ttf; sourceTree = "<group>"; };
 		E49CC16B28C331E4009216E1 /* SFProText-Semibold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFProText-Semibold.otf"; sourceTree = "<group>"; };
-		E49CC16E28C331EA009216E1 /* SFProText-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFProText-Bold.otf"; sourceTree = "<group>"; };
+		E49CC16E28C331EA009216E1 /* SFProText-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SFProText-Bold.otf"; path = "/Users/doyunpark/Desktop/GreenRoom/GreenRoom/Resource/Font/SFProText-Bold.otf"; sourceTree = "<absolute>"; };
 		E49EF3CF28B5361000358340 /* PopularHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopularHeader.swift; sourceTree = "<group>"; };
 		E49EF3D128B5375D00358340 /* Question.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Question.swift; sourceTree = "<group>"; };
-		E49EF3D328B5377900358340 /* GreenRoomSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GreenRoomSection.swift; sourceTree = "<group>"; };
+		E49EF3D328B5377900358340 /* GreenRoomModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GreenRoomModel.swift; sourceTree = "<group>"; };
 		E49EF3D828B539FF00358340 /* PopularQuestionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopularQuestionCell.swift; sourceTree = "<group>"; };
 		E49EF3DB28B5E9AC00358340 /* GRSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GRSearchViewController.swift; sourceTree = "<group>"; };
 		E49F7D8828BC7D7E000AB49B /* CreateQuestionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateQuestionViewController.swift; sourceTree = "<group>"; };
@@ -201,6 +206,9 @@
 		E4C4C4C128BE029F008826AB /* CreateViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateViewModel.swift; sourceTree = "<group>"; };
 		E4C8AE6828B35519007E010D /* UserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
 		E4C8AE6A28B35533007E010D /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		E4EF361528C4BED600746050 /* RecentHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentHeader.swift; sourceTree = "<group>"; };
+		E4EF361728C4BF0400746050 /* RecentQuestionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentQuestionCell.swift; sourceTree = "<group>"; };
+		E4EF361928C4EA3E00746050 /* FooterPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FooterPageView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -349,10 +357,9 @@
 			children = (
 				DBD082392897E75A0092241F /* LoginViewModel.swift */,
 				DB563F9D28AE266D00E7193D /* CategoryViewModel.swift */,
-				DBD0823A2897E75A0092241F /* GreenViewModel.swift */,
 				DBD0823B2897E75A0092241F /* KeywordViewModel.swift */,
 				E49CC15428C326CD009216E1 /* MyPage */,
-				E4C4C4C128BE029F008826AB /* CreateViewModel.swift */,
+				E47EE51028C47D9800618CA6 /* GreenRoom */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -452,9 +459,8 @@
 				E40BC70D28B8990700FB557D /* CoreDataModel */,
 				E49EF3D528B5377C00358340 /* SectionModel */,
 				DBD082502897E75B0092241F /* LoginModel.swift */,
-				E4141AB928AF5199004D74B3 /* FAQ.swift */,
-				E4C8AE6A28B35533007E010D /* User.swift */,
-				E49EF3D128B5375D00358340 /* Question.swift */,
+				E47EE51228C47F0C00618CA6 /* GreenRoom */,
+				E47EE51128C47EFA00618CA6 /* MyPage */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -558,6 +564,33 @@
 			path = Utils;
 			sourceTree = "<group>";
 		};
+		E47EE51028C47D9800618CA6 /* GreenRoom */ = {
+			isa = PBXGroup;
+			children = (
+				DBD0823A2897E75A0092241F /* GreenViewModel.swift */,
+				E4C4C4C128BE029F008826AB /* CreateViewModel.swift */,
+			);
+			path = GreenRoom;
+			sourceTree = "<group>";
+		};
+		E47EE51128C47EFA00618CA6 /* MyPage */ = {
+			isa = PBXGroup;
+			children = (
+				E4141AB928AF5199004D74B3 /* FAQ.swift */,
+				E4C8AE6A28B35533007E010D /* User.swift */,
+			);
+			path = MyPage;
+			sourceTree = "<group>";
+		};
+		E47EE51228C47F0C00618CA6 /* GreenRoom */ = {
+			isa = PBXGroup;
+			children = (
+				E47EE51328C47F1300618CA6 /* PopularGreenRoom.swift */,
+				E49EF3D128B5375D00358340 /* Question.swift */,
+			);
+			path = GreenRoom;
+			sourceTree = "<group>";
+		};
 		E49CC15428C326CD009216E1 /* MyPage */ = {
 			isa = PBXGroup;
 			children = (
@@ -572,6 +605,9 @@
 			children = (
 				E49EF3CF28B5361000358340 /* PopularHeader.swift */,
 				E49EF3D828B539FF00358340 /* PopularQuestionCell.swift */,
+				E4EF361528C4BED600746050 /* RecentHeader.swift */,
+				E4EF361728C4BF0400746050 /* RecentQuestionCell.swift */,
+				E4EF361928C4EA3E00746050 /* FooterPageView.swift */,
 			);
 			path = Popular;
 			sourceTree = "<group>";
@@ -580,7 +616,7 @@
 			isa = PBXGroup;
 			children = (
 				E470539428AB81EC00884B56 /* MyPageModel.swift */,
-				E49EF3D328B5377900358340 /* GreenRoomSection.swift */,
+				E49EF3D328B5377900358340 /* GreenRoomModel.swift */,
 				E40BC6B428B756EE00FB557D /* GRSearchModel.swift */,
 				DBA8ED7528BF1790007526CF /* KPDetailModel.swift */,
 				DBA8ED7928BF8009007526CF /* KPReviewModel.swift */,
@@ -671,7 +707,7 @@
 				E46539E928AD3F2800F17A6C /* SFProText-Regular.otf in Resources */,
 				DBD082262897E6F30092241F /* Assets.xcassets in Resources */,
 				DBD082292897E6F30092241F /* LaunchScreen.storyboard in Resources */,
-				E49CC16D28C331E4009216E1 /* SFProText-Semibold.otf in Resources */,
+				E47EE51628C48B7800618CA6 /* SFProText-Semibold.otf in Resources */,
 				E49CC16C28C331E4009216E1 /* SFPro.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -725,6 +761,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E4EF361A28C4EA3E00746050 /* FooterPageView.swift in Sources */,
 				DBD082512897E75B0092241F /* LoginViewModel.swift in Sources */,
 				DBFB296E28B26F5B00B1DAC9 /* CustomSegmentedControl.swift in Sources */,
 				DB006B9528C39D3C00867013 /* CustomSwitch.swift in Sources */,
@@ -748,18 +785,21 @@
 				E4C4C4BE28BD1ACD008826AB /* CreatePopOverViewController.swift in Sources */,
 				E40BC6E628B8834100FB557D /* SearchResultHeaderView.swift in Sources */,
 				DBA8ED7428BDDCA1007526CF /* DetailCell.swift in Sources */,
+				E4EF361628C4BED700746050 /* RecentHeader.swift in Sources */,
 				DB006B9328C342E200867013 /* KPQuestionsViewController.swift in Sources */,
 				E49EF3D228B5375D00358340 /* Question.swift in Sources */,
 				E49EF3D028B5361000358340 /* PopularHeader.swift in Sources */,
 				E40BC6E828B8868D00FB557D /* BaseViewController.swift in Sources */,
 				E470539928AB882900884B56 /* SettingRow.swift in Sources */,
 				E40BC6B528B756EE00FB557D /* GRSearchModel.swift in Sources */,
+				E4EF361828C4BF0400746050 /* RecentQuestionCell.swift in Sources */,
 				DBA8ED7028BD103F007526CF /* PracticeResultCell.swift in Sources */,
 				DB563F9C28AD407400E7193D /* Extension.swift in Sources */,
 				DBE7A54A28996BCE00E9A4E9 /* LoginViewController.swift in Sources */,
 				DBFB297028B351F400B1DAC9 /* QuestionListCell.swift in Sources */,
 				E470539528AB81EC00884B56 /* MyPageModel.swift in Sources */,
 				DBD0825D2897E75B0092241F /* LoginModel.swift in Sources */,
+				E47EE51428C47F1300618CA6 /* PopularGreenRoom.swift in Sources */,
 				DBE7A54F28996C2000E9A4E9 /* CheckLabel.swift in Sources */,
 				DB8D163A28B8D79900E3F237 /* ProgressBarView.swift in Sources */,
 				DBD082572897E75B0092241F /* KPFindQuestionViewController.swift in Sources */,
@@ -782,7 +822,7 @@
 				E48F8B4F28C26864007AAF40 /* AuthManager.swift in Sources */,
 				DBD082602897E7740092241F /* LoginService.swift in Sources */,
 				DBA8ED7C28BF931F007526CF /* ReviewCell.swift in Sources */,
-				E49EF3D428B5377900358340 /* GreenRoomSection.swift in Sources */,
+				E49EF3D428B5377900358340 /* GreenRoomModel.swift in Sources */,
 				DBA8ED6628B9D347007526CF /* RecentSearchKeyword+CoreDataProperties.swift in Sources */,
 				DBA8ED7628BF1790007526CF /* KPDetailModel.swift in Sources */,
 				E40BC6E128B8802700FB557D /* SearchResultViewController.swift in Sources */,

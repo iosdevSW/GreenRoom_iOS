@@ -1,19 +1,19 @@
 //
-//  PopularHeader.swift
+//  RecentHeader.swift
 //  GreenRoom
 //
-//  Created by Doyun Park on 2022/08/24.
+//  Created by Doyun Park on 2022/09/04.
 //
 
 import UIKit
 
-final class PopularHeader: UICollectionReusableView {
+final class RecentHeader: UICollectionReusableView {
     
-    static let reuseIdentifier = "PopularHeader"
+    static let reuseIdentifier = "RecentHeader"
     
     //MARK: - Properties
     private let headerLabel = UILabel().then {
-        $0.text = "인기질문"
+        $0.text = "최근 질문"
         $0.textColor = .black
         $0.font = .sfPro(size: 20, family: .Bold)
     }
@@ -30,11 +30,11 @@ final class PopularHeader: UICollectionReusableView {
     
     //MARK: - Configure
     private func configureUI(){
-        self.backgroundColor = .backgroundGary
+        self.backgroundColor = .white
         self.addSubview(headerLabel)
         
         headerLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(25)
+            make.leading.equalToSuperview()
             make.top.equalToSuperview().offset(22)
         }
     }
