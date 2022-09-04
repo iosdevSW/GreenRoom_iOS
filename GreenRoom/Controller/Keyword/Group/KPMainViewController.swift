@@ -96,7 +96,7 @@ class KPMainViewController: BaseViewController {
         
         self.view.addSubview(self.groupView)
         self.groupView.snp.makeConstraints{ make in
-            make.leading.bottom.trailing.equalToSuperview()
+            make.leading.trailing.equalToSuperview()
             make.top.equalTo(participatedQuestionsButton.snp.bottom).offset(40)
             make.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.bottom)
         }

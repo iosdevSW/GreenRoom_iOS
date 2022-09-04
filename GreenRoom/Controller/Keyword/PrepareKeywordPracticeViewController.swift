@@ -9,7 +9,7 @@ import UIKit
 import RxSwift
 import SwiftUI
 
-class PrepareKeywordPracticeViewController: UIViewController{
+class PrepareKeywordPracticeViewController: BaseViewController{
     //MARK: - Properties
     let viewmodel: KeywordViewModel
     var tempQuestionStorage: [String]?
@@ -56,8 +56,6 @@ class PrepareKeywordPracticeViewController: UIViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
-        configureUI()
-        bind()
         setGesutre()
     }
     
@@ -77,11 +75,8 @@ class PrepareKeywordPracticeViewController: UIViewController{
                                            color2: UIColor(red: 87/255.0, green: 193/255.0, blue: 183/255.0, alpha: 1.0))
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-    }
-    
     //MARK: - Bind
-    func bind(){
+    override func setupBinding() {
         viewmodel.selectedQuestionObservable
             .bind(to: self.questionsTableView.rx.items(cellIdentifier: "PracticeQuestionCell",
                                                        cellType: PracticeQuestionCell.self)) { index, title, cell in
@@ -97,10 +92,9 @@ class PrepareKeywordPracticeViewController: UIViewController{
                 imageView.tintColor = .customGray
                 btn.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
                 cell.accessoryView = btn
-                
-            }
+            }.disposed(by: disposeBag)
     }
-    
+
     //MARK: - Gesture
     func setGesutre() {
         // 1. 테이블뷰에 롱프레시 제스쳐 추가 ( 셀 순서 변경 위해)
@@ -138,30 +132,19 @@ class PrepareKeywordPracticeViewController: UIViewController{
 
     
     //MARK: - ConfigureUI
-    func configureUI(){
+    override func configureUI(){
         self.view.addSubview(self.goalFrameView)
+        self.goalFrameView.addSubview(self.goalProgressBarView)
+        
         self.goalFrameView.snp.makeConstraints{ make in
             make.top.leading.trailing.equalToSuperview()
             make.height.equalTo(276)
         }
         
-        let goalTitleLabel = UILabel().then{
-            $0.text = "목표 설정하기"
-            $0.textColor = .black
-            $0.font = .sfPro(size: 16, family: .Semibold)
-            
-            self.goalFrameView.addSubview($0)
-            $0.snp.makeConstraints{ make in
-                make.top.equalToSuperview().offset(107)
-                make.leading.equalToSuperview().offset(44)
-            }
-        }
-        
-        self.goalFrameView.addSubview(self.goalProgressBarView)
         self.goalProgressBarView.snp.makeConstraints{ make in
             make.leading.equalToSuperview()
             make.trailing.equalToSuperview()
-            make.top.equalTo(goalTitleLabel.snp.bottom).offset(10)
+            make.top.equalTo(self.goalFrameView.safeAreaLayoutGuide.snp.top).offset(10)
             make.bottom.equalToSuperview().offset(-20)
         }
         
@@ -173,11 +156,21 @@ class PrepareKeywordPracticeViewController: UIViewController{
         }
         
         self.view.addSubview(self.questionsTableView)
-        self.questionsTableView.snp.makeConstraints{ make in
-            make.leading.equalToSuperview().offset(24)
-            make.trailing.equalToSuperview().offset(-24)
-            make.top.equalTo(self.goalFrameView.snp.bottom).offset(15)
-            make.bottom.equalTo(self.recordFrameView.snp.top)
+        if viewmodel.keywordOnOff { // on
+            self.questionsTableView.snp.makeConstraints{ make in
+                make.leading.equalToSuperview().offset(24)
+                make.trailing.equalToSuperview().offset(-24)
+                make.top.equalTo(self.goalFrameView.snp.bottom).offset(15)
+                make.bottom.equalTo(self.recordFrameView.snp.top)
+            }
+        } else { // off
+            self.goalFrameView.isHidden = true
+            self.questionsTableView.snp.makeConstraints{ make in
+                make.leading.equalToSuperview().offset(24)
+                make.trailing.equalToSuperview().offset(-24)
+                make.top.equalTo(self.view.safeAreaLayoutGuide.snp.top)
+                make.bottom.equalTo(self.recordFrameView.snp.top)
+            }
         }
         
         self.recordFrameView.addSubview(self.recordButton)
