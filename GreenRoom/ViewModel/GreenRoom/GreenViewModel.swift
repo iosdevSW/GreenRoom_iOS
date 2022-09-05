@@ -20,9 +20,9 @@ class GreenRoomViewModel {
         GRSearchModel.recent(header: "인기 검색어",items: [])
     ])
     
-    let currentBannerPage = PublishRelay<Int>()
-    
+    let currentBannerPage = PublishSubject<Int>()
     let greenroom = BehaviorSubject<[GreenRoomSectionModel]>(value: [
+        GreenRoomSectionModel.filtering(items:[ GreenRoomSectionModel.Item.filtering(interest: "디자인")]),
         GreenRoomSectionModel.popular(items: [
             GreenRoomSectionModel.Item.popular(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
             GreenRoomSectionModel.Item.popular(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
@@ -39,6 +39,15 @@ class GreenRoomViewModel {
             GreenRoomSectionModel.Item.recent(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
             GreenRoomSectionModel.Item.recent(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
             GreenRoomSectionModel.Item.recent(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~"))
+        ]),
+        GreenRoomSectionModel.recent(items: [
+            GreenRoomSectionModel.Item.MyGreenRoom(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
+            GreenRoomSectionModel.Item.MyGreenRoom(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
+            GreenRoomSectionModel.Item.MyGreenRoom(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
+            GreenRoomSectionModel.Item.MyGreenRoom(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
+            GreenRoomSectionModel.Item.MyGreenRoom(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
+            GreenRoomSectionModel.Item.MyGreenRoom(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
+            GreenRoomSectionModel.Item.MyGreenRoom(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~"))
         ])
     ])
     
