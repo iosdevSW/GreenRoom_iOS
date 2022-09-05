@@ -15,7 +15,7 @@ class KPPrepareViewController: BaseViewController{
     var tempQuestionStorage: [String]?
     
     var goalFrameView = UIView().then {
-        $0.backgroundColor = .customGray.withAlphaComponent(0.05)
+        $0.backgroundColor = .customGray.withAlphaComponent(0.1)
         $0.layer.cornerRadius = 16
         $0.layer.maskedCorners = CACornerMask(arrayLiteral: .layerMinXMaxYCorner, .layerMaxXMaxYCorner)
     }

@@ -61,5 +61,4 @@ class CustomProgressBar: UIView {
         
         progressLayer.position = .zero
     }
-    
 }
