@@ -27,7 +27,7 @@ class ChevronButton: UIButton {
             $0.snp.makeConstraints { make in
                 make.trailing.equalToSuperview().offset(-20)
                 make.width.equalTo(12)
-                make.height.equalTo(18)
+                make.height .equalTo(18)
                 make.centerY.equalToSuperview()
             }
         }

@@ -41,7 +41,8 @@ class GreenRoomViewController: BaseViewController {
             color1: UIColor(red: 110/255.0, green: 234/255.0, blue: 174/255.0, alpha: 1.0),
             color2: UIColor(red: 87/255.0, green: 193/255.0, blue: 183/255.0, alpha: 1.0))
     }
-    
+ 
+    //MARK: - LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
         //        KeychainWrapper.standard.remove(forKey: "accessToken")
@@ -61,6 +62,7 @@ class GreenRoomViewController: BaseViewController {
         super.viewWillLayoutSubviews()
     }
     
+    //MARK: - setup/configure
     override func setupBinding() {
         viewModel.isLogin()
             .subscribe(on: MainScheduler.instance)
@@ -78,6 +80,7 @@ class GreenRoomViewController: BaseViewController {
         let dataSource = self.dataSource()
         
         viewModel.greenroom.bind(to: collectionView.rx.items(dataSource: dataSource)).disposed(by: disposeBag)
+         
     }
     
     private func configureNavigationBar() {
@@ -134,6 +137,7 @@ class GreenRoomViewController: BaseViewController {
             make.top.equalTo(underline.snp.bottom)
             make.bottom.equalToSuperview()
         }
+        
     }
     
     override func setupAttributes() {
@@ -141,6 +145,7 @@ class GreenRoomViewController: BaseViewController {
         self.configureCollecitonView()
     }
     
+    //MARK: - Selector
     @objc func filterGreenRoom(_ sender: UIButton){
         let questionColor: UIColor = sender.tag == 0 ? .customGray : .mainColor
         let greenRoomColor: UIColor = sender.tag == 0 ? .mainColor : .customGray
@@ -223,6 +228,7 @@ extension GreenRoomViewController {
                 
             case RecentHeader.reuseIdentifier:
                 guard let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: RecentHeader.reuseIdentifier, withReuseIdentifier: RecentHeader.reuseIdentifier, for: indexPath) as? RecentHeader else { return UICollectionReusableView() }
+                headerView.delegate = self
                 return headerView
                 
             case RecentPageFooterView.reuseIdentifier:
@@ -400,13 +406,9 @@ extension GreenRoomViewController {
     }
 }
 
-extension GreenRoomViewController: UIScrollViewDelegate {
-    
+extension GreenRoomViewController: RecentHeaderDelegate {
+    func didTapViewAllQeustionsButton() {
+        print("didTapViewAllQeustionsButton")
+    }
 }
-//extension GreenRoomViewController {
-//    @objc func didTap() {
-//        tabBarController?.selectedIndex = 2
-//        //        let vc = MyPageViewController(viewModel: MyPageViewModel())
-//        //        navigationController?.pushViewController(vc, animated: false)
-//    }
-//}
+
