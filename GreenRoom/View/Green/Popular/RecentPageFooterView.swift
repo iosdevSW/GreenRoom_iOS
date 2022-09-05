@@ -9,11 +9,11 @@ import UIKit
 import RxCocoa
 import RxSwift
 
-final class FooterPageView: UICollectionReusableView {
+final class RecentPageFooterView: UICollectionReusableView {
     
-    static let reuseIdentifier = "FooterPageView"
+    static let reuseIdentifier = "RecentPageFooterView"
     
-    let subject = PublishSubject<Int>()
+//    let subject = PublishSubject<Int>()
     
     private let bannerPageControl = UIPageControl().then{
         $0.pageIndicatorTintColor = .customGray

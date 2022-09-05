@@ -16,7 +16,6 @@ class GreenRoomViewController: BaseViewController {
     //MARK: - Properties
     let viewModel = GreenRoomViewModel()
     private var collectionView: UICollectionView!
-    let currentBannerPage = PublishSubject<Int>()
     
     private lazy var greenRoomButton = UIButton().then {
         $0.setTitle("그린룸", for: .normal)
@@ -41,18 +40,6 @@ class GreenRoomViewController: BaseViewController {
         $0.setGradient(
             color1: UIColor(red: 110/255.0, green: 234/255.0, blue: 174/255.0, alpha: 1.0),
             color2: UIColor(red: 87/255.0, green: 193/255.0, blue: 183/255.0, alpha: 1.0))
-    }
-    
-    private let filterLabel = UILabel().then {
-        $0.numberOfLines = 0
-        let attributeString = NSMutableAttributedString(string: "빠르게 필터링\n", attributes: [
-            NSAttributedString.Key.foregroundColor: UIColor.black,
-            NSAttributedString.Key.font: UIFont.sfPro(size: 20, family: .Bold)!
-        ])
-        
-        attributeString.append(NSAttributedString(string: "\n관심사 기반으로 맞춤 키워드를 보여드릴게요!", attributes: [NSAttributedString.Key.foregroundColor: UIColor.customGray!,
-                                                                                                     NSAttributedString.Key.font: UIFont.sfPro(size: 12, family: .Regular)!]))
-        $0.attributedText = attributeString
     }
     
     override func viewDidLoad() {
@@ -141,17 +128,11 @@ class GreenRoomViewController: BaseViewController {
             make.height.equalTo(3)
         }
         
-        self.view.addSubview(filterLabel)
-        filterLabel.snp.makeConstraints { make in
-            make.top.equalTo(underline.snp.bottom).offset(25)
-            make.leading.equalToSuperview().offset(33)
-        }
-        
         self.view.addSubview(collectionView)
         collectionView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
-            make.top.equalTo(filterLabel.snp.bottom).offset(10)
-            make.bottom.equalTo(view.safeAreaLayoutGuide)
+            make.top.equalTo(underline.snp.bottom)
+            make.bottom.equalToSuperview()
         }
     }
     
@@ -185,12 +166,20 @@ extension GreenRoomViewController {
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         
         collectionView.backgroundColor = .white
+        
+        collectionView.register(GRFilteringCell.self, forCellWithReuseIdentifier: GRFilteringCell.reuseIdentifier)
+        collectionView.register(GRFilteringHeaderView.self, forSupplementaryViewOfKind: GRFilteringHeaderView.reuseIdentifier, withReuseIdentifier: GRFilteringHeaderView.reuseIdentifier)
+        
         collectionView.register(PopularQuestionCell.self, forCellWithReuseIdentifier: PopularQuestionCell.reuseIdentifer)
         collectionView.register(PopularHeader.self, forSupplementaryViewOfKind: PopularHeader.reuseIdentifier, withReuseIdentifier: PopularHeader.reuseIdentifier)
         
         collectionView.register(RecentQuestionCell.self, forCellWithReuseIdentifier: RecentQuestionCell.reuseIdentifer)
         collectionView.register(RecentHeader.self,forSupplementaryViewOfKind: RecentHeader.reuseIdentifier, withReuseIdentifier: RecentHeader.reuseIdentifier)
-        collectionView.register(FooterPageView.self, forSupplementaryViewOfKind: FooterPageView.reuseIdentifier, withReuseIdentifier: FooterPageView.reuseIdentifier)
+        collectionView.register(RecentPageFooterView.self, forSupplementaryViewOfKind: RecentPageFooterView.reuseIdentifier, withReuseIdentifier: RecentPageFooterView.reuseIdentifier)
+        
+        collectionView.register(MyGreenRoomCell.self, forCellWithReuseIdentifier: MyGreenRoomCell.reuseIdentifer)
+        collectionView.register(MyGreenRoomHeader.self, forSupplementaryViewOfKind: MyGreenRoomHeader.reuseIdentifier, withReuseIdentifier: MyGreenRoomHeader.reuseIdentifier)
+        collectionView.register(MyGreenRoomFooterView.self, forSupplementaryViewOfKind: MyGreenRoomFooterView.reuseIdentifier, withReuseIdentifier: MyGreenRoomFooterView.reuseIdentifier)
         
     }
     
@@ -199,6 +188,11 @@ extension GreenRoomViewController {
             (dataSource, collectionView, indexPath, item) in
             
             switch item {
+            case .filtering(interest: let text):
+                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: GRFilteringCell.reuseIdentifier, for: indexPath) as? GRFilteringCell else { return UICollectionViewCell() }
+                cell.filtering = text
+                return cell
+                
             case .popular(question: let question):
                 guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PopularQuestionCell.reuseIdentifer, for: indexPath) as? PopularQuestionCell else { return UICollectionViewCell() }
                 cell.question = question
@@ -208,8 +202,10 @@ extension GreenRoomViewController {
                 guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RecentQuestionCell.reuseIdentifer, for: indexPath) as? RecentQuestionCell else { return UICollectionViewCell() }
                 cell.question = question
                 return cell
-            case .MyGreenRoom(question:_):
-                return UICollectionViewCell()
+            case .MyGreenRoom(question: let question):
+                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MyGreenRoomCell.reuseIdentifer, for: indexPath) as? MyGreenRoomCell else { return UICollectionViewCell() }
+                cell.question = question
+                return cell
             }
         } configureSupplementaryView: { [weak self] dataSource, collectionView, kind,
             indexPath in
@@ -217,41 +213,89 @@ extension GreenRoomViewController {
             guard let self = self else { return UICollectionReusableView() }
             
             switch kind {
+            case GRFilteringHeaderView.reuseIdentifier:
+                guard let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: GRFilteringHeaderView.reuseIdentifier, withReuseIdentifier: GRFilteringHeaderView.reuseIdentifier, for: indexPath) as? GRFilteringHeaderView else { return UICollectionReusableView() }
+                return headerView
+                
             case PopularHeader.reuseIdentifier:
-                guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: PopularHeader.reuseIdentifier, withReuseIdentifier: PopularHeader.reuseIdentifier, for: indexPath) as? PopularHeader else { return UICollectionReusableView() }
-                return header
+                guard let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: PopularHeader.reuseIdentifier, withReuseIdentifier: PopularHeader.reuseIdentifier, for: indexPath) as? PopularHeader else { return UICollectionReusableView() }
+                return headerView
+                
             case RecentHeader.reuseIdentifier:
-                guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: RecentHeader.reuseIdentifier, withReuseIdentifier: RecentHeader.reuseIdentifier, for: indexPath) as? RecentHeader else { return UICollectionReusableView() }
-                return header
-            case FooterPageView.reuseIdentifier:
-                guard let footer = collectionView.dequeueReusableSupplementaryView(ofKind: FooterPageView.reuseIdentifier, withReuseIdentifier: FooterPageView.reuseIdentifier, for: indexPath) as? FooterPageView else { return UICollectionReusableView() }
-                footer.bind(input: self.currentBannerPage,pageNumber: 3)
-                return footer
+                guard let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: RecentHeader.reuseIdentifier, withReuseIdentifier: RecentHeader.reuseIdentifier, for: indexPath) as? RecentHeader else { return UICollectionReusableView() }
+                return headerView
+                
+            case RecentPageFooterView.reuseIdentifier:
+                guard let footerView = collectionView.dequeueReusableSupplementaryView(ofKind: RecentPageFooterView.reuseIdentifier, withReuseIdentifier: RecentPageFooterView.reuseIdentifier, for: indexPath) as? RecentPageFooterView else { return UICollectionReusableView() }
+                footerView.bind(input: self.viewModel.currentBannerPage,pageNumber: 3)
+                return footerView
+                
+            case MyGreenRoomHeader.reuseIdentifier:
+                guard let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: MyGreenRoomHeader.reuseIdentifier, withReuseIdentifier: MyGreenRoomHeader.reuseIdentifier, for: indexPath) as? MyGreenRoomHeader else { return UICollectionReusableView() }
+                return headerView
+                
+            case MyGreenRoomFooterView.reuseIdentifier:
+                guard let footerView = collectionView.dequeueReusableSupplementaryView(ofKind: MyGreenRoomFooterView.reuseIdentifier, withReuseIdentifier: MyGreenRoomFooterView.reuseIdentifier, for: indexPath) as? MyGreenRoomFooterView else { return UICollectionReusableView() }
+                return footerView
             default:
                 return UICollectionReusableView()
             }
         }
     }
+    
     private func generateLayout() -> UICollectionViewLayout {
         return UICollectionViewCompositionalLayout { [weak self] (sectionIndex: Int, layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
-            
-            if sectionIndex == 0{
-                return self?.generatePopularQuestionLayout()
+            if sectionIndex == 0 {
+                return self?.generateFilteringLayout()
             } else if sectionIndex == 1{
+                return self?.generatePopularQuestionLayout()
+            } else if sectionIndex == 2{
                 return self?.generateRecentQuestionLayout()
             } else {
-                return self?.generateRecentQuestionLayout()
+                return self?.generateMyGRLayout()
             }
-            //
-            
         }
     }
+    
+    private func generateFilteringLayout() -> NSCollectionLayoutSection {
+        let itemSize = NSCollectionLayoutSize(
+            widthDimension: .estimated(60),
+            heightDimension: .fractionalHeight(1.0)
+        )
+        
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        
+        let groupSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(3.0),
+            heightDimension: .absolute(38)
+        )
+        
+        let group = NSCollectionLayoutGroup.horizontal(
+            layoutSize: groupSize,
+            subitems: [item]
+        )
+        
+        group.interItemSpacing = .fixed(14)
+        
+        let section = NSCollectionLayoutSection(group: group)
+        section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 20, bottom: 20, trailing: 0)
+        
+        let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(80))
+        
+        section.orthogonalScrollingBehavior = .continuousGroupLeadingBoundary
+        let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: GRFilteringHeaderView.reuseIdentifier, alignment: .topLeading)
+        
+        section.boundarySupplementaryItems = [header]
+        
+        return section
+    }
+    
     private func generatePopularQuestionLayout() -> NSCollectionLayoutSection {
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
         
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.5))
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.4))
         
         let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitem: item, count: 2)
         
@@ -261,12 +305,12 @@ extension GreenRoomViewController {
                 heightDimension: .estimated(60)),
             elementKind: PopularHeader.reuseIdentifier,
             alignment: .top)
-        
+         
         let sectionFooter = NSCollectionLayoutBoundarySupplementaryItem(
             layoutSize: NSCollectionLayoutSize(
                 widthDimension: .fractionalWidth(1.0),
                 heightDimension: .absolute(40)),
-            elementKind: FooterPageView.reuseIdentifier,
+            elementKind: RecentPageFooterView.reuseIdentifier,
             alignment: .bottom
         )
         
@@ -276,10 +320,10 @@ extension GreenRoomViewController {
         
         section.visibleItemsInvalidationHandler = { [weak self] _, contentOffset, environment in
 
-            let bannerIndex = Int(max(0, round(contentOffset.x /    environment.container.contentSize.width)))
+            let bannerIndex = Int(max(0, round(contentOffset.x / environment.container.contentSize.width)))
             
             if environment.container.contentSize.height == environment.container.contentSize.width {
-                self?.currentBannerPage.onNext(bannerIndex)
+                self?.viewModel.currentBannerPage.onNext(bannerIndex)
             }
         }
         
@@ -294,7 +338,7 @@ extension GreenRoomViewController {
         
         let groupSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(0.36),
-            heightDimension: .fractionalHeight(0.3))
+            heightDimension: .fractionalHeight(0.24))
         
         let group = NSCollectionLayoutGroup.vertical(
             layoutSize: groupSize,
@@ -302,9 +346,9 @@ extension GreenRoomViewController {
             count: 1)
         group.contentInsets = NSDirectionalEdgeInsets(
             top: 5,
-            leading: 5,
+            leading: 8,
             bottom: 5,
-            trailing: 5)
+            trailing: 8)
         
         let headerSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1.0),
@@ -318,23 +362,51 @@ extension GreenRoomViewController {
         let section = NSCollectionLayoutSection(group: group)
         section.boundarySupplementaryItems = [sectionHeader]
         section.orthogonalScrollingBehavior = .groupPaging
-        section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 25, bottom: 0, trailing: 0)
+        section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 25, bottom: 20, trailing: 0)
         return section
         
-        
-        //    func generateMyGRLayout() -> NSCollectionLayoutSection {
-        //        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
-        //
-        //        let item = NSCollectionLayoutItem(layoutSize: <#T##NSCollectionLayoutSize#>)
-        //    }
     }
     
-}
+    func generateMyGRLayout() -> NSCollectionLayoutSection {
+        
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
+        
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize:
+                                                        NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
+                                                                               heightDimension: .fractionalHeight(0.2)), subitems: [item])
+        
+        let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(
+            layoutSize: NSCollectionLayoutSize(
+                widthDimension: .fractionalWidth(1.0),
+                heightDimension: .estimated(60)),
+            elementKind: MyGreenRoomHeader.reuseIdentifier,
+            alignment: .top)
+        
+        let sectionFooter = NSCollectionLayoutBoundarySupplementaryItem(
+            layoutSize: NSCollectionLayoutSize(
+                widthDimension: .fractionalWidth(1.0),
+                heightDimension: .estimated(100)),
+            elementKind: MyGreenRoomFooterView.reuseIdentifier,
+            alignment: .bottom)
+        
+        let section = NSCollectionLayoutSection(group: group)
+        section.boundarySupplementaryItems = [sectionHeader,sectionFooter]
+        section.orthogonalScrollingBehavior = .groupPaging
+        
+        return section
 
-extension GreenRoomViewController {
-    @objc func didTap() {
-        tabBarController?.selectedIndex = 2
-        //        let vc = MyPageViewController(viewModel: MyPageViewModel())
-        //        navigationController?.pushViewController(vc, animated: false)
     }
 }
+
+extension GreenRoomViewController: UIScrollViewDelegate {
+    
+}
+//extension GreenRoomViewController {
+//    @objc func didTap() {
+//        tabBarController?.selectedIndex = 2
+//        //        let vc = MyPageViewController(viewModel: MyPageViewModel())
+//        //        navigationController?.pushViewController(vc, animated: false)
+//    }
+//}
