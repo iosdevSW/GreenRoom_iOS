@@ -98,6 +98,8 @@
 		E49F7D8928BC7D7E000AB49B /* CreateQuestionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E49F7D8828BC7D7E000AB49B /* CreateQuestionViewController.swift */; };
 		E4A1760A28C63698009D1DFE /* GRFilteringHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A1760928C63698009D1DFE /* GRFilteringHeaderView.swift */; };
 		E4A1760C28C637CB009D1DFE /* GRFilteringCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A1760B28C637CB009D1DFE /* GRFilteringCell.swift */; };
+		E4A1760F28C64883009D1DFE /* DetailRecentHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A1760E28C64883009D1DFE /* DetailRecentHeaderView.swift */; };
+		E4A1761428C64B47009D1DFE /* DetailRecentQuestionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A1761328C64B47009D1DFE /* DetailRecentQuestionViewController.swift */; };
 		E4C4C4AE28BCA53D008826AB /* GreenRoomService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4C4C4AD28BCA53D008826AB /* GreenRoomService.swift */; };
 		E4C4C4BC28BD1172008826AB /* CustomTabbarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4C4C4BB28BD1172008826AB /* CustomTabbarController.swift */; };
 		E4C4C4BE28BD1ACD008826AB /* CreatePopOverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4C4C4BD28BD1ACD008826AB /* CreatePopOverViewController.swift */; };
@@ -208,6 +210,8 @@
 		E49F7D8828BC7D7E000AB49B /* CreateQuestionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateQuestionViewController.swift; sourceTree = "<group>"; };
 		E4A1760928C63698009D1DFE /* GRFilteringHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GRFilteringHeaderView.swift; sourceTree = "<group>"; };
 		E4A1760B28C637CB009D1DFE /* GRFilteringCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GRFilteringCell.swift; sourceTree = "<group>"; };
+		E4A1760E28C64883009D1DFE /* DetailRecentHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailRecentHeaderView.swift; sourceTree = "<group>"; };
+		E4A1761328C64B47009D1DFE /* DetailRecentQuestionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailRecentQuestionViewController.swift; sourceTree = "<group>"; };
 		E4C4C4AD28BCA53D008826AB /* GreenRoomService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GreenRoomService.swift; sourceTree = "<group>"; };
 		E4C4C4BB28BD1172008826AB /* CustomTabbarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabbarController.swift; sourceTree = "<group>"; };
 		E4C4C4BD28BD1ACD008826AB /* CreatePopOverViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePopOverViewController.swift; sourceTree = "<group>"; };
@@ -406,6 +410,7 @@
 			isa = PBXGroup;
 			children = (
 				DBD0823F2897E75A0092241F /* GreenRoomViewController.swift */,
+				E4A1761328C64B47009D1DFE /* DetailRecentQuestionViewController.swift */,
 				E49F7D8728BC7D5E000AB49B /* Create */,
 				E49EF3DA28B5E98D00358340 /* Search */,
 			);
@@ -620,16 +625,10 @@
 		E49EF3CE28B5360600358340 /* Popular */ = {
 			isa = PBXGroup;
 			children = (
-				E4A1760928C63698009D1DFE /* GRFilteringHeaderView.swift */,
-				E4A1760B28C637CB009D1DFE /* GRFilteringCell.swift */,
-				E49EF3CF28B5361000358340 /* PopularHeader.swift */,
-				E49EF3D828B539FF00358340 /* PopularQuestionCell.swift */,
-				E4EF361528C4BED600746050 /* RecentHeader.swift */,
-				E4EF361728C4BF0400746050 /* RecentQuestionCell.swift */,
-				E4EF361928C4EA3E00746050 /* RecentPageFooterView.swift */,
-				E445856028C6143700907950 /* MyGreenRoomHeader.swift */,
-				E445856228C6148F00907950 /* MyGreenRoomCell.swift */,
-				E445856428C619E700907950 /* MyGreenRoomFooterView.swift */,
+				E4A1761028C64AAC009D1DFE /* GRFiltering */,
+				E4A1761228C64AC5009D1DFE /* GRPopularQuestion */,
+				E4A1760D28C6486B009D1DFE /* GRRecentQustion */,
+				E4A1761128C64ABD009D1DFE /* GRMyGreenRoom */,
 			);
 			path = Popular;
 			sourceTree = "<group>";
@@ -663,6 +662,45 @@
 				E49F7D8828BC7D7E000AB49B /* CreateQuestionViewController.swift */,
 			);
 			path = Create;
+			sourceTree = "<group>";
+		};
+		E4A1760D28C6486B009D1DFE /* GRRecentQustion */ = {
+			isa = PBXGroup;
+			children = (
+				E4EF361528C4BED600746050 /* RecentHeader.swift */,
+				E4EF361728C4BF0400746050 /* RecentQuestionCell.swift */,
+				E4EF361928C4EA3E00746050 /* RecentPageFooterView.swift */,
+				E4A1760E28C64883009D1DFE /* DetailRecentHeaderView.swift */,
+			);
+			path = GRRecentQustion;
+			sourceTree = "<group>";
+		};
+		E4A1761028C64AAC009D1DFE /* GRFiltering */ = {
+			isa = PBXGroup;
+			children = (
+				E4A1760928C63698009D1DFE /* GRFilteringHeaderView.swift */,
+				E4A1760B28C637CB009D1DFE /* GRFilteringCell.swift */,
+			);
+			path = GRFiltering;
+			sourceTree = "<group>";
+		};
+		E4A1761128C64ABD009D1DFE /* GRMyGreenRoom */ = {
+			isa = PBXGroup;
+			children = (
+				E445856028C6143700907950 /* MyGreenRoomHeader.swift */,
+				E445856228C6148F00907950 /* MyGreenRoomCell.swift */,
+				E445856428C619E700907950 /* MyGreenRoomFooterView.swift */,
+			);
+			path = GRMyGreenRoom;
+			sourceTree = "<group>";
+		};
+		E4A1761228C64AC5009D1DFE /* GRPopularQuestion */ = {
+			isa = PBXGroup;
+			children = (
+				E49EF3CF28B5361000358340 /* PopularHeader.swift */,
+				E49EF3D828B539FF00358340 /* PopularQuestionCell.swift */,
+			);
+			path = GRPopularQuestion;
 			sourceTree = "<group>";
 		};
 		E4EF361D28C5AD1600746050 /* MyPage */ = {
@@ -869,8 +907,10 @@
 				E4141AB328AF4499004D74B3 /* Storage.swift in Sources */,
 				DB006B8A28C31F4200867013 /* GroupCell.swift in Sources */,
 				DB05246928B5FE50003209D4 /* KPPrepareViewController.swift in Sources */,
+				E4A1761428C64B47009D1DFE /* DetailRecentQuestionViewController.swift in Sources */,
 				E49F7D8928BC7D7E000AB49B /* CreateQuestionViewController.swift in Sources */,
 				E40BC69D28B5F35A00FB557D /* SearchWordCell.swift in Sources */,
+				E4A1760F28C64883009D1DFE /* DetailRecentHeaderView.swift in Sources */,
 				DB797A99289B9BFF00ADF65F /* RegisterNameViewController.swift in Sources */,
 				E40BC6E428B880FE00FB557D /* SearchResultNotFountCell.swift in Sources */,
 				E40BC6FB28B892C400FB557D /* CoreDataManager.swift in Sources */,
