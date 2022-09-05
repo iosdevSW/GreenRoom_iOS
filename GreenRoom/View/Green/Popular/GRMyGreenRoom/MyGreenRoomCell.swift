@@ -31,13 +31,19 @@ final class MyGreenRoomCell: UICollectionViewCell {
     
     private lazy var questionTextView = UITextView().then {
         $0.backgroundColor = .white
-        $0.font = .sfPro(size: 16, family: .Regular)
+        
         $0.textColor = .black
         $0.textContainerInset = UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15)
         let style = NSMutableParagraphStyle()
         style.lineSpacing = 6
         
-        $0.attributedText = NSAttributedString(string: "대부분의 프로젝트는 프로세스는 어떠하며 어떤 롤이 었나요?", attributes: [NSAttributedString.Key.paragraphStyle : style])
+        $0.attributedText = NSAttributedString(
+            string: "대부분의 프로젝트는 프로세스는 어떠하며 어떤 롤이 었나요?",
+            attributes: [
+                NSAttributedString.Key.paragraphStyle : style,
+                NSAttributedString.Key.font: UIFont.sfPro(size: 20, family: .Regular) ?? .systemFont(ofSize: 20),
+                NSAttributedString.Key.foregroundColor: UIColor.black
+            ])
         
         $0.isUserInteractionEnabled = false
     }
