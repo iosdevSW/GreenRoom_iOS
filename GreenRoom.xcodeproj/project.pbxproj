@@ -41,6 +41,9 @@
 		DBA8ED7A28BF8009007526CF /* KPReviewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA8ED7928BF8009007526CF /* KPReviewModel.swift */; };
 		DBA8ED7C28BF931F007526CF /* ReviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA8ED7B28BF931F007526CF /* ReviewCell.swift */; };
 		DBA8ED7E28C0A4D7007526CF /* KPMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA8ED7D28C0A4D7007526CF /* KPMainViewController.swift */; };
+		DBA9451228C653F200B6E16A /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA9451028C653F200B6E16A /* User.swift */; };
+		DBA9451328C653F200B6E16A /* FAQ.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA9451128C653F200B6E16A /* FAQ.swift */; };
+		DBA9451528C6540400B6E16A /* CreateViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA9451428C6540400B6E16A /* CreateViewModel.swift */; };
 		DBBA9481289968CD00264405 /* PaddingLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBBA9480289968CD00264405 /* PaddingLabel.swift */; };
 		DBD0821D2897E6EE0092241F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD0821C2897E6EE0092241F /* AppDelegate.swift */; };
 		DBD0821F2897E6EE0092241F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD0821E2897E6EE0092241F /* SceneDelegate.swift */; };
@@ -102,13 +105,10 @@
 		E4C4C4BC28BD1172008826AB /* CustomTabbarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4C4C4BB28BD1172008826AB /* CustomTabbarController.swift */; };
 		E4C4C4BE28BD1ACD008826AB /* CreatePopOverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4C4C4BD28BD1ACD008826AB /* CreatePopOverViewController.swift */; };
 		E4C4C4C028BDE8AB008826AB /* CreateGreenRoomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4C4C4BF28BDE8AB008826AB /* CreateGreenRoomViewController.swift */; };
-		E4C4C4C228BE029F008826AB /* CreateViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4C4C4C128BE029F008826AB /* CreateViewModel.swift */; };
 		E4C8AE6928B35519007E010D /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4C8AE6828B35519007E010D /* UserService.swift */; };
 		E4EF361628C4BED700746050 /* RecentHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4EF361528C4BED600746050 /* RecentHeader.swift */; };
 		E4EF361828C4BF0400746050 /* RecentQuestionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4EF361728C4BF0400746050 /* RecentQuestionCell.swift */; };
 		E4EF361A28C4EA3E00746050 /* RecentPageFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4EF361928C4EA3E00746050 /* RecentPageFooterView.swift */; };
-		E4EF362428C5ADA300746050 /* FAQ.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4EF362228C5ADA300746050 /* FAQ.swift */; };
-		E4EF362528C5ADA300746050 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4EF362328C5ADA300746050 /* User.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -149,6 +149,9 @@
 		DBA8ED7928BF8009007526CF /* KPReviewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KPReviewModel.swift; sourceTree = "<group>"; };
 		DBA8ED7B28BF931F007526CF /* ReviewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewCell.swift; sourceTree = "<group>"; };
 		DBA8ED7D28C0A4D7007526CF /* KPMainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KPMainViewController.swift; sourceTree = "<group>"; };
+		DBA9451028C653F200B6E16A /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		DBA9451128C653F200B6E16A /* FAQ.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FAQ.swift; sourceTree = "<group>"; };
+		DBA9451428C6540400B6E16A /* CreateViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateViewModel.swift; sourceTree = "<group>"; };
 		DBBA9480289968CD00264405 /* PaddingLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaddingLabel.swift; sourceTree = "<group>"; };
 		DBD082192897E6EE0092241F /* GreenRoom.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GreenRoom.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DBD0821C2897E6EE0092241F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -212,7 +215,6 @@
 		E4C4C4BB28BD1172008826AB /* CustomTabbarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabbarController.swift; sourceTree = "<group>"; };
 		E4C4C4BD28BD1ACD008826AB /* CreatePopOverViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePopOverViewController.swift; sourceTree = "<group>"; };
 		E4C4C4BF28BDE8AB008826AB /* CreateGreenRoomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateGreenRoomViewController.swift; sourceTree = "<group>"; };
-		E4C4C4C128BE029F008826AB /* CreateViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CreateViewModel.swift; path = ../CreateViewModel.swift; sourceTree = "<group>"; };
 		E4C8AE6828B35519007E010D /* UserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
 		E4EF361528C4BED600746050 /* RecentHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentHeader.swift; sourceTree = "<group>"; };
 		E4EF361728C4BF0400746050 /* RecentQuestionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentQuestionCell.swift; sourceTree = "<group>"; };
@@ -299,8 +301,8 @@
 		DB07821828C5B2210091EEFE /* MyPage */ = {
 			isa = PBXGroup;
 			children = (
-				E4141AB928AF5199004D74B3 /* FAQ.swift */,
-				E4C8AE6A28B35533007E010D /* User.swift */,
+				DBA9451128C653F200B6E16A /* FAQ.swift */,
+				DBA9451028C653F200B6E16A /* User.swift */,
 			);
 			path = MyPage;
 			sourceTree = "<group>";
@@ -345,6 +347,15 @@
 			path = Result;
 			sourceTree = "<group>";
 		};
+		DBA9450F28C64FD300B6E16A /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				E4EF362228C5ADA300746050 /* FAQ.swift */,
+				E4EF362328C5ADA300746050 /* User.swift */,
+			);
+			name = "Recovered References";
+			sourceTree = "<group>";
+		};
 		DBBA947F289968CD00264405 /* Custom */ = {
 			isa = PBXGroup;
 			children = (
@@ -366,6 +377,7 @@
 				DBD0821A2897E6EE0092241F /* Products */,
 				45DDA4D3709C88C43BEF3965 /* Pods */,
 				881722C2169A34B903D7B632 /* Frameworks */,
+				DBA9450F28C64FD300B6E16A /* Recovered References */,
 			);
 			sourceTree = "<group>";
 		};
@@ -612,7 +624,7 @@
 			isa = PBXGroup;
 			children = (
 				DBD0823A2897E75A0092241F /* GreenViewModel.swift */,
-				E4C4C4C128BE029F008826AB /* CreateViewModel.swift */,
+				DBA9451428C6540400B6E16A /* CreateViewModel.swift */,
 			);
 			path = GreenRoom;
 			sourceTree = "<group>";
@@ -680,15 +692,6 @@
 				E49F7D8828BC7D7E000AB49B /* CreateQuestionViewController.swift */,
 			);
 			path = Create;
-			sourceTree = "<group>";
-		};
-		E4EF361D28C5AD1600746050 /* MyPage */ = {
-			isa = PBXGroup;
-			children = (
-				E4EF362228C5ADA300746050 /* FAQ.swift */,
-				E4EF362328C5ADA300746050 /* User.swift */,
-			);
-			path = MyPage;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -837,6 +840,7 @@
 				E49EF3D228B5375D00358340 /* Question.swift in Sources */,
 				E4A1760A28C63698009D1DFE /* GRFilteringHeaderView.swift in Sources */,
 				E49EF3D028B5361000358340 /* PopularHeader.swift in Sources */,
+				DBA9451528C6540400B6E16A /* CreateViewModel.swift in Sources */,
 				E40BC6E828B8868D00FB557D /* BaseViewController.swift in Sources */,
 				E470539928AB882900884B56 /* SettingRow.swift in Sources */,
 				E40BC6B528B756EE00FB557D /* GRSearchModel.swift in Sources */,
@@ -862,11 +866,9 @@
 				E4141ABC28AF528E004D74B3 /* FAQCell.swift in Sources */,
 				DBA8ED7228BDC945007526CF /* KPDetailViewController.swift in Sources */,
 				E4C4C4BC28BD1172008826AB /* CustomTabbarController.swift in Sources */,
-				E4C4C4C228BE029F008826AB /* CreateViewModel.swift in Sources */,
 				DBBA9481289968CD00264405 /* PaddingLabel.swift in Sources */,
 				DBA8ED7E28C0A4D7007526CF /* KPMainViewController.swift in Sources */,
 				DBD082542897E75B0092241F /* MyPageViewModel.swift in Sources */,
-				E4EF362428C5ADA300746050 /* FAQ.swift in Sources */,
 				DBA8ED7A28BF8009007526CF /* KPReviewModel.swift in Sources */,
 				E4141ACB28AF79E7004D74B3 /* FAQViewController.swift in Sources */,
 				DB006B8E28C3282700867013 /* KPGroupEditViewController.swift in Sources */,
@@ -877,12 +879,12 @@
 				DBA8ED6628B9D347007526CF /* RecentSearchKeyword+CoreDataProperties.swift in Sources */,
 				DBA8ED7628BF1790007526CF /* KPDetailModel.swift in Sources */,
 				E40BC6E128B8802700FB557D /* SearchResultViewController.swift in Sources */,
+				DBA9451228C653F200B6E16A /* User.swift in Sources */,
 				DBA8ED6C28BB4A4C007526CF /* KPRecordingViewController.swift in Sources */,
 				DBD0821D2897E6EE0092241F /* AppDelegate.swift in Sources */,
 				E40BC6B328B7548E00FB557D /* SearchWordHeaderView.swift in Sources */,
 				E445856328C6148F00907950 /* MyGreenRoomCell.swift in Sources */,
 				E46539E428AD33C700F17A6C /* EditProfileInfoViewController.swift in Sources */,
-				E4EF362528C5ADA300746050 /* User.swift in Sources */,
 				E4141AB328AF4499004D74B3 /* Storage.swift in Sources */,
 				DB006B8A28C31F4200867013 /* GroupCell.swift in Sources */,
 				DB05246928B5FE50003209D4 /* KPPrepareViewController.swift in Sources */,
@@ -895,6 +897,7 @@
 				E4C4C4C028BDE8AB008826AB /* CreateGreenRoomViewController.swift in Sources */,
 				DB797A9B289BC0D800ADF65F /* RegisterCategoryViewController.swift in Sources */,
 				E40BC6F928B88FB600FB557D /* RecentSearchModel.xcdatamodeld in Sources */,
+				DBA9451328C653F200B6E16A /* FAQ.swift in Sources */,
 				E4C8AE6928B35519007E010D /* UserService.swift in Sources */,
 				DBD0821F2897E6EE0092241F /* SceneDelegate.swift in Sources */,
 				DB006B9128C33FDA00867013 /* KPGroupsViewController.swift in Sources */,
