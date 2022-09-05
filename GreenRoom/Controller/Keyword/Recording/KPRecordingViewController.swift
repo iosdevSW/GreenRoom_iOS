@@ -28,9 +28,7 @@ class KPRecordingViewController: BaseViewController{
     
     private let speechRecognizer = SFSpeechRecognizer(locale: .init(identifier: "ko-KR")) // 한국말 Recognizer 생성
     //음성인식요청을 처리하는 객체
-    private var recognitionRequest: SFSpeechAudioBufferRecognitionRequest?
-    //음성 인식 요청 결과를 제공하는 객체)
-    private var recognitionTask: SFSpeechRecognitionTask?
+    private var recognizerRequest: SFSpeechURLRecognitionRequest?
     
     private let preView = UIView()
     
@@ -136,6 +134,35 @@ class KPRecordingViewController: BaseViewController{
         }
     }
     
+    private func saveURL(_ url: URL) {
+        urls.append(url)
+        
+        self.recognizerRequest = SFSpeechURLRecognitionRequest(url: url)
+        self.speechRecognizer?.recognitionTask(with: recognizerRequest!) { (result,error) in
+            guard let result = result else { return }
+            // 번역본
+            if result.isFinal {
+                print("Speech in the file is \(result.bestTranscription.formattedString)")
+            }
+        }
+        
+        if urls.count >= viewmodel.selectedQuestionTemp.count {
+            if viewmodel.keywordOnOff{
+                self.navigationController?.pushViewController(KPFinishViewController(viewmodel: viewmodel), animated: true)
+            }else {
+                viewmodel.videoURLs = urls
+                self.navigationController?.pushViewController(KPDetailViewController(viewmodel: viewmodel), animated: true)
+            }
+        } else {
+            viewmodel.selectedQuestionObservable
+                .take(1)
+                .subscribe(onNext: { questions in
+                    self.darkView.questionLabel.text = "Q1\n\n\(questions[self.urls.count])"
+                    self.questionLabel.text = "Q1\n\n\(questions[self.urls.count])"
+                }).disposed(by: disposeBag)
+        }
+    }
+    
     //MARK: - ConfigureUI
     override func configureUI() {
         self.view.addSubview(preView)
@@ -170,7 +197,6 @@ class KPRecordingViewController: BaseViewController{
             make.leading.equalToSuperview().offset(56)
             make.trailing.equalToSuperview().offset(-56)
         }
-
     }
 }
 
@@ -263,22 +289,7 @@ extension KPRecordingViewController: AVCaptureFileOutputRecordingDelegate {
     
     //레코딩 끝날시 호출 시작할때 파라미터로 입력한 url 기반으로 저장 작업 수행
     func fileOutput(_ output: AVCaptureFileOutput, didFinishRecordingTo outputFileURL: URL, from connections: [AVCaptureConnection], error: Error?) {
-        urls.append(outputFileURL)
-        if urls.count == viewmodel.selectedQuestionTemp.count {
-            if viewmodel.keywordOnOff{
-                self.navigationController?.pushViewController(KPFinishViewController(viewmodel: viewmodel), animated: true)
-            }else {
-                viewmodel.videoURLs = urls
-                self.navigationController?.pushViewController(KPDetailViewController(viewmodel: viewmodel), animated: true)
-            }
-        } else {
-            viewmodel.selectedQuestionObservable
-                .take(1)
-                .subscribe(onNext: { questions in
-                    self.darkView.questionLabel.text = "Q1\n\n\(questions[self.urls.count])"
-                    self.questionLabel.text = "Q1\n\n\(questions[self.urls.count])"
-                }).disposed(by: disposeBag)
-        }
+        self.saveURL(outputFileURL)
     }
 }
 
@@ -310,21 +321,6 @@ extension KPRecordingViewController: AVAudioRecorderDelegate {
     }
     
     func audioRecorderDidFinishRecording(_ recorder: AVAudioRecorder, successfully flag: Bool) {
-        urls.append(recorder.url)
-        if urls.count == viewmodel.selectedQuestionTemp.count {
-            if viewmodel.keywordOnOff{
-                self.navigationController?.pushViewController(KPFinishViewController(viewmodel: viewmodel), animated: true)
-            }else {
-                viewmodel.videoURLs = urls
-                self.navigationController?.pushViewController(KPDetailViewController(viewmodel: viewmodel), animated: true)
-            }
-        } else {
-            viewmodel.selectedQuestionObservable
-                .take(1)
-                .subscribe(onNext: { questions in
-                    self.darkView.questionLabel.text = "Q1\n\n\(questions[self.urls.count])"
-                    self.questionLabel.text = "Q1\n\n\(questions[self.urls.count])"
-                }).disposed(by: disposeBag)
-        }
+        self.saveURL(recorder.url)
     }
 }

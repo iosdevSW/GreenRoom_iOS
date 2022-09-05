@@ -9,6 +9,11 @@ import UIKit
 import RxCocoa
 import RxSwift
 
+enum RecordingType: String {
+    case camera = "camera"
+    case mike = "mike"
+}
+
 
 class ProgressBarView: UIView {
     //MARK: - Properties
@@ -17,6 +22,12 @@ class ProgressBarView: UIView {
     
     let startingLocationX = 30.0
     
+    var buttonImage: RecordingType = .camera {
+        didSet {
+            self.reviewButton.setImage(UIImage(named: self.buttonImage.rawValue), for: .normal)
+        }
+    }
+    
     private let goalFrameView = UIView()
     var goalView = UIView(frame: CGRect(x: -20, y: 0, width: 40, height: 60))
     
@@ -24,6 +35,10 @@ class ProgressBarView: UIView {
         $0.text = "목표 설정하기"
         $0.font = .sfPro(size: 16, family: .Semibold)
         $0.textColor = .black
+    }
+    
+    let reviewButton = UIButton().then { // 비디오 버튼
+        $0.tintColor = .mainColor
     }
     
     let persentLabel = UILabel().then {
@@ -106,6 +121,13 @@ class ProgressBarView: UIView {
         self.titleLabel.snp.makeConstraints{ make in
             make.top.equalToSuperview()
             make.leading.equalToSuperview().offset(44)
+        }
+        
+        self.addSubview(self.reviewButton)
+        self.reviewButton.snp.makeConstraints{ make in
+            make.leading.equalTo(self.titleLabel.snp.trailing).offset(8)
+            make.centerY.equalTo(self.titleLabel.snp.centerY)
+            make.width.height.equalTo(20)
         }
         
         self.addSubview(self.goalFrameView)

@@ -33,6 +33,7 @@ class PracticeResultCell: UITableViewCell {
         $0.textColor = .mainColor
         $0.font = .sfPro(size: 16, family: .Semibold)
     }
+    
     //MARK: - Init
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -43,6 +44,7 @@ class PracticeResultCell: UITableViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
     //MARK: - ConfigureUI
     func configureUI() {
         self.addSubview(keywordPersent)

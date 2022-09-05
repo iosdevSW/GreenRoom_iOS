@@ -8,29 +8,30 @@
 import UIKit
 import AVKit
 
-class KPFinishViewController: BaseViewController, AVPlayerViewControllerDelegate{
+class KPFinishViewController: BaseViewController{
     //MARK: - Properties
     let viewmodel: KeywordViewModel
     let urls: [URL]?
     
     let goalFrameView = UIView().then {
-        $0.backgroundColor = .customGray.withAlphaComponent(0.05)
+        $0.backgroundColor = .customGray.withAlphaComponent(0.1)
         $0.layer.cornerRadius = 16
         $0.layer.maskedCorners = CACornerMask(arrayLiteral: .layerMinXMaxYCorner, .layerMaxXMaxYCorner)
     }
     
-    let goalProgressBarView = ProgressBarView().then{
+    private lazy var goalProgressBarView = ProgressBarView().then{
+        $0.titleLabel.text = "전체 키워드 매칭률"
         $0.guideLabel.text = "목표까지 5% 남았어요"
         $0.removeGesture()
+        
+        let type: RecordingType =  self.viewmodel.cameraOnOff == true ? .camera : .mike
+        $0.buttonImage = type
     }
     
     let resultTableView = UITableView().then {
         $0.backgroundColor = .white
         $0.register(PracticeResultCell.self, forCellReuseIdentifier: "PracticeResultCell")
     }
-    
-    var avPlayer = AVPlayer()
-    var avView = UIView()
     
     //MARK: - Init
     init(viewmodel: KeywordViewModel) {
@@ -52,13 +53,14 @@ class KPFinishViewController: BaseViewController, AVPlayerViewControllerDelegate
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         if let per = self.viewmodel.goalPersent {
-            let newX =  self.goalProgressBarView.progressBar.frame.width * per + 10
+            let newX =  self.goalProgressBarView.progressBar.frame.width * per
             UIView.animate(withDuration: 0.5){
-                self.goalProgressBarView.goalView.frame.origin = CGPoint(x: newX, y: 0)
+                self.goalProgressBarView.goalView.center.x = newX
             }
         }
     }
     
+    //MARK: - Selector
     @objc func didClickReviewButton(_ sender: UIButton) {
         self.navigationController?.pushViewController(KPReviewViewController(viewmodel: viewmodel), animated: true)
     }
@@ -81,6 +83,7 @@ class KPFinishViewController: BaseViewController, AVPlayerViewControllerDelegate
             }).disposed(by: disposeBag)
     }
     
+    
     //MARK: - CofigureUI
     override func configureUI() {
         self.view.addSubview(self.goalFrameView)
@@ -88,43 +91,45 @@ class KPFinishViewController: BaseViewController, AVPlayerViewControllerDelegate
             make.top.leading.trailing.equalToSuperview()
             make.height.equalTo(276)
         }
-        
-        let goalTitleLabel = UILabel().then{
-            $0.text = "전체 키워드 매칭률"
-            $0.textColor = .black
-            $0.font = .sfPro(size: 16, family: .Semibold)
             
-            self.goalFrameView.addSubview($0)
-            $0.snp.makeConstraints{ make in
-                make.top.equalToSuperview().offset(107)
-                make.leading.equalToSuperview().offset(44)
-            }
-        }
-        
-        _ = UIButton().then { // 비디오 버튼
-            $0.tintColor = .mainColor
-            $0.setImage(UIImage(named: "camera"), for: .normal)
-            $0.addTarget(self, action: #selector(didClickReviewButton(_:)), for: .touchUpInside)
-            self.view.addSubview($0)
-            $0.snp.makeConstraints{ make in
-                make.leading.equalTo(goalTitleLabel.snp.trailing).offset(8)
-                make.centerY.equalTo(goalTitleLabel.snp.centerY)
-                make.width.height.equalTo(20)
-            }
-        }
-        
         self.goalFrameView.addSubview(self.goalProgressBarView)
+        self.goalProgressBarView.reviewButton.addTarget(self, action: #selector(didClickReviewButton(_:)), for: .touchUpInside)
         self.goalProgressBarView.snp.makeConstraints{ make in
             make.leading.equalToSuperview()
             make.trailing.equalToSuperview()
-            make.top.equalTo(goalTitleLabel.snp.bottom).offset(10)
+            make.top.equalTo(self.goalFrameView.safeAreaLayoutGuide.snp.top).offset(10)
             make.bottom.equalToSuperview().offset(-20)
         }
+        
         
         self.view.addSubview(resultTableView)
         resultTableView.snp.makeConstraints{ make in
             make.top.equalTo(goalFrameView.snp.bottom).offset(8)
             make.leading.trailing.bottom.equalToSuperview()
+        }
+        
+        _ = UILabel().then {
+            $0.text = "질문별 매칭률"
+            $0.textColor = .customGray
+            $0.font = .sfPro(size: 12, family: .Semibold)
+            
+            self.view.addSubview($0)
+            $0.snp.makeConstraints{ make in
+                make.leading.equalToSuperview().offset(44)
+                make.top.equalTo(self.goalFrameView.snp.bottom).offset(14)
+            }
+        }
+    }
+    
+    func setNavigationBarColor(_ color: UIColor) {
+        if #available(iOS 15.0, *) {
+            let appearance = UINavigationBarAppearance()
+            appearance.configureWithOpaqueBackground()    // 불투명하게
+            appearance.backgroundColor = color
+            self.navigationController?.navigationBar.standardAppearance = appearance
+            self.navigationController?.navigationBar.scrollEdgeAppearance = appearance    // 동일하게 만들기
+        }else {
+            self.navigationController?.navigationBar.barTintColor = color
         }
     }
 }
