@@ -28,13 +28,14 @@ class KPDetailViewController: UIViewController {
     //MARK: - LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.view.backgroundColor = .white
         configureUI()
         bind()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        setNavigationBarColor(.customGray.withAlphaComponent(0.05))
+        setNavigationBarColor(.customGray.withAlphaComponent(0.1))
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -48,8 +49,8 @@ class KPDetailViewController: UIViewController {
             let appearance = UINavigationBarAppearance()
             appearance.configureWithOpaqueBackground()    // 불투명하게
             appearance.backgroundColor = color
-            self.navigationController?.navigationBar.standardAppearance = appearance
-            self.navigationController?.navigationBar.scrollEdgeAppearance = appearance    // 동일하게 만들기
+            self.navigationItem.standardAppearance = appearance
+            self.navigationItem.scrollEdgeAppearance = appearance    // 동일하게 만들기
         }else {
             self.navigationController?.navigationBar.barTintColor = color
         }
@@ -71,7 +72,8 @@ class KPDetailViewController: UIViewController {
             
             self.view.addSubview($0)
             $0.snp.makeConstraints{ make in
-                make.leading.trailing.bottom.top.equalToSuperview()
+                make.leading.trailing.equalToSuperview()
+                make.bottom.top.equalTo(self.view.safeAreaLayoutGuide)
             }
         }
     }
@@ -82,16 +84,18 @@ extension KPDetailViewController {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DetailCell", for: indexPath) as! DetailCell
             cell.keywordIsOn = self.viewmodel.keywordOnOff
             
+            let type: RecordingType =  self.viewmodel.cameraOnOff == true ? .camera : .mike
+            cell.goalProgressBarView.buttonImage = type
             //키워드 on일 경우
             if self.viewmodel.keywordOnOff {
-                cell.goalTitleLabel.text = "Q\(indexPath.row+1) 키워드 매칭률"
+                cell.goalProgressBarView.titleLabel.text = "Q\(indexPath.row+1) 키워드 매칭률"
                 cell.keywordPersent.text = "75%"
                 cell.keywordLabel.text = "천진난만 현실적 적극적 테스트적 끄적끄적"
                 
                 if let per = self.viewmodel.goalPersent {
                     let progressWidth = UIScreen.main.bounds.width - 60
-                    let newX =  progressWidth * per + 10
-                    cell.goalProgressBarView.goalView.frame.origin = CGPoint(x: newX, y: 0)
+                    let newX =  progressWidth * per
+                    cell.goalProgressBarView.goalView.center.x = newX
                 }
             }
             
@@ -117,7 +121,8 @@ extension KPDetailViewController {
             
             let groupSize = NSCollectionLayoutSize(
                 widthDimension: .fractionalWidth(1.0),
-                heightDimension: .estimated(self.view.frame.height)
+                heightDimension: .fractionalHeight(1.0)
+                        
             )
             
             let group = NSCollectionLayoutGroup.horizontal(
@@ -129,7 +134,6 @@ extension KPDetailViewController {
             
             section.orthogonalScrollingBehavior = .groupPaging
             section.contentInsetsReference = .none
-            
             return section
         }
         

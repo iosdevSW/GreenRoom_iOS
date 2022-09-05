@@ -12,27 +12,24 @@ class DetailCell: UICollectionViewCell {
     var keywordIsOn = false {
         didSet{
             if keywordIsOn {
-                self.goalTitleLabel.text = "전체 키워드 매칭률"
+                self.goalProgressBarView.titleLabel.text = "전체 키워드 매칭률"
             }else {
-                self.goalTitleLabel.text = "면접 연습 결과"
+                self.goalProgressBarView.titleLabel.text = "면접 연습 결과"
                 self.goalFrameView.snp.remakeConstraints{ make in
                     make.top.leading.trailing.equalToSuperview()
                     make.height.equalTo(76)
                 }
             }
-            self.goalProgressBarView.isHidden = !keywordIsOn
+            self.goalProgressBarView.progressBar.isHidden = !keywordIsOn
+            self.goalProgressBarView.guideLabel.isHidden = !keywordIsOn
+            self.goalProgressBarView.persentLabel.isHidden = !keywordIsOn
         }
     }
     
     let goalFrameView = UIView().then {
-        $0.backgroundColor = .customGray.withAlphaComponent(0.05)
+        $0.backgroundColor = .customGray.withAlphaComponent(0.1)
         $0.layer.cornerRadius = 16
         $0.layer.maskedCorners = CACornerMask(arrayLiteral: .layerMinXMaxYCorner, .layerMaxXMaxYCorner)
-    }
-    
-    let goalTitleLabel = UILabel().then{
-        $0.textColor = .black
-        $0.font = .sfPro(size: 16, family: .Semibold)
     }
     
     let goalProgressBarView = ProgressBarView().then{
@@ -91,6 +88,7 @@ class DetailCell: UICollectionViewCell {
     //MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
+        self.backgroundColor = .white
         configureUI()
     }
     
@@ -105,17 +103,11 @@ class DetailCell: UICollectionViewCell {
             make.height.equalTo(170)
         }
         
-        self.goalFrameView.addSubview(self.goalTitleLabel)
-        self.goalTitleLabel.snp.makeConstraints{ make in
-            make.top.equalToSuperview().offset(8)
-            make.leading.equalToSuperview().offset(44)
-        }
-        
         self.goalFrameView.addSubview(self.goalProgressBarView)
         self.goalProgressBarView.snp.makeConstraints{ make in
             make.leading.equalToSuperview()
             make.trailing.equalToSuperview()
-            make.top.equalTo(goalTitleLabel.snp.bottom).offset(10)
+            make.top.equalTo(self.safeAreaLayoutGuide.snp.top).offset(10)
             make.bottom.equalToSuperview().offset(-20)
         }
         

@@ -199,7 +199,7 @@
 		E49CC15528C326DA009216E1 /* EditProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewModel.swift; sourceTree = "<group>"; };
 		E49CC16A28C331E4009216E1 /* SFPro.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = SFPro.ttf; sourceTree = "<group>"; };
 		E49CC16B28C331E4009216E1 /* SFProText-Semibold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFProText-Semibold.otf"; sourceTree = "<group>"; };
-		E49CC16E28C331EA009216E1 /* SFProText-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SFProText-Bold.otf"; path = "/Users/doyunpark/Desktop/GreenRoom/GreenRoom/Resource/Font/SFProText-Bold.otf"; sourceTree = "<absolute>"; };
+		E49CC16E28C331EA009216E1 /* SFProText-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SFProText-Bold.otf"; path = "/Users/sangwoo/Developments/iOS/GreenRoom/GreenRoom/Resource/Font/SFProText-Bold.otf"; sourceTree = "<absolute>"; };
 		E49EF3CF28B5361000358340 /* PopularHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopularHeader.swift; sourceTree = "<group>"; };
 		E49EF3D128B5375D00358340 /* Question.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Question.swift; sourceTree = "<group>"; };
 		E49EF3D328B5377900358340 /* GreenRoomModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GreenRoomModel.swift; sourceTree = "<group>"; };
@@ -296,6 +296,15 @@
 			path = Recording;
 			sourceTree = "<group>";
 		};
+		DB07821828C5B2210091EEFE /* MyPage */ = {
+			isa = PBXGroup;
+			children = (
+				E4141AB928AF5199004D74B3 /* FAQ.swift */,
+				E4C8AE6A28B35533007E010D /* User.swift */,
+			);
+			path = MyPage;
+			sourceTree = "<group>";
+		};
 		DB9CF9BA289E27650091B705 /* Category */ = {
 			isa = PBXGroup;
 			children = (
@@ -324,6 +333,16 @@
 				DBA8ED7328BDDCA1007526CF /* DetailCell.swift */,
 			);
 			path = Prepare;
+			sourceTree = "<group>";
+		};
+		DBA9450D28C5B63200B6E16A /* Result */ = {
+			isa = PBXGroup;
+			children = (
+				DBA8ED6D28BB89C3007526CF /* KPFinishViewController.swift */,
+				DBA8ED7128BDC945007526CF /* KPDetailViewController.swift */,
+				DBA8ED7728BF7457007526CF /* KPReviewViewController.swift */,
+			);
+			path = Result;
 			sourceTree = "<group>";
 		};
 		DBBA947F289968CD00264405 /* Custom */ = {
@@ -428,9 +447,7 @@
 				DB006B8B28C3275E00867013 /* Group */,
 				DB006B8F28C333C700867013 /* Questions */,
 				DB07820D28C4742A0091EEFE /* Recording */,
-				DBA8ED6D28BB89C3007526CF /* KPFinishViewController.swift */,
-				DBA8ED7128BDC945007526CF /* KPDetailViewController.swift */,
-				DBA8ED7728BF7457007526CF /* KPReviewViewController.swift */,
+				DBA9450D28C5B63200B6E16A /* Result */,
 			);
 			path = Keyword;
 			sourceTree = "<group>";
@@ -487,7 +504,7 @@
 				E49EF3D528B5377C00358340 /* SectionModel */,
 				DBD082502897E75B0092241F /* LoginModel.swift */,
 				E47EE51228C47F0C00618CA6 /* GreenRoom */,
-				E4EF361D28C5AD1600746050 /* MyPage */,
+				DB07821828C5B2210091EEFE /* MyPage */,
 			);
 			path = Model;
 			sourceTree = "<group>";

@@ -8,6 +8,7 @@
 import Foundation
 import SwiftKeychainWrapper
 import RxSwift
+import RxCocoa
 
 class GreenRoomViewModel {
     private var greenroomService = GreenRoomService()
