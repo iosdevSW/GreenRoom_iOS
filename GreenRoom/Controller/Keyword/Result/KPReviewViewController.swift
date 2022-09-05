@@ -34,15 +34,9 @@ class KPReviewViewController: BaseViewController, UICollectionViewDelegate {
         super.viewDidLayoutSubviews()
     }
     
-//    override func viewDidAppear(_ animated: Bool) {
-//        super.viewDidAppear(animated)
-//        let avPlayer = AVPlayer(url: urls[0])
-//        let layer = AVPlayerLayer()
-//        layer.player = avPlayer
-//        layer.frame = avView.frame
-//        avView.layer.addSublayer(layer)
-//        avPlayer.play()
-//    }
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+    }
     
     //MARK: - Configure
     override func configureUI() {
