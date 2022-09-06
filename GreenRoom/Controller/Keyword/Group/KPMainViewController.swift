@@ -32,6 +32,11 @@ class KPMainViewController: BaseViewController {
         configureNavigationBar()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.tabBarController?.tabBar.isHidden = false
+    }
+    
     //MARK: - Selector
     @objc func didTapScrap(_ sender: UIButton){
         print("didTapScrap")

@@ -12,13 +12,12 @@ import RxSwift
 import RxCocoa
 import KakaoSDKUser
 
-class KPFindQuestionViewController: UIViewController{
+class KPFindQuestionViewController: BaseViewController{
     //MARK: - Properties
-    let viewModel: KeywordViewModel
+    private let viewModel: KeywordViewModel
+    private let categoryViewModel = CategoryViewModel()
     
-    let disposeBag = DisposeBag()
-    
-    let searchBarView = UISearchBar().then{
+    private let searchBarView = UISearchBar().then{
         $0.placeholder = "키워드로 검색해보세요!"
         $0.searchBarStyle = .minimal
         $0.searchTextField.borderStyle = .none
@@ -30,43 +29,19 @@ class KPFindQuestionViewController: UIViewController{
         $0.layer.cornerRadius = 10
     }
     
-    let filterButton = UIButton(type: .roundedRect).then{
-        $0.backgroundColor = .mainColor
-        $0.setTitle("필터 ", for: .normal)
-        $0.setTitleColor(.white, for: .normal)
-        $0.titleLabel?.font = .sfPro(size: 12, family: .Semibold)
-        $0.setImage(UIImage(named: "filter"), for: .normal)
-        $0.tintColor = .white
-        $0.semanticContentAttribute = .forceRightToLeft
-        $0.layer.cornerRadius = 15
-    }
+    private lazy var filterView = FilterView(viewModel: categoryViewModel)
     
-    let segmentControl = UISegmentedControl(items: ["기본질문","그린룸 질문"]).then{
-        $0.layer.backgroundColor = UIColor.white.cgColor
-        $0.selectedSegmentTintColor = UIColor.white
-        $0.setBackgroundImage(UIImage(named: "filter"), for: .normal, barMetrics: .default)
-        $0.selectedSegmentIndex = 0
-        
-        let titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.customGray]
-        $0.setTitleTextAttributes(titleTextAttributes as [NSAttributedString.Key : Any], for:.normal)
-        
-        let selectedTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.mainColor]
-        $0.setTitleTextAttributes(selectedTitleTextAttributes as [NSAttributedString.Key : Any], for:.selected)
-    }
+    private var filteringView: FilteringView?
     
-    var filteredCategoryView: UICollectionView!
+    private var blurView: UIVisualEffectView?
     
-    var filteringView: CategoryFilterView?
-    
-    var blurView: UIVisualEffectView?
-    
-    var questionListTableView = UITableView().then{
+    private var questionListTableView = UITableView().then{
         $0.backgroundColor = .white
         $0.register(QuestionListCell.self, forCellReuseIdentifier: "QuestionListCell")
         $0.showsVerticalScrollIndicator = true
     }
     
-    let practiceInterviewButton = UIButton(type: .system).then{
+    private let practiceInterviewButton = UIButton(type: .system).then{
         $0.backgroundColor = .mainColor
         $0.setTitle("n개의 면접 연습하기", for: .normal)
         $0.setTitleColor(.white, for: .normal)
@@ -98,12 +73,10 @@ class KPFindQuestionViewController: UIViewController{
         super.viewDidLoad()
         self.view.backgroundColor = .white
         
-        configureUI()
         bind()
         hideKeyboardWhenTapped()
         setNavigationItem()
-        
-        self.filteredCategoryView.delegate = self
+
         btn.addTarget(self, action: #selector(logout(_:)), for: .touchUpInside)
     }
     
@@ -167,10 +140,10 @@ class KPFindQuestionViewController: UIViewController{
             self.view.addSubview($0)
         }
         
-        filteringView = CategoryFilterView().then{
+        filteringView = FilteringView().then{
             self.view.addSubview($0)
+            
             $0.selectedCategories = viewModel.filteringList
-            $0.filteringCollectionView.delegate = self
             $0.cancelButton.addTarget(self, action: #selector(didClickCancelButton(_:)), for: .touchUpInside)
             $0.applyButton.addTarget(self, action: #selector(didClickApplyButton(_:)), for: .touchUpInside)
             
@@ -180,10 +153,13 @@ class KPFindQuestionViewController: UIViewController{
                 make.height.equalTo(560)
             }
         }
-    }
-    
-    @objc func didClickPracticeButton(_ sender: UIButton) {
-        self.navigationController?.pushViewController(KPPrepareViewController(viewmodel: viewModel), animated: true)
+        
+        self.categoryViewModel.filteringObservable
+            .take(1)
+            .subscribe(onNext: { ids in
+                guard let filteringView = self.filteringView else { return }
+                filteringView.selectedCategories = ids
+            }).disposed(by: disposeBag)
     }
     
     @objc func didClickCancelButton(_ sender: UIButton) {
@@ -191,21 +167,18 @@ class KPFindQuestionViewController: UIViewController{
     }
     
     @objc func didClickApplyButton(_ sender: UIButton) {
-        self.viewModel.filteringList = self.filteringView!.selectedCategories
-        
+        guard let filteringView = filteringView else { return }
+
+        self.categoryViewModel.filteringObservable.onNext(filteringView.selectedCategories)
         self.closeFilteringView()
+    }
+    
+    @objc func didClickPracticeButton(_ sender: UIButton) {
+        self.navigationController?.pushViewController(KPPrepareViewController(viewmodel: viewModel), animated: true)
     }
     
     //MARK: - Bind
     func bind(){
-        viewModel.filteringObservable.asObserver()
-            .bind(to: filteredCategoryView.rx.items(cellIdentifier: "ItemsCell", cellType: FilterItemsCell.self)) {index, id ,cell in
-                guard let category = CategoryID(rawValue: id) else { return }
-                let attributedString = NSMutableAttributedString.init(string: category.title)
-                attributedString.addAttribute(NSAttributedString.Key.underlineStyle, value: 1, range: NSRange(location: 0, length: category.title.count))
-                cell.itemLabel.attributedText = attributedString
-            }.disposed(by: disposeBag)
-        
         _ = viewModel.tabelTemp // 서비스 로직 호출할땐 응답받는 구조체로 대체 (아직 서비스API 미구현 임시로 string배열로 받음)
             .bind(to: questionListTableView.rx.items(cellIdentifier: "QuestionListCell", cellType: QuestionListCell.self)) { index, title, cell in
                 cell.mainLabel.text = title
@@ -223,11 +196,9 @@ class KPFindQuestionViewController: UIViewController{
                 self.navigationController?.pushViewController(KPGroupsViewController(viewModel: self.viewModel), animated: true)
             })
     }
-}
-
-//MARK: - ConfigureUI
-extension KPFindQuestionViewController {
-    func configureUI(){
+    
+    //MARK: - ConfigureUI
+    override func configureUI(){
         self.view.addSubview(searchBarView)
         self.searchBarView.snp.makeConstraints{ make in
             make.top.equalTo(self.view.safeAreaLayoutGuide.snp.top).offset(15)
@@ -236,42 +207,18 @@ extension KPFindQuestionViewController {
             make.height.equalTo(36)
         }
         
-        self.view.addSubview(filterButton)
-        self.filterButton.addTarget(self, action: #selector(didClickFilterButton(_:)), for: .touchUpInside)
-        self.filterButton.snp.makeConstraints{ make in
-            make.top.equalTo(searchBarView.snp.bottom).offset(14)
+        self.view.addSubview(self.filterView)
+        self.filterView.filterButton.addTarget(self, action: #selector(didClickFilterButton(_:)), for: .touchUpInside)
+        self.filterView.snp.makeConstraints{ make in
             make.leading.equalToSuperview().offset(42)
-            make.height.equalTo(27)
-            make.width.equalTo(63)
+            make.trailing.equalToSuperview().offset(-42)
+            make.top.equalTo(self.searchBarView.snp.bottom).offset(20)
+            make.height.equalTo(70)
         }
         
-//        self.view.addSubview(segmentControl)
-//        self.segmentControl.snp.makeConstraints{ make in
-//            make.centerY.equalTo(filterButton.snp.centerY)
-//            make.trailing.equalToSuperview().offset(-48)
-//        }
-        
-        let flowLayout = UICollectionViewFlowLayout().then{
-            $0.scrollDirection = .horizontal
-            $0.minimumLineSpacing = 16
-        }
-        
-        self.filteredCategoryView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout).then{
-            $0.backgroundColor = .white
-            $0.register(FilterItemsCell.self, forCellWithReuseIdentifier: "ItemsCell")
-            
-            self.view.addSubview($0)
-            $0.snp.makeConstraints{ make in
-                make.top.equalTo(filterButton.snp.bottom).offset(12)
-                make.leading.equalToSuperview().offset(52)
-                make.trailing.equalToSuperview().offset(-52)
-                make.height.equalTo(22)
-            }
-        }
-        
-        self.view.addSubview(self.questionListTableView)        
+        self.view.addSubview(self.questionListTableView)
         self.questionListTableView.snp.makeConstraints{ make in
-            make.top.equalTo(filteredCategoryView.snp.bottom)
+            make.top.equalTo(filterView.snp.bottom)
             make.leading.equalToSuperview()
             make.trailing.equalToSuperview().offset(-20)
             make.bottom.equalToSuperview()
@@ -288,31 +235,8 @@ extension KPFindQuestionViewController {
         
         self.view.addSubview(btn)
         btn.snp.makeConstraints{ make in
-            make.centerY.equalTo(filterButton.snp.centerY)
-            make.leading.equalTo(filterButton.snp.trailing)
+            make.centerY.equalTo(filterView.snp.centerY)
+            make.leading.equalTo(filterView.snp.trailing)
         }
-        
-    }
-}
-
-//MARK: - CollectionViewLayoutDelegate
-extension KPFindQuestionViewController: UICollectionViewDelegateFlowLayout{
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        var items = [Int]()
-        
-        if collectionView == self.filteredCategoryView{
-            items = viewModel.filteringList
-        }else {
-            items = filteringView!.selectedCategories
-        }
-        
-        let id = items[indexPath.item]
-        let category = CategoryID(rawValue: id)
-        
-        let tempLabel = UILabel()
-        tempLabel.font = .sfPro(size: 12, family: .Regular)
-        tempLabel.text = category?.title
-        
-        return CGSize(width: tempLabel.intrinsicContentSize.width, height: 22)
     }
 }

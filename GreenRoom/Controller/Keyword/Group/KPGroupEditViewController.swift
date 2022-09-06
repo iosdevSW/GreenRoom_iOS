@@ -43,6 +43,7 @@ class KPGroupEditViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
+        self.hideKeyboardWhenTapped()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -61,6 +62,28 @@ class KPGroupEditViewController: BaseViewController {
                 cell.titleLabel.text = category.title
                 
             }.disposed(by: disposeBag)
+        
+        categoryCollectionView.rx.itemSelected
+            .bind(onNext: { [weak self] indexPath in
+                let cell = self?.categoryCollectionView.cellForItem(at: indexPath) as! CategoryCell
+                let index = indexPath.row+1
+                
+                guard let category = CategoryID(rawValue: index) else { return }
+                cell.frameView.layer.borderColor = UIColor.mainColor.cgColor
+                cell.imageView.image = category.SelectedImage
+                
+            }).disposed(by: disposeBag)
+        
+        categoryCollectionView.rx.itemDeselected
+            .bind(onNext: { [weak self] indexPath in
+                let cell = self?.categoryCollectionView.cellForItem(at: indexPath) as! CategoryCell
+                let index = indexPath.row + 1
+                
+                guard let category = CategoryID(rawValue: index) else { return }
+                cell.frameView.layer.borderColor = UIColor.customGray.cgColor
+                cell.imageView.image = category.nonSelectedImage
+                
+            }).disposed(by: disposeBag)
     }
     
     //MARK: - ConfigureUI
@@ -145,8 +168,6 @@ class KPGroupEditViewController: BaseViewController {
         
         self.categoryCollectionView = UICollectionView(frame: .zero, collectionViewLayout: layout).then{
             $0.translatesAutoresizingMaskIntoConstraints = false
-            $0.allowsMultipleSelection = true
-            $0.allowsSelection = true
             $0.register(CategoryCell.self, forCellWithReuseIdentifier: "categoryCell")
             $0.backgroundColor = .white
             

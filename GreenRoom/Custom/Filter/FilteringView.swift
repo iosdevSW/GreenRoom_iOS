@@ -8,8 +8,8 @@
 import UIKit
 import RxCocoa
 import RxSwift
-// 필터링뷰 고쳐야함!!
-class CategoryFilterView: UIView {
+
+class FilteringView: UIView, UICollectionViewDelegate {
     //MARK: - Properties
     let viewModel = CategoryViewModel()
     let disposeBag = DisposeBag()
@@ -20,6 +20,7 @@ class CategoryFilterView: UIView {
             selectedCategoriesObservable.onNext(self.selectedCategories)
         }
     }
+    
     var selectedCategoriesObservable = PublishSubject<[Int]>()
     
     let titleLabel = UILabel().then{
@@ -30,7 +31,7 @@ class CategoryFilterView: UIView {
     
     var categoryCollectionView: UICollectionView!
     
-    var filteringCollectionView: UICollectionView!
+    var selectedCategoriesCollectionView: UICollectionView!
     
     let applyButton = UIButton(type: .system).then{
         $0.setTitle("적용하기", for: .normal)
@@ -112,7 +113,7 @@ class CategoryFilterView: UIView {
             }.disposed(by: disposeBag)
         
         self.selectedCategoriesObservable
-            .bind(to: self.filteringCollectionView.rx.items(cellIdentifier: "ItemsCell", cellType: FilterItemsCell.self)) { index, id, cell in
+            .bind(to: self.selectedCategoriesCollectionView.rx.items(cellIdentifier: "ItemsCell", cellType: FilterItemsCell.self)) { index, id, cell in
                 guard let category = CategoryID(rawValue: id) else { return }
                 let title = category.title
                 let attributedString = NSMutableAttributedString.init(string: title)
@@ -175,10 +176,11 @@ class CategoryFilterView: UIView {
             $0.minimumLineSpacing = 16
         }
         
-        self.filteringCollectionView = UICollectionView(frame: .zero, collectionViewLayout: filteringLayout).then{
+        self.selectedCategoriesCollectionView = UICollectionView(frame: .zero, collectionViewLayout: filteringLayout).then{
             $0.backgroundColor = .white
             $0.register(FilterItemsCell.self, forCellWithReuseIdentifier: "ItemsCell")
             $0.allowsSelection = true
+            $0.delegate = self
             
             self.addSubview($0)
             $0.snp.makeConstraints{ make in
@@ -188,5 +190,18 @@ class CategoryFilterView: UIView {
                 make.height.equalTo(22)
             }
         }
+    }
+}
+
+extension FilteringView: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let id = self.selectedCategories[indexPath.item]
+        let category = CategoryID(rawValue: id)
+        
+        let tempLabel = UILabel()
+        tempLabel.font = .sfPro(size: 12, family: .Regular)
+        tempLabel.text = category?.title
+        
+        return CGSize(width: tempLabel.intrinsicContentSize.width, height: 22)
     }
 }
