@@ -9,7 +9,13 @@ import UIKit
 
 final class CustomTabbarController: UITabBarController {
     
-    private lazy var createButton = UIButton().then {
+    var isHidden: Bool = false {
+        didSet {
+            self.createButton.isHidden = tabBar.isHidden
+        }
+    }
+    
+    lazy var createButton = UIButton().then {
         $0.backgroundColor = .mainColor
         $0.setImage(UIImage(systemName: "plus"), for: .normal)
         $0.contentMode = .scaleAspectFit
@@ -20,6 +26,9 @@ final class CustomTabbarController: UITabBarController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(didTapUpdateCategories), name: Notification.Name("Category"), object: nil)
+        
         initView()
     }
     
@@ -28,7 +37,8 @@ final class CustomTabbarController: UITabBarController {
     }
     
     private func initView() {
-        view.addSubview(createButton)
+        
+        self.view.addSubview(createButton)
         createButton.snp.makeConstraints { make in
             make.top.equalTo(tabBar.snp.top).offset(-25)
             make.centerX.equalToSuperview()
@@ -42,12 +52,19 @@ final class CustomTabbarController: UITabBarController {
         }
     }
     
+
     override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
         UIView.animate(withDuration: 0.5) {
             self.createButton.isHidden = item.tag != 1
         }
     }
     
+    @objc func didTapUpdateCategories() {
+        let vc = CategorySelectViewController(viewModel: CategoryViewModel())
+        vc.modalPresentationStyle = .overFullScreen
+        present(vc,animated: false)
+    }
+                                        
     @objc func didTapCreateQuestion(_ sender: UIButton){
         let popoverVC = CreatePopOverViewController()
         popoverVC.modalPresentationStyle = .popover
