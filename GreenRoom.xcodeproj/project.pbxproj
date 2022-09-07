@@ -78,6 +78,11 @@
 		E4141ABC28AF528E004D74B3 /* FAQCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4141ABB28AF528E004D74B3 /* FAQCell.swift */; };
 		E4141ACA28AF79E7004D74B3 /* QNAViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4141AC828AF79E7004D74B3 /* QNAViewController.swift */; };
 		E4141ACB28AF79E7004D74B3 /* FAQViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4141AC928AF79E7004D74B3 /* FAQViewController.swift */; };
+		E427EC0328C791150046B4AA /* InfoHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E427EC0228C791150046B4AA /* InfoHeaderView.swift */; };
+		E427EC0628C791850046B4AA /* Info.swift in Sources */ = {isa = PBXBuildFile; fileRef = E427EC0528C791850046B4AA /* Info.swift */; };
+		E427EC0828C7937B0046B4AA /* SFProText-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = E427EC0728C7937B0046B4AA /* SFProText-Bold.otf */; };
+		E427EC0B28C7A53D0046B4AA /* DetailQuestionListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E427EC0A28C7A53D0046B4AA /* DetailQuestionListCell.swift */; };
+		E427EC1628C830F60046B4AA /* CategorySelectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E427EC1528C830F60046B4AA /* CategorySelectViewController.swift */; };
 		E445856128C6143700907950 /* MyGreenRoomHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = E445856028C6143700907950 /* MyGreenRoomHeader.swift */; };
 		E445856328C6148F00907950 /* MyGreenRoomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E445856228C6148F00907950 /* MyGreenRoomCell.swift */; };
 		E445856528C619E700907950 /* MyGreenRoomFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E445856428C619E700907950 /* MyGreenRoomFooterView.swift */; };
@@ -93,7 +98,6 @@
 		E48F8B4F28C26864007AAF40 /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E48F8B4E28C26864007AAF40 /* AuthManager.swift */; };
 		E49CC15628C326DA009216E1 /* EditProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E49CC15528C326DA009216E1 /* EditProfileViewModel.swift */; };
 		E49CC16C28C331E4009216E1 /* SFPro.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E49CC16A28C331E4009216E1 /* SFPro.ttf */; };
-		E49CC16F28C331EA009216E1 /* SFProText-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = E49CC16E28C331EA009216E1 /* SFProText-Bold.otf */; };
 		E49EF3D028B5361000358340 /* PopularHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = E49EF3CF28B5361000358340 /* PopularHeader.swift */; };
 		E49EF3D228B5375D00358340 /* Question.swift in Sources */ = {isa = PBXBuildFile; fileRef = E49EF3D128B5375D00358340 /* Question.swift */; };
 		E49EF3D428B5377900358340 /* GreenRoomModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E49EF3D328B5377900358340 /* GreenRoomModel.swift */; };
@@ -191,6 +195,11 @@
 		E4141ABB28AF528E004D74B3 /* FAQCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAQCell.swift; sourceTree = "<group>"; };
 		E4141AC828AF79E7004D74B3 /* QNAViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QNAViewController.swift; sourceTree = "<group>"; };
 		E4141AC928AF79E7004D74B3 /* FAQViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FAQViewController.swift; sourceTree = "<group>"; };
+		E427EC0228C791150046B4AA /* InfoHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoHeaderView.swift; sourceTree = "<group>"; };
+		E427EC0528C791850046B4AA /* Info.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Info.swift; sourceTree = "<group>"; };
+		E427EC0728C7937B0046B4AA /* SFProText-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFProText-Bold.otf"; sourceTree = "<group>"; };
+		E427EC0A28C7A53D0046B4AA /* DetailQuestionListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailQuestionListCell.swift; sourceTree = "<group>"; };
+		E427EC1528C830F60046B4AA /* CategorySelectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategorySelectViewController.swift; sourceTree = "<group>"; };
 		E445856028C6143700907950 /* MyGreenRoomHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyGreenRoomHeader.swift; sourceTree = "<group>"; };
 		E445856228C6148F00907950 /* MyGreenRoomCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyGreenRoomCell.swift; sourceTree = "<group>"; };
 		E445856428C619E700907950 /* MyGreenRoomFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyGreenRoomFooterView.swift; sourceTree = "<group>"; };
@@ -206,7 +215,6 @@
 		E49CC15528C326DA009216E1 /* EditProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewModel.swift; sourceTree = "<group>"; };
 		E49CC16A28C331E4009216E1 /* SFPro.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = SFPro.ttf; sourceTree = "<group>"; };
 		E49CC16B28C331E4009216E1 /* SFProText-Semibold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFProText-Semibold.otf"; sourceTree = "<group>"; };
-		E49CC16E28C331EA009216E1 /* SFProText-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SFProText-Bold.otf"; path = "/Users/sangwoo/Developments/iOS/GreenRoom/GreenRoom/Resource/Font/SFProText-Bold.otf"; sourceTree = "<absolute>"; };
 		E49EF3CF28B5361000358340 /* PopularHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopularHeader.swift; sourceTree = "<group>"; };
 		E49EF3D128B5375D00358340 /* Question.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Question.swift; sourceTree = "<group>"; };
 		E49EF3D328B5377900358340 /* GreenRoomModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GreenRoomModel.swift; sourceTree = "<group>"; };
@@ -448,6 +456,7 @@
 		DBD0823D2897E75A0092241F /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				E427EC1528C830F60046B4AA /* CategorySelectViewController.swift */,
 				DBE7A54828996BBF00E9A4E9 /* Authentication */,
 				DBD0823E2897E75A0092241F /* Green */,
 				DBD082402897E75A0092241F /* MyPage */,
@@ -491,6 +500,7 @@
 		DBD082462897E75A0092241F /* View */ = {
 			isa = PBXGroup;
 			children = (
+				E427EC0128C791080046B4AA /* Common */,
 				DB9CF9BA289E27650091B705 /* Category */,
 				DBE7A54D28996BF500E9A4E9 /* Authentication */,
 				DBD082472897E75A0092241F /* Green */,
@@ -504,7 +514,8 @@
 			isa = PBXGroup;
 			children = (
 				E40BC6E228B880F400FB557D /* Search */,
-				E49EF3CE28B5360600358340 /* Popular */,
+				E49EF3CE28B5360600358340 /* Main */,
+				E427EC0928C7A5000046B4AA /* Detail */,
 			);
 			path = Green;
 			sourceTree = "<group>";
@@ -536,6 +547,7 @@
 		DBD0824F2897E75B0092241F /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				E427EC0428C7917F0046B4AA /* Common */,
 				E40BC70D28B8990700FB557D /* CoreDataModel */,
 				E49EF3D528B5377C00358340 /* SectionModel */,
 				DBD082502897E75B0092241F /* LoginModel.swift */,
@@ -559,7 +571,7 @@
 		DBD082612897E77F0092241F /* Font */ = {
 			isa = PBXGroup;
 			children = (
-				E49CC16E28C331EA009216E1 /* SFProText-Bold.otf */,
+				E427EC0728C7937B0046B4AA /* SFProText-Bold.otf */,
 				E49CC16A28C331E4009216E1 /* SFPro.ttf */,
 				E49CC16B28C331E4009216E1 /* SFProText-Semibold.otf */,
 				E46539E628AD3F2800F17A6C /* SFProText-Regular.otf */,
@@ -634,6 +646,30 @@
 			path = Inquiry;
 			sourceTree = "<group>";
 		};
+		E427EC0128C791080046B4AA /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				E427EC0228C791150046B4AA /* InfoHeaderView.swift */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		E427EC0428C7917F0046B4AA /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				E427EC0528C791850046B4AA /* Info.swift */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		E427EC0928C7A5000046B4AA /* Detail */ = {
+			isa = PBXGroup;
+			children = (
+				E427EC0A28C7A53D0046B4AA /* DetailQuestionListCell.swift */,
+			);
+			path = Detail;
+			sourceTree = "<group>";
+		};
 		E46539DA28ACD77B00F17A6C /* Utils */ = {
 			isa = PBXGroup;
 			children = (
@@ -670,7 +706,7 @@
 			path = MyPage;
 			sourceTree = "<group>";
 		};
-		E49EF3CE28B5360600358340 /* Popular */ = {
+		E49EF3CE28B5360600358340 /* Main */ = {
 			isa = PBXGroup;
 			children = (
 				E4A1761028C64AAC009D1DFE /* GRFiltering */,
@@ -678,7 +714,7 @@
 				E4A1760D28C6486B009D1DFE /* GRRecentQustion */,
 				E4A1761128C64ABD009D1DFE /* GRMyGreenRoom */,
 			);
-			path = Popular;
+			path = Main;
 			sourceTree = "<group>";
 		};
 		E49EF3D528B5377C00358340 /* SectionModel */ = {
@@ -811,7 +847,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E49CC16F28C331EA009216E1 /* SFProText-Bold.otf in Resources */,
+				E427EC0828C7937B0046B4AA /* SFProText-Bold.otf in Resources */,
 				E46539E928AD3F2800F17A6C /* SFProText-Regular.otf in Resources */,
 				DBD082262897E6F30092241F /* Assets.xcassets in Resources */,
 				DBD082292897E6F30092241F /* LaunchScreen.storyboard in Resources */,
@@ -942,7 +978,9 @@
 				E40BC6B328B7548E00FB557D /* SearchWordHeaderView.swift in Sources */,
 				E445856328C6148F00907950 /* MyGreenRoomCell.swift in Sources */,
 				E46539E428AD33C700F17A6C /* EditProfileInfoViewController.swift in Sources */,
+				E427EC0628C791850046B4AA /* Info.swift in Sources */,
 				E4141AB328AF4499004D74B3 /* Storage.swift in Sources */,
+				E427EC0328C791150046B4AA /* InfoHeaderView.swift in Sources */,
 				DB006B8A28C31F4200867013 /* GroupCell.swift in Sources */,
 				DB05246928B5FE50003209D4 /* KPPrepareViewController.swift in Sources */,
 				E4A1761428C64B47009D1DFE /* DetailRecentQuestionViewController.swift in Sources */,
@@ -953,6 +991,7 @@
 				E40BC6E428B880FE00FB557D /* SearchResultNotFountCell.swift in Sources */,
 				E40BC6FB28B892C400FB557D /* CoreDataManager.swift in Sources */,
 				DBD082532897E75B0092241F /* KeywordViewModel.swift in Sources */,
+				E427EC0B28C7A53D0046B4AA /* DetailQuestionListCell.swift in Sources */,
 				DBA9451828C71A4F00B6E16A /* FilterView.swift in Sources */,
 				E4C4C4C028BDE8AB008826AB /* CreateGreenRoomViewController.swift in Sources */,
 				DB797A9B289BC0D800ADF65F /* RegisterCategoryViewController.swift in Sources */,
@@ -966,6 +1005,7 @@
 				DBD082552897E75B0092241F /* GreenRoomViewController.swift in Sources */,
 				DB563F9A28ABADDF00E7193D /* RxNaverThirdPartyLoginProxy.swift in Sources */,
 				DB07821228C49BED0091EEFE /* CustomRecordingButton.swift in Sources */,
+				E427EC1628C830F60046B4AA /* CategorySelectViewController.swift in Sources */,
 				DBD082562897E75B0092241F /* MyPageViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

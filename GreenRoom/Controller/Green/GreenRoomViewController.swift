@@ -160,7 +160,9 @@ class GreenRoomViewController: BaseViewController {
     }
     
     @objc func didTapScrap(){
-        print("DEBUG Did tap scrap")
+        let vc = CategorySelectViewController()
+        vc.modalPresentationStyle = .overFullScreen
+        present(vc,animated: false)
     }
 }
 
