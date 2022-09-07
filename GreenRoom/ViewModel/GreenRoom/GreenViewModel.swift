@@ -11,6 +11,7 @@ import RxSwift
 import RxCocoa
 
 class GreenRoomViewModel {
+    
     private var greenroomService = GreenRoomService()
     
     var recentKeywords = BehaviorSubject<[GRSearchModel]>(value: [
@@ -21,6 +22,17 @@ class GreenRoomViewModel {
         GRSearchModel.recent(header: "인기 검색어",items: [])
     ])
     
+    let recent = BehaviorSubject<[GreenRoomSectionModel]>(value: [
+        GreenRoomSectionModel.recent(items: [
+            GreenRoomSectionModel.Item.recent(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
+            GreenRoomSectionModel.Item.recent(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
+            GreenRoomSectionModel.Item.recent(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
+            GreenRoomSectionModel.Item.recent(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
+            GreenRoomSectionModel.Item.recent(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
+            GreenRoomSectionModel.Item.recent(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
+            GreenRoomSectionModel.Item.recent(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~"))
+        ])
+    ])
     let currentBannerPage = PublishSubject<Int>()
     let greenroom = BehaviorSubject<[GreenRoomSectionModel]>(value: [
         GreenRoomSectionModel.filtering(items:[ GreenRoomSectionModel.Item.filtering(interest: "디자인")]),

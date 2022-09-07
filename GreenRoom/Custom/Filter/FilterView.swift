@@ -8,10 +8,16 @@
 import UIKit
 import RxSwift
 
+protocol FilterViewDeleagte {
+    func didTapFilterButton()
+}
+
 class FilterView: UIView{
     //MARK: - Properties
     let viewModel: CategoryViewModel
     let disposeBag = DisposeBag()
+    
+    var delegate: FilterViewDeleagte?
     
     var selectedCategoriesCollectionView: UICollectionView!
     
@@ -23,7 +29,7 @@ class FilterView: UIView{
         $0.setImage(UIImage(named: "filter"), for: .normal)
         $0.tintColor = .white
         $0.semanticContentAttribute = .forceRightToLeft
-        $0.layer.cornerRadius = 15
+        $0.layer.cornerRadius = 25/2
     }
     
     //MARK: - Init
@@ -39,7 +45,12 @@ class FilterView: UIView{
     }
     //MARK: - Bind
     private func bind() {
-        viewModel.filteringObservable.asObserver()
+        
+        filterButton.rx.tap.subscribe(onNext: {
+            NotificationCenter.default.post(name: Notification.Name("Category"), object: nil)
+        }).disposed(by: disposeBag)
+        
+        viewModel.selectedCategoriesObservable.asObserver()
             .bind(to: self.selectedCategoriesCollectionView.rx.items(cellIdentifier: "ItemsCell", cellType: FilterItemsCell.self)) {index, id ,cell in
                 guard let category = CategoryID(rawValue: id) else { return }
                 let attributedString = NSMutableAttributedString.init(string: category.title)
@@ -50,30 +61,33 @@ class FilterView: UIView{
     
     //MARK: - CofigureUI
     private func configureUI() {
+        
         self.addSubview(self.filterButton)
+        
         self.filterButton.snp.makeConstraints{ make in
-            make.top.equalToSuperview()
-            make.leading.equalToSuperview()
-            make.height.equalTo(27)
-            make.width.equalTo(63)
+            make.top.equalToSuperview().offset(5)
+            make.leading.equalToSuperview().offset(20)
+            make.height.equalTo(25)
+            make.width.equalTo(50)
         }
         
         let flowLayout = UICollectionViewFlowLayout().then{
             $0.scrollDirection = .horizontal
-            $0.minimumLineSpacing = 16
+            $0.minimumInteritemSpacing = 16
         }
         
         self.selectedCategoriesCollectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout).then{
-            $0.backgroundColor = .white
+            $0.backgroundColor = .clear
             $0.register(FilterItemsCell.self, forCellWithReuseIdentifier: "ItemsCell")
             $0.delegate = self
             
             self.addSubview($0)
             $0.snp.makeConstraints{ make in
-                make.top.equalTo(filterButton.snp.bottom).offset(12)
-                make.leading.equalToSuperview()
+                make.top.equalTo(filterButton.snp.bottom).offset(6)
+                make.leading.equalTo(filterButton.snp.leading)
                 make.trailing.equalToSuperview()
-                make.height.equalTo(22)
+//                make.height.equalTo(bounds.height * 3/8)
+                make.bottom.equalToSuperview().offset(-6)
             }
         }
     }
@@ -83,7 +97,7 @@ extension FilterView: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let tempLabel = UILabel()
         
-        self.viewModel.filteringObservable
+        self.viewModel.selectedCategoriesObservable
             .take(1)
             .subscribe(onNext: { items in
                 let id = items[indexPath.item]

@@ -51,4 +51,17 @@ enum GreenRoomSectionModel: SectionModelType {
             return items.map { $0 }
         }
     }
+    
+    var info: Info {
+        switch self {
+        case .recent(items: _):
+            return Info(title: "", subTitle: "")
+        case .popular(items: _):
+            return Info(title: "", subTitle: "")
+        case .MyGreenRoom(items: _):
+            return Info(title: "", subTitle: "")
+        case .filtering(items: _):
+            return Info(title: "", subTitle: "")
+        }
+    }
 }
