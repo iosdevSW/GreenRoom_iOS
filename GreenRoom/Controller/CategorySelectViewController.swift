@@ -12,7 +12,7 @@ import RxCocoa
 final class CategorySelectViewController: BaseViewController {
     
     //MARK: - Properties
-    let viewModel = CategoryViewModel()
+    var viewModel: CategoryViewModel!
     
     private var blurView = UIVisualEffectView().then {
         $0.effect = UIBlurEffect(style: .dark)
@@ -51,10 +51,19 @@ final class CategorySelectViewController: BaseViewController {
         $0.addTarget(self, action: #selector(dismissal), for: .touchUpInside)
     }
     
+    init(viewModel: CategoryViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
     }
-    
+
     override func setupAttributes() {
         self.configureCollectionView() 
     }

@@ -160,9 +160,7 @@ class GreenRoomViewController: BaseViewController {
     }
     
     @objc func didTapScrap(){
-        let vc = CategorySelectViewController()
-        vc.modalPresentationStyle = .overFullScreen
-        present(vc,animated: false)
+        
     }
 }
 
@@ -410,7 +408,8 @@ extension GreenRoomViewController {
 
 extension GreenRoomViewController: RecentHeaderDelegate {
     func didTapViewAllQeustionsButton() {
-        print("didTapViewAllQeustionsButton")
+        let vc = DetailRecentQuestionViewController(viewModel: self.viewModel)
+        self.navigationController?.pushViewController(vc, animated: true)
     }
 }
 
