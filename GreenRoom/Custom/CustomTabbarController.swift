@@ -26,9 +26,7 @@ final class CustomTabbarController: UITabBarController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(didTapUpdateCategories), name: Notification.Name("Category"), object: nil)
-        
+        NotificationCenter.default.addObserver(self, selector: #selector(didTapUpdateCategories(_:)), name: Notification.Name("Category"), object: nil)
         initView()
     }
     
@@ -59,8 +57,9 @@ final class CustomTabbarController: UITabBarController {
         }
     }
     
-    @objc func didTapUpdateCategories() {
-        let vc = CategorySelectViewController(viewModel: CategoryViewModel())
+    @objc func didTapUpdateCategories(_ notification: NSNotification) {
+        guard let viewModel = notification.userInfo?["viewModel"] as? CategoryViewModel else { return }
+        let vc = CategorySelectViewController(viewModel: viewModel)
         vc.modalPresentationStyle = .overFullScreen
         present(vc,animated: false)
     }

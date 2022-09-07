@@ -31,10 +31,6 @@ class KPFindQuestionViewController: BaseViewController{
     
     private lazy var filterView = FilterView(viewModel: categoryViewModel)
     
-    private var filteringView: FilteringView?
-    
-    private var blurView: UIVisualEffectView?
-    
     private var questionListTableView = UITableView().then{
         $0.backgroundColor = .white
         $0.register(QuestionListCell.self, forCellReuseIdentifier: "QuestionListCell")
@@ -86,15 +82,6 @@ class KPFindQuestionViewController: BaseViewController{
     }
     
     //MARK: - Method
-    func closeFilteringView(){
-        self.filteringView?.removeFromSuperview()
-        self.blurView?.removeFromSuperview()
-        self.filteringView = nil
-        self.blurView = nil
-        
-        self.tabBarController?.tabBar.isHidden = false
-    }
-    
     override func setNavigationItem() {
         self.navigationItem.backButtonTitle = ""
         self.navigationController?.navigationBar.tintColor = .mainColor
@@ -126,51 +113,6 @@ class KPFindQuestionViewController: BaseViewController{
                 //로그아웃 실패
                 print(error)
             }).disposed(by: disposeBag)
-    }
-    
-    @objc func didClickFilterButton(_ sender: UIButton) {
-        guard filteringView == nil else { return }
-        self.tabBarController?.tabBar.isHidden = true
-        
-        let blurEffect = UIBlurEffect(style: .dark)
-    
-        self.blurView = UIVisualEffectView(effect: blurEffect).then{
-            $0.alpha = 0.3
-            $0.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height)
-            self.view.addSubview($0)
-        }
-        
-        filteringView = FilteringView().then{
-            self.view.addSubview($0)
-            
-            $0.selectedCategories = viewModel.filteringList
-            $0.cancelButton.addTarget(self, action: #selector(didClickCancelButton(_:)), for: .touchUpInside)
-            $0.applyButton.addTarget(self, action: #selector(didClickApplyButton(_:)), for: .touchUpInside)
-            
-            $0.snp.makeConstraints{ make in
-                make.leading.trailing.equalToSuperview()
-                make.bottom.equalTo(self.view.snp.bottom)
-                make.height.equalTo(560)
-            }
-        }
-        
-        self.categoryViewModel.filteringObservable
-            .take(1)
-            .subscribe(onNext: { ids in
-                guard let filteringView = self.filteringView else { return }
-                filteringView.selectedCategories = ids
-            }).disposed(by: disposeBag)
-    }
-    
-    @objc func didClickCancelButton(_ sender: UIButton) {
-        self.closeFilteringView()
-    }
-    
-    @objc func didClickApplyButton(_ sender: UIButton) {
-        guard let filteringView = filteringView else { return }
-
-        self.categoryViewModel.filteringObservable.onNext(filteringView.selectedCategories)
-        self.closeFilteringView()
     }
     
     @objc func didClickPracticeButton(_ sender: UIButton) {
@@ -208,9 +150,8 @@ class KPFindQuestionViewController: BaseViewController{
         }
         
         self.view.addSubview(self.filterView)
-        self.filterView.filterButton.addTarget(self, action: #selector(didClickFilterButton(_:)), for: .touchUpInside)
         self.filterView.snp.makeConstraints{ make in
-            make.leading.equalToSuperview().offset(42)
+            make.leading.equalToSuperview().offset(22)
             make.trailing.equalToSuperview().offset(-42)
             make.top.equalTo(self.searchBarView.snp.bottom).offset(20)
             make.height.equalTo(70)
