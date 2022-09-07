@@ -39,7 +39,7 @@ final class CategorySelectViewController: BaseViewController {
         $0.titleLabel?.font = .sfPro(size: 20, family: .Semibold)
         $0.layer.cornerRadius = 30
         $0.backgroundColor = .mainColor
-        $0.addTarget(self, action: #selector(dismissal), for: .touchUpInside)
+        $0.addTarget(self, action: #selector(didClickApplyButton(_:)), for: .touchUpInside)
     }
     
     private lazy var cancelButton = UIButton(type: .system).then{
@@ -48,7 +48,7 @@ final class CategorySelectViewController: BaseViewController {
         $0.titleLabel?.font = .sfPro(size: 20, family: .Semibold)
         $0.layer.cornerRadius = 30
         $0.backgroundColor = .customGray
-        $0.addTarget(self, action: #selector(dismissal), for: .touchUpInside)
+        $0.addTarget(self, action: #selector(didClickCancelButton(_:)), for: .touchUpInside)
     }
     
     init(viewModel: CategoryViewModel) {
@@ -67,6 +67,23 @@ final class CategorySelectViewController: BaseViewController {
     override func setupAttributes() {
         self.configureCollectionView() 
     }
+    
+    //MARK: - Selector
+    @objc func didClickCancelButton(_ sender: UIButton) {
+        self.viewModel.selectedCategoriesObservable
+            .take(1)
+            .subscribe(onNext:{ ids in
+                self.viewModel.tempSelectedCategories = ids
+            }).disposed(by: disposeBag)
+        
+        self.dismiss(animated: false)
+    }
+    
+    @objc func didClickApplyButton(_ sender: UIButton) {
+        self.viewModel.selectedCategoriesObservable.onNext(viewModel.tempSelectedCategories)
+        self.dismiss(animated: false)
+    }
+    
     //MARK: - Configure
     override func configureUI(){
         
@@ -121,8 +138,6 @@ final class CategorySelectViewController: BaseViewController {
             make.leading.equalTo(cancelButton.snp.trailing).offset(20)
             make.height.equalTo(60)
         }
-
-        
     }
     
     override func setupBinding() {
@@ -136,7 +151,7 @@ final class CategorySelectViewController: BaseViewController {
                 cell.frameView.layer.borderColor = UIColor.mainColor.cgColor
                 cell.imageView.image = category.SelectedImage
                 
-                self.viewModel.selectedCategories.append(id)
+                self.viewModel.tempSelectedCategories.append(id)
                 
         }).disposed(by: disposeBag)
         
@@ -150,8 +165,8 @@ final class CategorySelectViewController: BaseViewController {
                 cell.imageView.image = category.nonSelectedImage
                 
                 
-                if let index = self.viewModel.selectedCategories.firstIndex(of: id) {
-                    viewModel.selectedCategories.remove(at: index)
+                if let index = self.viewModel.tempSelectedCategories.firstIndex(of: id) {
+                    viewModel.tempSelectedCategories.remove(at: index)
                 }
                 
             }).disposed(by: disposeBag)
@@ -161,7 +176,7 @@ final class CategorySelectViewController: BaseViewController {
                 let id = index + 1
                 guard let category = CategoryID(rawValue: id) else { return }
                 
-                if self.viewModel.selectedCategories.contains(id){
+                if self.viewModel.tempSelectedCategories.contains(id){
                     cell.isSelected = true
                     self.categoryCollectionView.selectItem(at: IndexPath(item: index, section: 0), animated: false, scrollPosition: .centeredVertically)
                     cell.frameView.layer.borderColor = UIColor.mainColor.cgColor
@@ -175,7 +190,7 @@ final class CategorySelectViewController: BaseViewController {
             }.disposed(by: disposeBag)
         
         
-        self.viewModel.selectedCategoriesObservable
+        self.viewModel.tempSelectedCategoriesObservable
             .bind(to: self.selectedCategoriesCollectionView.rx.items(cellIdentifier: "ItemsCell", cellType: FilterItemsCell.self)) { index, id, cell in
                 guard let category = CategoryID(rawValue: id) else { return }
                 let title = category.title
@@ -184,10 +199,6 @@ final class CategorySelectViewController: BaseViewController {
                 cell.itemLabel.attributedText = attributedString
                 
             }.disposed(by: disposeBag)
-    }
-    
-    @objc func dismissal() {
-        self.dismiss(animated: false)
     }
 }
 
@@ -236,7 +247,7 @@ extension CategorySelectViewController {
 
 extension CategorySelectViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let id = self.viewModel.selectedCategories[indexPath.item]
+        let id = self.viewModel.tempSelectedCategories[indexPath.item]
         let category = CategoryID(rawValue: id)
         
         let tempLabel = UILabel()

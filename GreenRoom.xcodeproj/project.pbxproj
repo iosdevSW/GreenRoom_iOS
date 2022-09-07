@@ -64,7 +64,6 @@
 		DBE7A54F28996C2000E9A4E9 /* CheckLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBE7A54E28996C2000E9A4E9 /* CheckLabel.swift */; };
 		DBFB296A28B2267A00B1DAC9 /* FilterItemsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBFB296928B2267A00B1DAC9 /* FilterItemsCell.swift */; };
 		DBFB297028B351F400B1DAC9 /* QuestionListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBFB296F28B351F400B1DAC9 /* QuestionListCell.swift */; };
-		DBFB297228B377EB00B1DAC9 /* FilteringView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBFB297128B377EA00B1DAC9 /* FilteringView.swift */; };
 		E40BC69D28B5F35A00FB557D /* SearchWordCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E40BC69C28B5F35A00FB557D /* SearchWordCell.swift */; };
 		E40BC6B328B7548E00FB557D /* SearchWordHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E40BC6B228B7548E00FB557D /* SearchWordHeaderView.swift */; };
 		E40BC6B528B756EE00FB557D /* GRSearchModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E40BC6B428B756EE00FB557D /* GRSearchModel.swift */; };
@@ -181,7 +180,6 @@
 		DBE7A54E28996C2000E9A4E9 /* CheckLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckLabel.swift; sourceTree = "<group>"; };
 		DBFB296928B2267A00B1DAC9 /* FilterItemsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterItemsCell.swift; sourceTree = "<group>"; };
 		DBFB296F28B351F400B1DAC9 /* QuestionListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionListCell.swift; sourceTree = "<group>"; };
-		DBFB297128B377EA00B1DAC9 /* FilteringView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilteringView.swift; sourceTree = "<group>"; };
 		E40BC69C28B5F35A00FB557D /* SearchWordCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchWordCell.swift; sourceTree = "<group>"; };
 		E40BC6B228B7548E00FB557D /* SearchWordHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchWordHeaderView.swift; sourceTree = "<group>"; };
 		E40BC6B428B756EE00FB557D /* GRSearchModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GRSearchModel.swift; sourceTree = "<group>"; };
@@ -371,7 +369,6 @@
 		DBA9451628C716DD00B6E16A /* Filter */ = {
 			isa = PBXGroup;
 			children = (
-				DBFB297128B377EA00B1DAC9 /* FilteringView.swift */,
 				DBA9451728C71A4F00B6E16A /* FilterView.swift */,
 				DBFB296928B2267A00B1DAC9 /* FilterItemsCell.swift */,
 			);
@@ -910,7 +907,6 @@
 				DB006B9528C39D3C00867013 /* CustomSwitch.swift in Sources */,
 				DB006B8828C2430400867013 /* GroupView.swift in Sources */,
 				DB8D163828B8ABC700E3F237 /* CustomGoalProgressBar.swift in Sources */,
-				DBFB297228B377EB00B1DAC9 /* FilteringView.swift in Sources */,
 				E44D507E28BE56A10086C447 /* QuestionService.swift in Sources */,
 				E49EF3D928B539FF00358340 /* PopularQuestionCell.swift in Sources */,
 				DB9CF9BE289E81FE0091B705 /* CateogryCell.swift in Sources */,

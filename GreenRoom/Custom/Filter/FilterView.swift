@@ -47,7 +47,7 @@ class FilterView: UIView{
     private func bind() {
         
         filterButton.rx.tap.subscribe(onNext: {
-            NotificationCenter.default.post(name: Notification.Name("Category"), object: nil)
+            NotificationCenter.default.post(name: Notification.Name("Category"), object: nil, userInfo: ["viewModel": self.viewModel])
         }).disposed(by: disposeBag)
         
         viewModel.selectedCategoriesObservable.asObserver()
@@ -67,8 +67,8 @@ class FilterView: UIView{
         self.filterButton.snp.makeConstraints{ make in
             make.top.equalToSuperview().offset(5)
             make.leading.equalToSuperview().offset(20)
-            make.height.equalTo(25)
-            make.width.equalTo(50)
+            make.height.equalTo(27)
+            make.width.equalTo(60)
         }
         
         let flowLayout = UICollectionViewFlowLayout().then{
