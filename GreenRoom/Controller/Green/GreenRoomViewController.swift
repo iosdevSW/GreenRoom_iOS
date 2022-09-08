@@ -80,6 +80,19 @@ class GreenRoomViewController: BaseViewController {
         let dataSource = self.dataSource()
         
         viewModel.greenroom.bind(to: collectionView.rx.items(dataSource: dataSource)).disposed(by: disposeBag)
+        
+        Observable.zip(collectionView.rx.itemSelected, collectionView.rx.modelSelected(GreenRoomSectionModel.self)).subscribe(onNext: { [weak self] (indexPath, item) in
+            
+            guard let self = self else { return }
+            switch item {
+            case .filtering(items: let items):
+                print(items)
+                let vc = QuestionsByCategoryViewController(viewModel: self.viewModel)
+                self.navigationController?.pushViewController(vc, animated: true)
+            default:
+                print("ㅎㅇ")
+            }
+        }).disposed(by: disposeBag)
          
     }
     
@@ -160,7 +173,8 @@ class GreenRoomViewController: BaseViewController {
     }
     
     @objc func didTapScrap(){
-        
+        let vc = QuestionsByCategoryViewController(viewModel: self.viewModel)
+        self.navigationController?.pushViewController(vc, animated: true)
     }
 }
 
