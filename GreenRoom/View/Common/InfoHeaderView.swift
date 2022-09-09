@@ -19,6 +19,12 @@ final class InfoHeaderView: UICollectionReusableView {
         }
     }
     
+    var filterHidden: Bool = false {
+        didSet {
+            filter.removeFromSuperview()
+        }
+    }
+    
     private var titleLabel = Utilities.shared.generateLabel(text: "Title", color: .black, font: .sfPro(size: 16, family: .Regular))
     
     private var subTitleLabel = Utilities.shared.generateLabel(text: "SubTitleLabel", color: .customGray, font: .sfPro(size: 12, family: .Regular))
@@ -49,7 +55,7 @@ final class InfoHeaderView: UICollectionReusableView {
         
         subTitleLabel.snp.makeConstraints {
             $0.leading.equalTo(titleLabel.snp.leading)
-            $0.top.equalTo(titleLabel.snp.bottom).offset(10)
+            $0.top.equalTo(titleLabel.snp.bottom).offset(20)
         }
         
         filter.backgroundColor = .backgroundGary

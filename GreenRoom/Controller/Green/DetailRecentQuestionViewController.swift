@@ -59,7 +59,7 @@ final class DetailRecentQuestionViewController: BaseViewController {
     }
     
     override func setupBinding() {
-        self.viewModel.recent.bind(to: collectionView.rx.items(dataSource: dataSource())).disposed(by: disposeBag)
+//        self.viewModel.recent.bind(to: collectionView.rx.items(dataSource: dataSource())).disposed(by: disposeBag)
     }
 }
 

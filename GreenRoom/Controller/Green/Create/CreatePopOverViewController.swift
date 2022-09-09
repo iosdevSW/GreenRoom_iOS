@@ -95,7 +95,6 @@ final class CreatePopOverViewController: BaseViewController {
     //MARK: - Selector
     @objc func didTapCretaeButton(_ sender: UIButton){
         dismiss(animated: false) {
-            print(sender.tag)
             if sender.tag == 1 {
                 self.delegate?.didTapGreenRoomCreate()
             } else {

@@ -10,96 +10,85 @@ import SwiftKeychainWrapper
 import RxSwift
 import RxCocoa
 
-class GreenRoomViewModel {
+class GreenRoomViewModel: ViewModelType {
     
     private var greenroomService = GreenRoomService()
     
-    var recentKeywords = BehaviorSubject<[GRSearchModel]>(value: [
-        GRSearchModel.recent(header: "최근 검색어",items: [])
-    ])
+    var disposeBag = DisposeBag()
     
-    var popularKeywords = BehaviorSubject<[GRSearchModel]>(value: [
-        GRSearchModel.recent(header: "인기 검색어",items: [])
-    ])
+    private let filtering = BehaviorSubject<[GreenRoomSectionModel]>(value:[] )
+    private let popular = BehaviorSubject<[GreenRoomSectionModel]>(value: [])
+    private let recent = BehaviorSubject<[GreenRoomSectionModel]>(value: [])
+    private let greenroom = BehaviorSubject<[GreenRoomSectionModel]>(value: [])
+    private let myQuestionList = BehaviorSubject<[GreenRoomSectionModel]>(value: [])
     
-    let recent = BehaviorSubject<[GreenRoomSectionModel]>(value: [
-        GreenRoomSectionModel.recent(items: [
-            GreenRoomSectionModel.Item.recent(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
-            GreenRoomSectionModel.Item.recent(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
-            GreenRoomSectionModel.Item.recent(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
-            GreenRoomSectionModel.Item.recent(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
-            GreenRoomSectionModel.Item.recent(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
-            GreenRoomSectionModel.Item.recent(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
-            GreenRoomSectionModel.Item.recent(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~"))
-        ])
-    ])
+    struct Input {
+        let greenroomTap: Observable<Void>
+        let myListTap: Observable<Void>
+        let trigger: Observable<Bool>
+    }
+    
+    struct Output {
+        let greenroom: Observable<[GreenRoomSectionModel]>
+    }
+    
+    private var dataSource = PublishSubject<[GreenRoomSectionModel]>()
+    private var GRDataSource = PublishSubject<[GreenRoomSectionModel]>()
+    private var myListDataSource = PublishSubject<[GreenRoomSectionModel]>()
+    
+    func transform(input: Input) -> Output {
+        
+        input.trigger.subscribe(onNext: { [weak self] _ in
+            guard let self = self else { return }
+            self.fetchFiltering()
+            self.fetchPopular()
+            self.fetchRecent()
+            self.fetchMyGreenRoom()
+            self.fetchMyQuestionList()
+        }).disposed(by: disposeBag)
+        
+        let result = Observable.combineLatest(self.filtering.asObserver() ,self.popular.asObserver(), self.recent.asObserver(), self.greenroom.asObserver() ).map { $0.0 + $0.1 + $0.2 + $0.3 }
+        result.bind(to: self.dataSource).disposed(by: self.disposeBag)
+        
+        input.greenroomTap.subscribe(onNext: { [weak self] _ in
+            guard let self = self else { return }
+            
+            Observable.combineLatest(
+                self.filtering.asObserver(),
+                self.popular.asObserver(),
+                self.recent.asObserver(),
+                self.greenroom.asObserver()
+            ).map { $0.0 + $0.1 + $0.2 + $0.3 }
+                .bind(to: self.dataSource).disposed(by: self.disposeBag)
+            //                .subscribe(onNext: {
+            //                    self.dataSource.onNext($0)
+            //                }).disposed(by: self.disposeBag)
+            //        }).disposed(by: disposeBag)
+        }).disposed(by: self.disposeBag)
+        input.myListTap.subscribe(onNext: { [weak self] _ in
+            guard let self = self else { return }
+            
+            Observable.combineLatest(
+                self.greenroom.asObserver(),
+                self.myQuestionList.asObserver())
+            .map { $0.0 + $0.1}
+            .bind(to: self.dataSource).disposed(by: self.disposeBag)
+            //                .subscribe(onNext: {
+            //                    self.dataSource.onNext($0)
+            //                }).disposed(by: self.disposeBag)
+            //        }).disposed(by: disposeBag)
+            
+            
+        }).disposed(by: disposeBag)
+//        
+//        self.dataSource.subscribe(onNext:{
+//            print($0)
+//        }).disposed(by: self.disposeBag)
+        return Output(greenroom: self.dataSource.asObserver())
+    }
     let currentBannerPage = PublishSubject<Int>()
-    let greenroom = BehaviorSubject<[GreenRoomSectionModel]>(value: [
-        GreenRoomSectionModel.filtering(items:[ GreenRoomSectionModel.Item.filtering(interest: "디자인")]),
-        GreenRoomSectionModel.popular(items: [
-            GreenRoomSectionModel.Item.popular(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
-            GreenRoomSectionModel.Item.popular(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
-            GreenRoomSectionModel.Item.popular(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
-            GreenRoomSectionModel.Item.popular(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
-            GreenRoomSectionModel.Item.popular(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
-            GreenRoomSectionModel.Item.popular(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~"))
-        ]),
-        GreenRoomSectionModel.recent(items: [
-            GreenRoomSectionModel.Item.recent(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
-            GreenRoomSectionModel.Item.recent(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
-            GreenRoomSectionModel.Item.recent(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
-            GreenRoomSectionModel.Item.recent(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
-            GreenRoomSectionModel.Item.recent(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
-            GreenRoomSectionModel.Item.recent(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
-            GreenRoomSectionModel.Item.recent(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~"))
-        ]),
-        GreenRoomSectionModel.recent(items: [
-            GreenRoomSectionModel.Item.MyGreenRoom(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
-            GreenRoomSectionModel.Item.MyGreenRoom(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
-            GreenRoomSectionModel.Item.MyGreenRoom(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
-            GreenRoomSectionModel.Item.MyGreenRoom(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
-            GreenRoomSectionModel.Item.MyGreenRoom(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
-            GreenRoomSectionModel.Item.MyGreenRoom(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
-            GreenRoomSectionModel.Item.MyGreenRoom(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~"))
-        ])
-    ])
     
     
-    init(){
-        self.bind()
-    }
-    
-    func bind(){
-        self.fetchKeywords()
-    }
-    
-    private func fetchKeywords() {
-        recentKeywords.onNext(
-            [GRSearchModel.recent(header: "최근 검색어", items:
-                                    CoreDataManager.shared.loadFromCoreData(request: RecentSearchKeyword.fetchRequest()).sorted {
-                                        $0.date! > $1.date!
-                                    }.map {
-                                        SearchTagItem(text: $0.keyword!, type: .recent)
-                                    })
-            ]
-        )
-        
-        
-        greenroomService.fetchPopularKeywords { [weak self] result in
-            switch result {
-            case .success(let keywords):
-                self?.popularKeywords.onNext(
-                    [GRSearchModel.popular(header: "인기 검색어", items:
-                                            keywords.map {
-                                                GRSearchModel.Item(text: $0, type: .popular)
-                                            })
-                    ]
-                )
-            case .failure(_):
-                break
-            }
-        }
-    }
     func isLogin()->Observable<Bool> {
         if let accessToken = KeychainWrapper.standard.string(forKey: "accessToken"){
             return Observable.create{ emitter in
@@ -119,5 +108,54 @@ class GreenRoomViewModel {
                 return Disposables.create()
             }
         }
+    }
+}
+
+//MARK: - API Service
+extension GreenRoomViewModel {
+    
+    private func fetchFiltering(){
+        self.filtering.onNext([GreenRoomSectionModel.filtering(items:[ GreenRoomSectionModel.Item.filtering(interest: "디자인")])])
+    }
+    
+    private func fetchPopular(){
+        self.popular.onNext([GreenRoomSectionModel.popular(items: [
+            GreenRoomSectionModel.Item.popular(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
+            GreenRoomSectionModel.Item.popular(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
+            GreenRoomSectionModel.Item.popular(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
+            GreenRoomSectionModel.Item.popular(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
+            GreenRoomSectionModel.Item.popular(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
+            GreenRoomSectionModel.Item.popular(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~"))
+        ])])
+    }
+    
+    private func fetchRecent(){
+        self.recent.onNext([GreenRoomSectionModel.recent(items: [
+            GreenRoomSectionModel.Item.recent(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
+            GreenRoomSectionModel.Item.recent(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
+            GreenRoomSectionModel.Item.recent(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
+            GreenRoomSectionModel.Item.recent(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
+            GreenRoomSectionModel.Item.recent(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
+            GreenRoomSectionModel.Item.recent(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~"))
+        ])])
+    }
+    
+    private func fetchMyGreenRoom(){
+        self.greenroom.onNext([GreenRoomSectionModel.MyGreenRoom(items: [
+            GreenRoomSectionModel.Item.MyGreenRoom(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
+            GreenRoomSectionModel.Item.MyGreenRoom(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
+            GreenRoomSectionModel.Item.MyGreenRoom(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
+        ])])
+    }
+    
+    private func fetchMyQuestionList(){
+        self.myQuestionList.onNext([GreenRoomSectionModel.MyQuestionList(items: [
+            GreenRoomSectionModel.Item.MyQuestionList(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
+            GreenRoomSectionModel.Item.MyQuestionList(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
+            GreenRoomSectionModel.Item.MyQuestionList(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
+            GreenRoomSectionModel.Item.MyQuestionList(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
+            GreenRoomSectionModel.Item.MyQuestionList(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
+            GreenRoomSectionModel.Item.MyQuestionList(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~"))
+        ])])
     }
 }
