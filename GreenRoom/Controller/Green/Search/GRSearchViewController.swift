@@ -9,15 +9,17 @@ import UIKit
 import RxSwift
 import RxDataSources
 import RxCocoa
+import RxViewController
+
 final class GRSearchViewController: BaseViewController {
     
     private var searchBar: UISearchBar!
     private var collectionView: UICollectionView!
     
-    var viewModel: GreenRoomViewModel
+    var viewModel: SearchViewModel
     
     //MARK: - LifeCycle
-    init(viewModel: GreenRoomViewModel){
+    init(viewModel: SearchViewModel){
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
@@ -51,8 +53,11 @@ final class GRSearchViewController: BaseViewController {
     }
     
     override func setupBinding() {
-        Observable.combineLatest(viewModel.recentKeywords.asObserver(), viewModel.popularKeywords.asObserver())
-            .map { $0.0 + $0.1 }
+        let input = SearchViewModel.Input(trigger: self.rx.viewDidLoad.asObservable())
+        
+        let output = self.viewModel.transform(input: input)
+        
+        output.result
             .bind(to: collectionView.rx.items(dataSource: self.dataSource()))
             .disposed(by: disposeBag)
             
