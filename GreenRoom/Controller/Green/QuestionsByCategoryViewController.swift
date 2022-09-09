@@ -55,7 +55,7 @@ final class QuestionsByCategoryViewController: BaseViewController {
     }
     
     override func setupBinding() {
-        self.viewModel.recent.bind(to: collectionView.rx.items(dataSource: self.dataSource())).disposed(by: disposeBag)
+//        self.viewModel.recent.bind(to: collectionView.rx.items(dataSource: self.dataSource())).disposed(by: disposeBag)
     }
 }
 
