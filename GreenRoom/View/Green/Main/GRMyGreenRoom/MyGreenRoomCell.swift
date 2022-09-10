@@ -60,21 +60,6 @@ final class MyGreenRoomCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-//    override func draw(_ rect: CGRect) {
-//        let width = bounds.size.width / 20
-//        let center = bounds.size.width / 2
-//        let path = UIBezierPath()
-//
-//        path.move(to: CGPoint(x: center - width/2, y: bounds.size.height))
-//
-//        path.lineWidth = 2
-//
-//        UIColor.red.set()
-//        path.addQuadCurve(
-//            to: CGPoint(x: center + width/2, y: bounds.size.height),
-//            controlPoint: CGPoint(x: 300 , y: 500))
-//        path.stroke()
-//    }
     //MARK: - Configure
     private func configureUI(){
         self.backgroundColor = .white

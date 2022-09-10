@@ -31,11 +31,12 @@ class MyQuestionListCell: UICollectionViewCell {
         $0.layer.maskedCorners = [.layerMaxXMaxYCorner,.layerMaxXMinYCorner,.layerMinXMaxYCorner]
         $0.layer.borderWidth = 2
         $0.layer.borderColor = UIColor.mainColor.cgColor
+        $0.backgroundColor = .white
         
     }
     private lazy var profileImageView = UIImageView(frame: .zero).then {
         $0.contentMode = .scaleAspectFill
-        $0.layer.cornerRadius = bounds.width * 0.08 / 2
+        $0.layer.cornerRadius = 35 / 2
         $0.layer.masksToBounds = true
         $0.image = UIImage(named: "GreenRoomIcon")
         $0.tintColor = .mainColor
@@ -43,13 +44,13 @@ class MyQuestionListCell: UICollectionViewCell {
     }
     
     private let categoryLabel = Utilities.shared.generateLabel(text: "디자인", color: .black, font: .sfPro(size: 12, family: .Semibold))
-
+    
     private lazy var questionTextView = UITextView().then {
         $0.backgroundColor = .clear
         $0.translatesAutoresizingMaskIntoConstraints = true
         $0.sizeToFit()
         $0.isScrollEnabled = false
-        $0.textContainerInset = UIEdgeInsets(top: 13, left: 13, bottom: 5, right:13)
+        $0.textContainerInset = UIEdgeInsets(top: 6, left: -4, bottom: 13, right:13)
         
         let style = NSMutableParagraphStyle()
         style.lineSpacing = 6
@@ -60,11 +61,11 @@ class MyQuestionListCell: UICollectionViewCell {
                 NSAttributedString.Key.font: UIFont.sfPro(size: 16, family: .Regular) ?? .systemFont(ofSize: 16),
                 NSAttributedString.Key.foregroundColor: UIColor.black
             ])
-    
+        
         $0.isUserInteractionEnabled = false
     }
     
-   //MARK: - LifeCycle
+    //MARK: - LifeCycle
     override init(frame: CGRect) {
         super.init(frame: frame)
         configureUI()
@@ -73,43 +74,55 @@ class MyQuestionListCell: UICollectionViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    override func layoutSubviews() {
+        super.layoutSubviews()
+    }
     
     //MARK: - Configure
     private func configureUI(){
         
         self.backgroundColor = .white
         
-        
+        self.containerView.addSubview(profileImageView)
+        self.containerView.addSubview(categoryLabel)
+        self.containerView.addSubview(questionTextView)
         self.contentView.addSubview(containerView)
+        
         containerView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
+            
+            make.top.equalToSuperview().offset(bounds.size.height*0.18)
+            make.leading.equalToSuperview().offset(bounds.size.width * 0.06)
+            make.trailing.equalToSuperview().offset(-bounds.size.width * 0.06)
             make.bottom.equalToSuperview().offset(-10)
         }
         
-        let size = containerView.bounds.height / 10
+        let size = bounds.width / 15
         
-        self.containerView.addSubview(profileImageView)
         profileImageView.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(size)
-            make.leading.equalToSuperview().offset(size*2)
-            make.width.height.equalTo(containerView.bounds.height/3)
+            make.top.equalToSuperview().offset(12)
+            make.leading.equalToSuperview().offset(12)
+            make.width.height.equalTo(size)
         }
         
         profileImageView.layer.cornerRadius = containerView.bounds.height/6
-        
-        self.containerView.addSubview(categoryLabel)
+
         self.categoryLabel.snp.makeConstraints { make in
             make.centerY.equalTo(profileImageView)
-            make.leading.equalTo(profileImageView.snp.trailing).offset(size*1.5)
+            make.leading.equalTo(profileImageView.snp.trailing).offset(10)
         }
-        
-        self.containerView.addSubview(questionTextView)
+
         self.questionTextView.snp.makeConstraints { make in
             make.leading.equalTo(categoryLabel.snp.leading)
             make.top.equalTo(categoryLabel.snp.bottom)
             make.trailing.bottom.equalToSuperview()
         }
-
+        
+        self.contentView.addSubview(scrapButton)
+        scrapButton.snp.makeConstraints { make in
+            make.leading.equalTo(containerView.snp.leading)
+            make.top.equalToSuperview().offset(6)
+            make.width.height.equalTo(15)
+        }
     }
     
     private func configure(){

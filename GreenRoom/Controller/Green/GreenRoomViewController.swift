@@ -92,11 +92,10 @@ class GreenRoomViewController: BaseViewController {
             guard let self = self else { return }
             switch item {
             case .filtering(items: let items):
-                print(items)
                 let vc = QuestionsByCategoryViewController(viewModel: self.viewModel)
                 self.navigationController?.pushViewController(vc, animated: true)
             default:
-                print("ㅎㅇ")
+                break
             }
         }).disposed(by: disposeBag)
         
@@ -171,10 +170,11 @@ class GreenRoomViewController: BaseViewController {
         
         self.questionListButton.setTitleColor(questionColor, for: .normal)
         self.greenRoomButton.setTitleColor(greenRoomColor, for: .normal)
-        
-        print(sender.tag)
+        self.disposeBag = DisposeBag()
+        setupBinding()
         let layout = sender.tag == 0 ? self.GRLayout() : self.myListLayout()
         self.collectionView.setCollectionViewLayout(layout, animated: true)
+        self.collectionView.layoutSubviews()
     }
     
     @objc func didTapSearch(){
@@ -194,7 +194,6 @@ extension GreenRoomViewController {
         let layout = self.GRLayout()
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.backgroundColor = .white
-        
         collectionView.register(GRFilteringCell.self, forCellWithReuseIdentifier: GRFilteringCell.reuseIdentifier)
         collectionView.register(GRFilteringHeaderView.self, forSupplementaryViewOfKind: GRFilteringHeaderView.reuseIdentifier, withReuseIdentifier: GRFilteringHeaderView.reuseIdentifier)
         
@@ -307,14 +306,14 @@ extension GreenRoomViewController {
             heightDimension: .fractionalHeight(1.0))
         )
         
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.16))
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.2))
         
         let group = NSCollectionLayoutGroup.vertical(
             layoutSize: groupSize,
             subitems: [item])
         
         let section = NSCollectionLayoutSection(group: group)
-        
+        section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 0, bottom: 0, trailing: 0)
         let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.09))
         let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: GreenRoomCommonHeaderView.reuseIdentifier, alignment: .topLeading)
         
