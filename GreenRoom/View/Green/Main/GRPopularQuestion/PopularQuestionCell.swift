@@ -62,7 +62,9 @@ final class PopularQuestionCell: UICollectionViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+    override func layoutSubviews() {
+            super.layoutSubviews()
+        }
     //MARK: - Configure
     private func configureUI(){
         self.backgroundColor = .backgroundGary
