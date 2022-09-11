@@ -67,7 +67,7 @@ final class PopularQuestionCell: UICollectionViewCell {
         }
     //MARK: - Configure
     private func configureUI(){
-        self.backgroundColor = .backgroundGary
+        self.backgroundColor = .backgroundGray
         
    
         self.contentView.addSubview(profileImageView)

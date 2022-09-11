@@ -38,7 +38,7 @@ final class MyGreenRoomFooterView: UICollectionReusableView {
     }
 
     private func configureUI() {
-        self.backgroundColor = .backgroundGary
+        self.backgroundColor = .backgroundGray
         self.addSubview(profileImageView)
         profileImageView.snp.makeConstraints { make in
             make.centerX.equalToSuperview()

@@ -45,6 +45,7 @@
 		DBA9451328C653F200B6E16A /* FAQ.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA9451128C653F200B6E16A /* FAQ.swift */; };
 		DBA9451528C6540400B6E16A /* CreateViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA9451428C6540400B6E16A /* CreateViewModel.swift */; };
 		DBA9451828C71A4F00B6E16A /* FilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA9451728C71A4F00B6E16A /* FilterView.swift */; };
+		DBA9451D28CE0E0400B6E16A /* KPGreenRoomQuestionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA9451C28CE0E0400B6E16A /* KPGreenRoomQuestionsViewController.swift */; };
 		DBBA9481289968CD00264405 /* PaddingLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBBA9480289968CD00264405 /* PaddingLabel.swift */; };
 		DBD0821D2897E6EE0092241F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD0821C2897E6EE0092241F /* AppDelegate.swift */; };
 		DBD0821F2897E6EE0092241F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD0821E2897E6EE0092241F /* SceneDelegate.swift */; };
@@ -164,6 +165,7 @@
 		DBA9451128C653F200B6E16A /* FAQ.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FAQ.swift; sourceTree = "<group>"; };
 		DBA9451428C6540400B6E16A /* CreateViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateViewModel.swift; sourceTree = "<group>"; };
 		DBA9451728C71A4F00B6E16A /* FilterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterView.swift; sourceTree = "<group>"; };
+		DBA9451C28CE0E0400B6E16A /* KPGreenRoomQuestionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KPGreenRoomQuestionsViewController.swift; sourceTree = "<group>"; };
 		DBBA9480289968CD00264405 /* PaddingLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaddingLabel.swift; sourceTree = "<group>"; };
 		DBD082192897E6EE0092241F /* GreenRoom.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GreenRoom.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DBD0821C2897E6EE0092241F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -298,6 +300,7 @@
 			children = (
 				DBD082432897E75A0092241F /* KPFindQuestionViewController.swift */,
 				DB006B9228C342E200867013 /* KPQuestionsViewController.swift */,
+				DBA9451C28CE0E0400B6E16A /* KPGreenRoomQuestionsViewController.swift */,
 			);
 			path = Questions;
 			sourceTree = "<group>";
@@ -964,6 +967,7 @@
 				DB8D163A28B8D79900E3F237 /* ProgressBarView.swift in Sources */,
 				DBD082572897E75B0092241F /* KPFindQuestionViewController.swift in Sources */,
 				DBA8ED6428B9D336007526CF /* RecentSearchKeyword+CoreDataClass.swift in Sources */,
+				DBA9451D28CE0E0400B6E16A /* KPGreenRoomQuestionsViewController.swift in Sources */,
 				DBA8ED6A28B9D621007526CF /* PracticeQuestionCell.swift in Sources */,
 				E4A1760C28C637CB009D1DFE /* GRFilteringCell.swift in Sources */,
 				E4460DD528CA05A100AFA108 /* QuestionByCategoryCell.swift in Sources */,

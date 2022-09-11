@@ -21,13 +21,41 @@ final class InfoHeaderView: UICollectionReusableView {
     
     var filterHidden: Bool = false {
         didSet {
-            filter.removeFromSuperview()
+            if isUseKP {
+                self.filter.filterButton.isHidden = filterHidden
+                self.filter.selectedCategoriesCollectionView.isHidden = filterHidden
+            } else {
+                filter.removeFromSuperview()
+            }
         }
     }
     
-    private var titleLabel = Utilities.shared.generateLabel(text: "Title", color: .black, font: .sfPro(size: 16, family: .Regular))
+    /** 키워드 연습에서 쓰일 경우에 레이아웃 재정의 해주기 위한 프로퍼티 */
+    var isUseKP: Bool = false {
+        didSet {
+            titleLabel.snp.remakeConstraints{ make in
+                make.top.equalToSuperview().offset(30)
+                make.leading.equalToSuperview().offset(42)
+            }
+            
+            subTitleLabel.snp.remakeConstraints {
+                $0.leading.equalTo(titleLabel.snp.leading)
+                $0.top.equalTo(titleLabel.snp.bottom).offset(20)
+            }
+            
+            filter.snp.remakeConstraints { make in
+                make.leading.trailing.equalToSuperview()
+                make.bottom.equalToSuperview()
+                make.height.equalTo(80)
+            }
+        }
+    }
     
-    private var subTitleLabel = Utilities.shared.generateLabel(text: "SubTitleLabel", color: .customGray, font: .sfPro(size: 12, family: .Regular))
+    var titleLabel = Utilities.shared.generateLabel(text: "Title", color: .black, font: .sfPro(size: 16, family: .Semibold))
+    
+    private var subTitleLabel = Utilities.shared.generateLabel(text: "SubTitleLabel", color: .customGray, font: .sfPro(size: 12, family: .Regular)).then {
+        $0.setLineSpacing(spacing: 8)
+    }
    
     private var filter = FilterView(viewModel: CategoryViewModel())
 
@@ -35,6 +63,7 @@ final class InfoHeaderView: UICollectionReusableView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         configureUI()
+        
     }
     
     required init?(coder: NSCoder) {
@@ -58,7 +87,7 @@ final class InfoHeaderView: UICollectionReusableView {
             $0.top.equalTo(titleLabel.snp.bottom).offset(20)
         }
         
-        filter.backgroundColor = .backgroundGary
+        filter.backgroundColor = .backgroundGray
         filter.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
             make.bottom.equalToSuperview().offset(-1)

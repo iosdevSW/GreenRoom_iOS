@@ -151,10 +151,10 @@ class KPFindQuestionViewController: BaseViewController{
         
         self.view.addSubview(self.filterView)
         self.filterView.snp.makeConstraints{ make in
-            make.leading.equalToSuperview().offset(22)
+            make.leading.equalToSuperview().offset(2)
             make.trailing.equalToSuperview().offset(-42)
-            make.top.equalTo(self.searchBarView.snp.bottom).offset(20)
-            make.height.equalTo(70)
+            make.top.equalTo(self.searchBarView.snp.bottom).offset(8)
+            make.height.equalTo(80)
         }
         
         self.view.addSubview(self.questionListTableView)

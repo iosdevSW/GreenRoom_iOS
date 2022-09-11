@@ -43,7 +43,7 @@ final class MyPageViewController: BaseViewController {
     
     //MARK: - Configure
     override func configureUI(){
-        view.backgroundColor = .backgroundGary
+        view.backgroundColor = .backgroundGray
         self.view.addSubview(self.collectionView)
         collectionView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()

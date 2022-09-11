@@ -45,7 +45,7 @@ final class DetailRecentHeaderView: UICollectionReusableView {
     
     //MARK: - Configure
     private func configureUI(){
-        self.backgroundColor = .backgroundGary
+        self.backgroundColor = .backgroundGray
         self.addSubview(containerView)
         containerView.snp.makeConstraints {
             $0.leading.trailing.top.equalToSuperview()

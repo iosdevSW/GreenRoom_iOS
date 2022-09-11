@@ -18,7 +18,7 @@ extension UIColor {
     class var customGray: UIColor! { return UIColor(named: "customGray") ?? UIColor.black}
     class var customDarkGray: UIColor! { return UIColor(named: "customDarkGray") ?? UIColor.red}
     
-    static let backgroundGary = UIColor(red: 249/255.0, green: 249/255.0, blue: 249/255.0, alpha: 1.0)
+    static let backgroundGray = UIColor(red: 249/255.0, green: 249/255.0, blue: 249/255.0, alpha: 1.0)
 }
 
 extension UIView {
@@ -119,5 +119,21 @@ extension UIView{
         gradient.endPoint = CGPoint(x: 1.0, y: 1.0)
         gradient.frame = bounds
         layer.insertSublayer(gradient, at: 0)
+    }
+}
+
+extension UILabel {
+    func setLineSpacing(spacing: CGFloat) {
+        guard let text = text else { return }
+        
+        let attributeString = NSMutableAttributedString(string: text)
+        
+        let style = NSMutableParagraphStyle()
+        
+        style.lineSpacing = spacing
+        attributeString.addAttribute(.paragraphStyle,
+                                     value: style,
+                                     range: NSRange(location: 0, length: attributeString.length))
+        attributedText = attributeString
     }
 }

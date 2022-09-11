@@ -82,6 +82,7 @@ class GroupView: UIView {
             make.centerX.equalToSuperview()
             make.top.equalTo(self.notFoundImageView.snp.bottom).offset(20)
         }
+        
         self.addSubview(self.groupTableView)
         self.groupTableView.snp.makeConstraints{ make in
             make.leading.equalToSuperview().offset(38)
