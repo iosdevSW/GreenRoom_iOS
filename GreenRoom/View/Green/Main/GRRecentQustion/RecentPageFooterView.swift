@@ -21,7 +21,7 @@ final class RecentPageFooterView: UICollectionReusableView {
         $0.currentPage = 0
         $0.numberOfPages = 3
         $0.isUserInteractionEnabled = false
-        $0.backgroundColor = .backgroundGary
+        $0.backgroundColor = .backgroundGray
     }
     
     private let disposeBag = DisposeBag()

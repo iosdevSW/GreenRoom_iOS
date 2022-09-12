@@ -30,7 +30,7 @@ final class PopularHeader: UICollectionReusableView {
     
     //MARK: - Configure
     private func configureUI(){
-        self.backgroundColor = .backgroundGary
+        self.backgroundColor = .backgroundGray
         self.addSubview(headerLabel)
         
         headerLabel.snp.makeConstraints { make in

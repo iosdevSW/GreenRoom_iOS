@@ -20,7 +20,7 @@ final class DetailQuestionListCell: UICollectionViewCell {
     }
     
     private lazy var containerView = UIView().then {
-        $0.backgroundColor = .backgroundGary
+        $0.backgroundColor = .backgroundGray
         $0.layer.cornerRadius = 15
         $0.layer.maskedCorners = [.layerMaxXMaxYCorner,.layerMaxXMinYCorner,.layerMinXMaxYCorner]
         $0.layer.borderWidth = 2
@@ -77,7 +77,7 @@ final class DetailQuestionListCell: UICollectionViewCell {
     
     //MARK: - Configure
     private func configureUI(){
-        self.backgroundColor = .backgroundGary
+        self.backgroundColor = .backgroundGray
         
         self.addSubview(containerView)
         containerView.snp.makeConstraints { make in

@@ -109,7 +109,7 @@ final class QuestionByCategoryCell: UICollectionViewCell {
         }
         
         let underline = UIView()
-        underline.backgroundColor = .backgroundGary
+        underline.backgroundColor = .backgroundGray
         
         contentView.addSubview(underline)
         underline.snp.makeConstraints { make in

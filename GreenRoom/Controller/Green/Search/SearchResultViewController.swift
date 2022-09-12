@@ -42,7 +42,7 @@ extension SearchResultViewController {
         let layout = UICollectionViewFlowLayout()
         layout.estimatedItemSize = CGSize(width: view.frame.width-50, height: 300)
         self.collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: layout)
-        self.collectionView.backgroundColor = .backgroundGary
+        self.collectionView.backgroundColor = .backgroundGray
         collectionView.register(SearchResultHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: SearchResultHeaderView.reuseIdentifier)
         collectionView.register(SearchResultNotFoundCell.self, forCellWithReuseIdentifier: SearchResultNotFoundCell.reuseIdentifier)
     }

@@ -61,12 +61,11 @@ class FilterView: UIView{
     
     //MARK: - CofigureUI
     private func configureUI() {
-        
         self.addSubview(self.filterButton)
         
         self.filterButton.snp.makeConstraints{ make in
-            make.top.equalToSuperview().offset(5)
-            make.leading.equalToSuperview().offset(20)
+            make.top.equalToSuperview().offset(14)
+            make.leading.equalToSuperview().offset(40)
             make.height.equalTo(27)
             make.width.equalTo(60)
         }
