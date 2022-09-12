@@ -35,6 +35,7 @@ class KPMainViewController: BaseViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.tabBarController?.tabBar.isHidden = false
+        self.viewModel.selectedQuestionTemp = [] // 선택된 질문 초기화
     }
     
     //MARK: - Selector
