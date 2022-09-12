@@ -92,6 +92,9 @@
 		E44D507E28BE56A10086C447 /* QuestionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E44D507D28BE56A10086C447 /* QuestionService.swift */; };
 		E461E42028CB0D9B001EBF74 /* MyQuestionListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E461E41F28CB0D9B001EBF74 /* MyQuestionListCell.swift */; };
 		E461E42228CB1445001EBF74 /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E461E42128CB1445001EBF74 /* SearchViewModel.swift */; };
+		E461E42B28CE14B0001EBF74 /* ScrapedQuestionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E461E42A28CE14B0001EBF74 /* ScrapedQuestionViewController.swift */; };
+		E461E42D28CE1645001EBF74 /* ScrapViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E461E42C28CE1645001EBF74 /* ScrapViewCell.swift */; };
+		E461E42F28CE1EBE001EBF74 /* GRDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E461E42E28CE1EBE001EBF74 /* GRDetailViewModel.swift */; };
 		E46539D928ACD77600F17A6C /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E46539D828ACD77600F17A6C /* Utilities.swift */; };
 		E46539DC28ACDAD100F17A6C /* SetNotificationRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = E46539DB28ACDAD100F17A6C /* SetNotificationRow.swift */; };
 		E46539E428AD33C700F17A6C /* EditProfileInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E46539E328AD33C700F17A6C /* EditProfileInfoViewController.swift */; };
@@ -214,6 +217,9 @@
 		E44D507D28BE56A10086C447 /* QuestionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionService.swift; sourceTree = "<group>"; };
 		E461E41F28CB0D9B001EBF74 /* MyQuestionListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyQuestionListCell.swift; sourceTree = "<group>"; };
 		E461E42128CB1445001EBF74 /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
+		E461E42A28CE14B0001EBF74 /* ScrapedQuestionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrapedQuestionViewController.swift; sourceTree = "<group>"; };
+		E461E42C28CE1645001EBF74 /* ScrapViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrapViewCell.swift; sourceTree = "<group>"; };
+		E461E42E28CE1EBE001EBF74 /* GRDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GRDetailViewModel.swift; sourceTree = "<group>"; };
 		E46539D828ACD77600F17A6C /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		E46539DB28ACDAD100F17A6C /* SetNotificationRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetNotificationRow.swift; sourceTree = "<group>"; };
 		E46539E328AD33C700F17A6C /* EditProfileInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileInfoViewController.swift; sourceTree = "<group>"; };
@@ -478,9 +484,8 @@
 		DBD0823E2897E75A0092241F /* Green */ = {
 			isa = PBXGroup;
 			children = (
-				DBD0823F2897E75A0092241F /* GreenRoomViewController.swift */,
-				E4A1761328C64B47009D1DFE /* DetailRecentQuestionViewController.swift */,
-				E4460DD228CA01D400AFA108 /* QuestionsByCategoryViewController.swift */,
+				E461E42A28CE14B0001EBF74 /* ScrapedQuestionViewController.swift */,
+				E461E42828CE1463001EBF74 /* Main */,
 				E49F7D8728BC7D5E000AB49B /* Create */,
 				E49EF3DA28B5E98D00358340 /* Search */,
 			);
@@ -682,6 +687,25 @@
 			path = Detail;
 			sourceTree = "<group>";
 		};
+		E461E42828CE1463001EBF74 /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				DBD0823F2897E75A0092241F /* GreenRoomViewController.swift */,
+				E4A1761328C64B47009D1DFE /* DetailRecentQuestionViewController.swift */,
+				E4460DD228CA01D400AFA108 /* QuestionsByCategoryViewController.swift */,
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
+		E461E42928CE147E001EBF74 /* GRMyQuestionList */ = {
+			isa = PBXGroup;
+			children = (
+				E4460DD628CAF5BD00AFA108 /* GreenroomCommonHeaderView.swift */,
+				E461E41F28CB0D9B001EBF74 /* MyQuestionListCell.swift */,
+			);
+			path = GRMyQuestionList;
+			sourceTree = "<group>";
+		};
 		E46539DA28ACD77B00F17A6C /* Utils */ = {
 			isa = PBXGroup;
 			children = (
@@ -696,6 +720,7 @@
 			isa = PBXGroup;
 			children = (
 				DBD0823A2897E75A0092241F /* GreenViewModel.swift */,
+				E461E42E28CE1EBE001EBF74 /* GRDetailViewModel.swift */,
 				E461E42128CB1445001EBF74 /* SearchViewModel.swift */,
 				DBA9451428C6540400B6E16A /* CreateViewModel.swift */,
 			);
@@ -726,8 +751,8 @@
 				E4A1761228C64AC5009D1DFE /* GRPopularQuestion */,
 				E4A1760D28C6486B009D1DFE /* GRRecentQustion */,
 				E4A1761128C64ABD009D1DFE /* GRMyGreenRoom */,
-				E4460DD628CAF5BD00AFA108 /* GreenroomCommonHeaderView.swift */,
-				E461E41F28CB0D9B001EBF74 /* MyQuestionListCell.swift */,
+				E461E42928CE147E001EBF74 /* GRMyQuestionList */,
+				E461E42C28CE1645001EBF74 /* ScrapViewCell.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -927,11 +952,13 @@
 				DB8D163828B8ABC700E3F237 /* CustomGoalProgressBar.swift in Sources */,
 				E44D507E28BE56A10086C447 /* QuestionService.swift in Sources */,
 				E49EF3D928B539FF00358340 /* PopularQuestionCell.swift in Sources */,
+				E461E42F28CE1EBE001EBF74 /* GRDetailViewModel.swift in Sources */,
 				DB9CF9BE289E81FE0091B705 /* CateogryCell.swift in Sources */,
 				E46539DC28ACDAD100F17A6C /* SetNotificationRow.swift in Sources */,
 				E46539D928ACD77600F17A6C /* Utilities.swift in Sources */,
 				DBA8ED6E28BB89C3007526CF /* KPFinishViewController.swift in Sources */,
 				E470539728AB856D00884B56 /* SettingHeader.swift in Sources */,
+				E461E42B28CE14B0001EBF74 /* ScrapedQuestionViewController.swift in Sources */,
 				DB563FA028AF841400E7193D /* RxAppleLoginProxy.swift in Sources */,
 				DB006B8628C23A4300867013 /* ChevronButton.swift in Sources */,
 				DB53AE9F289F967800E9A5CC /* RegisterCompleteViewControlller.swift in Sources */,
@@ -1018,6 +1045,7 @@
 				E40BC6F928B88FB600FB557D /* RecentSearchModel.xcdatamodeld in Sources */,
 				DBA9451328C653F200B6E16A /* FAQ.swift in Sources */,
 				E4C8AE6928B35519007E010D /* UserService.swift in Sources */,
+				E461E42D28CE1645001EBF74 /* ScrapViewCell.swift in Sources */,
 				DBD0821F2897E6EE0092241F /* SceneDelegate.swift in Sources */,
 				DB006B9128C33FDA00867013 /* KPGroupsViewController.swift in Sources */,
 				E4141ACA28AF79E7004D74B3 /* QNAViewController.swift in Sources */,

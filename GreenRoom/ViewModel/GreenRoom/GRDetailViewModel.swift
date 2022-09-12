@@ -1,30 +1,26 @@
 //
-//  GreenViewModel.swift
+//  GRDetailViewModel.swift
 //  GreenRoom
 //
-//  Created by SangWoo's MacBook on 2022/08/01.
+//  Created by Doyun Park on 2022/09/11.
 //
 
 import Foundation
-import SwiftKeychainWrapper
 import RxSwift
-import RxCocoa
 
-class GreenRoomViewModel: ViewModelType {
+final class GRDetailViewModel: ViewModelType {
     
     private var greenroomService = GreenRoomService()
     
     var disposeBag = DisposeBag()
     
-    private let filtering = BehaviorSubject<[GreenRoomSectionModel]>(value:[] )
+    private let filtering = BehaviorSubject<[GreenRoomSectionModel]>(value:[])
     private let popular = BehaviorSubject<[GreenRoomSectionModel]>(value: [])
     private let recent = BehaviorSubject<[GreenRoomSectionModel]>(value: [])
     private let greenroom = BehaviorSubject<[GreenRoomSectionModel]>(value: [])
     private let myQuestionList = BehaviorSubject<[GreenRoomSectionModel]>(value: [])
     
     struct Input {
-        let greenroomTap: Observable<Void>
-        let myListTap: Observable<Void>
         let trigger: Observable<Bool>
     }
     
@@ -33,9 +29,11 @@ class GreenRoomViewModel: ViewModelType {
     }
     
     private var dataSource = PublishSubject<[GreenRoomSectionModel]>()
+    private var GRDataSource = PublishSubject<[GreenRoomSectionModel]>()
+    private var myListDataSource = PublishSubject<[GreenRoomSectionModel]>()
     
     func transform(input: Input) -> Output {
-        
+         
         input.trigger.subscribe(onNext: { [weak self] _ in
             guard let self = self else { return }
             self.fetchFiltering()
@@ -48,59 +46,38 @@ class GreenRoomViewModel: ViewModelType {
         let result = Observable.combineLatest(self.filtering.asObserver() ,self.popular.asObserver(), self.recent.asObserver(), self.greenroom.asObserver() ).map { $0.0 + $0.1 + $0.2 + $0.3 }
         result.bind(to: self.dataSource).disposed(by: self.disposeBag)
         
-        input.greenroomTap.subscribe(onNext: { [weak self] _ in
-            guard let self = self else { return }
-            
-            Observable.combineLatest(
-                self.filtering.asObserver(),
-                self.popular.asObserver(),
-                self.recent.asObserver(),
-                self.greenroom.asObserver()
-            ).map { $0.0 + $0.1 + $0.2 + $0.3 }
-                .bind(to: self.dataSource).disposed(by: self.disposeBag)
-  
-        }).disposed(by: self.disposeBag)
-        input.myListTap.subscribe(onNext: { [weak self] _ in
-            guard let self = self else { return }
-            
-            Observable.combineLatest(
-                self.greenroom.asObserver(),
-                self.myQuestionList.asObserver())
-            .map { $0.0 + $0.1}
-            .bind(to: self.dataSource).disposed(by: self.disposeBag)
-            
-        }).disposed(by: disposeBag)
+//        input.greenroomTap.subscribe(onNext: { [weak self] _ in
+//            guard let self = self else { return }
+//
+//            Observable.combineLatest(
+//                self.filtering.asObserver(),
+//                self.popular.asObserver(),
+//                self.recent.asObserver(),
+//                self.greenroom.asObserver()
+//            ).map { $0.0 + $0.1 + $0.2 + $0.3 }
+//                .bind(to: self.dataSource).disposed(by: self.disposeBag)
+//
+//        }).disposed(by: self.disposeBag)
+//        input.myListTap.subscribe(onNext: { [weak self] _ in
+//            guard let self = self else { return }
+//
+//            Observable.combineLatest(
+//                self.greenroom.asObserver(),
+//                self.myQuestionList.asObserver())
+//            .map { $0.0 + $0.1}
+//            .bind(to: self.dataSource).disposed(by: self.disposeBag)
+//
+//        }).disposed(by: disposeBag)
 
         return Output(greenroom: self.dataSource.asObserver())
     }
     
     let currentBannerPage = PublishSubject<Int>()
-    
-    
-    func isLogin()->Observable<Bool> {
-        if let accessToken = KeychainWrapper.standard.string(forKey: "accessToken"){
-            return Observable.create{ emitter in
-                //accessToken 유효성 체크 부분, 유효하면 true
-                // 유효하지 않으면 refreshtoken통해 재발급
-                // refreshtoken도 유효하지 않으면 false
-                // 일단 유효성 체크 API가 없어서 있으면 넘어가는 것만 구현
-                emitter.onNext(true)
-                return Disposables.create()
-            }
-            
-        }else {
-            return Observable.create{ emitter in
-                emitter.onNext(false)
-                emitter.onCompleted()
-                
-                return Disposables.create()
-            }
-        }
-    }
+
 }
 
 //MARK: - API Service
-extension GreenRoomViewModel {
+extension GRDetailViewModel {
     
     private func fetchFiltering(){
         self.filtering.onNext([GreenRoomSectionModel.filtering(items:[ GreenRoomSectionModel.Item.filtering(interest: "디자인")])])
