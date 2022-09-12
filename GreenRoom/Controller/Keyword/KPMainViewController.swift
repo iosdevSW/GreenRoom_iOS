@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import RxSwift
 
 class KPMainViewController: BaseViewController {
     //MARK: - Properties
@@ -54,6 +55,15 @@ class KPMainViewController: BaseViewController {
     
     override func setupBinding() {
         //그룹뷰 테이블 뷰 바인딩
+        Observable.of(["그룹이름1","그룹이름2","그룹이름3","그룹이름4","그룹이름5"])
+            .bind(to: groupView.groupTableView.rx.items(cellIdentifier: "GroupCell", cellType: GroupCell.self)) { index, title, cell in
+                cell.groupNameLabel.text = title
+                cell.categoryLabel.text = "공통"
+                cell.questionCountingLabel.text = "질문 0개"
+                cell.selectionStyle = .none
+                print("이래도 호출되나")
+            }.disposed(by: disposeBag)
+        //그룹 데이터 한번 더 구독하여 nil일 경우 등록된 글 없음처리해주기.
     }
     
     //MARK: - ConfigureUI

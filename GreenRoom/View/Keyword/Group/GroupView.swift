@@ -11,6 +11,7 @@ class GroupView: UIView {
     //MARK: - Properties
     lazy var groupTableView = UITableView().then {
         $0.backgroundColor = .clear
+        $0.separatorStyle = .none
         $0.register(GroupCell.self, forCellReuseIdentifier: "GroupCell")
     }
     
