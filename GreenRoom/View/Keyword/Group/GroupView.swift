@@ -11,6 +11,7 @@ class GroupView: UIView {
     //MARK: - Properties
     lazy var groupTableView = UITableView().then {
         $0.backgroundColor = .clear
+        $0.separatorStyle = .none
         $0.register(GroupCell.self, forCellReuseIdentifier: "GroupCell")
     }
     
@@ -47,9 +48,11 @@ class GroupView: UIView {
         $0.font = .sfPro(size: 12, family: .Bold)
     }
     
+    //MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.backgroundColor = .customGray.withAlphaComponent(0.1)
+        
         configureUI()
     }
     

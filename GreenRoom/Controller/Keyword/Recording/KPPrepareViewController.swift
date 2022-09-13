@@ -88,6 +88,7 @@ class KPPrepareViewController: BaseViewController{
                 let btn = UIButton()
                 btn.setImage(UIImage(named: "menu"), for: .normal)
                 btn.tintColor = .customGray
+                
                 let imageView = UIImageView(image: UIImage(named: "menu"))
                 imageView.tintColor = .customGray
                 btn.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
@@ -129,7 +130,6 @@ class KPPrepareViewController: BaseViewController{
         viewmodel.cameraOnOff = cameraSwitch.isOn
         print("camera On/Off : \(cameraSwitch.isOn)")
     }
-
     
     //MARK: - ConfigureUI
     override func configureUI(){

@@ -6,10 +6,20 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
 
 class GroupCell: UITableViewCell {
     //MARK: - Properties
-    let categoryLabel = PaddingLabel(padding: .init(top: 0, left: 6, bottom: 0, right: 6)).then{
+    
+    private let frameView = UIStackView().then {
+        $0.layer.borderColor = UIColor.mainColor.cgColor
+        $0.layer.cornerRadius = 15
+        $0.layer.borderWidth = 2
+        $0.layer.maskedCorners = .init(arrayLiteral: .layerMaxXMaxYCorner, .layerMaxXMinYCorner, .layerMinXMaxYCorner)
+    }
+    
+    let categoryLabel = PaddingLabel(padding: .init(top: 2, left: 10, bottom: 2, right: 10)).then{
         $0.backgroundColor = .mainColor
         $0.textColor = .white
         $0.font = .sfPro(size: 12, family: .Semibold)
@@ -25,11 +35,15 @@ class GroupCell: UITableViewCell {
         $0.textColor = .black
     }
     
+    let editButton = UIButton(type: .system).then {
+        $0.setImage(UIImage(named: "edit")?.withRenderingMode(.alwaysOriginal), for: .normal)
+    }
+    
     //MARK: - Init
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         self.backgroundColor = .clear
-        configure()
+//        bind()
         configureUI()
     }
     
@@ -37,32 +51,47 @@ class GroupCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    //MARK: - Bind
+//    func bind() {
+//        self.editButton.rx.tap
+//            .bind {
+//                print("입력")
+//            }
+//    }
+    
+    
     //MARK: - ConfigureUI
     private func configureUI() {
-        self.addSubview(self.categoryLabel)
+        self.contentView.addSubview(self.frameView)
+        self.frameView.snp.makeConstraints{ make in
+            make.leading.trailing.top.equalToSuperview()
+            make.bottom.equalToSuperview().offset(-10)
+        }
+        
+        self.frameView.addSubview(self.categoryLabel)
         self.categoryLabel.snp.makeConstraints{ make in
             make.leading.equalToSuperview().offset(20)
             make.top.equalToSuperview().offset(12)
         }
         
-        self.addSubview(self.groupNameLabel)
+        self.frameView.addSubview(self.groupNameLabel)
         self.groupNameLabel.snp.makeConstraints{ make in
             make.leading.equalToSuperview().offset(20)
             make.top.equalTo(self.categoryLabel.snp.bottom).offset(8)
         }
         
-        self.addSubview(self.questionCountingLabel)
+        self.frameView.addSubview(self.questionCountingLabel)
         self.questionCountingLabel.snp.makeConstraints{ make in
             make.leading.equalToSuperview().offset(20)
             make.top.equalTo(self.groupNameLabel.snp.bottom).offset(8)
             make.bottom.equalToSuperview().offset(-16)
         }
-    }
-    
-    func configure(){
-        self.layer.borderColor = UIColor.mainColor.cgColor
-        self.layer.cornerRadius = 15
-        self.layer.borderWidth = 2
-        self.layer.maskedCorners = .init(arrayLiteral: .layerMaxXMaxYCorner, .layerMaxXMinYCorner, .layerMinXMaxYCorner)
+        
+        self.frameView.addSubview(self.editButton)
+        self.editButton.snp.makeConstraints{ make in
+            make.trailing.equalToSuperview().offset(-12)
+            make.top.equalToSuperview().offset(12)
+            make.width.height.equalTo(20)
+        }
     }
 }

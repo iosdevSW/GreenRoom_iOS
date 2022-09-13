@@ -6,9 +6,11 @@
 //
 
 import UIKit
+import RxSwift
 
 class KPMainViewController: BaseViewController {
     //MARK: - Properties
+    
     let viewModel: KeywordViewModel
     lazy var groupView = GroupView().then {
         $0.groupCountingLabel.text = "그룹을 추가해주세요 :)"
@@ -35,6 +37,7 @@ class KPMainViewController: BaseViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.tabBarController?.tabBar.isHidden = false
+        self.viewModel.selectedQuestionTemp = [] // 선택된 질문 초기화
     }
     
     //MARK: - Selector
@@ -51,8 +54,22 @@ class KPMainViewController: BaseViewController {
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
+    @objc func didClickEditButton(_ sender: UIButton) {
+        self.navigationController?.pushViewController(KPGroupEditViewController(), animated: true)
+    }
+    
+    //MARK: - Bind
     override func setupBinding() {
         //그룹뷰 테이블 뷰 바인딩
+        Observable.of(["그룹이름1","그룹이름2","그룹이름3","그룹이름4","그룹이름5"])
+            .bind(to: groupView.groupTableView.rx.items(cellIdentifier: "GroupCell", cellType: GroupCell.self)) { index, title, cell in
+                cell.groupNameLabel.text = title
+                cell.categoryLabel.text = "공통"
+                cell.questionCountingLabel.text = "질문 0개"
+                cell.selectionStyle = .none
+                cell.editButton.addTarget(self, action: #selector(self.didClickEditButton(_:)), for: .touchUpInside)
+            }.disposed(by: disposeBag)
+        //그룹 데이터 한번 더 구독하여 nil일 경우 등록된 글 없음처리해주기.
     }
     
     //MARK: - ConfigureUI
@@ -126,8 +143,5 @@ class KPMainViewController: BaseViewController {
         ]
         
         navigationController?.navigationBar.tintColor = .mainColor
-        
-        
     }
-    
 }

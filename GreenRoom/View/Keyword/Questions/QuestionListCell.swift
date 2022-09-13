@@ -11,7 +11,7 @@ class QuestionListCell: UITableViewCell {
     //MARK: - Properties
     let mainLabel = UILabel().then {
         $0.text = "여기는 면접질문 항목란입니다."
-        $0.numberOfLines = 2
+        $0.numberOfLines = 0
         $0.textColor = .black
         $0.font = .sfPro(size: 20, family: .Regular)
     }

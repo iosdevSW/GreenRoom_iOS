@@ -279,7 +279,6 @@
 		DB006B8B28C3275E00867013 /* Group */ = {
 			isa = PBXGroup;
 			children = (
-				DBA8ED7D28C0A4D7007526CF /* KPMainViewController.swift */,
 				DB006B8D28C3282700867013 /* KPGroupEditViewController.swift */,
 				DB006B9028C33FDA00867013 /* KPGroupsViewController.swift */,
 			);
@@ -332,6 +331,15 @@
 			path = MyPage;
 			sourceTree = "<group>";
 		};
+		DB21028B28CF739500365362 /* Result */ = {
+			isa = PBXGroup;
+			children = (
+				DBA8ED7328BDDCA1007526CF /* DetailCell.swift */,
+				DBA8ED7B28BF931F007526CF /* ReviewCell.swift */,
+			);
+			path = Result;
+			sourceTree = "<group>";
+		};
 		DB9CF9BA289E27650091B705 /* Category */ = {
 			isa = PBXGroup;
 			children = (
@@ -340,12 +348,12 @@
 			path = Category;
 			sourceTree = "<group>";
 		};
-		DBA8ED6728B9D539007526CF /* KeywordMain */ = {
+		DBA8ED6728B9D539007526CF /* Questions */ = {
 			isa = PBXGroup;
 			children = (
 				DBFB296F28B351F400B1DAC9 /* QuestionListCell.swift */,
 			);
-			path = KeywordMain;
+			path = Questions;
 			sourceTree = "<group>";
 		};
 		DBA8ED6828B9D599007526CF /* Prepare */ = {
@@ -355,7 +363,6 @@
 				DB8D163928B8D79900E3F237 /* ProgressBarView.swift */,
 				DBA8ED6928B9D621007526CF /* PracticeQuestionCell.swift */,
 				DBA8ED6F28BD103F007526CF /* PracticeResultCell.swift */,
-				DBA8ED7328BDDCA1007526CF /* DetailCell.swift */,
 			);
 			path = Prepare;
 			sourceTree = "<group>";
@@ -500,6 +507,7 @@
 		DBD082422897E75A0092241F /* Keyword */ = {
 			isa = PBXGroup;
 			children = (
+				DBA8ED7D28C0A4D7007526CF /* KPMainViewController.swift */,
 				DB006B8B28C3275E00867013 /* Group */,
 				DB006B8F28C333C700867013 /* Questions */,
 				DB07820D28C4742A0091EEFE /* Recording */,
@@ -548,9 +556,9 @@
 			children = (
 				DB07820E28C479750091EEFE /* Recording */,
 				DB006B8C28C327B700867013 /* Group */,
-				DBA8ED6728B9D539007526CF /* KeywordMain */,
+				DBA8ED6728B9D539007526CF /* Questions */,
 				DBA8ED6828B9D599007526CF /* Prepare */,
-				DBA8ED7B28BF931F007526CF /* ReviewCell.swift */,
+				DB21028B28CF739500365362 /* Result */,
 			);
 			path = Keyword;
 			sourceTree = "<group>";
