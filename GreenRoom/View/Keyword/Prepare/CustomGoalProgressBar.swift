@@ -27,13 +27,19 @@ class CustomProgressBar: UIView {
         
         $0.transform = CATransform3DMakeAffineTransform(CGAffineTransform(a: 1, b: 0, c: 0, d: 15813.06, tx: 0.04, ty: -7906.53))
         
+        $0.opacity = 0.9
     }
+    
+    private var textAttributes: [NSAttributedString.Key : Any] = {
+        return [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 14)]
+    }()
     
     //MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.backgroundColor = .customGray.withAlphaComponent(0.2)
-        layer.addSublayer(self.progressLayer)
+//        layer.addSublayer(self.progressLayer)
+        layer.insertSublayer(self.progressLayer, at: 0)
         layer.borderWidth = 1
         layer.borderColor = UIColor.customGray.cgColor
         layer.cornerRadius = 15
@@ -60,5 +66,16 @@ class CustomProgressBar: UIView {
         progressLayer.bounds = progressRect.insetBy(dx: -0.5*progressRect.width, dy: -0.5*progressRect.height)
         
         progressLayer.position = .zero
+        
+        let persent: NSString = "10%" as NSString
+        
+        let textFontAttributes = [
+            NSAttributedString.Key.font: UIFont.sfPro(size: 16, family: .Semibold),
+            NSAttributedString.Key.foregroundColor: UIColor.black,
+        ]
+        
+        let renderRect = CGRect(x: progressRect.width-40, y: 4, width: 40, height: 40)
+        
+        persent.draw(in: renderRect, withAttributes: textFontAttributes)
     }
 }

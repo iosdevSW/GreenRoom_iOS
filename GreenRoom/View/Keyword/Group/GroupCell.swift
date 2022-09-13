@@ -6,9 +6,12 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
 
 class GroupCell: UITableViewCell {
     //MARK: - Properties
+    
     private let frameView = UIStackView().then {
         $0.layer.borderColor = UIColor.mainColor.cgColor
         $0.layer.cornerRadius = 15
@@ -33,15 +36,14 @@ class GroupCell: UITableViewCell {
     }
     
     let editButton = UIButton(type: .system).then {
-        $0.setImage(UIImage(named: "QNA")?.withRenderingMode(.alwaysOriginal), for: .normal)
-        
+        $0.setImage(UIImage(named: "edit")?.withRenderingMode(.alwaysOriginal), for: .normal)
     }
     
     //MARK: - Init
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         self.backgroundColor = .clear
-        configure()
+//        bind()
         configureUI()
     }
     
@@ -49,9 +51,18 @@ class GroupCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    //MARK: - Bind
+//    func bind() {
+//        self.editButton.rx.tap
+//            .bind {
+//                print("입력")
+//            }
+//    }
+    
+    
     //MARK: - ConfigureUI
     private func configureUI() {
-        self.addSubview(self.frameView)
+        self.contentView.addSubview(self.frameView)
         self.frameView.snp.makeConstraints{ make in
             make.leading.trailing.top.equalToSuperview()
             make.bottom.equalToSuperview().offset(-10)
@@ -82,9 +93,5 @@ class GroupCell: UITableViewCell {
             make.top.equalToSuperview().offset(12)
             make.width.height.equalTo(20)
         }
-    }
-    
-    func configure(){
-        
     }
 }

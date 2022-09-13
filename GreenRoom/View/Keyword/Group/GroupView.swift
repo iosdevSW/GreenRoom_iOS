@@ -48,9 +48,11 @@ class GroupView: UIView {
         $0.font = .sfPro(size: 12, family: .Bold)
     }
     
+    //MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.backgroundColor = .customGray.withAlphaComponent(0.1)
+        
         configureUI()
     }
     
