@@ -30,9 +30,15 @@ class CustomProgressBar: UIView {
         $0.opacity = 0.9
     }
     
-    private var textAttributes: [NSAttributedString.Key : Any] = {
-        return [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 14)]
-    }()
+    private lazy var persentLabel = UILabel().then {
+        $0.frame = .init(x: 0, y: 0, width: 46, height: 40)
+        $0.font = .sfPro(size: 16, family: .Semibold)
+        $0.textColor = .white
+        
+        self.addSubview($0)
+    }
+    
+    
     
     //MARK: - Init
     override init(frame: CGRect) {
@@ -67,15 +73,12 @@ class CustomProgressBar: UIView {
         
         progressLayer.position = .zero
         
-        let persent: NSString = "10%" as NSString
+        if progress >= 0.2 {
+            self.persentLabel.text = String(format: "%2.f%%", progress * 100)
+            self.persentLabel.center = CGPoint(x: progressRect.width - persentLabel.frame.width/2, y: progressRect.midY)
+        } else {
+            self.persentLabel.text = ""
+        }
         
-        let textFontAttributes = [
-            NSAttributedString.Key.font: UIFont.sfPro(size: 16, family: .Semibold),
-            NSAttributedString.Key.foregroundColor: UIColor.black,
-        ]
-        
-        let renderRect = CGRect(x: progressRect.width-40, y: 4, width: 40, height: 40)
-        
-        persent.draw(in: renderRect, withAttributes: textFontAttributes)
     }
 }
