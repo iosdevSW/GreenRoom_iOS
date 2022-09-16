@@ -1,44 +1,51 @@
 //
-//  GRDetailViewModel.swift
+//  ScrabViewModel.swift
 //  GreenRoom
 //
-//  Created by Doyun Park on 2022/09/11.
+//  Created by Doyun Park on 2022/09/16.
 //
 
 import Foundation
 import RxSwift
 
-final class GRDetailViewModel: ViewModelType {
-    
-    private var greenroomService = GreenRoomService()
-    
+final class ScrapViewModel: ViewModelType {
     var disposeBag = DisposeBag()
     
-    private let recent = BehaviorSubject<[GreenRoomSectionModel]>(value: [])
     
     struct Input {
         let trigger: Observable<Bool>
+        let buttonTab: Observable<Void>
     }
     
     struct Output {
-        let recent: Observable<[GreenRoomSectionModel]>
+        let scrap: Observable<[GreenRoomSectionModel]>
     }
     
+    private let recent = BehaviorSubject<[GreenRoomSectionModel]>(value: [])
+    
+    let selectedCategoriesObservable = BehaviorSubject<[Int]>(value: [])
+    
+    var selectedIndexes: [Int] = [] { 
+        didSet {
+            self.selectedCategoriesObservable.onNext(self.selectedIndexes)
+        }
+    }
     
     func transform(input: Input) -> Output {
-         
         input.trigger.subscribe(onNext: { [weak self] _ in
             guard let self = self else { return }
             self.fetchRecent()
         }).disposed(by: disposeBag)
-  
-        return Output(recent: self.recent.asObserver())
+        
+        input.buttonTab.subscribe(onNext: {
+//            selectedIndex해당하는 것들 모두 삭제.
+        }).disposed(by: disposeBag)
+        return Output(scrap: self.recent.asObserver())
     }
-
+    
 }
-
 //MARK: - API Service
-extension GRDetailViewModel {
+extension ScrapViewModel {
     
     private func fetchRecent(){
         self.recent.onNext([GreenRoomSectionModel.recent(items: [

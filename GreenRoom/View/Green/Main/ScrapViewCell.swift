@@ -18,11 +18,42 @@ class ScrapViewCell: UICollectionViewCell {
         }
     }
     
+    var editMode: Bool = false {
+        didSet {
+            selectIndicator.isHidden = !editMode
+        }
+    }
+    
+    override var isSelected: Bool{
+        didSet {
+            self.selectIndicator.backgroundColor = self.isSelected ? .mainColor : .white
+            self.selectIndicator.setImage(self.isSelected ? UIImage(systemName: "checkmark") : nil, for: .normal)
+            self.selectIndicator.layer.borderColor = self.isSelected ? UIColor.white.cgColor : UIColor.customGray.cgColor
+        }
+    }
+    
+    private lazy var selectIndicator = UIButton().then {
+        $0.backgroundColor = .mainColor
+        $0.setImage(UIImage(systemName: "checkmark"), for: .normal)
+        $0.imageView?.contentMode = .scaleAspectFit
+        $0.imageView?.tintColor = .white
+        $0.layer.cornerRadius = 22/2
+        $0.layer.borderColor = UIColor.white.cgColor
+        $0.layer.borderWidth = 1
+    }
+    
+    private lazy var containerView = UIView().then {
+        $0.layer.cornerRadius = 15
+        $0.layer.maskedCorners = [.layerMaxXMaxYCorner,.layerMaxXMinYCorner,.layerMinXMaxYCorner]
+        $0.layer.borderWidth = 2
+        $0.layer.borderColor = UIColor.mainColor.cgColor
+    }
+    
     private lazy var profileImageView = UIImageView(frame: .zero).then {
         $0.contentMode = .scaleAspectFill
-        $0.layer.cornerRadius = bounds.width * 0.08 / 2
+        $0.layer.cornerRadius = bounds.width * 0.2 / 2
         $0.layer.masksToBounds = true
-        $0.image = UIImage(named: "GreenRoomIcon")
+        $0.backgroundColor = .customGray
         $0.tintColor = .mainColor
         $0.layer.masksToBounds = false
     }
@@ -49,6 +80,11 @@ class ScrapViewCell: UICollectionViewCell {
         $0.isUserInteractionEnabled = false
     }
     
+    private var questionStateLabel = UILabel().then {
+        $0.textColor = .point
+        $0.font = .sfPro(size: 12, family: .Bold)
+        $0.text = "답변 완료"
+    }
    //MARK: - LifeCycle
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -61,30 +97,51 @@ class ScrapViewCell: UICollectionViewCell {
     
     //MARK: - Configure
     private func configureUI(){
-        self.contentView.layer.cornerRadius = 15
-        self.contentView.layer.maskedCorners = [.layerMaxXMaxYCorner,.layerMaxXMinYCorner,.layerMinXMaxYCorner]
-        self.contentView.layer.borderWidth = 2
-        self.contentView.layer.borderColor = UIColor.mainColor.cgColor
+        
+        let bottomMargin = bounds.height * 0.08
+        let sideMargin = bounds.width * 0.07
         
         self.backgroundColor = .white
-        self.contentView.addSubview(questionTextView)
+        self.contentView.addSubview(containerView)
+        containerView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.top.equalToSuperview().offset(30)
+            make.bottom.equalToSuperview().offset(-30)
+        }
+        
+        self.containerView.addSubview(profileImageView)
+        profileImageView.snp.makeConstraints { make in
+            make.trailing.equalToSuperview().offset(-sideMargin)
+            make.bottom.equalToSuperview().offset(-bottomMargin)
+            make.width.height.equalTo(bounds.width * 0.2)
+        }
+        
+        self.containerView.addSubview(categoryLabel)
+        self.categoryLabel.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(sideMargin)
+            make.bottom.equalToSuperview().offset(-bottomMargin)
+            make.height.equalTo(25)
+        }
+
+        self.containerView.addSubview(questionTextView)
         self.questionTextView.snp.makeConstraints { make in
             make.trailing.equalToSuperview()
             make.leading.top.equalToSuperview()
-            make.height.equalTo(110)
+            make.bottom.equalTo(categoryLabel.snp.top)
+        }
+        self.contentView.addSubview(selectIndicator)
+        selectIndicator.snp.makeConstraints { make in
+            make.leading.equalTo(questionTextView.snp.leading)
+            make.top.equalToSuperview()
+            make.width.height.equalTo(22)
         }
         
-        self.contentView.addSubview(categoryLabel)
-        self.categoryLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(13)
-            make.bottom.equalToSuperview().offset(-15)
+        self.contentView.addSubview(questionStateLabel)
+        questionStateLabel.snp.makeConstraints { make in
+            make.top.equalTo(containerView.snp.bottom).offset(8)
+            make.trailing.equalToSuperview()
         }
-        
-        self.contentView.addSubview(profileImageView)
-        profileImageView.snp.makeConstraints { make in
-            make.top.equalTo(questionTextView.snp.bottom).offset(10)
-            make.trailing.equalToSuperview().offset(-13)
-        }
+        selectIndicator.isHidden = true
     }
     
     private func configure(){
@@ -95,6 +152,6 @@ class ScrapViewCell: UICollectionViewCell {
         self.questionTextView.attributedText = NSAttributedString(string: question.question, attributes: [NSAttributedString.Key.paragraphStyle : style])
         self.categoryLabel.text = category.title
         self.profileImageView.image = UIImage(named: question.image)
-        
     }
+    
 }

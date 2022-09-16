@@ -78,6 +78,7 @@
 		E4141ABC28AF528E004D74B3 /* FAQCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4141ABB28AF528E004D74B3 /* FAQCell.swift */; };
 		E4141ACA28AF79E7004D74B3 /* QNAViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4141AC828AF79E7004D74B3 /* QNAViewController.swift */; };
 		E4141ACB28AF79E7004D74B3 /* FAQViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4141AC928AF79E7004D74B3 /* FAQViewController.swift */; };
+		E4206CD228D4A1240011E117 /* ScrabViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4206CD128D4A1240011E117 /* ScrabViewModel.swift */; };
 		E427EC0328C791150046B4AA /* InfoHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E427EC0228C791150046B4AA /* InfoHeaderView.swift */; };
 		E427EC0628C791850046B4AA /* Info.swift in Sources */ = {isa = PBXBuildFile; fileRef = E427EC0528C791850046B4AA /* Info.swift */; };
 		E427EC0828C7937B0046B4AA /* SFProText-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = E427EC0728C7937B0046B4AA /* SFProText-Bold.otf */; };
@@ -203,6 +204,7 @@
 		E4141ABB28AF528E004D74B3 /* FAQCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAQCell.swift; sourceTree = "<group>"; };
 		E4141AC828AF79E7004D74B3 /* QNAViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QNAViewController.swift; sourceTree = "<group>"; };
 		E4141AC928AF79E7004D74B3 /* FAQViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FAQViewController.swift; sourceTree = "<group>"; };
+		E4206CD128D4A1240011E117 /* ScrabViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrabViewModel.swift; sourceTree = "<group>"; };
 		E427EC0228C791150046B4AA /* InfoHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoHeaderView.swift; sourceTree = "<group>"; };
 		E427EC0528C791850046B4AA /* Info.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Info.swift; sourceTree = "<group>"; };
 		E427EC0728C7937B0046B4AA /* SFProText-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFProText-Bold.otf"; sourceTree = "<group>"; };
@@ -484,7 +486,6 @@
 		DBD0823E2897E75A0092241F /* Green */ = {
 			isa = PBXGroup;
 			children = (
-				E461E42A28CE14B0001EBF74 /* ScrapedQuestionViewController.swift */,
 				E461E42828CE1463001EBF74 /* Main */,
 				E49F7D8728BC7D5E000AB49B /* Create */,
 				E49EF3DA28B5E98D00358340 /* Search */,
@@ -691,6 +692,7 @@
 			isa = PBXGroup;
 			children = (
 				DBD0823F2897E75A0092241F /* GreenRoomViewController.swift */,
+				E461E42A28CE14B0001EBF74 /* ScrapedQuestionViewController.swift */,
 				E4A1761328C64B47009D1DFE /* DetailRecentQuestionViewController.swift */,
 				E4460DD228CA01D400AFA108 /* QuestionsByCategoryViewController.swift */,
 			);
@@ -721,6 +723,7 @@
 			children = (
 				DBD0823A2897E75A0092241F /* GreenViewModel.swift */,
 				E461E42E28CE1EBE001EBF74 /* GRDetailViewModel.swift */,
+				E4206CD128D4A1240011E117 /* ScrabViewModel.swift */,
 				E461E42128CB1445001EBF74 /* SearchViewModel.swift */,
 				DBA9451428C6540400B6E16A /* CreateViewModel.swift */,
 			);
@@ -1011,6 +1014,7 @@
 				DBA8ED7A28BF8009007526CF /* KPReviewModel.swift in Sources */,
 				E4141ACB28AF79E7004D74B3 /* FAQViewController.swift in Sources */,
 				DB006B8E28C3282700867013 /* KPGroupEditViewController.swift in Sources */,
+				E4206CD228D4A1240011E117 /* ScrabViewModel.swift in Sources */,
 				E48F8B4F28C26864007AAF40 /* AuthManager.swift in Sources */,
 				DBD082602897E7740092241F /* LoginService.swift in Sources */,
 				DBA8ED7C28BF931F007526CF /* ReviewCell.swift in Sources */,
