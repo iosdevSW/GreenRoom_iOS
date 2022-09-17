@@ -33,8 +33,6 @@ class GreenRoomViewModel: ViewModelType {
     }
     
     private var dataSource = PublishSubject<[GreenRoomSectionModel]>()
-    private var GRDataSource = PublishSubject<[GreenRoomSectionModel]>()
-    private var myListDataSource = PublishSubject<[GreenRoomSectionModel]>()
     
     func transform(input: Input) -> Output {
         
@@ -60,10 +58,7 @@ class GreenRoomViewModel: ViewModelType {
                 self.greenroom.asObserver()
             ).map { $0.0 + $0.1 + $0.2 + $0.3 }
                 .bind(to: self.dataSource).disposed(by: self.disposeBag)
-            //                .subscribe(onNext: {
-            //                    self.dataSource.onNext($0)
-            //                }).disposed(by: self.disposeBag)
-            //        }).disposed(by: disposeBag)
+  
         }).disposed(by: self.disposeBag)
         input.myListTap.subscribe(onNext: { [weak self] _ in
             guard let self = self else { return }
@@ -73,19 +68,12 @@ class GreenRoomViewModel: ViewModelType {
                 self.myQuestionList.asObserver())
             .map { $0.0 + $0.1}
             .bind(to: self.dataSource).disposed(by: self.disposeBag)
-            //                .subscribe(onNext: {
-            //                    self.dataSource.onNext($0)
-            //                }).disposed(by: self.disposeBag)
-            //        }).disposed(by: disposeBag)
-            
             
         }).disposed(by: disposeBag)
-//        
-//        self.dataSource.subscribe(onNext:{
-//            print($0)
-//        }).disposed(by: self.disposeBag)
+
         return Output(greenroom: self.dataSource.asObserver())
     }
+    
     let currentBannerPage = PublishSubject<Int>()
     
     

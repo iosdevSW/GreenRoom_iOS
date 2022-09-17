@@ -183,7 +183,7 @@ class GreenRoomViewController: BaseViewController {
     }
     
     @objc func didTapScrap(){
-        let vc = QuestionsByCategoryViewController(viewModel: self.viewModel)
+        let vc = ScrapedQuestionViewController(viewModel: ScrapViewModel())
         self.navigationController?.pushViewController(vc, animated: true)
     }
 }
@@ -480,7 +480,7 @@ extension GreenRoomViewController {
 
 extension GreenRoomViewController: RecentHeaderDelegate {
     func didTapViewAllQeustionsButton() {
-        let vc = DetailRecentQuestionViewController(viewModel: self.viewModel)
+        let vc = DetailRecentQuestionViewController(viewModel: GRDetailViewModel())
         self.navigationController?.pushViewController(vc, animated: true)
     }
 }

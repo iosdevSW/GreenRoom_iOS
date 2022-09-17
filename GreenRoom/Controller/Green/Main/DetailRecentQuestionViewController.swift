@@ -13,9 +13,9 @@ import RxDataSources
 final class DetailRecentQuestionViewController: BaseViewController {
     
     private var collectionView: UICollectionView!
-    private let viewModel: GreenRoomViewModel!
+    private let viewModel: GRDetailViewModel!
     
-    init(viewModel: GreenRoomViewModel){
+    init(viewModel: GRDetailViewModel){
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
@@ -59,7 +59,10 @@ final class DetailRecentQuestionViewController: BaseViewController {
     }
     
     override func setupBinding() {
-//        self.viewModel.recent.bind(to: collectionView.rx.items(dataSource: dataSource())).disposed(by: disposeBag)
+        let input = GRDetailViewModel.Input(trigger: rx.viewWillAppear.asObservable())
+        let output = self.viewModel.transform(input: input)
+        
+        output.recent.bind(to: collectionView.rx.items(dataSource: dataSource())).disposed(by: disposeBag)
     }
 }
 
