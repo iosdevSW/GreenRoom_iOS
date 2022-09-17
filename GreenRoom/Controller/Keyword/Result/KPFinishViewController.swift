@@ -24,8 +24,7 @@ class KPFinishViewController: BaseViewController{
         $0.guideLabel.text = "목표까지 5% 남았어요"
         $0.removeGesture()
         
-        let type: RecordingType =  self.viewmodel.cameraOnOff == true ? .camera : .mike
-        $0.buttonImage = type
+        $0.buttonImage = self.viewmodel.recordingType
     }
     
     let resultTableView = UITableView().then {
@@ -62,7 +61,7 @@ class KPFinishViewController: BaseViewController{
     
     //MARK: - Selector
     @objc func didClickReviewButton(_ sender: UIButton) {
-        self.navigationController?.pushViewController(KPReviewViewController(viewmodel: viewmodel), animated: true)
+        self.navigationController?.pushViewController(KPReviewViewController(viewModel: viewmodel), animated: true)
     }
     
     //MARK: - Bind

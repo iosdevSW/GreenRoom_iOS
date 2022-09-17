@@ -15,6 +15,8 @@ class KPRecordingViewController: BaseViewController{
     var questions: [String]!
     var urls = [URL]()
     
+    var player: AVAudioPlayer?
+    
     private let fileManager = FileManager.default
     
     // 녹화를 위한 객체
@@ -69,10 +71,9 @@ class KPRecordingViewController: BaseViewController{
         super.viewDidLoad()
         self.view.backgroundColor = .black
         
-        if self.viewmodel.cameraOnOff {
-            setupCaptureSession()
-        }else {
-            setupAVAudio()
+        switch self.viewmodel.recordingType {
+        case .camera: setupCaptureSession()
+        case .mike: setupAVAudio()
         }
         
         self.keywordLabel.isHidden = true
@@ -92,10 +93,9 @@ class KPRecordingViewController: BaseViewController{
     
     //MARK: - Selector
     @objc func didClickRecordingButton(_ sender: UIButton) {
-        if self.viewmodel.cameraOnOff {
-            self.videoRecording()
-        }else {
-            self.audioRecording()
+        switch viewmodel.recordingType {
+        case .camera : self.videoRecording()
+        case .mike: self.audioRecording()
         }
     }
     
@@ -136,18 +136,21 @@ class KPRecordingViewController: BaseViewController{
     
     private func saveURL(_ url: URL) {
         urls.append(url)
+        // 길게 녹화할경우 음성이 녹음 안되는 현상이 있음 (이유 찾아 고쳐야함) 2번의 오류도 1번이 해결되면 해결될 가능성 있음
+        // 녹화일 경우 mp4 -> m4a로 변환이 필요함 ( 영상이 십몇초를 넘을경우 변환이 안되는 오류 )
         
-        self.recognizerRequest = SFSpeechURLRecognitionRequest(url: url)
-        self.speechRecognizer?.recognitionTask(with: recognizerRequest!) { (result,error) in
-            guard let result = result else { return }
-            // 번역본
-            if result.isFinal {
-                print("Speech in the file is \(result.bestTranscription.formattedString)")
-            }
-        }
+//        self.recognizerRequest = SFSpeechURLRecognitionRequest(url: url)
+//        self.speechRecognizer?.recognitionTask(with: recognizerRequest!) { (result,error) in
+//            guard let result = result else { return }
+//            // 번역본
+//            if result.isFinal {
+//                print("Speech in the file is \(result.bestTranscription.formattedString)")
+//            }
+//        }
         
         if urls.count >= viewmodel.selectedQuestionTemp.count {
             if viewmodel.keywordOnOff{
+                viewmodel.videoURLs = urls
                 self.navigationController?.pushViewController(KPFinishViewController(viewmodel: viewmodel), animated: true)
             }else {
                 viewmodel.videoURLs = urls
@@ -312,9 +315,9 @@ extension KPRecordingViewController: AVAudioRecorderDelegate {
                 AVEncoderAudioQualityKey: AVAudioQuality.max.rawValue,
                 AVEncoderBitRateKey: 320_000,
                 AVNumberOfChannelsKey: 2,
-                AVSampleRateKey: 44_100.0
+                AVSampleRateKey: 44_100.0,
             ]
-        
+
         self.audioRecorder = try? AVAudioRecorder(url: tempURL(extn: "m4a"), settings: settings)
         audioRecorder?.delegate = self
         audioRecorder?.prepareToRecord()

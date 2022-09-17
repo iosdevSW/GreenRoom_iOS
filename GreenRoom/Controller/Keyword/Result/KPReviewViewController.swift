@@ -6,17 +6,17 @@
 //
 
 import UIKit
-import AVKit
+import AVFoundation.AVPlayer
 import RxDataSources
 
 class KPReviewViewController: BaseViewController, UICollectionViewDelegate {
     //MARK: - Properties
-    var collectionView: UICollectionView!
-    let viewmodel: KeywordViewModel
+    private var collectionView: UICollectionView!
+    private let viewModel: KeywordViewModel
     
     //MARK: - Init
-    init(viewmodel: KeywordViewModel) {
-        self.viewmodel = viewmodel
+    init(viewModel: KeywordViewModel) {
+        self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -28,10 +28,13 @@ class KPReviewViewController: BaseViewController, UICollectionViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.collectionView.delegate = self
+        self.navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.darken!]
+        self.navigationItem.title = self.viewModel.recordingType == .camera ? "녹화 다시보기" : "녹음 다시듣기"
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+        print("viewDidLayoutSubviews")
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -53,7 +56,7 @@ class KPReviewViewController: BaseViewController, UICollectionViewDelegate {
     }
     
     override func setupBinding() {
-        viewmodel.selectedQ
+        viewModel.selectedQ
             .bind(to: collectionView.rx.items(dataSource: configureDataSource()))
             .disposed(by: disposeBag)
     }
@@ -65,13 +68,19 @@ extension KPReviewViewController {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ReviewCell", for: indexPath) as! ReviewCell
 //            cell.keywordIsOn = self.viewmodel.keywordOnOff
             //키워드 on일 경우
-            if self.viewmodel.keywordOnOff {
+            if self.viewModel.keywordOnOff {
                 cell.keywordPersent.text = "75%"
 //                cell.keywordLabel.text = "천진난만 현실적 적극적 테스트적 끄적끄적"
             }
-            let title = self.viewmodel.selectedQuestionTemp[indexPath.row]
+            let title = self.viewModel.selectedQuestionTemp[indexPath.row]
             cell.questionLabel.text = "Q\(indexPath.row+1)\n\(title)"
             cell.categoryLabel.text = "공통"
+    
+            if let url = self.viewModel.videoURLs?[indexPath.row] {
+                cell.recordingType = self.viewModel.recordingType
+                cell.url = url
+            }
+
         
             return cell
         }
@@ -97,11 +106,5 @@ extension KPReviewViewController {
         }
         
         return layout
-    }
-}
-
-extension KPReviewViewController: UIScrollViewDelegate {
-    func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
-        print("스크롤 끝")
     }
 }

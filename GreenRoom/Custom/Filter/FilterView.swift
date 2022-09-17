@@ -8,16 +8,10 @@
 import UIKit
 import RxSwift
 
-protocol FilterViewDeleagte {
-    func didTapFilterButton()
-}
-
 class FilterView: UIView{
     //MARK: - Properties
     let viewModel: CategoryViewModel
     let disposeBag = DisposeBag()
-    
-    var delegate: FilterViewDeleagte?
     
     var selectedCategoriesCollectionView: UICollectionView!
     

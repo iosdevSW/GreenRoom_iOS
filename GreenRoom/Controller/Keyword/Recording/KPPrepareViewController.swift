@@ -127,7 +127,7 @@ class KPPrepareViewController: BaseViewController{
     
     @objc func didChangeCameraIsOnValue(_ sender: UIControl) {
         guard let cameraSwitch = sender as? CustomSwitch else { return }
-        viewmodel.cameraOnOff = cameraSwitch.isOn
+        viewmodel.recordingType = cameraSwitch.isOn ? .camera : .mike
         print("camera On/Off : \(cameraSwitch.isOn)")
     }
     
