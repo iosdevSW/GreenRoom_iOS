@@ -12,7 +12,6 @@ import RxCocoa
 final class CreateQuestionViewController: BaseViewController {
     
     //MARK: - Properteis
-    
     private var collectionView: UICollectionView!
     private let viewModel = CreateViewModel()
     
@@ -53,6 +52,7 @@ final class CreateQuestionViewController: BaseViewController {
         $0.layer.cornerRadius = 8
     }
     
+    //MARK: - LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
     }
@@ -63,6 +63,8 @@ final class CreateQuestionViewController: BaseViewController {
         self.navigationController?.navigationBar.tintColor = .mainColor
         
     }
+    
+    //MARK: - configure
     override func configureUI() {
         self.view.backgroundColor = .white
         
@@ -119,6 +121,7 @@ final class CreateQuestionViewController: BaseViewController {
         }
     }
     
+    
     override func setupAttributes() {
         let layout = UICollectionViewFlowLayout()
         
@@ -135,7 +138,7 @@ final class CreateQuestionViewController: BaseViewController {
         
     }
     
-    
+    //MARK: - Binding
     override func setupBinding() {
         
         let input = CreateViewModel.Input(question: questionTextView.rx.text.orEmpty.asObservable(),

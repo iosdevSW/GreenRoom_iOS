@@ -71,7 +71,7 @@ extension DetailRecentQuestionViewController {
     private func configureCollectionView() {
         let layout = UICollectionViewFlowLayout()
         layout.itemSize = CGSize(width: view.bounds.width, height: view.bounds.height/8)
-        layout.headerReferenceSize = CGSize(width: view.bounds.width , height: view.bounds.height * 0.2)
+        layout.headerReferenceSize = CGSize(width: view.bounds.width , height: view.bounds.height * 0.25)
         layout.minimumLineSpacing = 0
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.register(InfoHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: InfoHeaderView.reuseIdentifier)
@@ -93,7 +93,7 @@ extension DetailRecentQuestionViewController {
             }
         
             
-            header.info = Info(title: "최근 질문", subTitle: "방금 올라온 모든 질문리스트를 보여드려요!\n\n질문에 참여 시 동료들의 모든 답변을 확인할 수 있어요 :)")
+            header.info = Info(title: "최근 질문", subTitle: "방금 올라온 모든 질문리스트를 보여드려요!\n질문에 참여 시 동료들의 모든 답변을 확인할 수 있어요 :)")
             return header
         }
     }
