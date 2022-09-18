@@ -33,7 +33,7 @@ class KeywordViewModel {
     }
     
     var keywordOnOff = true
-    var cameraOnOff = true
+    var recordingType: RecordingType = .camera
     var goalPersent: CGFloat?
     
     init(){

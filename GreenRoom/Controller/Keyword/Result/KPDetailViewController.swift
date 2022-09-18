@@ -84,8 +84,7 @@ extension KPDetailViewController {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DetailCell", for: indexPath) as! DetailCell
             cell.keywordIsOn = self.viewmodel.keywordOnOff
             
-            let type: RecordingType =  self.viewmodel.cameraOnOff == true ? .camera : .mike
-            cell.goalProgressBarView.buttonImage = type
+            cell.goalProgressBarView.buttonImage = self.viewmodel.recordingType
             //키워드 on일 경우
             if self.viewmodel.keywordOnOff {
                 cell.goalProgressBarView.titleLabel.text = "Q\(indexPath.row+1) 키워드 매칭률"
