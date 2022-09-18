@@ -23,8 +23,4 @@ class CategoryViewModel {
             self.tempSelectedCategoriesObservable.onNext(self.tempSelectedCategories)
         }
     }
-//
-//    init(){
-//        filteringObservable.bind(to: selectedCategoriesObservable).disposed(by: disposeBag)
-//    }
 }
