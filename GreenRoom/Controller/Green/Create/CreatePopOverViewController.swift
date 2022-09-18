@@ -17,14 +17,14 @@ final class CreatePopOverViewController: BaseViewController {
     
     private lazy var greenroomButton = UIButton().then {
         $0.backgroundColor = .white
-        $0.tag = 1
+        
         var attText = AttributedString.init("그린룸")
         attText.obliqueness = 0.2 // To set the slant of the text
         attText.font = .sfPro(size: 16, family: .Bold)
         
         if #available(iOS 15.0, *) {
             var config = UIButton.Configuration.plain()
-            config.image = UIImage(named:"createGreenRoom")
+            config.image = UIImage(named:"createGreenroom")?.withRenderingMode(.alwaysOriginal)
             config.imagePadding = 10
             config.attributedTitle = attText
             config.baseForegroundColor = .black
@@ -32,25 +32,22 @@ final class CreatePopOverViewController: BaseViewController {
             $0.configuration = config
         } else {
             $0.setAttributedTitle(NSAttributedString(attText), for: .normal)
-            $0.setImage(UIImage(named:"createGreenRoom"), for: .normal)
-            $0.imageView?.tintColor = .blue
+            $0.setImage(UIImage(named:"createGreenroom")?.withRenderingMode(.alwaysOriginal), for: .normal)
+            $0.imageView?.tintColor = .mainColor
             $0.imageEdgeInsets = UIEdgeInsets(top: 0, left: -10, bottom: 0, right: 0)
         }
-        
-        $0.addTarget(self, action: #selector(didTapCretaeButton(_:)), for: .touchUpInside)
-        
     }
     
     private lazy var questionListButton = UIButton().then {
         $0.backgroundColor = .white
-        $0.tag = 2
+        
         var attText = AttributedString.init("질문리스트")
         attText.obliqueness = 0.2 // To set the slant of the text
         attText.font = .sfPro(size: 16, family: .Bold)
         
         if #available(iOS 15.0, *) {
             var config = UIButton.Configuration.plain()
-            config.image = UIImage(named:"createQuestionList")
+            config.image = UIImage(named:"createQuestionList")?.withRenderingMode(.alwaysOriginal)
             config.imagePadding = 10
             config.attributedTitle = attText
             config.baseForegroundColor = .black
@@ -58,11 +55,10 @@ final class CreatePopOverViewController: BaseViewController {
             $0.configuration = config
         } else {
             $0.setAttributedTitle(NSAttributedString(attText), for: .normal)
-            $0.setImage(UIImage(named:"createQuestionList"), for: .normal)
-            $0.imageView?.tintColor = .blue
+            $0.setImage(UIImage(named:"createQuestionList")?.withRenderingMode(.alwaysOriginal), for: .normal)
+            $0.imageView?.tintColor = .mainColor
             $0.imageEdgeInsets = UIEdgeInsets(top: 0, left: -10, bottom: 0, right: 0)
         }
-        $0.addTarget(self, action: #selector(didTapCretaeButton(_:)), for: .touchUpInside)
     }
 
     //MARK: - Lifecycle
@@ -74,7 +70,7 @@ final class CreatePopOverViewController: BaseViewController {
     override func configureUI() {
         self.view.backgroundColor = .mainColor
 
-        self.preferredContentSize = CGSize(width: 170, height: 110)
+        self.preferredContentSize = CGSize(width: 160, height: 110)
         
         self.view.addSubview(greenroomButton)
         self.view.addSubview(questionListButton)
@@ -92,14 +88,18 @@ final class CreatePopOverViewController: BaseViewController {
         }
     }
     
-    //MARK: - Selector
-    @objc func didTapCretaeButton(_ sender: UIButton){
-        dismiss(animated: false) {
-            if sender.tag == 1 {
-                self.delegate?.didTapGreenRoomCreate()
-            } else {
-                self.delegate?.didTapQuestionListCreate()
-            }   
-        }
+    override func setupBinding() {
+        greenroomButton.rx.tap.subscribe(onNext: { [weak self] _ in
+            self?.dismiss(animated: false) {
+                self?.delegate?.didTapGreenRoomCreate()
+            }
+        }).disposed(by: disposeBag)
+        
+        questionListButton.rx.tap.subscribe(onNext: { [weak self] _ in
+            self?.dismiss(animated: false) {
+                self?.delegate?.didTapQuestionListCreate()
+            }
+        }).disposed(by: disposeBag)
+        
     }
 }
