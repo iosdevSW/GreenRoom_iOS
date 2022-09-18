@@ -23,11 +23,11 @@ final class ScrapViewModel: ViewModelType {
     
     private let recent = BehaviorSubject<[GreenRoomSectionModel]>(value: [])
     
-    let selectedCategoriesObservable = BehaviorSubject<[Int]>(value: [])
+    let selectedIndexesObservable = BehaviorSubject<[Int]>(value: [])
     
     var selectedIndexes: [Int] = [] { 
         didSet {
-            self.selectedCategoriesObservable.onNext(self.selectedIndexes)
+            self.selectedIndexesObservable.onNext(self.selectedIndexes)
         }
     }
     

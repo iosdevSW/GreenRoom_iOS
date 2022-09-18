@@ -108,7 +108,7 @@ final class ScrapedQuestionViewController: BaseViewController {
                 guard let cell = self.collectionView.cellForItem(at: indexPath) as? ScrapViewCell else { return }
                 
                 cell.isSelected = true
-                self.viewModel.tempSelectedCategories.append(indexPath.row)
+                self.viewModel.selectedIndexes.append(indexPath.row)
         }).disposed(by: disposeBag)
         
         self.collectionView.rx.itemDeselected
@@ -117,8 +117,8 @@ final class ScrapedQuestionViewController: BaseViewController {
                 
                 cell.isSelected = false
                 
-                if let index = self.viewModel.tempSelectedCategories.firstIndex(of: indexPath.row) {
-                    viewModel.tempSelectedCategories.remove(at: index)
+                if let index = self.viewModel.selectedIndexes.firstIndex(of: indexPath.row) {
+                    viewModel.selectedIndexes.remove(at: index)
                 }
                 
             }).disposed(by: disposeBag)
