@@ -79,6 +79,10 @@
 		E4141ACA28AF79E7004D74B3 /* QNAViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4141AC828AF79E7004D74B3 /* QNAViewController.swift */; };
 		E4141ACB28AF79E7004D74B3 /* FAQViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4141AC928AF79E7004D74B3 /* FAQViewController.swift */; };
 		E4206CD228D4A1240011E117 /* ScrabViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4206CD128D4A1240011E117 /* ScrabViewModel.swift */; };
+		E4206CD428D5E2F90011E117 /* CreateGRHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4206CD328D5E2F90011E117 /* CreateGRHeaderView.swift */; };
+		E4206CD628D5E53C0011E117 /* CreateGRViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4206CD528D5E53C0011E117 /* CreateGRViewModel.swift */; };
+		E4206CD828D5EE810011E117 /* CreateGRModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4206CD728D5EE810011E117 /* CreateGRModel.swift */; };
+		E4206CDA28D623930011E117 /* CustomPopUpDatePickerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4206CD928D623930011E117 /* CustomPopUpDatePickerController.swift */; };
 		E427EC0328C791150046B4AA /* InfoHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E427EC0228C791150046B4AA /* InfoHeaderView.swift */; };
 		E427EC0628C791850046B4AA /* Info.swift in Sources */ = {isa = PBXBuildFile; fileRef = E427EC0528C791850046B4AA /* Info.swift */; };
 		E427EC0828C7937B0046B4AA /* SFProText-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = E427EC0728C7937B0046B4AA /* SFProText-Bold.otf */; };
@@ -205,6 +209,10 @@
 		E4141AC828AF79E7004D74B3 /* QNAViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QNAViewController.swift; sourceTree = "<group>"; };
 		E4141AC928AF79E7004D74B3 /* FAQViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FAQViewController.swift; sourceTree = "<group>"; };
 		E4206CD128D4A1240011E117 /* ScrabViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrabViewModel.swift; sourceTree = "<group>"; };
+		E4206CD328D5E2F90011E117 /* CreateGRHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateGRHeaderView.swift; sourceTree = "<group>"; };
+		E4206CD528D5E53C0011E117 /* CreateGRViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateGRViewModel.swift; sourceTree = "<group>"; };
+		E4206CD728D5EE810011E117 /* CreateGRModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateGRModel.swift; sourceTree = "<group>"; };
+		E4206CD928D623930011E117 /* CustomPopUpDatePickerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPopUpDatePickerController.swift; sourceTree = "<group>"; };
 		E427EC0228C791150046B4AA /* InfoHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoHeaderView.swift; sourceTree = "<group>"; };
 		E427EC0528C791850046B4AA /* Info.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Info.swift; sourceTree = "<group>"; };
 		E427EC0728C7937B0046B4AA /* SFProText-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFProText-Bold.otf"; sourceTree = "<group>"; };
@@ -541,6 +549,7 @@
 				E40BC6E228B880F400FB557D /* Search */,
 				E49EF3CE28B5360600358340 /* Main */,
 				E427EC0928C7A5000046B4AA /* Detail */,
+				E4206CD328D5E2F90011E117 /* CreateGRHeaderView.swift */,
 			);
 			path = Green;
 			sourceTree = "<group>";
@@ -734,6 +743,7 @@
 				E4206CD128D4A1240011E117 /* ScrabViewModel.swift */,
 				E461E42128CB1445001EBF74 /* SearchViewModel.swift */,
 				DBA9451428C6540400B6E16A /* CreateViewModel.swift */,
+				E4206CD528D5E53C0011E117 /* CreateGRViewModel.swift */,
 			);
 			path = GreenRoom;
 			sourceTree = "<group>";
@@ -774,6 +784,7 @@
 				E470539428AB81EC00884B56 /* MyPageModel.swift */,
 				E49EF3D328B5377900358340 /* GreenRoomModel.swift */,
 				E40BC6B428B756EE00FB557D /* GRSearchModel.swift */,
+				E4206CD728D5EE810011E117 /* CreateGRModel.swift */,
 				DBA8ED7528BF1790007526CF /* KPDetailModel.swift */,
 				DBA8ED7928BF8009007526CF /* KPReviewModel.swift */,
 			);
@@ -793,6 +804,7 @@
 			isa = PBXGroup;
 			children = (
 				E4C4C4BD28BD1ACD008826AB /* CreatePopOverViewController.swift */,
+				E4206CD928D623930011E117 /* CustomPopUpDatePickerController.swift */,
 				E4C4C4BF28BDE8AB008826AB /* CreateGreenRoomViewController.swift */,
 				E49F7D8828BC7D7E000AB49B /* CreateQuestionViewController.swift */,
 			);
@@ -962,6 +974,7 @@
 				DB006B8828C2430400867013 /* GroupView.swift in Sources */,
 				DB8D163828B8ABC700E3F237 /* CustomGoalProgressBar.swift in Sources */,
 				E44D507E28BE56A10086C447 /* QuestionService.swift in Sources */,
+				E4206CD828D5EE810011E117 /* CreateGRModel.swift in Sources */,
 				E49EF3D928B539FF00358340 /* PopularQuestionCell.swift in Sources */,
 				E461E42F28CE1EBE001EBF74 /* GRDetailViewModel.swift in Sources */,
 				DB9CF9BE289E81FE0091B705 /* CateogryCell.swift in Sources */,
@@ -1024,6 +1037,8 @@
 				DB006B8E28C3282700867013 /* KPGroupEditViewController.swift in Sources */,
 				E4206CD228D4A1240011E117 /* ScrabViewModel.swift in Sources */,
 				E48F8B4F28C26864007AAF40 /* AuthManager.swift in Sources */,
+				E4206CDA28D623930011E117 /* CustomPopUpDatePickerController.swift in Sources */,
+				E4206CD428D5E2F90011E117 /* CreateGRHeaderView.swift in Sources */,
 				DBD082602897E7740092241F /* LoginService.swift in Sources */,
 				DBA8ED7C28BF931F007526CF /* ReviewCell.swift in Sources */,
 				E49EF3D428B5377900358340 /* GreenRoomModel.swift in Sources */,
@@ -1067,6 +1082,7 @@
 				DB07821228C49BED0091EEFE /* CustomRecordingButton.swift in Sources */,
 				E427EC1628C830F60046B4AA /* CategorySelectViewController.swift in Sources */,
 				DBD082562897E75B0092241F /* MyPageViewController.swift in Sources */,
+				E4206CD628D5E53C0011E117 /* CreateGRViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

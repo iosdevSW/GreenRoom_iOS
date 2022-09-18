@@ -17,4 +17,5 @@ target 'GreenRoom' do
 	pod 'RxDataSources', '~> 5.0'
   pod 'Kingfisher', '~> 7.0'
   pod 'RxViewController'
+  pod 'RxGesture'
 end

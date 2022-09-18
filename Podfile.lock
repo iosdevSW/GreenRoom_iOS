@@ -26,6 +26,9 @@ PODS:
     - Differentiator (~> 5.0)
     - RxCocoa (~> 6.0)
     - RxSwift (~> 6.0)
+  - RxGesture (4.0.4):
+    - RxCocoa (~> 6.0)
+    - RxSwift (~> 6.0)
   - RxKakaoSDKAuth (2.11.1):
     - KakaoSDKAuth (= 2.11.1)
     - RxKakaoSDKCommon (= 2.11.1)
@@ -58,6 +61,7 @@ DEPENDENCIES:
   - naveridlogin-sdk-ios
   - RxCocoa (= 6.5.0)
   - RxDataSources (~> 5.0)
+  - RxGesture
   - RxKakaoSDKAuth
   - RxKakaoSDKUser
   - RxSwift (= 6.5.0)
@@ -78,6 +82,7 @@ SPEC REPOS:
     - RxAlamofire
     - RxCocoa
     - RxDataSources
+    - RxGesture
     - RxKakaoSDKAuth
     - RxKakaoSDKCommon
     - RxKakaoSDKUser
@@ -99,6 +104,7 @@ SPEC CHECKSUMS:
   RxAlamofire: beb75a1c452d0de225651db4903f5d29d034a620
   RxCocoa: 94f817b71c07517321eb4f9ad299112ca8af743b
   RxDataSources: aa47cc1ed6c500fa0dfecac5c979b723542d79cf
+  RxGesture: f3efb47ed2d26a8082f7b660d4a59970e275a7f8
   RxKakaoSDKAuth: 7a484692e63d1318db249ee04efd74c57a94daad
   RxKakaoSDKCommon: f71c4ca447ee3fd71688aa17f8c0cc6be913071d
   RxKakaoSDKUser: 81a8735e0df352003d22a1bf3ad5a45bce9b471b
@@ -109,6 +115,6 @@ SPEC CHECKSUMS:
   SwiftKeychainWrapper: 807ba1d63c33a7d0613288512399cd1eda1e470c
   Then: 844265ae87834bbe1147d91d5d41a404da2ec27d
 
-PODFILE CHECKSUM: 2a91fa2b733f2d2e3a68ddb4f22cf9a55126dac7
+PODFILE CHECKSUM: e47622bcd1164a84711eadddf75a00d6ad6bee5f
 
 COCOAPODS: 1.11.3
