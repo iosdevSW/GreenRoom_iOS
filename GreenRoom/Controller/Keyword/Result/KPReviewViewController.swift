@@ -28,6 +28,7 @@ class KPReviewViewController: BaseViewController, UICollectionViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.collectionView.delegate = self
+        
         self.navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.darken!]
         self.navigationItem.title = self.viewModel.recordingType == .camera ? "녹화 다시보기" : "녹음 다시듣기"
     }

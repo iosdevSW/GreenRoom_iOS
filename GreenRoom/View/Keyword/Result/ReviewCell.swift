@@ -7,6 +7,8 @@
 
 import UIKit
 import AVFoundation
+import RxSwift
+import RxCocoa
 
 class ReviewCell: UICollectionViewCell {
     //MARK: - Properties
@@ -18,9 +20,11 @@ class ReviewCell: UICollectionViewCell {
             let item = AVPlayerItem(url: url)
             
             switch self.recordingType {
-            case .camera: videoPlayer.replaceCurrentItem(with: item)
+            case .camera:
+                videoPlayer.replaceCurrentItem(with: item)
+                addPeriodicTimeObserver()
             case .mike:
-                audioPlayer = try? AVAudioPlayer(contentsOf: url)
+                audioRecordingSetting(url)
             }
         }
     }
@@ -28,8 +32,10 @@ class ReviewCell: UICollectionViewCell {
     var totalTimeSecondsFloat: Float64 = 0
     var elapsedTimeSecondsFloat: Float64 = 0
     
+    private var timer: Timer!
+    
     private let videoPlayer = AVPlayer() // 녹화 다시보는 객체
-    var audioPlayer: AVAudioPlayer? // 녹음 다시듣는 객체
+    private var audioPlayer: AVAudioPlayer? // 녹음 다시듣는 객체
     
     private lazy var playerLayer = AVPlayerLayer(player: videoPlayer).then {
         self.frameView.layer.insertSublayer($0, at: 0)
@@ -89,8 +95,6 @@ class ReviewCell: UICollectionViewCell {
         super.init(frame: frame)
         configureUI()
         
-//        addPeriodicTimeObserver()
-        
         self.playButton.addTarget(self, action: #selector(didClickPlayButton(sender:)), for: .touchUpInside)
         self.playSlider.addTarget(self, action: #selector(didChangeSlide), for: .valueChanged)
     }
@@ -106,7 +110,18 @@ class ReviewCell: UICollectionViewCell {
             color2: UIColor(red: 87/255.0, green: 193/255.0, blue: 183/255.0, alpha: 1.0))
     }
     
+    
     //MARK: - Method
+    func updateTime() {
+        guard let audioPlayer = self.audioPlayer else { return }
+    
+        elapsedSecondLabel.text = convertTime(seconds: Float(audioPlayer.currentTime))
+        
+        totalSecondLabel.text = convertTime(seconds: Float(audioPlayer.duration))
+        
+        self.playSlider.value = Float(audioPlayer.currentTime / audioPlayer.duration)
+    }
+    
     func addPeriodicTimeObserver() {
         let interval = CMTimeMakeWithSeconds(1, preferredTimescale: Int32(NSEC_PER_SEC))
         
@@ -150,10 +165,12 @@ class ReviewCell: UICollectionViewCell {
         return "\(String(format: "%02d:", minute))\(String(format: "%02d", second))"
     }
     
-    func audioRecordingPlay() {
+    func audioRecordingSetting(_ url: URL){
+        self.audioPlayer = try? AVAudioPlayer(contentsOf: url)
+        self.audioPlayer?.delegate  = self
         let audioSession = AVAudioSession.sharedInstance()
         
-        audioPlayer?.volume = 1.0
+        self.audioPlayer?.volume = 1.0
         do {
             try audioSession.setCategory(.playback)
             try audioSession.setMode(.moviePlayback)
@@ -162,9 +179,24 @@ class ReviewCell: UICollectionViewCell {
         } catch {
             print("Setting category to AVAudioSessionCategoryPlayback failed.")
         }
-
         audioPlayer?.prepareToPlay()
-        audioPlayer?.play()
+    }
+    
+    func audioRecordingPlay() {
+        if audioPlayer?.isPlaying == true {
+            audioPlayer?.pause()
+            playButton.setImage(UIImage(systemName: "play.fill"), for: .normal)
+            timer.invalidate()
+        } else {
+            self.timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true, block: {_ in
+                self.updateTime()
+            })
+            audioPlayer?.play()
+            self.playButton.setImage(UIImage(systemName: "pause.fill"), for: .normal)
+            timer.fire()
+        }
+        
+        
     }
     
     func videoRecordingPlay() {
@@ -190,8 +222,18 @@ class ReviewCell: UICollectionViewCell {
     }
     
     @objc private func didChangeSlide() {
-      self.elapsedTimeSecondsFloat = Float64(self.playSlider.value) * self.totalTimeSecondsFloat
-        self.videoPlayer.seek(to: CMTimeMakeWithSeconds(self.elapsedTimeSecondsFloat, preferredTimescale: Int32(NSEC_PER_SEC)))
+        switch recordingType {
+        case .camera:
+            self.elapsedTimeSecondsFloat = Float64(self.playSlider.value) * self.totalTimeSecondsFloat
+            self.videoPlayer.seek(to: CMTimeMakeWithSeconds(self.elapsedTimeSecondsFloat, preferredTimescale: Int32(NSEC_PER_SEC)))
+        case .mike:
+            guard let audioPlayer = audioPlayer else { return }
+            
+            let playTime = TimeInterval(playSlider.value) * audioPlayer.duration
+            audioPlayer.currentTime = playTime
+            self.updateTime()
+        }
+        
     }
     
     
@@ -253,5 +295,13 @@ class ReviewCell: UICollectionViewCell {
             make.leading.equalTo(self.elapsedSecondLabel.snp.trailing)
             make.bottom.equalTo(self.playButton.snp.bottom).offset(-2)
         }
+    }
+}
+
+//MARK: - AVAudioPlayerDelegate
+extension ReviewCell: AVAudioPlayerDelegate{
+    func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
+        timer.invalidate()
+        playButton.setImage(UIImage(systemName: "play.fill"), for: .normal)
     }
 }
