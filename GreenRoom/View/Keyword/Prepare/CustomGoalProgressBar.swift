@@ -44,7 +44,6 @@ class CustomProgressBar: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.backgroundColor = .customGray.withAlphaComponent(0.2)
-//        layer.addSublayer(self.progressLayer)
         layer.insertSublayer(self.progressLayer, at: 0)
         layer.borderWidth = 1
         layer.borderColor = UIColor.customGray.cgColor

@@ -89,6 +89,9 @@ class KPFindQuestionViewController: BaseViewController{
     
     //MARK: - Selector
     @objc func logout(_ sender: UIButton){
+        KeychainWrapper.standard.removeObject(forKey: "accessToken")
+        KeychainWrapper.standard.removeObject(forKey: "refreshToken")
+        KeychainWrapper.standard.removeObject(forKey: "oauthType")
         LoginService.logout()
             .subscribe(onNext: { isSuccess in
                 let oauthType = KeychainWrapper.standard.integer(forKey: "oauthType")!
