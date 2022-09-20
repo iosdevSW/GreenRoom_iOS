@@ -45,8 +45,12 @@ class ReviewCell: UICollectionViewCell {
     }
     
     private let frameView = UIView().then {
-        $0.backgroundColor = .customGray
+//        $0.backgroundColor = .customGray
         $0.layer.cornerRadius = 15
+    }
+    
+    private let lodingIndicator = LodingIndicator().then {
+        $0.isHidden = true
     }
     
     let questionLabel = UILabel().then {
@@ -115,9 +119,9 @@ class ReviewCell: UICollectionViewCell {
     func updateTime() {
         guard let audioPlayer = self.audioPlayer else { return }
     
-        elapsedSecondLabel.text = convertTime(seconds: Float(audioPlayer.currentTime))
+        elapsedSecondLabel.text = "\(convertTime(seconds: Float(audioPlayer.currentTime))) "
         
-        totalSecondLabel.text = convertTime(seconds: Float(audioPlayer.duration))
+        totalSecondLabel.text = "| \(convertTime(seconds: Float(audioPlayer.duration)))"
         
         self.playSlider.value = Float(audioPlayer.currentTime / audioPlayer.duration)
     }
@@ -166,6 +170,8 @@ class ReviewCell: UICollectionViewCell {
     }
     
     func audioRecordingSetting(_ url: URL){
+        lodingIndicator.isHidden = false
+        
         self.audioPlayer = try? AVAudioPlayer(contentsOf: url)
         self.audioPlayer?.delegate  = self
         let audioSession = AVAudioSession.sharedInstance()
@@ -185,7 +191,8 @@ class ReviewCell: UICollectionViewCell {
     func audioRecordingPlay() {
         if audioPlayer?.isPlaying == true {
             audioPlayer?.pause()
-            playButton.setImage(UIImage(systemName: "play.fill"), for: .normal)
+            self.playButton.setImage(UIImage(systemName: "play.fill"), for: .normal)
+            self.lodingIndicator.stopAnimating()
             timer.invalidate()
         } else {
             self.timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true, block: {_ in
@@ -193,6 +200,7 @@ class ReviewCell: UICollectionViewCell {
             })
             audioPlayer?.play()
             self.playButton.setImage(UIImage(systemName: "pause.fill"), for: .normal)
+            self.lodingIndicator.startAnimating()
             timer.fire()
         }
         
@@ -233,7 +241,6 @@ class ReviewCell: UICollectionViewCell {
             audioPlayer.currentTime = playTime
             self.updateTime()
         }
-        
     }
     
     
@@ -295,6 +302,12 @@ class ReviewCell: UICollectionViewCell {
             make.leading.equalTo(self.elapsedSecondLabel.snp.trailing)
             make.bottom.equalTo(self.playButton.snp.bottom).offset(-2)
         }
+        
+        self.frameView.addSubview(self.lodingIndicator)
+        self.lodingIndicator.snp.makeConstraints{ make in
+            make.center.equalToSuperview()
+            make.width.height.equalTo(48)
+        }
     }
 }
 
@@ -303,5 +316,6 @@ extension ReviewCell: AVAudioPlayerDelegate{
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
         timer.invalidate()
         playButton.setImage(UIImage(systemName: "play.fill"), for: .normal)
+        self.lodingIndicator.stopAnimating()
     }
 }
