@@ -157,6 +157,17 @@ class KPQuestionsViewController: BaseViewController {
         self.navigationController?.pushViewController(KPPrepareViewController(viewmodel: viewmodel), animated: true)
     }
     
+    @objc func didClickQuestionEditButton(_ sender: UIButton) {
+        switch sender.tag {
+        case 3:
+            let groupVC = KPGroupsViewController(viewModel: viewmodel)
+            self.navigationController?.pushViewController(groupVC, animated: true)
+        default:
+            print("질문삭제클릭")
+            
+        }
+    }
+    
     @objc func didClickPracticeButton(_ sender: UIButton) {
         self.practiceInterviewButton.isHidden = true
         self.keywordOnButton.isHidden = false
