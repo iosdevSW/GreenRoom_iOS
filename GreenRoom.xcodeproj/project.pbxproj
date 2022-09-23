@@ -105,6 +105,13 @@
 		E46539DC28ACDAD100F17A6C /* SetNotificationRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = E46539DB28ACDAD100F17A6C /* SetNotificationRow.swift */; };
 		E46539E428AD33C700F17A6C /* EditProfileInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E46539E328AD33C700F17A6C /* EditProfileInfoViewController.swift */; };
 		E46539E928AD3F2800F17A6C /* SFProText-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = E46539E628AD3F2800F17A6C /* SFProText-Regular.otf */; };
+		E46E4BE428DC213800D1691F /* MyQuestionAnswerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E46E4BE328DC213800D1691F /* MyQuestionAnswerViewController.swift */; };
+		E46E4BE628DC219600D1691F /* AnswerHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E46E4BE528DC219600D1691F /* AnswerHeaderView.swift */; };
+		E46E4BE928DC33D300D1691F /* AnswerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E46E4BE828DC33D300D1691F /* AnswerViewModel.swift */; };
+		E46E4BEF28DD732900D1691F /* UIColor+DefaultColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E46E4BEE28DD732900D1691F /* UIColor+DefaultColor.swift */; };
+		E46E4BF128DD734C00D1691F /* UIFont+DefaultFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = E46E4BF028DD734C00D1691F /* UIFont+DefaultFont.swift */; };
+		E46E4BF428DD769A00D1691F /* UIButton+Enable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E46E4BF328DD769A00D1691F /* UIButton+Enable.swift */; };
+		E46E4BF628DD76B200D1691F /* UIView+Layer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E46E4BF528DD76B200D1691F /* UIView+Layer.swift */; };
 		E470539528AB81EC00884B56 /* MyPageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E470539428AB81EC00884B56 /* MyPageModel.swift */; };
 		E470539728AB856D00884B56 /* SettingHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = E470539628AB856D00884B56 /* SettingHeader.swift */; };
 		E470539928AB882900884B56 /* SettingRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = E470539828AB882900884B56 /* SettingRow.swift */; };
@@ -236,6 +243,13 @@
 		E46539DB28ACDAD100F17A6C /* SetNotificationRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetNotificationRow.swift; sourceTree = "<group>"; };
 		E46539E328AD33C700F17A6C /* EditProfileInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileInfoViewController.swift; sourceTree = "<group>"; };
 		E46539E628AD3F2800F17A6C /* SFProText-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SFProText-Regular.otf"; path = "GreenRoom/Resource/Font/SFProText-Regular.otf"; sourceTree = SOURCE_ROOT; };
+		E46E4BE328DC213800D1691F /* MyQuestionAnswerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyQuestionAnswerViewController.swift; sourceTree = "<group>"; };
+		E46E4BE528DC219600D1691F /* AnswerHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnswerHeaderView.swift; sourceTree = "<group>"; };
+		E46E4BE828DC33D300D1691F /* AnswerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnswerViewModel.swift; sourceTree = "<group>"; };
+		E46E4BEE28DD732900D1691F /* UIColor+DefaultColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+DefaultColor.swift"; sourceTree = "<group>"; };
+		E46E4BF028DD734C00D1691F /* UIFont+DefaultFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+DefaultFont.swift"; sourceTree = "<group>"; };
+		E46E4BF328DD769A00D1691F /* UIButton+Enable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Enable.swift"; sourceTree = "<group>"; };
+		E46E4BF528DD76B200D1691F /* UIView+Layer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Layer.swift"; sourceTree = "<group>"; };
 		E470539428AB81EC00884B56 /* MyPageModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageModel.swift; sourceTree = "<group>"; };
 		E470539628AB856D00884B56 /* SettingHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingHeader.swift; sourceTree = "<group>"; };
 		E470539828AB882900884B56 /* SettingRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingRow.swift; sourceTree = "<group>"; };
@@ -483,6 +497,7 @@
 				DBD082392897E75A0092241F /* LoginViewModel.swift */,
 				DB563F9D28AE266D00E7193D /* CategoryViewModel.swift */,
 				DBD0823B2897E75A0092241F /* KeywordViewModel.swift */,
+				E46E4BE828DC33D300D1691F /* AnswerViewModel.swift */,
 				E49CC15428C326CD009216E1 /* MyPage */,
 				E47EE51028C47D9800618CA6 /* GreenRoom */,
 			);
@@ -552,6 +567,7 @@
 				E40BC6E228B880F400FB557D /* Search */,
 				E49EF3CE28B5360600358340 /* Main */,
 				E427EC0928C7A5000046B4AA /* Detail */,
+				E46E4BE728DC269000D1691F /* Answer */,
 				E4206CD328D5E2F90011E117 /* CreateGRHeaderView.swift */,
 			);
 			path = Green;
@@ -715,6 +731,7 @@
 				E461E42A28CE14B0001EBF74 /* ScrapedQuestionViewController.swift */,
 				E4A1761328C64B47009D1DFE /* DetailRecentQuestionViewController.swift */,
 				E4460DD228CA01D400AFA108 /* QuestionsByCategoryViewController.swift */,
+				E46E4BE328DC213800D1691F /* MyQuestionAnswerViewController.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -732,10 +749,30 @@
 			isa = PBXGroup;
 			children = (
 				DB563F9B28AD407400E7193D /* Extension.swift */,
+				E46E4BF228DD735400D1691F /* Extensions */,
 				E46539D828ACD77600F17A6C /* Utilities.swift */,
 				E4141AB228AF4499004D74B3 /* Storage.swift */,
 			);
 			path = Utils;
+			sourceTree = "<group>";
+		};
+		E46E4BE728DC269000D1691F /* Answer */ = {
+			isa = PBXGroup;
+			children = (
+				E46E4BE528DC219600D1691F /* AnswerHeaderView.swift */,
+			);
+			path = Answer;
+			sourceTree = "<group>";
+		};
+		E46E4BF228DD735400D1691F /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				E46E4BEE28DD732900D1691F /* UIColor+DefaultColor.swift */,
+				E46E4BF528DD76B200D1691F /* UIView+Layer.swift */,
+				E46E4BF028DD734C00D1691F /* UIFont+DefaultFont.swift */,
+				E46E4BF328DD769A00D1691F /* UIButton+Enable.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		E47EE51028C47D9800618CA6 /* GreenRoom */ = {
@@ -993,7 +1030,9 @@
 				E4460DD728CAF5BD00AFA108 /* GreenroomCommonHeaderView.swift in Sources */,
 				E4C4C4AE28BCA53D008826AB /* GreenRoomService.swift in Sources */,
 				DBFB296A28B2267A00B1DAC9 /* FilterItemsCell.swift in Sources */,
+				E46E4BF628DD76B200D1691F /* UIView+Layer.swift in Sources */,
 				DB563F9E28AE266D00E7193D /* CategoryViewModel.swift in Sources */,
+				E46E4BE628DC219600D1691F /* AnswerHeaderView.swift in Sources */,
 				E4C4C4BE28BD1ACD008826AB /* CreatePopOverViewController.swift in Sources */,
 				E40BC6E628B8834100FB557D /* SearchResultHeaderView.swift in Sources */,
 				DBA8ED7428BDDCA1007526CF /* DetailCell.swift in Sources */,
@@ -1041,9 +1080,11 @@
 				E4206CD228D4A1240011E117 /* ScrabViewModel.swift in Sources */,
 				E48F8B4F28C26864007AAF40 /* AuthManager.swift in Sources */,
 				E4206CDA28D623930011E117 /* CustomPopUpDatePickerController.swift in Sources */,
+				E46E4BEF28DD732900D1691F /* UIColor+DefaultColor.swift in Sources */,
 				E4206CD428D5E2F90011E117 /* CreateGRHeaderView.swift in Sources */,
 				DBD082602897E7740092241F /* LoginService.swift in Sources */,
 				DBA8ED7C28BF931F007526CF /* ReviewCell.swift in Sources */,
+				E46E4BF128DD734C00D1691F /* UIFont+DefaultFont.swift in Sources */,
 				E49EF3D428B5377900358340 /* GreenRoomModel.swift in Sources */,
 				DBA8ED6628B9D347007526CF /* RecentSearchKeyword+CoreDataProperties.swift in Sources */,
 				DBA8ED7628BF1790007526CF /* KPDetailModel.swift in Sources */,
@@ -1051,6 +1092,7 @@
 				DBA9451228C653F200B6E16A /* User.swift in Sources */,
 				DBA8ED6C28BB4A4C007526CF /* KPRecordingViewController.swift in Sources */,
 				DBD0821D2897E6EE0092241F /* AppDelegate.swift in Sources */,
+				E46E4BE928DC33D300D1691F /* AnswerViewModel.swift in Sources */,
 				E40BC6B328B7548E00FB557D /* SearchWordHeaderView.swift in Sources */,
 				E445856328C6148F00907950 /* MyGreenRoomCell.swift in Sources */,
 				E46539E428AD33C700F17A6C /* EditProfileInfoViewController.swift in Sources */,
@@ -1071,6 +1113,7 @@
 				DB9989E028D5DA280056D40B /* CustomSlider.swift in Sources */,
 				E427EC0B28C7A53D0046B4AA /* DetailQuestionListCell.swift in Sources */,
 				DBA9451828C71A4F00B6E16A /* FilterView.swift in Sources */,
+				E46E4BF428DD769A00D1691F /* UIButton+Enable.swift in Sources */,
 				E4C4C4C028BDE8AB008826AB /* CreateGreenRoomViewController.swift in Sources */,
 				DB797A9B289BC0D800ADF65F /* RegisterCategoryViewController.swift in Sources */,
 				E40BC6F928B88FB600FB557D /* RecentSearchModel.xcdatamodeld in Sources */,
@@ -1083,6 +1126,7 @@
 				DBD0825A2897E75B0092241F /* ProfileCell.swift in Sources */,
 				DBD082552897E75B0092241F /* GreenRoomViewController.swift in Sources */,
 				DB563F9A28ABADDF00E7193D /* RxNaverThirdPartyLoginProxy.swift in Sources */,
+				E46E4BE428DC213800D1691F /* MyQuestionAnswerViewController.swift in Sources */,
 				DB07821228C49BED0091EEFE /* CustomRecordingButton.swift in Sources */,
 				E427EC1628C830F60046B4AA /* CategorySelectViewController.swift in Sources */,
 				DBD082562897E75B0092241F /* MyPageViewController.swift in Sources */,

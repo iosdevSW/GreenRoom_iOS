@@ -11,9 +11,7 @@ final class RecentQuestionCell: UICollectionViewCell {
     static let reuseIdentifer = "RecentQuestionCell"
     //MARK: - Properties
     var question: Question! {
-        didSet {
-            configureUI()
-        }
+        didSet { configure() }
     }
     
     private lazy var profileImageView = UIImageView(frame: .zero).then {
@@ -91,6 +89,7 @@ final class RecentQuestionCell: UICollectionViewCell {
         style.lineSpacing = 6
         
         self.questionTextView.attributedText = NSAttributedString(string: question.question, attributes: [NSAttributedString.Key.paragraphStyle : style])
+        
         self.categoryLabel.text = category.title
         self.profileImageView.image = UIImage(named: question.image)
         

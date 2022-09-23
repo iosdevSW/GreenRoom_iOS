@@ -12,9 +12,7 @@ final class PopularQuestionCell: UICollectionViewCell {
     static let reuseIdentifer = "PopularQuestionCell"
     //MARK: - Properties
     var question: Question! {
-        didSet {
-            configureUI()
-        }
+        didSet { configure() }
     }
 
     private lazy var profileImageView = UIImageView(frame: .zero).then {
