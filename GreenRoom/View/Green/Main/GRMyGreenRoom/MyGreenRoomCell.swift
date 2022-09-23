@@ -12,9 +12,7 @@ final class MyGreenRoomCell: UICollectionViewCell {
     static let reuseIdentifer = "MyGreenRoomCell"
     //MARK: - Properties
     var question: Question! {
-        didSet {
-            configureUI()
-        }
+        didSet { configure() }
     }
     
     private lazy var leftButton = UIButton().then {
@@ -41,7 +39,7 @@ final class MyGreenRoomCell: UICollectionViewCell {
             string: "대부분의 프로젝트는 프로세스는 어떠하며 어떤 롤이 었나요?",
             attributes: [
                 NSAttributedString.Key.paragraphStyle : style,
-                NSAttributedString.Key.font: UIFont.sfPro(size: 20, family: .Regular) ?? .systemFont(ofSize: 20),
+                NSAttributedString.Key.font: UIFont.sfPro(size: 20, family: .Regular),
                 NSAttributedString.Key.foregroundColor: UIColor.black
             ])
         
@@ -105,7 +103,7 @@ final class MyGreenRoomCell: UICollectionViewCell {
     }
     
     private func configure(){
-        guard let category = CategoryID(rawValue: question.category) else { return }
+//        guard let category = CategoryID(rawValue: question.category) else { return }
         
         self.questionTextView.text = question.question
     }
