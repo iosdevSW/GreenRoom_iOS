@@ -20,11 +20,14 @@ final class DetailRecentHeaderView: UICollectionReusableView {
         $0.numberOfLines = 0
         let attributeString = NSMutableAttributedString(string: "최근 질문", attributes: [
             NSAttributedString.Key.foregroundColor: UIColor.black,
-            NSAttributedString.Key.font: UIFont.sfPro(size: 16, family: .Bold)!
+            NSAttributedString.Key.font: UIFont.sfPro(size: 16, family: .Bold)
         ])
         
-        attributeString.append(NSAttributedString(string: "\n\n방금 올라온 모든 질문리스트를 보여드려요!\n질문에 참여 시 동료들의 모든 답변을 확인할 수 있어요 :)", attributes: [NSAttributedString.Key.foregroundColor: UIColor.customGray!,
-                                                                                                     NSAttributedString.Key.font: UIFont.sfPro(size: 12, family: .Regular)!]))
+        attributeString.append(
+            NSAttributedString(string: "\n\n방금 올라온 모든 질문리스트를 보여드려요!\n질문에 참여 시 동료들의 모든 답변을 확인할 수 있어요 :)", attributes: [
+            NSAttributedString.Key.foregroundColor: UIColor.customGray!,
+            NSAttributedString.Key.font: UIFont.sfPro(size: 12, family: .Regular)
+        ]))
         $0.attributedText = attributeString
     }
     //MARK: - Lifecycle
