@@ -7,7 +7,7 @@
 
 import UIKit
 
-protocol RecentHeaderDelegate {
+protocol RecentHeaderDelegate: AnyObject {
     func didTapViewAllQeustionsButton()
 }
 
@@ -16,7 +16,7 @@ final class RecentHeader: UICollectionReusableView {
     static let reuseIdentifier = "RecentHeader"
     
     //MARK: - Properties
-    var delegate: RecentHeaderDelegate?
+    weak var delegate: RecentHeaderDelegate?
     
     private let headerLabel = UILabel().then {
         $0.text = "최근 질문"

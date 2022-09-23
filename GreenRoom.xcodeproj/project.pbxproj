@@ -112,6 +112,8 @@
 		E46E4BF128DD734C00D1691F /* UIFont+DefaultFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = E46E4BF028DD734C00D1691F /* UIFont+DefaultFont.swift */; };
 		E46E4BF428DD769A00D1691F /* UIButton+Enable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E46E4BF328DD769A00D1691F /* UIButton+Enable.swift */; };
 		E46E4BF628DD76B200D1691F /* UIView+Layer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E46E4BF528DD76B200D1691F /* UIView+Layer.swift */; };
+		E46E4BF828DD87B200D1691F /* KeywordCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E46E4BF728DD87B100D1691F /* KeywordCell.swift */; };
+		E46E4BFA28DD899C00D1691F /* KeywordRegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E46E4BF928DD899C00D1691F /* KeywordRegisterView.swift */; };
 		E470539528AB81EC00884B56 /* MyPageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E470539428AB81EC00884B56 /* MyPageModel.swift */; };
 		E470539728AB856D00884B56 /* SettingHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = E470539628AB856D00884B56 /* SettingHeader.swift */; };
 		E470539928AB882900884B56 /* SettingRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = E470539828AB882900884B56 /* SettingRow.swift */; };
@@ -250,6 +252,8 @@
 		E46E4BF028DD734C00D1691F /* UIFont+DefaultFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+DefaultFont.swift"; sourceTree = "<group>"; };
 		E46E4BF328DD769A00D1691F /* UIButton+Enable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Enable.swift"; sourceTree = "<group>"; };
 		E46E4BF528DD76B200D1691F /* UIView+Layer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Layer.swift"; sourceTree = "<group>"; };
+		E46E4BF728DD87B100D1691F /* KeywordCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeywordCell.swift; sourceTree = "<group>"; };
+		E46E4BF928DD899C00D1691F /* KeywordRegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeywordRegisterView.swift; sourceTree = "<group>"; };
 		E470539428AB81EC00884B56 /* MyPageModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageModel.swift; sourceTree = "<group>"; };
 		E470539628AB856D00884B56 /* SettingHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingHeader.swift; sourceTree = "<group>"; };
 		E470539828AB882900884B56 /* SettingRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingRow.swift; sourceTree = "<group>"; };
@@ -703,6 +707,8 @@
 			isa = PBXGroup;
 			children = (
 				E427EC0228C791150046B4AA /* InfoHeaderView.swift */,
+				E46E4BF928DD899C00D1691F /* KeywordRegisterView.swift */,
+				E46E4BF728DD87B100D1691F /* KeywordCell.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -1018,6 +1024,7 @@
 				E49EF3D928B539FF00358340 /* PopularQuestionCell.swift in Sources */,
 				E461E42F28CE1EBE001EBF74 /* GRDetailViewModel.swift in Sources */,
 				DB9CF9BE289E81FE0091B705 /* CateogryCell.swift in Sources */,
+				E46E4BF828DD87B200D1691F /* KeywordCell.swift in Sources */,
 				E46539DC28ACDAD100F17A6C /* SetNotificationRow.swift in Sources */,
 				E46539D928ACD77600F17A6C /* Utilities.swift in Sources */,
 				DBA8ED6E28BB89C3007526CF /* KPFinishViewController.swift in Sources */,
@@ -1074,6 +1081,7 @@
 				DBBA9481289968CD00264405 /* PaddingLabel.swift in Sources */,
 				DBA8ED7E28C0A4D7007526CF /* KPMainViewController.swift in Sources */,
 				DBD082542897E75B0092241F /* MyPageViewModel.swift in Sources */,
+				E46E4BFA28DD899C00D1691F /* KeywordRegisterView.swift in Sources */,
 				DBA8ED7A28BF8009007526CF /* KPReviewModel.swift in Sources */,
 				E4141ACB28AF79E7004D74B3 /* FAQViewController.swift in Sources */,
 				DB006B8E28C3282700867013 /* KPGroupEditViewController.swift in Sources */,
