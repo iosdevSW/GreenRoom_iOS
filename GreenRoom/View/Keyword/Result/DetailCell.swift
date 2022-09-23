@@ -21,6 +21,7 @@ class DetailCell: UICollectionViewCell {
                 }
             }
             self.goalProgressBarView.progressBar.isHidden = !keywordIsOn
+            self.goalProgressBarView.goalView.isHidden = !keywordIsOn
             self.goalProgressBarView.guideLabel.isHidden = !keywordIsOn
             self.goalProgressBarView.persentLabel.isHidden = !keywordIsOn
         }

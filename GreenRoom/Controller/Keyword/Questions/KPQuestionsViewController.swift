@@ -332,7 +332,7 @@ class KPQuestionsViewController: BaseViewController {
         }
         
         self.view.addSubview(moveGroupButton)
-        moveGroupButton.addTarget(self, action: #selector(didClickKeywordButton(_:)), for: .touchUpInside)
+        moveGroupButton.addTarget(self, action: #selector(didClickQuestionEditButton(_:)), for: .touchUpInside)
         moveGroupButton.snp.makeConstraints{ make in
             make.leading.equalToSuperview().offset(14)
             make.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.bottom).offset(-10)
@@ -340,7 +340,7 @@ class KPQuestionsViewController: BaseViewController {
         }
 
         self.view.addSubview(deleteQuestionButton)
-        deleteQuestionButton.addTarget(self, action: #selector(didClickKeywordButton(_:)), for: .touchUpInside)
+        deleteQuestionButton.addTarget(self, action: #selector(didClickQuestionEditButton(_:)), for: .touchUpInside)
         deleteQuestionButton.snp.makeConstraints{ make in
             make.leading.equalTo(moveGroupButton.snp.trailing).offset(14)
             make.trailing.equalToSuperview().offset(-14)
