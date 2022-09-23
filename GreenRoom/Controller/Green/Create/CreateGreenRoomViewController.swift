@@ -55,6 +55,7 @@ final class CreateGreenRoomViewController: BaseViewController {
     }
     
     override func setupAttributes() {
+        self.hideKeyboardWhenTapped()
         self.doneButton.isUserInteractionEnabled = false
         self.doneButton.alpha = 0.5
         configureCollectionView()

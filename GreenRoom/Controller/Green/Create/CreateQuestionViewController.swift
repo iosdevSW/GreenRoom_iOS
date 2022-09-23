@@ -123,6 +123,7 @@ final class CreateQuestionViewController: BaseViewController {
     
     
     override func setupAttributes() {
+        self.hideKeyboardWhenTapped()
         let layout = UICollectionViewFlowLayout()
         
         layout.minimumLineSpacing = 20
