@@ -53,10 +53,14 @@ final class CreateGRHeaderView: UICollectionReusableView {
         
         let dates = df.string(from: Date()).components(separatedBy: " ")
         
-        let mutable = NSMutableAttributedString(string: dates[1], attributes: [NSMutableAttributedString.Key.foregroundColor: UIColor.gray,
-                                                                               NSMutableAttributedString.Key.font: UIFont.sfPro(size: 20, family: .Bold)!])
-        mutable.append(NSMutableAttributedString(string: "\n \(dates[0])", attributes: [NSMutableAttributedString.Key.foregroundColor: UIColor.gray,
-                                                                                NSMutableAttributedString.Key.font: UIFont.sfPro(size: 12, family: .Regular)!]))
+        let mutable = NSMutableAttributedString(string: dates[1], attributes: [
+            NSMutableAttributedString.Key.foregroundColor: UIColor.gray,
+            NSMutableAttributedString.Key.font: UIFont.sfPro(size: 20, family: .Bold)
+        ])
+        
+        mutable.append(NSMutableAttributedString(string: "\n \(dates[0])", attributes:[
+            NSMutableAttributedString.Key.foregroundColor: UIColor.gray,
+            NSMutableAttributedString.Key.font: UIFont.sfPro(size: 12, family: .Regular)]))
         $0.attributedText = mutable
     }
     
@@ -70,10 +74,15 @@ final class CreateGRHeaderView: UICollectionReusableView {
         let dates = df.string(from: Date().adding(minutes: 60 * 24)).components(separatedBy: " ")
         
 
-        let mutable = NSMutableAttributedString(string: dates[1], attributes: [NSMutableAttributedString.Key.foregroundColor: UIColor.gray,
-                                                                               NSMutableAttributedString.Key.font: UIFont.sfPro(size: 20, family: .Bold)!])
-        mutable.append(NSMutableAttributedString(string: "\n \(dates[0])", attributes: [NSMutableAttributedString.Key.foregroundColor: UIColor.gray,
-                                                                                NSMutableAttributedString.Key.font: UIFont.sfPro(size: 12, family: .Regular)!]))
+        let mutable = NSMutableAttributedString(string: dates[1], attributes: [
+            NSMutableAttributedString.Key.foregroundColor: UIColor.gray,
+            NSMutableAttributedString.Key.font: UIFont.sfPro(size: 20, family: .Bold)
+        ])
+        
+        mutable.append(NSMutableAttributedString(string: "\n \(dates[0])", attributes:[
+            NSMutableAttributedString.Key.foregroundColor: UIColor.gray,
+            NSMutableAttributedString.Key.font: UIFont.sfPro(size: 12, family: .Regular)]))
+        
         $0.attributedText = mutable
     }
     
@@ -203,14 +212,14 @@ final class CreateGRHeaderView: UICollectionReusableView {
         let minutes = String(format: "%02d", minutes % 60)
         
         let attribute: [NSAttributedString.Key: Any] = [
-            .font: UIFont.sfPro(size: 40, family: .Bold)!,
+            .font: UIFont.sfPro(size: 40, family: .Bold),
             .foregroundColor: UIColor.init(red: 87/255.0, green: 193/255.0, blue: 183/255.0, alpha: 1)
         ]
         
         let mutableAttributeString = NSMutableAttributedString(string: "\(hour)시간 \(minutes)분", attributes: attribute)
         
         let plainAttribute: [NSAttributedString.Key: Any] = [
-            .font: UIFont.sfPro(size: 30, family: .Regular)!,
+            .font: UIFont.sfPro(size: 30, family: .Regular),
             .foregroundColor: UIColor.black
         ]
         
@@ -226,10 +235,14 @@ final class CreateGRHeaderView: UICollectionReusableView {
         
         let dates = df.string(from: Date().adding(minutes: minutes)).components(separatedBy: " ")
         
-        let mutable = NSMutableAttributedString(string: dates[1], attributes: [NSMutableAttributedString.Key.foregroundColor: UIColor.gray,
-                                                                               NSMutableAttributedString.Key.font: UIFont.sfPro(size: 20, family: .Bold)!])
-        mutable.append(NSMutableAttributedString(string: "\n \(dates[0])", attributes: [NSMutableAttributedString.Key.foregroundColor: UIColor.gray,
-                                                                                NSMutableAttributedString.Key.font: UIFont.sfPro(size: 12, family: .Regular)!]))
+        let mutable = NSMutableAttributedString(string: dates[1], attributes: [
+            NSMutableAttributedString.Key.foregroundColor: UIColor.gray,
+            NSMutableAttributedString.Key.font: UIFont.sfPro(size: 20, family: .Bold)
+        ])
+        mutable.append(NSMutableAttributedString(string: "\n \(dates[0])", attributes: [
+            NSMutableAttributedString.Key.foregroundColor: UIColor.gray,
+            NSMutableAttributedString.Key.font: UIFont.sfPro(size: 12, family: .Regular)
+        ]))
         return mutable
     }
 }

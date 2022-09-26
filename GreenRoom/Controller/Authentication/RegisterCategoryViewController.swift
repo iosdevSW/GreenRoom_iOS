@@ -24,11 +24,7 @@ class RegisterCategoryViewController: UIViewController{
     
     var selectedCategory = "" {
         didSet {
-            if selectedCategory == "" {
-                nextButton.setEnableButton(false)
-            }else {
-                nextButton.setEnableButton(true)
-            }
+            nextButton.setEnableButton(!selectedCategory.isEmpty)
         }
     }
     

@@ -53,9 +53,7 @@ final class InfoHeaderView: UICollectionReusableView {
     
     var titleLabel = Utilities.shared.generateLabel(text: "Title", color: .black, font: .sfPro(size: 16, family: .Semibold))
     
-    private var subTitleLabel = Utilities.shared.generateLabel(text: "SubTitleLabel", color: .customGray, font: .sfPro(size: 12, family: .Regular)).then {
-        $0.setLineSpacing(spacing: 8)
-    }
+    private var subTitleLabel = Utilities.shared.generateLabel(text: "SubTitleLabel", color: .customGray, font: .sfPro(size: 12, family: .Regular))
    
     private var filter = FilterView(viewModel: CategoryViewModel())
 
@@ -77,6 +75,8 @@ final class InfoHeaderView: UICollectionReusableView {
         addSubview(subTitleLabel)
         addSubview(filter)
         
+        addLineSpacing(8)
+        
         titleLabel.snp.makeConstraints {
             $0.top.equalToSuperview().offset(bounds.size.height * 0.1)
             $0.leading.equalToSuperview().offset(bounds.size.width * 0.08)
@@ -96,4 +96,16 @@ final class InfoHeaderView: UICollectionReusableView {
         
     }
     
+    private func addLineSpacing(_ spacing: CGFloat) {
+        guard let text = subTitleLabel.text else { return }
+         let attributeString = NSMutableAttributedString(string: text)
+
+         let style = NSMutableParagraphStyle()
+
+         style.lineSpacing = spacing
+         attributeString.addAttribute(.paragraphStyle,
+                                      value: style,
+                                      range: NSRange(location: 0, length: attributeString.length))
+        subTitleLabel.attributedText = attributeString
+    }
 }

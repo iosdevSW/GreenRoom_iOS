@@ -11,9 +11,7 @@ final class RecentQuestionCell: UICollectionViewCell {
     static let reuseIdentifer = "RecentQuestionCell"
     //MARK: - Properties
     var question: Question! {
-        didSet {
-            configureUI()
-        }
+        didSet { configure() }
     }
     
     private lazy var profileImageView = UIImageView(frame: .zero).then {
@@ -40,7 +38,7 @@ final class RecentQuestionCell: UICollectionViewCell {
             string: "대부분의 프로젝트는 프로세스는 어떠하며 어떤 롤이 었나요?",
             attributes: [
                 NSAttributedString.Key.paragraphStyle : style,
-                NSAttributedString.Key.font: UIFont.sfPro(size: 16, family: .Regular) ?? .systemFont(ofSize: 16),
+                NSAttributedString.Key.font: UIFont.sfPro(size: 16, family: .Regular),
                 NSAttributedString.Key.foregroundColor: UIColor.black
             ])
     
@@ -91,6 +89,7 @@ final class RecentQuestionCell: UICollectionViewCell {
         style.lineSpacing = 6
         
         self.questionTextView.attributedText = NSAttributedString(string: question.question, attributes: [NSAttributedString.Key.paragraphStyle : style])
+        
         self.categoryLabel.text = category.title
         self.profileImageView.image = UIImage(named: question.image)
         

@@ -19,7 +19,7 @@ final class Utilities {
         case right
     }
     
-    func textWithIcon(text: String, image: UIImage?,font: UIFont = .sfProText(size: 17, family: .Regular), textColor: UIColor = .customGray, imageColor: UIColor?,iconPosition: iconPosition) -> NSMutableAttributedString{
+    func textWithIcon(text: String, image: UIImage?,font: UIFont? = .sfProText(size: 17, family: .Regular), textColor: UIColor = .customGray, imageColor: UIColor?,iconPosition: iconPosition) -> NSMutableAttributedString{
   
         let attributedString = NSMutableAttributedString(string:"")
         
@@ -45,7 +45,7 @@ final class Utilities {
         return attributedString
     }
     
-    func heightForView(text:String, font:UIFont, width:CGFloat) -> CGFloat{
+    func heightForView(text:String, font: UIFont?, width:CGFloat) -> CGFloat{
         
         let attributedString = NSMutableAttributedString(string: text)
 

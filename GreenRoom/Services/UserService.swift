@@ -38,7 +38,7 @@ class UserService {
     
     //MARK: - 회원정보 조회
     func fetchUserInfo() -> Observable<User> {
-        let url = URL(string: Storage.baseURL + "/api/users")!
+        let url = URL(string: Constants.baseURL + "/api/users")!
         
         return Observable.create { emitter in
             AF.request(url,interceptor: AuthManager()).validate().responseDecodable(of: User.self) { response in
@@ -95,7 +95,7 @@ extension UserService {
     }
     
     private func fetchPresignedURL(parameters: [String: String], completion:@escaping(String) -> Void) {
-        guard let url = URL(string: Storage.baseURL + "/api/users/profile-image") else {
+        guard let url = URL(string: Constants.baseURL + "/api/users/profile-image") else {
             return
             
         }
@@ -128,7 +128,7 @@ extension UserService {
 extension UserService {
     
     func updateUserInfo(parameter: [String: Any], completion: @escaping(Bool) -> Void) {
-        guard let url = URL(string: Storage.baseURL + "/api/users") else { return }
+        guard let url = URL(string: Constants.baseURL + "/api/users") else { return }
         
         if let name = parameter as? [String: String] {
             AF.request(url, method: .put,parameters: name, encoder: JSONParameterEncoder.default, interceptor: AuthManager()).validate(statusCode: 200..<300).response { response in

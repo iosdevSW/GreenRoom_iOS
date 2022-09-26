@@ -12,9 +12,7 @@ class MyQuestionListCell: UICollectionViewCell {
     static let reuseIedentifier = "MyQuestionListCell"
     
     var question: Question! {
-        didSet {
-            configureUI()
-        }
+        didSet { configure() }
     }
     
     private lazy var scrapButton = UIButton(frame: CGRect(x: 0, y: 0, width: 12, height: 12)).then {
@@ -58,7 +56,7 @@ class MyQuestionListCell: UICollectionViewCell {
             string: "대부분의 프로젝트는 프로세스는 어떠하며 어떤 롤이 었나요?",
             attributes: [
                 NSAttributedString.Key.paragraphStyle : style,
-                NSAttributedString.Key.font: UIFont.sfPro(size: 16, family: .Regular) ?? .systemFont(ofSize: 16),
+                NSAttributedString.Key.font: UIFont.sfPro(size: 16, family: .Regular),
                 NSAttributedString.Key.foregroundColor: UIColor.black
             ])
         

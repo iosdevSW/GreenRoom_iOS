@@ -12,7 +12,7 @@ class AuthManager: RequestInterceptor {
     
     func adapt(_ urlRequest: URLRequest, for session: Session, completion: @escaping (Result<URLRequest, Error>) -> Void) {
         
-        guard urlRequest.url?.absoluteString.hasPrefix(Storage.baseURL) == true,
+        guard urlRequest.url?.absoluteString.hasPrefix(Constants.baseURL) == true,
               let accessToken = KeychainWrapper.standard.string(forKey: "accessToken") else { return }
         
         var urlRequest = urlRequest
@@ -27,7 +27,7 @@ class AuthManager: RequestInterceptor {
             return
         }
         
-        guard let url = URL(string: "\(Storage.baseURL)/api/auth/reissue") else { return }
+        guard let url = URL(string: "\(Constants.baseURL)/api/auth/reissue") else { return }
         
         guard let accessToken = KeychainWrapper.standard.string(forKey: "accessToten"), let refreshToken = KeychainWrapper.standard.string(forKey: "refreshToken") else { return }
         

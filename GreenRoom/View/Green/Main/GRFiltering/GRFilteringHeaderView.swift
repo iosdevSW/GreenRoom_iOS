@@ -16,11 +16,13 @@ final class GRFilteringHeaderView: UICollectionReusableView {
         $0.numberOfLines = 0
         let attributeString = NSMutableAttributedString(string: "빠르게 필터링", attributes: [
             NSAttributedString.Key.foregroundColor: UIColor.black,
-            NSAttributedString.Key.font: UIFont.sfPro(size: 20, family: .Bold)!
+            NSAttributedString.Key.font: UIFont.sfPro(size: 20, family: .Bold)
         ])
         
-        attributeString.append(NSAttributedString(string: "\n\n관심사 기반으로 맞춤 키워드를 보여드릴게요!", attributes: [NSAttributedString.Key.foregroundColor: UIColor.customGray!,
-                                                                                                     NSAttributedString.Key.font: UIFont.sfPro(size: 12, family: .Regular)!]))
+        attributeString.append(NSAttributedString(string: "\n\n관심사 기반으로 맞춤 키워드를 보여드릴게요!", attributes: [
+            NSAttributedString.Key.foregroundColor: UIColor.customGray!,
+            NSAttributedString.Key.font: UIFont.sfPro(size: 12, family: .Regular)
+        ]))
         $0.attributedText = attributeString
     }
     //MARK: - Lifecycle
