@@ -40,6 +40,8 @@ class KeywordViewModel {
         selectedQuestionObservable.subscribe(onNext: { str in
             self.selectedQ.onNext([KPDetailModel(items: str)])
         }).disposed(by: disposeBag)
+//        KeywordPracticeService().fetchReferenceQuestions(categoryId: nil, title: nil, type: nil, keyword: nil)
     }
+    
     
 }

@@ -47,6 +47,9 @@
 		DBA9451528C6540400B6E16A /* CreateViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA9451428C6540400B6E16A /* CreateViewModel.swift */; };
 		DBA9451828C71A4F00B6E16A /* FilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA9451728C71A4F00B6E16A /* FilterView.swift */; };
 		DBA9451D28CE0E0400B6E16A /* KPGreenRoomQuestionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA9451C28CE0E0400B6E16A /* KPGreenRoomQuestionsViewController.swift */; };
+		DBB251E828D98B2F00310820 /* QuestionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBB251E728D98B2F00310820 /* QuestionModel.swift */; };
+		DBB251EA28D98C7000310820 /* KeywordPracticeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBB251E928D98C7000310820 /* KeywordPracticeService.swift */; };
+		DBB251EC28D9B7B400310820 /* LodingIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBB251EB28D9B7B400310820 /* LodingIndicator.swift */; };
 		DBBA9481289968CD00264405 /* PaddingLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBBA9480289968CD00264405 /* PaddingLabel.swift */; };
 		DBD0821D2897E6EE0092241F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD0821C2897E6EE0092241F /* AppDelegate.swift */; };
 		DBD0821F2897E6EE0092241F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD0821E2897E6EE0092241F /* SceneDelegate.swift */; };
@@ -176,6 +179,9 @@
 		DBA9451428C6540400B6E16A /* CreateViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateViewModel.swift; sourceTree = "<group>"; };
 		DBA9451728C71A4F00B6E16A /* FilterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterView.swift; sourceTree = "<group>"; };
 		DBA9451C28CE0E0400B6E16A /* KPGreenRoomQuestionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KPGreenRoomQuestionsViewController.swift; sourceTree = "<group>"; };
+		DBB251E728D98B2F00310820 /* QuestionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionModel.swift; sourceTree = "<group>"; };
+		DBB251E928D98C7000310820 /* KeywordPracticeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeywordPracticeService.swift; sourceTree = "<group>"; };
+		DBB251EB28D9B7B400310820 /* LodingIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LodingIndicator.swift; sourceTree = "<group>"; };
 		DBBA9480289968CD00264405 /* PaddingLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaddingLabel.swift; sourceTree = "<group>"; };
 		DBD082192897E6EE0092241F /* GreenRoom.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GreenRoom.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DBD0821C2897E6EE0092241F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -433,6 +439,7 @@
 				E4C4C4BB28BD1172008826AB /* CustomTabbarController.swift */,
 				DB006B9428C39D3C00867013 /* CustomSwitch.swift */,
 				DB9989DF28D5DA280056D40B /* CustomSlider.swift */,
+				DBB251EB28D9B7B400310820 /* LodingIndicator.swift */,
 			);
 			path = Custom;
 			sourceTree = "<group>";
@@ -590,6 +597,7 @@
 				DBD082502897E75B0092241F /* LoginModel.swift */,
 				E47EE51228C47F0C00618CA6 /* GreenRoom */,
 				DB07821828C5B2210091EEFE /* MyPage */,
+				DBB251E728D98B2F00310820 /* QuestionModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -601,6 +609,7 @@
 				E4C8AE6828B35519007E010D /* UserService.swift */,
 				E4C4C4AD28BCA53D008826AB /* GreenRoomService.swift */,
 				E44D507D28BE56A10086C447 /* QuestionService.swift */,
+				DBB251E928D98C7000310820 /* KeywordPracticeService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -997,6 +1006,7 @@
 				E4C4C4BE28BD1ACD008826AB /* CreatePopOverViewController.swift in Sources */,
 				E40BC6E628B8834100FB557D /* SearchResultHeaderView.swift in Sources */,
 				DBA8ED7428BDDCA1007526CF /* DetailCell.swift in Sources */,
+				DBB251EA28D98C7000310820 /* KeywordPracticeService.swift in Sources */,
 				E4460DD328CA01D400AFA108 /* QuestionsByCategoryViewController.swift in Sources */,
 				E4EF361628C4BED700746050 /* RecentHeader.swift in Sources */,
 				DB006B9328C342E200867013 /* KPQuestionsViewController.swift in Sources */,
@@ -1018,6 +1028,7 @@
 				E470539528AB81EC00884B56 /* MyPageModel.swift in Sources */,
 				DBD0825D2897E75B0092241F /* LoginModel.swift in Sources */,
 				DBE7A54F28996C2000E9A4E9 /* CheckLabel.swift in Sources */,
+				DBB251EC28D9B7B400310820 /* LodingIndicator.swift in Sources */,
 				DB8D163A28B8D79900E3F237 /* ProgressBarView.swift in Sources */,
 				DBD082572897E75B0092241F /* KPFindQuestionViewController.swift in Sources */,
 				DBA8ED6428B9D336007526CF /* RecentSearchKeyword+CoreDataClass.swift in Sources */,
@@ -1049,6 +1060,7 @@
 				DBA8ED7628BF1790007526CF /* KPDetailModel.swift in Sources */,
 				E40BC6E128B8802700FB557D /* SearchResultViewController.swift in Sources */,
 				DBA9451228C653F200B6E16A /* User.swift in Sources */,
+				DBB251E828D98B2F00310820 /* QuestionModel.swift in Sources */,
 				DBA8ED6C28BB4A4C007526CF /* KPRecordingViewController.swift in Sources */,
 				DBD0821D2897E6EE0092241F /* AppDelegate.swift in Sources */,
 				E40BC6B328B7548E00FB557D /* SearchWordHeaderView.swift in Sources */,

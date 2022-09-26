@@ -33,6 +33,20 @@ class QuestionListCell: UITableViewCell {
         $0.attributedText = attributedString
     }
     
+    let checkBox = UIImageView().then {
+        $0.layer.cornerRadius = 11
+        $0.layer.borderWidth = 1
+        $0.layer.borderColor = UIColor.customGray.cgColor
+        $0.image = UIImage(named: "check.white")?.withRenderingMode(.alwaysOriginal)
+        $0.contentMode = .center
+    }
+    
+    let chevronButton = UIButton(type: .system).then {
+        $0.setImage(UIImage(systemName: "chevron.right"), for: .normal)
+        $0.tintColor = .customGray
+        $0.isHidden = true
+    }
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         configureUI()
@@ -46,24 +60,38 @@ class QuestionListCell: UITableViewCell {
     }
     
     func configureUI(){
-        self.addSubview(mainLabel)
+        self.contentView.addSubview(mainLabel)
         self.mainLabel.snp.makeConstraints{ make in
             make.leading.equalToSuperview().offset(40)
             make.trailing.equalToSuperview().offset(-30)
             make.top.equalToSuperview().offset(17)
         }
         
-        self.addSubview(questionTypeLabel)
+        self.contentView.addSubview(questionTypeLabel)
         self.questionTypeLabel.snp.makeConstraints{ make in
             make.leading.equalToSuperview().offset(40)
             make.top.equalTo(self.mainLabel.snp.bottom).offset(6)
             make.bottom.equalToSuperview().offset(-17)
         }
         
-        self.addSubview(categoryLabel)
+        self.contentView.addSubview(categoryLabel)
         self.categoryLabel.snp.makeConstraints{ make in
             make.leading.equalTo(questionTypeLabel.snp.trailing).offset(10)
             make.top.equalTo(mainLabel.snp.bottom).offset(6)
+        }
+        
+        self.contentView.addSubview(checkBox)
+        self.checkBox.snp.makeConstraints{ make in
+            make.trailing.equalToSuperview().offset(-10)
+            make.centerY.equalToSuperview()
+            make.width.height.equalTo(22)
+        }
+        
+        self.contentView.addSubview(chevronButton)
+        self.chevronButton.snp.makeConstraints{ make in
+            make.trailing.equalToSuperview().offset(-10)
+            make.centerY.equalToSuperview()
+            make.width.height.equalTo(22)
         }
     }
 }
