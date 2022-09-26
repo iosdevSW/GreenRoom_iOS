@@ -8,29 +8,39 @@
 import Foundation
 import RxSwift
 
-struct Answer {
-    let answer: String
-    let keywords: [String]
-}
-
 final class AnswerViewModel: ViewModelType {
     
     var disposeBag = DisposeBag()
     
     struct Input {
         let trigger: Observable<Bool>
-        let keyword: Observable<String>
     }
     
     struct Output {
-        let answer: Observable<String?>
-        let keywrods: Observable<[String]>
+        let answer: Observable<Answer?>
+//        let keywrods: Observable<[String]>
     }
     
-    private let answer = BehaviorSubject<String?>(value: nil)
-    private let keywords = BehaviorSubject<[String]>(value: [])
+    let answer = BehaviorSubject<Answer?>(value: Answer(answer:
+                                                            """
+                                                         앞서 말한 것과 같이 이미 있는 제품의 디자인을 제 시각으로 새롭게 바꾸는 실험을 해보았습니다. 지루한 제품 설명서를 새로 편집해보거나, 명함을 만들어보기도 하고, 좋아하는 브랜드를 정해서 그 브랜드의 철학, 이야기, 가치 등을 이해한 후, 그에 맞는 이미지를 찾아 새로운 배열과 그리드를 이용하여 브랜드 매뉴얼을 만들어 보기도 했습니다. 단편적인 시각물로 사람들과 소통하는 것은 어려운 일이지만 그럼에도 불구하고 깊은 울림과 감동을 주는 디자이너가 될 수 있도록 꾸준한 실험을 통해 발전하고 성장하겠습니다.
+                                                         """,
+                                                keywords: ["새롭게 바꾸는 실험","브랜드 매뉴얼", "꾸준한 실험"])
+    )
     
-//    private let question: BehaviorSubject<Question>
+    let placeholder = """
+                        나와 같은 동료들은 어떤 답변을 줄까요?
+                        *부적절한 멘트 사용 혹은 질문과 관련없는 답변은 삼가해주세요.
+                        (그외의 내용은 자유롭게 기입해주세요)
+                        *답변 가이드라인은 마이페이지>FAQ를 참고해주세요.
+                        """
+    
+//    private var selectedKeywords: [String] = ["새롭게 바꾸는 실험", "브랜드 매뉴얼", "꾸준한 실험"] {
+//        didSet { self.keywords.onNext(self.selectedKeywords) }
+//    }
+//
+//    let keywords = BehaviorSubject<[String]>(value: ["새롭게 바꾸는 실험", "브랜드 매뉴얼", "꾸준한 실험"])
+    
     private var question: Question!
     
     init(question: Question){
@@ -39,13 +49,21 @@ final class AnswerViewModel: ViewModelType {
     }
     
     func transform(input: Input) -> Output {
-        let output = input.trigger.flatMap { _ in
+        _ = input.trigger.flatMap { _ in
 //            guard let self = self else { return }
             return self.fetchAnswer(question: (self.question))
         }
         
-        return Output(answer: self.answer.asObserver(), keywrods: self.keywords.asObserver())
+        return Output(answer: self.answer.asObserver())
     }
+    
+//    func appendkeyword(_ keyword: String){
+//        self.selectedKeywords.append(keyword)
+//    }
+//
+//    func deleteKeyword(_ index: Int) {
+//
+//    }
 }
 
 extension AnswerViewModel {
