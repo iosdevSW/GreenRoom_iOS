@@ -81,7 +81,7 @@ extension AppDelegate {
     }
     
     func setLoginAttributes(){
-        KakaoSDK.initSDK(appKey: Storage.kakaoAppKey) //Kakao SDK Init
+        KakaoSDK.initSDK(appKey: Constants.kakaoAppKey) //Kakao SDK Init
         //Naver
         let instance = NaverThirdPartyLoginConnection.getSharedInstance()
         

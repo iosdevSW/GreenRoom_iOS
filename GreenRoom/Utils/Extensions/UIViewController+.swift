@@ -1,8 +1,8 @@
 //
-//  Extension.swift
+//  UIViewController+.swift
 //  GreenRoom
 //
-//  Created by SangWoo's MacBook on 2022/08/01.
+//  Created by Doyun Park on 2022/09/26.
 //
 
 import UIKit
@@ -29,30 +29,5 @@ extension UIViewController {
     
     @objc func dismissKeyboard(){
         self.view.endEditing(true)
-    }
-}
-
-
-
-extension UILabel {
-    
-    func setLineSpacing(spacing: CGFloat) {
-        guard let text = text else { return }
-
-        let attributeString = NSMutableAttributedString(string: text)
-
-        let style = NSMutableParagraphStyle()
-
-        style.lineSpacing = spacing
-        attributeString.addAttribute(.paragraphStyle,
-                                     value: style,
-                                     range: NSRange(location: 0, length: attributeString.length))
-        attributedText = attributeString
-    }
-}
-
-extension Date {
-    func adding(minutes: Int) -> Date {
-        return Calendar.current.date(byAdding: .minute, value: minutes, to: self)!
     }
 }

@@ -31,7 +31,7 @@ final class QuestionService {
     func uploadQuestionList(categoryId: Int, question: String) -> Observable<Bool> {
         
         print("DEBUG: \(categoryId),, \(question)")
-        let url = URL(string: "\(Storage.baseURL)/api/private-questions")!
+        let url = URL(string: "\(Constants.baseURL)/api/private-questions")!
         
         let parameters = UploadQuestionModel(categoryId: categoryId, question: question)
         
