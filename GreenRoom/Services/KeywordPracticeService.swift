@@ -11,7 +11,7 @@ import Alamofire
 
 class KeywordPracticeService {
     func fetchReferenceQuestions(categoryId: [Int]?, title: String?, type: String?, keyword: String?){
-        let urlString = Storage.baseURL + "/api/questions"
+        let urlString = Storage.baseURL + "/api/interview-questions"
         let url = URL(string: urlString)!
         
         let accessToken = KeychainWrapper.standard.string(forKey: "accessToken")!
@@ -27,16 +27,16 @@ class KeywordPracticeService {
 ////            "keyword" : keyword
 //        ]
 //        
-//        let request = AF.request(url, method: .get, headers: headers)
-//        request.responseJSON() { res in
-//            switch res.result {
-//            case .success(let data):
-//                let json = data as! [String: Any]
-//                print(json["message"])
-//            case .failure(let error):
-//                print(error.localizedDescription)
-//            }
-//        }
+        let request = AF.request(url, method: .get, headers: headers)
+        request.responseJSON() { res in
+            switch res.result {
+            case .success(let data):
+                print(data)
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+        
 //        request.responseDecodable(of: QuestionModel.self) { res in
 //            switch res.result {
 //            case .success(let data):

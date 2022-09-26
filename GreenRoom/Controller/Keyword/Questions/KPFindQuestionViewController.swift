@@ -127,12 +127,6 @@ class KPFindQuestionViewController: BaseViewController{
         _ = viewModel.tabelTemp // 서비스 로직 호출할땐 응답받는 구조체로 대체 (아직 서비스API 미구현 임시로 string배열로 받음)
             .bind(to: questionListTableView.rx.items(cellIdentifier: "QuestionListCell", cellType: QuestionListCell.self)) { index, title, cell in
                 cell.mainLabel.text = title
-                
-                let image = UIImage(systemName: "chevron.right")!
-                let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 12, height: 20))
-                imageView.image = image
-                imageView.tintColor = .customGray
-                cell.accessoryView = imageView
                 cell.selectionStyle = .none
             }
         
