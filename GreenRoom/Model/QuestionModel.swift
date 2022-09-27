@@ -8,16 +8,9 @@
 import Foundation
 
 struct QuestionModel: Codable{
-    struct Message: Codable {
-        let questionId: Int
-        let answerId: Int?
-        let category: String
-        let questionType: String
-        let question: String
-        let hasAnswer: Bool
-        let hasKeyword: Bool
-    }
-    
-    let message: [Message]
-    
+    let categoryName: String
+    let id: Int
+    let question: String
+    let questionType: String
+    let questionTypeCode: Int
 }

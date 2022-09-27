@@ -7,44 +7,33 @@
 
 import UIKit
 import SwiftKeychainWrapper
+import RxSwift
 import Alamofire
 
 class KeywordPracticeService {
-    func fetchReferenceQuestions(categoryId: [Int]?, title: String?, type: String?, keyword: String?){
+    func fetchReferenceQuestions(categoryId: String?, title: String?)-> Observable<[QuestionModel]>{
         let urlString = Storage.baseURL + "/api/interview-questions"
         let url = URL(string: urlString)!
         
-        let accessToken = KeychainWrapper.standard.string(forKey: "accessToken")!
+        var param: Parameters?
         
-        let headers: HTTPHeaders = [
-            "Authorization": "Bearer \(accessToken)"
-        ]
-//        
-//        let param: Parameters = [
-////            "category" : "1",
-////            "title" : ,
-//            "type" : "basic",
-////            "keyword" : keyword
-//        ]
-//        
-        let request = AF.request(url, method: .get, headers: headers)
-        request.responseJSON() { res in
-            switch res.result {
-            case .success(let data):
-                print(data)
-            case .failure(let error):
-                print(error.localizedDescription)
+        if categoryId != nil || title != nil { param  = Parameters() }
+            
+        if categoryId != nil { param?["category"] = categoryId }
+        if title != nil { param?["title"] = title }
+        
+        return Observable.create { emitter in
+            let request = AF.request(url, method: .get, parameters: param ,encoding: URLEncoding.default, interceptor: AuthManager())
+            
+            request.responseDecodable(of: [QuestionModel].self) { res in
+                switch res.result {
+                case .success(let data):
+                    emitter.onNext(data)
+                case .failure(let error):
+                    print(error.localizedDescription)
+                }
             }
+            return Disposables.create()
         }
-        
-//        request.responseDecodable(of: QuestionModel.self) { res in
-//            switch res.result {
-//            case .success(let data):
-//                print(data)
-//            case .failure(let error):
-//                print(error.localizedDescription)
-//                print(error.responseCode)
-//            }
-//        }
     }
 }

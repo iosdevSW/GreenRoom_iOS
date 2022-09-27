@@ -50,7 +50,7 @@ class KPMainViewController: BaseViewController {
     }
     
     @objc func didclickFindButton(_ sender: UIButton) {
-        let vc = sender.tag == 0 ? KPFindQuestionViewController(viewModel: viewModel) : KPQuestionsViewController(viewModel: viewModel)
+        let vc = sender.tag == 0 ? KPFindQuestionViewController() : KPQuestionsViewController(viewModel: viewModel)
         self.navigationController?.pushViewController(vc, animated: true)
     }
     

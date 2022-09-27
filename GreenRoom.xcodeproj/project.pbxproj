@@ -50,6 +50,7 @@
 		DBB251E828D98B2F00310820 /* QuestionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBB251E728D98B2F00310820 /* QuestionModel.swift */; };
 		DBB251EA28D98C7000310820 /* KeywordPracticeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBB251E928D98C7000310820 /* KeywordPracticeService.swift */; };
 		DBB251EC28D9B7B400310820 /* LodingIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBB251EB28D9B7B400310820 /* LodingIndicator.swift */; };
+		DBB251F028E18D0B00310820 /* BaseQuestionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBB251EF28E18D0B00310820 /* BaseQuestionsViewModel.swift */; };
 		DBBA9481289968CD00264405 /* PaddingLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBBA9480289968CD00264405 /* PaddingLabel.swift */; };
 		DBD0821D2897E6EE0092241F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD0821C2897E6EE0092241F /* AppDelegate.swift */; };
 		DBD0821F2897E6EE0092241F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD0821E2897E6EE0092241F /* SceneDelegate.swift */; };
@@ -182,6 +183,7 @@
 		DBB251E728D98B2F00310820 /* QuestionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionModel.swift; sourceTree = "<group>"; };
 		DBB251E928D98C7000310820 /* KeywordPracticeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeywordPracticeService.swift; sourceTree = "<group>"; };
 		DBB251EB28D9B7B400310820 /* LodingIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LodingIndicator.swift; sourceTree = "<group>"; };
+		DBB251EF28E18D0B00310820 /* BaseQuestionsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseQuestionsViewModel.swift; sourceTree = "<group>"; };
 		DBBA9480289968CD00264405 /* PaddingLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaddingLabel.swift; sourceTree = "<group>"; };
 		DBD082192897E6EE0092241F /* GreenRoom.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GreenRoom.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DBD0821C2897E6EE0092241F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -428,6 +430,15 @@
 			path = Proxy;
 			sourceTree = "<group>";
 		};
+		DBB251ED28E18CDA00310820 /* Keyword */ = {
+			isa = PBXGroup;
+			children = (
+				DBD0823B2897E75A0092241F /* KeywordViewModel.swift */,
+				DBB251EF28E18D0B00310820 /* BaseQuestionsViewModel.swift */,
+			);
+			path = Keyword;
+			sourceTree = "<group>";
+		};
 		DBBA947F289968CD00264405 /* Custom */ = {
 			isa = PBXGroup;
 			children = (
@@ -487,9 +498,9 @@
 		DBD082382897E75A0092241F /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				DBB251ED28E18CDA00310820 /* Keyword */,
 				DBD082392897E75A0092241F /* LoginViewModel.swift */,
 				DB563F9D28AE266D00E7193D /* CategoryViewModel.swift */,
-				DBD0823B2897E75A0092241F /* KeywordViewModel.swift */,
 				E49CC15428C326CD009216E1 /* MyPage */,
 				E47EE51028C47D9800618CA6 /* GreenRoom */,
 			);
@@ -1045,6 +1056,7 @@
 				E4C4C4BC28BD1172008826AB /* CustomTabbarController.swift in Sources */,
 				DBBA9481289968CD00264405 /* PaddingLabel.swift in Sources */,
 				DBA8ED7E28C0A4D7007526CF /* KPMainViewController.swift in Sources */,
+				DBB251F028E18D0B00310820 /* BaseQuestionsViewModel.swift in Sources */,
 				DBD082542897E75B0092241F /* MyPageViewModel.swift in Sources */,
 				DBA8ED7A28BF8009007526CF /* KPReviewModel.swift in Sources */,
 				E4141ACB28AF79E7004D74B3 /* FAQViewController.swift in Sources */,

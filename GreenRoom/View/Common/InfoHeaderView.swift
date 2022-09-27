@@ -57,7 +57,7 @@ final class InfoHeaderView: UICollectionReusableView {
         $0.setLineSpacing(spacing: 8)
     }
    
-    private var filter = FilterView(viewModel: CategoryViewModel())
+    private var filter = FilterView()
 
     //MARK: - Init
     override init(frame: CGRect) {
