@@ -20,7 +20,7 @@ protocol ViewModelType {
 
 final class CreateViewModel: ViewModelType {
     
-    let questionService = MyQuestionService()
+    private let myListService = MyListService()
     
     var disposeBag = DisposeBag()
     
@@ -56,8 +56,7 @@ final class CreateViewModel: ViewModelType {
         
         input.submit.withLatestFrom(Observable.zip(addQuestionObservable.asObserver(), input.category.map { String($0) }))
             .flatMapLatest { (question, category) -> Observable<Bool> in
-                print(question)
-                return self.questionService.uploadQuestionList(categoryId: Int(category)!, question: question)
+                return self.myListService.uploadQuestionList(categoryId: Int(category)!, question: question)
             }.subscribe { _ in
                 self.successMessage.accept("질문 작성이 완료되었어요!")
             } onError: { error in

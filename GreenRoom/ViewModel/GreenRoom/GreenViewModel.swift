@@ -13,8 +13,9 @@ import RxCocoa
 class GreenRoomViewModel: ViewModelType {
     
     private var greenroomQuestionService = GreenRoomQuestionService()
-    private var myquestionService = MyQuestionService()
-
+    private var myListService = MyListService()
+    private var scrapService = ScrapService()
+    
     var disposeBag = DisposeBag()
     
     private let filtering = BehaviorSubject<[GreenRoomSectionModel]>(value:[] )
@@ -39,6 +40,7 @@ class GreenRoomViewModel: ViewModelType {
         
         input.trigger.subscribe(onNext: { [weak self] _ in
             guard let self = self else { return }
+            print("helo")
             self.fetchFiltering()
             self.fetchPopular()
             self.fetchRecent()
@@ -52,6 +54,10 @@ class GreenRoomViewModel: ViewModelType {
         input.greenroomTap.subscribe(onNext: { [weak self] _ in
             guard let self = self else { return }
             
+            self.fetchPopular()
+            self.fetchRecent()
+            self.fetchMyGreenRoom()
+            
             Observable.combineLatest(
                 self.filtering.asObserver(),
                 self.popular.asObserver(),
@@ -63,6 +69,8 @@ class GreenRoomViewModel: ViewModelType {
         }).disposed(by: self.disposeBag)
         input.myListTap.subscribe(onNext: { [weak self] _ in
             guard let self = self else { return }
+            self.fetchMyGreenRoom()
+            self.fetchMyQuestionList()
             
             Observable.combineLatest(
                 self.greenroom.asObserver(),
@@ -144,12 +152,11 @@ extension GreenRoomViewModel {
     
     private func fetchMyQuestionList(){
         
-        self.myquestionService.fetchMyQuestionList { [weak self] result in
+        self.myListService.fetchMyQuestionList { [weak self] result in
             switch result {
             case.success(let myQuestions):
                 let sectionModel = GreenRoomSectionModel.MyQuestionList(
                     items: myQuestions.map { GreenRoomSectionModel.Item.MyQuestionList(question: $0) })
-                print(sectionModel)
                 self?.myQuestionList.onNext([sectionModel])
             case .failure(let error):
                 print(error)
@@ -163,5 +170,12 @@ extension GreenRoomViewModel {
         //            GreenRoomSectionModel.Item.MyQuestionList(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
         //            GreenRoomSectionModel.Item.MyQuestionList(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~"))
         //        ])])
+    }
+}
+
+extension GreenRoomViewModel {
+    
+    func scrapMyQuestion(id: Int) {
+        self.scrapService.updateScrapQuestion(id: id)
     }
 }

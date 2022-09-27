@@ -6,16 +6,21 @@
 //
 
 import UIKit
+import RxSwift
 
 class MyQuestionListCell: UICollectionViewCell {
     
+    var disposeBag = DisposeBag()
+    
     static let reuseIedentifier = "MyQuestionListCell"
+    
+    var viewModel: GreenRoomViewModel!
     
     var question: MyQuestion! {
         didSet { configure() }
     }
     
-    private lazy var scrapButton = UIButton(frame: CGRect(x: 0, y: 0, width: 12, height: 12)).then {
+    private lazy var scrapButton = UIButton(frame: CGRect(x: 0, y: 0, width: 15, height: 15)).then {
         $0.setImage(UIImage(named: "scrap"), for: .normal)
         $0.tintColor = .customGray
         $0.imageView?.tintColor = .customGray
@@ -76,6 +81,7 @@ class MyQuestionListCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         configureUI()
+        bind()
     }
     
     required init?(coder: NSCoder) {
@@ -145,8 +151,6 @@ class MyQuestionListCell: UICollectionViewCell {
     }
     
     private func configure(){
-        let style = NSMutableParagraphStyle()
-        style.lineSpacing = 6
         self.questionTextView.initDefaultText(with: self.question.question,
                                               foregroundColor: .black)
         
@@ -155,5 +159,13 @@ class MyQuestionListCell: UICollectionViewCell {
         self.groupCategoryNameLabel.text = question.groupCategoryName
         self.profileImageView.image = UIImage(named: "GreenRoomIcon")
         
+    }
+    
+    func bind() {
+        self.scrapButton.rx.tap
+            .subscribe(onNext: { [weak self] in
+            guard let self = self else { return }
+            self.viewModel.scrapMyQuestion(id: self.question.id)
+        }).disposed(by: disposeBag)
     }
 }
