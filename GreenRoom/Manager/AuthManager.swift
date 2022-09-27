@@ -17,11 +17,12 @@ class AuthManager: RequestInterceptor {
         
         var urlRequest = urlRequest
         urlRequest.headers.add(.authorization(bearerToken: accessToken))
-        
+
         completion(.success(urlRequest))
     }
     
     func retry(_ request: Request, for session: Session, dueTo error: Error, completion: @escaping (RetryResult) -> Void) {
+        
         guard let response = request.task?.response as? HTTPURLResponse, response.statusCode == 401 else {
             completion(.doNotRetryWithError(error))
             return
@@ -29,22 +30,27 @@ class AuthManager: RequestInterceptor {
         
         guard let url = URL(string: "\(Constants.baseURL)/api/auth/reissue") else { return }
         
-        guard let accessToken = KeychainWrapper.standard.string(forKey: "accessToken"), let refreshToken = KeychainWrapper.standard.string(forKey: "refreshToken") else { return }
+        guard let accessToken = KeychainWrapper.standard.string(forKey: "accessToken"),
+                let refreshToken = KeychainWrapper.standard.string(forKey: "refreshToken") else { return }
         
-        let headers: HTTPHeaders = [
+        print(accessToken, refreshToken)
+        
+        let paramters: Parameters = [
             "accessToken": accessToken,
             "refreshToken": refreshToken
         ]
         
-        AF.request(url,method: .post, encoding: JSONEncoding.default, headers: headers).responseDecodable(of: LoginModel.self) {
+        AF.request(url,method: .post, parameters: paramters ,encoding: JSONEncoding.default)
+            .responseString {
+//        responseDecodable(of: Auth.self) {
             response in
             
             switch response.result {
             case .success(let token):
-                print("token 재발급 완료")
+                print(token)
                 KeychainWrapper.standard.removeAllKeys()
-                KeychainWrapper.standard.set(token.refreshToken, forKey: "RefreshToken")
-                KeychainWrapper.standard.set(token.accessToken, forKey: "AccessToken")
+//                KeychainWrapper.standard.set(token.refreshToken, forKey: "RefreshToken")
+//                KeychainWrapper.standard.set(token.accessToken, forKey: "AccessToken")
             case .failure(let error):
                 completion(.doNotRetryWithError(error))
             }
