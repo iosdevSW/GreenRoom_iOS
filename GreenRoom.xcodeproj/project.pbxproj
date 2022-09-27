@@ -97,7 +97,7 @@
 		E4460DD328CA01D400AFA108 /* QuestionsByCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4460DD228CA01D400AFA108 /* QuestionsByCategoryViewController.swift */; };
 		E4460DD528CA05A100AFA108 /* QuestionByCategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4460DD428CA05A100AFA108 /* QuestionByCategoryCell.swift */; };
 		E4460DD728CAF5BD00AFA108 /* GreenroomCommonHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4460DD628CAF5BD00AFA108 /* GreenroomCommonHeaderView.swift */; };
-		E44D507E28BE56A10086C447 /* MyQuestionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E44D507D28BE56A10086C447 /* MyQuestionService.swift */; };
+		E44D507E28BE56A10086C447 /* MyListService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E44D507D28BE56A10086C447 /* MyListService.swift */; };
 		E461E42028CB0D9B001EBF74 /* MyQuestionListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E461E41F28CB0D9B001EBF74 /* MyQuestionListCell.swift */; };
 		E461E42228CB1445001EBF74 /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E461E42128CB1445001EBF74 /* SearchViewModel.swift */; };
 		E461E42B28CE14B0001EBF74 /* ScrapedQuestionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E461E42A28CE14B0001EBF74 /* ScrapedQuestionViewController.swift */; };
@@ -127,6 +127,7 @@
 		E470539728AB856D00884B56 /* SettingHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = E470539628AB856D00884B56 /* SettingHeader.swift */; };
 		E470539928AB882900884B56 /* SettingRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = E470539828AB882900884B56 /* SettingRow.swift */; };
 		E47EE51628C48B7800618CA6 /* SFProText-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = E49CC16B28C331E4009216E1 /* SFProText-Semibold.otf */; };
+		E48F6C6328E340490083B74A /* Auth.swift in Sources */ = {isa = PBXBuildFile; fileRef = E48F6C6228E340490083B74A /* Auth.swift */; };
 		E48F8B4F28C26864007AAF40 /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E48F8B4E28C26864007AAF40 /* AuthManager.swift */; };
 		E49CC15628C326DA009216E1 /* EditProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E49CC15528C326DA009216E1 /* EditProfileViewModel.swift */; };
 		E49CC16C28C331E4009216E1 /* SFPro.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E49CC16A28C331E4009216E1 /* SFPro.ttf */; };
@@ -251,7 +252,7 @@
 		E4460DD228CA01D400AFA108 /* QuestionsByCategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionsByCategoryViewController.swift; sourceTree = "<group>"; };
 		E4460DD428CA05A100AFA108 /* QuestionByCategoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionByCategoryCell.swift; sourceTree = "<group>"; };
 		E4460DD628CAF5BD00AFA108 /* GreenroomCommonHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GreenroomCommonHeaderView.swift; sourceTree = "<group>"; };
-		E44D507D28BE56A10086C447 /* MyQuestionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyQuestionService.swift; sourceTree = "<group>"; };
+		E44D507D28BE56A10086C447 /* MyListService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyListService.swift; sourceTree = "<group>"; };
 		E461E41F28CB0D9B001EBF74 /* MyQuestionListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyQuestionListCell.swift; sourceTree = "<group>"; };
 		E461E42128CB1445001EBF74 /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
 		E461E42A28CE14B0001EBF74 /* ScrapedQuestionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrapedQuestionViewController.swift; sourceTree = "<group>"; };
@@ -280,6 +281,7 @@
 		E470539428AB81EC00884B56 /* MyPageModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageModel.swift; sourceTree = "<group>"; };
 		E470539628AB856D00884B56 /* SettingHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingHeader.swift; sourceTree = "<group>"; };
 		E470539828AB882900884B56 /* SettingRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingRow.swift; sourceTree = "<group>"; };
+		E48F6C6228E340490083B74A /* Auth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Auth.swift; sourceTree = "<group>"; };
 		E48F8B4E28C26864007AAF40 /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
 		E49CC15528C326DA009216E1 /* EditProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewModel.swift; sourceTree = "<group>"; };
 		E49CC16A28C331E4009216E1 /* SFPro.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = SFPro.ttf; sourceTree = "<group>"; };
@@ -746,6 +748,7 @@
 			isa = PBXGroup;
 			children = (
 				E427EC0528C791850046B4AA /* Info.swift */,
+				E48F6C6228E340490083B74A /* Auth.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -954,7 +957,7 @@
 			isa = PBXGroup;
 			children = (
 				E4C4C4AD28BCA53D008826AB /* GreenRoomService.swift */,
-				E44D507D28BE56A10086C447 /* MyQuestionService.swift */,
+				E44D507D28BE56A10086C447 /* MyListService.swift */,
 				E4EC67AA28E1CDC200469D17 /* GreenRoomQuestionService.swift */,
 				E4EC67B428E2063200469D17 /* ScrapService.swift */,
 			);
@@ -1093,7 +1096,7 @@
 				DB006B9528C39D3C00867013 /* CustomSwitch.swift in Sources */,
 				DB006B8828C2430400867013 /* GroupView.swift in Sources */,
 				DB8D163828B8ABC700E3F237 /* CustomGoalProgressBar.swift in Sources */,
-				E44D507E28BE56A10086C447 /* MyQuestionService.swift in Sources */,
+				E44D507E28BE56A10086C447 /* MyListService.swift in Sources */,
 				E4206CD828D5EE810011E117 /* CreateGRModel.swift in Sources */,
 				E49EF3D928B539FF00358340 /* PopularQuestionCell.swift in Sources */,
 				E461E42F28CE1EBE001EBF74 /* GRDetailViewModel.swift in Sources */,
@@ -1183,6 +1186,7 @@
 				DBA9451228C653F200B6E16A /* User.swift in Sources */,
 				DBB251E828D98B2F00310820 /* QuestionModel.swift in Sources */,
 				DBA8ED6C28BB4A4C007526CF /* KPRecordingViewController.swift in Sources */,
+				E48F6C6328E340490083B74A /* Auth.swift in Sources */,
 				E46E4C0028E0AED000D1691F /* Answer.swift in Sources */,
 				DBD0821D2897E6EE0092241F /* AppDelegate.swift in Sources */,
 				E46E4BE928DC33D300D1691F /* AnswerViewModel.swift in Sources */,

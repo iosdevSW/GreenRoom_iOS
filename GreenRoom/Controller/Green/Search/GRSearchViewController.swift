@@ -199,7 +199,7 @@ extension GRSearchViewController {
         )
         
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
-//        item.edgeSpacing = NSCollectionLayoutEdgeSpacing(leading: 5, top: 5, trailing: 5, bottom: 5)
+
         let groupSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1.0),
             heightDimension: .absolute(38)
