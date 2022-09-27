@@ -20,22 +20,26 @@ protocol ViewModelType {
 
 final class CreateViewModel: ViewModelType {
     
-    let questionService = QuestionService()
+    let questionService = MyQuestionService()
     
     var disposeBag = DisposeBag()
     
     struct Input {
         let question: Observable<String>
         let category: Observable<Int>
+        let returnTrigger: Observable<Void>
         let submit: Observable<Void>
     }
     
     struct Output {
         let isValid: Observable<Bool>
-        
         let failMessage: Signal<String>
         let successMessage: Signal<String>
     }
+    
+    private let tempQuestion = PublishSubject<String>()
+    private let textFieldContentObservable = BehaviorSubject<String>(value: "")
+    private let addQuestionObservable = PublishSubject<String>()
     
     private let failMessage = PublishRelay<String>()
     private let successMessage = PublishRelay<String>()
@@ -44,8 +48,15 @@ final class CreateViewModel: ViewModelType {
     
     func transform(input: Input) -> Output {
         
-        input.submit.withLatestFrom(Observable.zip(input.question, input.category.map { String($0) }))
+        input.question.bind(to: textFieldContentObservable).disposed(by: disposeBag)
+        
+        input.returnTrigger.withLatestFrom(textFieldContentObservable)
+            .bind(to: addQuestionObservable)
+            .disposed(by: disposeBag)
+        
+        input.submit.withLatestFrom(Observable.zip(addQuestionObservable.asObserver(), input.category.map { String($0) }))
             .flatMapLatest { (question, category) -> Observable<Bool> in
+                print(question)
                 return self.questionService.uploadQuestionList(categoryId: Int(category)!, question: question)
             }.subscribe { _ in
                 self.successMessage.accept("질문 작성이 완료되었어요!")

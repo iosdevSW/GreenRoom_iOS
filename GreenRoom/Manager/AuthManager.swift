@@ -29,7 +29,7 @@ class AuthManager: RequestInterceptor {
         
         guard let url = URL(string: "\(Constants.baseURL)/api/auth/reissue") else { return }
         
-        guard let accessToken = KeychainWrapper.standard.string(forKey: "accessToten"), let refreshToken = KeychainWrapper.standard.string(forKey: "refreshToken") else { return }
+        guard let accessToken = KeychainWrapper.standard.string(forKey: "accessToken"), let refreshToken = KeychainWrapper.standard.string(forKey: "refreshToken") else { return }
         
         let headers: HTTPHeaders = [
             "accessToken": accessToken,

@@ -11,7 +11,7 @@ class MyQuestionListCell: UICollectionViewCell {
     
     static let reuseIedentifier = "MyQuestionListCell"
     
-    var question: Question! {
+    var question: MyQuestion! {
         didSet { configure() }
     }
     
@@ -22,6 +22,15 @@ class MyQuestionListCell: UICollectionViewCell {
         $0.contentMode = .scaleAspectFill
         $0.backgroundColor = .clear
     }
+    
+    private var groupCategoryNameLabel = UILabel().then {
+        $0.backgroundColor = .mainColor
+        $0.textColor = .white
+        $0.font = .sfPro(size: 12, family: .Semibold)
+        $0.text = "디자인"
+    }
+    
+    private var groupNameLabel = Utilities.shared.generateLabel(text: "삼성", color: .black, font: .sfPro(size: 12, family: .Semibold))
     
     private lazy var containerView = UIView().then {
         $0.backgroundColor = .white
@@ -121,16 +130,30 @@ class MyQuestionListCell: UICollectionViewCell {
             make.top.equalToSuperview().offset(6)
             make.width.height.equalTo(15)
         }
+        
+        self.contentView.addSubview(groupCategoryNameLabel)
+        groupCategoryNameLabel.snp.makeConstraints { make in
+            make.centerY.equalTo(scrapButton)
+            make.leading.equalTo(scrapButton.snp.trailing).offset(5)
+        }
+        
+        self.contentView.addSubview(groupNameLabel)
+        groupNameLabel.snp.makeConstraints { make in
+            make.centerY.equalTo(scrapButton)
+            make.leading.equalTo(groupCategoryNameLabel.snp.trailing).offset(5)
+        }
     }
     
     private func configure(){
-        guard let category = CategoryID(rawValue: question.category) else { return }
         let style = NSMutableParagraphStyle()
         style.lineSpacing = 6
+        self.questionTextView.initDefaultText(with: self.question.question,
+                                              foregroundColor: .black)
         
-        self.questionTextView.attributedText = NSAttributedString(string: question.question, attributes: [NSAttributedString.Key.paragraphStyle : style])
-        self.categoryLabel.text = category.title
-        self.profileImageView.image = UIImage(named: question.image)
+        self.categoryLabel.text = question.categoryName
+        self.groupNameLabel.text = question.groupName
+        self.groupCategoryNameLabel.text = question.groupCategoryName
+        self.profileImageView.image = UIImage(named: "GreenRoomIcon")
         
     }
 }

@@ -165,7 +165,8 @@ final class CustomPopUpDatePickerController: BaseViewController {
     }
     
     @objc func didClickApplyButton(_ sender: UIButton) {
-        self.viewModel.comfirmDate.accept(self.viewModel.date.value)
+        
+        self.viewModel.comfirmDate.accept(viewModel.date.value)
         self.dismiss(animated: false)
     }
     

@@ -44,8 +44,8 @@ class GreenRoomViewController: BaseViewController {
     //MARK: - LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        //        KeychainWrapper.standard.remove(forKey: "accessToken")
-        //        KeychainWrapper.standard.remove(forKey: "refreshToten")
+        KeychainWrapper.standard.remove(forKey: "accessToken")
+        KeychainWrapper.standard.remove(forKey: "refreshToten")
     }
     
     override func viewWillAppear(_ animated: Bool) {

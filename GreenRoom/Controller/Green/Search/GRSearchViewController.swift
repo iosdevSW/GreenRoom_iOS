@@ -53,7 +53,7 @@ final class GRSearchViewController: BaseViewController {
     }
     
     override func setupBinding() {
-        let input = SearchViewModel.Input(trigger: self.rx.viewDidLoad.asObservable())
+        let input = SearchViewModel.Input(trigger: self.rx.viewWillAppear.asObservable())
         
         let output = self.viewModel.transform(input: input)
         
@@ -154,7 +154,7 @@ extension GRSearchViewController {
             -> NSCollectionLayoutSection? in
             
             
-            return sectionIndex == 0 ? self.recentLayout() : self.popularLayout()
+            return sectionIndex == 0 ? self.popularLayout() : self.recentLayout()
         }
         return layout
     }

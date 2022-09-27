@@ -26,12 +26,27 @@ enum QuestionError: Error, LocalizedError {
     }
 }
 
-final class QuestionService {
-//completion: @escaping(Result<Bool, Error>) -> Void
+final class MyQuestionService {
+
+    func fetchMyQuestionList(completion:@escaping ((Result<[MyQuestion],Error>) -> Void)) {
+        let url = URL(string: "\(Constants.baseURL)/api/my-questions")!
+        
+        AF.request(url, method: .get, encoding: URLEncoding.default, interceptor: AuthManager())
+            .validate(statusCode: 200..<300)
+            .responseDecodable(of: [MyQuestion].self) { response in
+            switch response.result {
+
+            case .success(let myQuestions):
+                completion(.success(myQuestions))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+    
     func uploadQuestionList(categoryId: Int, question: String) -> Observable<Bool> {
         
-        print("DEBUG: \(categoryId),, \(question)")
-        let url = URL(string: "\(Constants.baseURL)/api/private-questions")!
+        let url = URL(string: "\(Constants.baseURL)/api/my-questions")!
         
         let parameters = UploadQuestionModel(categoryId: categoryId, question: question)
         

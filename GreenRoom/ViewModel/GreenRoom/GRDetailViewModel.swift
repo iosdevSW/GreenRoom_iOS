@@ -41,13 +41,13 @@ final class GRDetailViewModel: ViewModelType {
 extension GRDetailViewModel {
     
     private func fetchRecent(){
-        self.recent.onNext([GreenRoomSectionModel.recent(items: [
-            GreenRoomSectionModel.Item.recent(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
-            GreenRoomSectionModel.Item.recent(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
-            GreenRoomSectionModel.Item.recent(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
-            GreenRoomSectionModel.Item.recent(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
-            GreenRoomSectionModel.Item.recent(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
-            GreenRoomSectionModel.Item.recent(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~"))
-        ])])
+//        self.recent.onNext([GreenRoomSectionModel.recent(items: [
+//            GreenRoomSectionModel.Item.recent(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
+//            GreenRoomSectionModel.Item.recent(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
+//            GreenRoomSectionModel.Item.recent(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
+//            GreenRoomSectionModel.Item.recent(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
+//            GreenRoomSectionModel.Item.recent(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
+//            GreenRoomSectionModel.Item.recent(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~"))
+//        ])])
     }
 }

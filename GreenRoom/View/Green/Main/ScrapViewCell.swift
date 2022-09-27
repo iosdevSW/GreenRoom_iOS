@@ -12,7 +12,7 @@ class ScrapViewCell: UICollectionViewCell {
     static let reuseIdentifier = "ScrapViewCell"
     
     //MARK: - Properties
-    var question: ScrapQuestion! {
+    var question: GreenRoomQuestion! {
         didSet { configure() }
     }
     
