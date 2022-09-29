@@ -15,7 +15,7 @@ struct ScrapSectionModel {
 
 extension ScrapSectionModel: SectionModelType {
     
-    typealias Item = GreenRoomQuestion
+    typealias Item = PublicQuestion
     
     init(original: ScrapSectionModel, items: [Item]) {
         self = original
