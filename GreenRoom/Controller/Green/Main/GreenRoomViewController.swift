@@ -416,7 +416,7 @@ extension GreenRoomViewController {
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         
         let groupSize = NSCollectionLayoutSize(
-            widthDimension: .fractionalWidth(0.36),
+            widthDimension: .fractionalWidth(0.4),
             heightDimension: .fractionalHeight(0.24))
         
         let group = NSCollectionLayoutGroup.vertical(
@@ -485,4 +485,3 @@ extension GreenRoomViewController: RecentHeaderDelegate {
         self.navigationController?.pushViewController(vc, animated: true)
     }
 }
-
