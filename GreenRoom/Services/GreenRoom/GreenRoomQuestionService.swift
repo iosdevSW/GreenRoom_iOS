@@ -11,53 +11,62 @@ import Alamofire
 
 final class GreenRoomQuestionService {
     
-    func fetchFilteredQuestion(categoryId: Int, completion:@escaping ((Result<[DetailQuestion],Error>) -> Void)) {
-        
-        let url = URL(string: "\(Constants.baseURL)/api/green-questions?categoryId=\(categoryId)")!
-        
-        AF.request(url, method: .get, encoding: URLEncoding.default, interceptor: AuthManager())
-            .validate(statusCode: 200..<300)
-            .responseDecodable(of: [DetailQuestion].self) { response in
-            switch response.result {
-
-            case .success(let detailQuestions):
-                completion(.success(detailQuestions))
-            case .failure(let error):
-                completion(.failure(error))
-            }
-        }
-    }
+//    func fetchFilteredQuestion(categoryId: Int, completion:@escaping ((Result<[DetailQuestion],Error>) -> Void)) {
+//
+//        let url = URL(string: "\(Constants.baseURL)/api/green-questions?categoryId=\(categoryId)")!
+//
+//        AF.request(url, method: .get, encoding: URLEncoding.default, interceptor: AuthManager())
+//            .validate(statusCode: 200..<300)
+//            .responseDecodable(of: [DetailQuestion].self) { response in
+//            switch response.result {
+//
+//            case .success(let detailQuestions):
+//                completion(.success(detailQuestions))
+//            case .failure(let error):
+//                completion(.failure(error))
+//            }
+//        }
+//    }
     
-    func fetchRecentQuestionList(completion:@escaping ((Result<[GreenRoomQuestion],Error>) -> Void)) {
+    func fetchRecentPublicQuestions() -> Observable<[PublicQuestion]>{
         let url = URL(string: "\(Constants.baseURL)/api/green-questions/recent-questions")!
         
-        AF.request(url, method: .get, encoding: URLEncoding.default, interceptor: AuthManager())
-            .validate(statusCode: 200..<300)
-            .responseDecodable(of: [GreenRoomQuestion].self) { response in
-            switch response.result {
-
-            case .success(let greenroomQuestion):
-                completion(.success(greenroomQuestion))
-            case .failure(let error):
-                completion(.failure(error))
+        return Observable.create { emmiter in
+            AF.request(url, method: .get, encoding: URLEncoding.default, interceptor: AuthManager())
+                .validate(statusCode: 200..<300)
+                .responseDecodable(of: [PublicQuestion].self) { response in
+                    
+                switch response.result {
+                case .success(let questions):
+                    emmiter.onNext(questions)
+                case .failure(let error):
+                    emmiter.onError(error)
+                }
             }
+            return Disposables.create()
         }
+        
     }
     
-    func fetchPopularGRQuestions(completion:@escaping ((Result<[PopularQuestion],Error>) -> Void)) {
+    func fetchPopularPublicQuestions() -> Observable<[PopularPublicQuestion]>{
         let url = URL(string: "\(Constants.baseURL)/api/green-questions/popular-questions")!
         
-        AF.request(url, method: .get, encoding: URLEncoding.default, interceptor: AuthManager())
-            .validate(statusCode: 200..<300)
-            .responseDecodable(of: [PopularQuestion].self) { response in
-            switch response.result {
-
-            case .success(let greenroomQuestion):
-                completion(.success(greenroomQuestion))
-            case .failure(let error):
-                completion(.failure(error))
+        return Observable.create { emmiter in
+            AF.request(url, method: .get, encoding: URLEncoding.default, interceptor: AuthManager())
+                .validate(statusCode: 200..<300)
+                .responseDecodable(of: [PopularPublicQuestion].self) { response in
+                    
+                switch response.result {
+                case .success(let questions):
+                    emmiter.onNext(questions)
+                case .failure(let error):
+                    print(error)
+                    emmiter.onError(error)
+                }
             }
+            return Disposables.create()
         }
+        
     }
     
     func uploadQuestionList(categoryId: Int, question: String, date: Date) -> Observable<Bool> {

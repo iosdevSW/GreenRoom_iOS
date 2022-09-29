@@ -12,17 +12,15 @@ import RxCocoa
 
 class GreenRoomViewModel: ViewModelType {
     
+    enum GreenRoomMode: Int {
+        case GreenRoom = 0
+        case MyList
+    }
+    
     private var greenroomQuestionService = GreenRoomQuestionService()
     private var myListService = MyListService()
-    private var scrapService = ScrapService()
     
     var disposeBag = DisposeBag()
-    
-    private let filtering = BehaviorSubject<[GreenRoomSectionModel]>(value:[] )
-    private let popular = BehaviorSubject<[GreenRoomSectionModel]>(value: [])
-    private let recent = BehaviorSubject<[GreenRoomSectionModel]>(value: [])
-    private let greenroom = BehaviorSubject<[GreenRoomSectionModel]>(value: [])
-    private let myQuestionList = BehaviorSubject<[GreenRoomSectionModel]>(value: [])
     
     struct Input {
         let greenroomTap: Observable<Void>
@@ -34,57 +32,41 @@ class GreenRoomViewModel: ViewModelType {
         let greenroom: Observable<[GreenRoomSectionModel]>
     }
     
+    private var mode = BehaviorSubject<GreenRoomMode>(value: .GreenRoom)
     private var dataSource = PublishSubject<[GreenRoomSectionModel]>()
     
     func transform(input: Input) -> Output {
+
+        input.trigger.withLatestFrom(mode).flatMap { mode in
+            return mode == .GreenRoom ? self.fetchGreenRoomTap() : self.fetchMyListsTap()
+        }.bind(to: self.dataSource).disposed(by: disposeBag)
         
-        input.trigger.subscribe(onNext: { [weak self] _ in
-            guard let self = self else { return }
-            print("helo")
-            self.fetchFiltering()
-            self.fetchPopular()
-            self.fetchRecent()
-            self.fetchMyGreenRoom()
-            self.fetchMyQuestionList()
-        }).disposed(by: disposeBag)
+        input.greenroomTap
+            .subscribe(onNext: {
+                self.mode.onNext(.GreenRoom)
+            }).disposed(by: disposeBag)
         
-        let result = Observable.combineLatest(self.filtering.asObserver() ,self.popular.asObserver(), self.recent.asObserver(), self.greenroom.asObserver() ).map { $0.0 + $0.1 + $0.2 + $0.3 }
-        result.bind(to: self.dataSource).disposed(by: self.disposeBag)
+        input.myListTap
+            .subscribe(onNext: { _ in
+                self.mode.onNext(.MyList)
+            }).disposed(by: disposeBag)    
         
-        input.greenroomTap.subscribe(onNext: { [weak self] _ in
-            guard let self = self else { return }
-            
-            self.fetchPopular()
-            self.fetchRecent()
-            self.fetchMyGreenRoom()
-            
-            Observable.combineLatest(
-                self.filtering.asObserver(),
-                self.popular.asObserver(),
-                self.recent.asObserver(),
-                self.greenroom.asObserver()
-            ).map { $0.0 + $0.1 + $0.2 + $0.3 }
-                .bind(to: self.dataSource).disposed(by: self.disposeBag)
-            
-        }).disposed(by: self.disposeBag)
-        input.myListTap.subscribe(onNext: { [weak self] _ in
-            guard let self = self else { return }
-            self.fetchMyGreenRoom()
-            self.fetchMyQuestionList()
-            
-            Observable.combineLatest(
-                self.greenroom.asObserver(),
-                self.myQuestionList.asObserver())
-            .map { $0.0 + $0.1}
-            .bind(to: self.dataSource).disposed(by: self.disposeBag)
-            
-        }).disposed(by: disposeBag)
+        input.greenroomTap.asObservable()
+            .flatMap { self.fetchGreenRoomTap() }
+            .bind(to: self.dataSource)
+            .disposed(by: disposeBag)
+
+        input.myListTap.asObservable()
+            .flatMap { self.fetchMyListsTap() }
+            .bind(to: self.dataSource)
+            .disposed(by: self.disposeBag)
         
+        
+
         return Output(greenroom: self.dataSource.asObserver())
     }
     
     let currentBannerPage = PublishSubject<Int>()
-    
     
     func isLogin()->Observable<Bool> {
         if let accessToken = KeychainWrapper.standard.string(forKey: "accessToken"){
@@ -111,71 +93,41 @@ class GreenRoomViewModel: ViewModelType {
 //MARK: - API Service
 extension GreenRoomViewModel {
     
-    private func fetchFiltering(){
-        self.filtering.onNext([GreenRoomSectionModel.filtering(items:[ GreenRoomSectionModel.Item.filtering(interest: "디자인")])])
-    }
-    
-    private func fetchPopular(){
+    private func fetchGreenRoomTap() -> Observable<[GreenRoomSectionModel]>{
         
-        self.greenroomQuestionService.fetchPopularGRQuestions { [weak self] result in
-            switch result {
-            case.success(let popularQuestions):
-                let sectionModel = GreenRoomSectionModel.popular(
-                    items: popularQuestions.map { GreenRoomSectionModel.Item.popular(question: $0) })
-                self?.popular.onNext([sectionModel])
-            case .failure(let error):
-                print(error)
-            }
+        let popuplar = self.greenroomQuestionService.fetchPopularPublicQuestions().map{ questions in
+            [GreenRoomSectionModel.popular(items: questions.map { GreenRoomSectionModel.Item.popular(question: $0)})]
+        }
+        
+        let recent = self.greenroomQuestionService.fetchRecentPublicQuestions().map { questions in
+            [GreenRoomSectionModel.recent(items: questions.map { GreenRoomSectionModel.Item.recent(question: $0)})]
+        }
+        
+        return Observable.zip(self.fetchFiltering(), popuplar, recent, self.fetchMyGreenRoom()).map { $0.0 + $0.1 + $0.2 + $0.3 }
+    }
+    
+    private func fetchMyListsTap() -> Observable<[GreenRoomSectionModel]> {
+        let greenRoom = self.fetchMyGreenRoom()
+        
+        let mylistQuestions = self.myListService.fetchPrivateQuestions().map { questions in
+            [GreenRoomSectionModel.MyQuestionList(items: questions.map { GreenRoomSectionModel.Item.MyQuestionList(question: $0)})]
+        }
+        
+        return Observable.zip(greenRoom, mylistQuestions).map{ $0.0 + $0.1 }
+        
+    }
+    private func fetchFiltering() -> Observable<[GreenRoomSectionModel]>{
+        return Observable.create { emitter in
+            emitter.onNext([GreenRoomSectionModel.filtering(items:[ GreenRoomSectionModel.Item.filtering(interest: "디자인")])])
+            return Disposables.create()
         }
     }
     
-    private func fetchRecent(){
-        self.greenroomQuestionService.fetchRecentQuestionList { [weak self] result in
-            switch result {
-            case.success(let recentQuestions):
-                let sectionModel = GreenRoomSectionModel.recent(
-                    items: recentQuestions.map { GreenRoomSectionModel.Item.recent(question: $0) })
-                self?.recent.onNext([sectionModel])
-            case .failure(let error):
-                print(error)
-            }
-        }
-    }
-    
-    private func fetchMyGreenRoom(){
-        self.greenroom.onNext([GreenRoomSectionModel.MyGreenRoom(items: [
+    private func fetchMyGreenRoom() -> Observable<[GreenRoomSectionModel]>{
+        return Observable<[GreenRoomSectionModel]>.of([GreenRoomSectionModel.MyGreenRoom(items: [
             GreenRoomSectionModel.Item.MyGreenRoom(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
             GreenRoomSectionModel.Item.MyGreenRoom(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
             GreenRoomSectionModel.Item.MyGreenRoom(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
         ])])
-    }
-    
-    private func fetchMyQuestionList(){
-        
-        self.myListService.fetchMyQuestionList { [weak self] result in
-            switch result {
-            case.success(let myQuestions):
-                let sectionModel = GreenRoomSectionModel.MyQuestionList(
-                    items: myQuestions.map { GreenRoomSectionModel.Item.MyQuestionList(question: $0) })
-                self?.myQuestionList.onNext([sectionModel])
-            case .failure(let error):
-                print(error)
-            }
-        }
-        //        self.myQuestionList.onNext([GreenRoomSectionModel.MyQuestionList(items: [
-        //            GreenRoomSectionModel.Item.MyQuestionList(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
-        //            GreenRoomSectionModel.Item.MyQuestionList(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
-        //            GreenRoomSectionModel.Item.MyQuestionList(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
-        //            GreenRoomSectionModel.Item.MyQuestionList(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
-        //            GreenRoomSectionModel.Item.MyQuestionList(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
-        //            GreenRoomSectionModel.Item.MyQuestionList(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~"))
-        //        ])])
-    }
-}
-
-extension GreenRoomViewModel {
-    
-    func scrapMyQuestion(id: Int) {
-        self.scrapService.updateScrapQuestion(id: id)
     }
 }
