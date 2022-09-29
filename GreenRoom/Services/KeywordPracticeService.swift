@@ -11,7 +11,7 @@ import Alamofire
 
 class KeywordPracticeService {
     func fetchReferenceQuestions(categoryId: [Int]?, title: String?, type: String?, keyword: String?){
-        let urlString = Storage.baseURL + "/api/questions"
+        let urlString = Constants.baseURL + "/api/questions"
         let url = URL(string: urlString)!
         
         let accessToken = KeychainWrapper.standard.string(forKey: "accessToken")!

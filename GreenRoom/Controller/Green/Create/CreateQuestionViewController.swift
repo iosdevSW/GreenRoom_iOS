@@ -144,6 +144,7 @@ final class CreateQuestionViewController: BaseViewController {
         
         let input = CreateViewModel.Input(question: questionTextView.rx.text.orEmpty.asObservable(),
                                           category: collectionView.rx.itemSelected.map { $0.row + 1}.asObservable(),
+                                          returnTrigger: questionTextView.rx.didEndEditing.asObservable(),
                                           submit: doneButton.rx.tap.asObservable())
         
         questionTextView.rx.didBeginEditing
@@ -194,12 +195,13 @@ final class CreateQuestionViewController: BaseViewController {
         
         let output = viewModel.transform(input: input)
   
+        
         output.isValid
             .bind(to: self.doneButton.rx.isEnabled)
             .disposed(by: disposeBag)
         
         output.isValid
-            .map { $0 ? 1.0 : 0.3}
+            .map { $0 ? 1.0 : 0.5}
             .bind(to: doneButton.rx.alpha)
             .disposed(by: disposeBag)
         

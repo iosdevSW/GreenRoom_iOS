@@ -12,7 +12,9 @@ import RxCocoa
 
 class GreenRoomViewModel: ViewModelType {
     
-    private var greenroomService = GreenRoomService()
+    private var greenroomQuestionService = GreenRoomQuestionService()
+    private var myListService = MyListService()
+    private var scrapService = ScrapService()
     
     var disposeBag = DisposeBag()
     
@@ -38,6 +40,7 @@ class GreenRoomViewModel: ViewModelType {
         
         input.trigger.subscribe(onNext: { [weak self] _ in
             guard let self = self else { return }
+            print("helo")
             self.fetchFiltering()
             self.fetchPopular()
             self.fetchRecent()
@@ -51,6 +54,10 @@ class GreenRoomViewModel: ViewModelType {
         input.greenroomTap.subscribe(onNext: { [weak self] _ in
             guard let self = self else { return }
             
+            self.fetchPopular()
+            self.fetchRecent()
+            self.fetchMyGreenRoom()
+            
             Observable.combineLatest(
                 self.filtering.asObserver(),
                 self.popular.asObserver(),
@@ -58,10 +65,12 @@ class GreenRoomViewModel: ViewModelType {
                 self.greenroom.asObserver()
             ).map { $0.0 + $0.1 + $0.2 + $0.3 }
                 .bind(to: self.dataSource).disposed(by: self.disposeBag)
-  
+            
         }).disposed(by: self.disposeBag)
         input.myListTap.subscribe(onNext: { [weak self] _ in
             guard let self = self else { return }
+            self.fetchMyGreenRoom()
+            self.fetchMyQuestionList()
             
             Observable.combineLatest(
                 self.greenroom.asObserver(),
@@ -70,7 +79,7 @@ class GreenRoomViewModel: ViewModelType {
             .bind(to: self.dataSource).disposed(by: self.disposeBag)
             
         }).disposed(by: disposeBag)
-
+        
         return Output(greenroom: self.dataSource.asObserver())
     }
     
@@ -107,25 +116,30 @@ extension GreenRoomViewModel {
     }
     
     private func fetchPopular(){
-        self.popular.onNext([GreenRoomSectionModel.popular(items: [
-            GreenRoomSectionModel.Item.popular(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
-            GreenRoomSectionModel.Item.popular(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
-            GreenRoomSectionModel.Item.popular(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
-            GreenRoomSectionModel.Item.popular(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
-            GreenRoomSectionModel.Item.popular(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
-            GreenRoomSectionModel.Item.popular(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~"))
-        ])])
+        
+        self.greenroomQuestionService.fetchPopularGRQuestions { [weak self] result in
+            switch result {
+            case.success(let popularQuestions):
+                let sectionModel = GreenRoomSectionModel.popular(
+                    items: popularQuestions.map { GreenRoomSectionModel.Item.popular(question: $0) })
+                self?.popular.onNext([sectionModel])
+            case .failure(let error):
+                print(error)
+            }
+        }
     }
     
     private func fetchRecent(){
-        self.recent.onNext([GreenRoomSectionModel.recent(items: [
-            GreenRoomSectionModel.Item.recent(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
-            GreenRoomSectionModel.Item.recent(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
-            GreenRoomSectionModel.Item.recent(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
-            GreenRoomSectionModel.Item.recent(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
-            GreenRoomSectionModel.Item.recent(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
-            GreenRoomSectionModel.Item.recent(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~"))
-        ])])
+        self.greenroomQuestionService.fetchRecentQuestionList { [weak self] result in
+            switch result {
+            case.success(let recentQuestions):
+                let sectionModel = GreenRoomSectionModel.recent(
+                    items: recentQuestions.map { GreenRoomSectionModel.Item.recent(question: $0) })
+                self?.recent.onNext([sectionModel])
+            case .failure(let error):
+                print(error)
+            }
+        }
     }
     
     private func fetchMyGreenRoom(){
@@ -137,13 +151,31 @@ extension GreenRoomViewModel {
     }
     
     private func fetchMyQuestionList(){
-        self.myQuestionList.onNext([GreenRoomSectionModel.MyQuestionList(items: [
-            GreenRoomSectionModel.Item.MyQuestionList(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
-            GreenRoomSectionModel.Item.MyQuestionList(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
-            GreenRoomSectionModel.Item.MyQuestionList(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
-            GreenRoomSectionModel.Item.MyQuestionList(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
-            GreenRoomSectionModel.Item.MyQuestionList(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
-            GreenRoomSectionModel.Item.MyQuestionList(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~"))
-        ])])
+        
+        self.myListService.fetchMyQuestionList { [weak self] result in
+            switch result {
+            case.success(let myQuestions):
+                let sectionModel = GreenRoomSectionModel.MyQuestionList(
+                    items: myQuestions.map { GreenRoomSectionModel.Item.MyQuestionList(question: $0) })
+                self?.myQuestionList.onNext([sectionModel])
+            case .failure(let error):
+                print(error)
+            }
+        }
+        //        self.myQuestionList.onNext([GreenRoomSectionModel.MyQuestionList(items: [
+        //            GreenRoomSectionModel.Item.MyQuestionList(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
+        //            GreenRoomSectionModel.Item.MyQuestionList(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
+        //            GreenRoomSectionModel.Item.MyQuestionList(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
+        //            GreenRoomSectionModel.Item.MyQuestionList(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
+        //            GreenRoomSectionModel.Item.MyQuestionList(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
+        //            GreenRoomSectionModel.Item.MyQuestionList(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~"))
+        //        ])])
+    }
+}
+
+extension GreenRoomViewModel {
+    
+    func scrapMyQuestion(id: Int) {
+        self.scrapService.updateScrapQuestion(id: id)
     }
 }

@@ -11,7 +11,7 @@ final class PopularQuestionCell: UICollectionViewCell {
     
     static let reuseIdentifer = "PopularQuestionCell"
     //MARK: - Properties
-    var question: Question! {
+    var question: PopularQuestion! {
         didSet { configure() }
     }
 
@@ -105,12 +105,14 @@ final class PopularQuestionCell: UICollectionViewCell {
     }
     
     private func configure(){
-        guard let category = CategoryID(rawValue: question.category) else { return }
+        
         self.nameLabel.text = question.name
         self.questionTextView.text = question.question
-        self.categoryLabel.text = category.title
+        self.categoryLabel.text = question.categoryName
         self.participantsLabel.text = "\(question.participants)명이 참여하고 있습니다."
-//        self.profileImageView.image = UIImage(systemName: "plus")
+        
+        guard let url = URL(string: question.profileImage) else { return }
+        self.profileImageView.kf.setImage(with: url)
         
     }
 }

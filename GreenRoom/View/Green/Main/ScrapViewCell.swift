@@ -12,10 +12,8 @@ class ScrapViewCell: UICollectionViewCell {
     static let reuseIdentifier = "ScrapViewCell"
     
     //MARK: - Properties
-    var question: Question! {
-        didSet {
-            configure()
-        }
+    var question: GreenRoomQuestion! {
+        didSet { configure() }
     }
     
     var editMode: Bool = false {
@@ -145,13 +143,16 @@ class ScrapViewCell: UICollectionViewCell {
     }
     
     private func configure(){
-        guard let category = CategoryID(rawValue: question.category) else { return }
-        let style = NSMutableParagraphStyle()
-        style.lineSpacing = 6
+
+        self.questionTextView.initDefaultText(with: question.question, foregroundColor: .black)
+
+        self.categoryLabel.text = question.categoryName
         
-        self.questionTextView.attributedText = NSAttributedString(string: question.question, attributes: [NSAttributedString.Key.paragraphStyle : style])
-        self.categoryLabel.text = category.title
-        self.profileImageView.image = UIImage(named: question.image)
+        self.alpha = question.expired ? 0.3 : 1.0
+        self.backgroundColor = question.participated ? .white : .mainColor
+        
+        guard let url = URL(string: question.profileImage) else { return }
+        self.profileImageView.kf.setImage(with: url)
     }
     
 }

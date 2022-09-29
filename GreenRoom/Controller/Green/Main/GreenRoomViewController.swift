@@ -44,8 +44,6 @@ class GreenRoomViewController: BaseViewController {
     //MARK: - LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        //        KeychainWrapper.standard.remove(forKey: "accessToken")
-        //        KeychainWrapper.standard.remove(forKey: "refreshToten")
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -94,14 +92,15 @@ class GreenRoomViewController: BaseViewController {
                 let vc = QuestionsByCategoryViewController(viewModel: self.viewModel)
                 self.present(vc, animated: true)
             case .popular(question: let question):
-                let vc = MyQuestionAnswerViewController(viewModel: AnswerViewModel(question: question))
+                let vc = MyQuestionAnswerViewController(viewModel: AnswerViewModel(id: question.id))
                 self.navigationController?.pushViewController(vc, animated: true)
             case .recent(question: let question):
                 print(question)
             case .MyGreenRoom(question: let question):
                 print(question)
             case .MyQuestionList(question: let question):
-                print(question)
+                let vc = MyQuestionAnswerViewController(viewModel: AnswerViewModel(id: question.id))
+                self.navigationController?.pushViewController(vc, animated: true)
             }
         }).disposed(by: disposeBag)
         
@@ -245,6 +244,7 @@ extension GreenRoomViewController {
             case .MyQuestionList(question: let question):
                 guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MyQuestionListCell.reuseIedentifier, for: indexPath) as? MyQuestionListCell else { return UICollectionViewCell() }
                 cell.question = question
+                cell.viewModel = self.viewModel
                 return cell
             }
         } configureSupplementaryView: { [weak self] dataSource, collectionView, kind,

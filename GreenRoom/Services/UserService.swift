@@ -80,7 +80,7 @@ extension UserService {
             "Content-Type": "image/\(type)"
         ]
         
-        AF.upload(imageData, to: url, method: .put, headers: headers).response { response in
+        AF.upload(imageData, to: url, method: .put, headers: headers, interceptor: AuthManager()).response { response in
             switch response.result {
             case .success(_):
                 print("DEBUG: image upload success with AWS S3")

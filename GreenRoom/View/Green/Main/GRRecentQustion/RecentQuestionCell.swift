@@ -10,7 +10,7 @@ final class RecentQuestionCell: UICollectionViewCell {
     
     static let reuseIdentifer = "RecentQuestionCell"
     //MARK: - Properties
-    var question: Question! {
+    var question: GreenRoomQuestion! {
         didSet { configure() }
     }
     
@@ -84,14 +84,13 @@ final class RecentQuestionCell: UICollectionViewCell {
     }
     
     private func configure(){
-        guard let category = CategoryID(rawValue: question.category) else { return }
-        let style = NSMutableParagraphStyle()
-        style.lineSpacing = 6
         
-        self.questionTextView.attributedText = NSAttributedString(string: question.question, attributes: [NSAttributedString.Key.paragraphStyle : style])
+        self.questionTextView.initDefaultText(with: question.question, foregroundColor: .black)
         
-        self.categoryLabel.text = category.title
-        self.profileImageView.image = UIImage(named: question.image)
+        self.categoryLabel.text = question.categoryName
+        guard let url = URL(string: question.profileImage) else { return }
+        
+        self.profileImageView.kf.setImage(with: url)
         
     }
 }
