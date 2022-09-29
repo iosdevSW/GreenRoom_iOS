@@ -34,7 +34,7 @@ final class ScrapViewModel: ViewModelType {
     }
     
     func transform(input: Input) -> Output {
-        let output = input.trigger.flatMap { _ -> Observable<[GreenRoomQuestion]> in
+        let output = input.trigger.flatMap { _ -> Observable<[PublicQuestion]> in
             return self.scrapService.fetchScrapQuestions()
         }.map {
             return [ScrapSectionModel(items: $0)]
