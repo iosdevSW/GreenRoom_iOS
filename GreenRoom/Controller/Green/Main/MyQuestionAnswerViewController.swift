@@ -11,10 +11,8 @@ import RxSwift
 final class MyQuestionAnswerViewController: BaseViewController {
     
     //MARK: - Properties
-    
     private var mode: Mode = .unWritten {
         didSet {
-            
             switch self.mode {
             case .edit:
                 self.setEditMode()
@@ -31,6 +29,12 @@ final class MyQuestionAnswerViewController: BaseViewController {
     
     private var viewModel: AnswerViewModel!
     private var collectionView: UICollectionView!
+    
+    private lazy var input = AnswerViewModel.Input(text: answerTextView.rx.text.orEmpty.asObservable(),
+                                                   returnTrigger: answerTextView.rx.didEndEditing.asObservable(),
+                                                   buttonTap: self.doneButton.rx.tap.asObservable())
+    
+    private lazy var output = self.viewModel.transform(input: input)
     
     private var headerView = AnswerHeaderView(frame: .zero)
     private var keywordView: KeywordRegisterView!
@@ -56,12 +60,12 @@ final class MyQuestionAnswerViewController: BaseViewController {
         $0.layer.cornerRadius = 8
     }
     
-    private lazy var deleteButton = UIButton().then {
-        $0.setImage(UIImage(systemName: "trash")?.withRenderingMode(.alwaysOriginal), for: .normal)
+    private let deleteButton = UIButton().then {
+        $0.setImage(UIImage(systemName: "trash"), for: .normal)
         $0.imageView?.tintColor = .white
     }
     
-    private lazy var doneButton = UIButton().then {
+    private let doneButton = UIButton().then {
         $0.setTitle("확인",for: .normal)
         $0.setTitleColor(.white, for: .normal)
     }
@@ -77,7 +81,7 @@ final class MyQuestionAnswerViewController: BaseViewController {
         $0.layer.borderWidth = 2
         $0.isScrollEnabled = true
         
-        $0.initDefaultText(with: viewModel.placeholder, foregroundColor: .lightGray)
+        $0.initDefaultText(with: viewModel.getPlaceholder(), foregroundColor: .lightGray)
         
     }
     //MARK: - Lifecycle
@@ -85,7 +89,7 @@ final class MyQuestionAnswerViewController: BaseViewController {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
         
-        self.keywordView = KeywordRegisterView(viewModel: RegisterKeywordViewModel())
+        self.keywordView = KeywordRegisterView(viewModel: RegisterKeywordViewModel(id: viewModel.id, keywords: output.keywords, service: MyListService()))
     }
     
     required init?(coder: NSCoder) {
@@ -160,6 +164,7 @@ final class MyQuestionAnswerViewController: BaseViewController {
     }
     
     override func setupBinding() {
+        
         answerPostButton.rx.tap
             .subscribe(onNext: { [weak self] _ in
                 self?.mode = .edit
@@ -173,7 +178,7 @@ final class MyQuestionAnswerViewController: BaseViewController {
             .subscribe(onNext: { [weak self] _ in
                 guard let self = self else { return }
                 
-                if self.answerTextView.text == self.viewModel.placeholder {
+                if self.answerTextView.text == self.viewModel.getPlaceholder() {
                     self.answerTextView.text = nil
                     self.answerTextView.textColor = .black
                 }
@@ -185,25 +190,40 @@ final class MyQuestionAnswerViewController: BaseViewController {
                 guard let self = self else { return }
                 
                 if self.answerTextView.text.isEmpty || self.answerTextView.text == nil {
-                    self.answerTextView.initDefaultText(with: self.viewModel.placeholder,
+                    self.answerTextView.initDefaultText(with: self.viewModel.getPlaceholder(),
                                                         foregroundColor: .lightGray)
                 }
             }).disposed(by: disposeBag)
         
-        let input = AnswerViewModel.Input(trigger: self.rx.viewWillAppear.asObservable())
-        
-        let output = self.viewModel.transform(input: input)
-        
-        output.answer.subscribe(onNext: { [weak self] answer in
+        self.output.answer.subscribe(onNext: { [weak self] answer in
             
             guard let self = self else { return }
-            
-            if let answer = answer {
+            self.headerView.question = answer
+
+            if let answer = answer.answer {
                 self.mode = .written(answer: answer)
             } else {
                 self.mode = .unWritten
             }
+
+        }).disposed(by: disposeBag)
+        
+        output.successMessage.emit(onNext: { [weak self] message in
+            guard let self = self else { return }
             
+            let alert = self.comfirmAlert(title: "작성 완료", subtitle: message) { _ in
+                self.dismiss(animated: true)
+            }
+            self.present(alert, animated: true)
+        }).disposed(by: disposeBag)
+        
+        output.failMessage.emit(onNext: { [weak self] message in
+            guard let self = self else { return }
+            
+            let alert = self.comfirmAlert(title: "작성 실패", subtitle: message) { _ in
+                print("다시 작성")
+            }
+            self.present(alert, animated: true)
         }).disposed(by: disposeBag)
     }
     
@@ -234,12 +254,12 @@ final class MyQuestionAnswerViewController: BaseViewController {
 //MARK: - SetMode
 extension MyQuestionAnswerViewController {
     
-    private func setWrittenMode(answer: Answer) {
+    private func setWrittenMode(answer: String) {
         self.defaultView.isHidden = true
         self.defaultLabel.isHidden = true
         self.answerPostButton.isHidden = true
         
-        self.answerTextView.initDefaultText(with: answer.answer, foregroundColor: .black)
+        self.answerTextView.initDefaultText(with: answer, foregroundColor: .black)
         configureTextViewLayout()
     }
     
