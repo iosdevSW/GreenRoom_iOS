@@ -10,17 +10,15 @@ final class RecentQuestionCell: UICollectionViewCell {
     
     static let reuseIdentifer = "RecentQuestionCell"
     //MARK: - Properties
-    var question: GreenRoomQuestion! {
+    var question: PublicQuestion! {
         didSet { configure() }
     }
     
     private lazy var profileImageView = UIImageView(frame: .zero).then {
-        $0.contentMode = .scaleAspectFill
-        $0.layer.cornerRadius = bounds.width * 0.08 / 2
+        $0.contentMode = .scaleAspectFit
+        $0.layer.cornerRadius = frame.size.width * 0.08 / 2
         $0.layer.masksToBounds = true
-        $0.image = UIImage(named: "GreenRoomIcon")
-        $0.tintColor = .mainColor
-        $0.layer.masksToBounds = false
+        $0.backgroundColor = .blue
     }
     
     private let categoryLabel = Utilities.shared.generateLabel(text: "디자인", color: .black, font: .sfPro(size: 12, family: .Semibold))
@@ -31,17 +29,6 @@ final class RecentQuestionCell: UICollectionViewCell {
         $0.sizeToFit()
         $0.isScrollEnabled = false
         $0.textContainerInset = UIEdgeInsets(top: 13, left: 13, bottom: 5, right:13)
-        
-        let style = NSMutableParagraphStyle()
-        style.lineSpacing = 6
-        $0.attributedText = NSAttributedString(
-            string: "대부분의 프로젝트는 프로세스는 어떠하며 어떤 롤이 었나요?",
-            attributes: [
-                NSAttributedString.Key.paragraphStyle : style,
-                NSAttributedString.Key.font: UIFont.sfPro(size: 16, family: .Regular),
-                NSAttributedString.Key.foregroundColor: UIColor.black
-            ])
-    
         $0.isUserInteractionEnabled = false
     }
     
@@ -80,6 +67,7 @@ final class RecentQuestionCell: UICollectionViewCell {
         profileImageView.snp.makeConstraints { make in
             make.top.equalTo(questionTextView.snp.bottom).offset(10)
             make.trailing.equalToSuperview().offset(-13)
+            make.width.height.equalTo(frame.size.width * 0.15)
         }
     }
     

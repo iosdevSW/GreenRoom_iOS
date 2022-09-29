@@ -11,7 +11,7 @@ final class PopularQuestionCell: UICollectionViewCell {
     
     static let reuseIdentifer = "PopularQuestionCell"
     //MARK: - Properties
-    var question: PopularQuestion! {
+    var question: PopularPublicQuestion! {
         didSet { configure() }
     }
 

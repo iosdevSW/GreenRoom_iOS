@@ -16,7 +16,7 @@ class MyQuestionListCell: UICollectionViewCell {
     
     var viewModel: GreenRoomViewModel!
     
-    var question: MyQuestion! {
+    var question: PrivateQuestion! {
         didSet { configure() }
     }
     
@@ -32,10 +32,10 @@ class MyQuestionListCell: UICollectionViewCell {
         $0.backgroundColor = .mainColor
         $0.textColor = .white
         $0.font = .sfPro(size: 12, family: .Semibold)
-        $0.text = "디자인"
+        $0.text = "-"
     }
     
-    private var groupNameLabel = Utilities.shared.generateLabel(text: "삼성", color: .black, font: .sfPro(size: 12, family: .Semibold))
+    private let groupNameLabel = Utilities.shared.generateLabel(text: "-", color: .black, font: .sfPro(size: 12, family: .Semibold))
     
     private lazy var containerView = UIView().then {
         $0.backgroundColor = .white
@@ -44,8 +44,8 @@ class MyQuestionListCell: UICollectionViewCell {
         $0.layer.borderWidth = 2
         $0.layer.borderColor = UIColor.mainColor.cgColor
         $0.backgroundColor = .white
-        
     }
+    
     private lazy var profileImageView = UIImageView(frame: .zero).then {
         $0.contentMode = .scaleAspectFill
         $0.layer.cornerRadius = 35 / 2
@@ -62,39 +62,24 @@ class MyQuestionListCell: UICollectionViewCell {
         $0.translatesAutoresizingMaskIntoConstraints = true
         $0.sizeToFit()
         $0.isScrollEnabled = false
+        $0.isEditable = false
         $0.textContainerInset = UIEdgeInsets(top: 6, left: -4, bottom: 13, right:13)
-        
-        let style = NSMutableParagraphStyle()
-        style.lineSpacing = 6
-        $0.attributedText = NSAttributedString(
-            string: "대부분의 프로젝트는 프로세스는 어떠하며 어떤 롤이 었나요?",
-            attributes: [
-                NSAttributedString.Key.paragraphStyle : style,
-                NSAttributedString.Key.font: UIFont.sfPro(size: 16, family: .Regular),
-                NSAttributedString.Key.foregroundColor: UIColor.black
-            ])
-        
-        $0.isUserInteractionEnabled = false
     }
     
     //MARK: - LifeCycle
     override init(frame: CGRect) {
         super.init(frame: frame)
         configureUI()
-        bind()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    override func layoutSubviews() {
-        super.layoutSubviews()
-    }
     
     //MARK: - Configure
     private func configureUI(){
         
-        self.backgroundColor = .white
+        self.backgroundColor = .blue
         
         self.containerView.addSubview(profileImageView)
         self.containerView.addSubview(categoryLabel)
@@ -102,7 +87,6 @@ class MyQuestionListCell: UICollectionViewCell {
         self.contentView.addSubview(containerView)
         
         containerView.snp.makeConstraints { make in
-            
             make.top.equalToSuperview().offset(bounds.size.height*0.18)
             make.leading.equalToSuperview().offset(bounds.size.width * 0.06)
             make.trailing.equalToSuperview().offset(-bounds.size.width * 0.06)
@@ -139,14 +123,15 @@ class MyQuestionListCell: UICollectionViewCell {
         
         self.contentView.addSubview(groupCategoryNameLabel)
         groupCategoryNameLabel.snp.makeConstraints { make in
-            make.centerY.equalTo(scrapButton)
+            make.centerY.equalTo(scrapButton.snp.centerY)
             make.leading.equalTo(scrapButton.snp.trailing).offset(5)
         }
-        
+        groupCategoryNameLabel.backgroundColor = .blue
+        groupNameLabel.backgroundColor = .red
+        print(groupNameLabel)
         self.contentView.addSubview(groupNameLabel)
         groupNameLabel.snp.makeConstraints { make in
-            make.centerY.equalTo(scrapButton)
-            make.leading.equalTo(groupCategoryNameLabel.snp.trailing).offset(5)
+            make.center.equalToSuperview()
         }
     }
     
@@ -161,11 +146,4 @@ class MyQuestionListCell: UICollectionViewCell {
         
     }
     
-    func bind() {
-        self.scrapButton.rx.tap
-            .subscribe(onNext: { [weak self] in
-            guard let self = self else { return }
-            self.viewModel.scrapMyQuestion(id: self.question.id)
-        }).disposed(by: disposeBag)
-    }
 }

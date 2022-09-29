@@ -12,7 +12,7 @@ final class AnswerHeaderView: UIView {
     static let reuseIdentifier = "AnswerHeaderView"
     
     //MARK: - Properties
-    var question: Question! {
+    var question: QuestionWithAnswer! {
         didSet { configure() }
     }
     
@@ -60,7 +60,7 @@ final class AnswerHeaderView: UIView {
                                                  NSAttributedString.Key.font: UIFont.sfPro(size: 20, family: .Regular)
                                                 ])
         
-        self.categoryLabel.text = (CategoryID(rawValue: self.question.category) ?? .common).title
+        self.categoryLabel.text = question.categoryName
     }
     
     private func configureUI() {
