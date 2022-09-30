@@ -133,7 +133,7 @@ final class MyListService {
             
             let url = "\(Constants.baseURL)/api/my-questions/answer/\(id)"
             
-            AF.request(url, parameters: paramaters, encoding: JSONEncoding.default, interceptor: AuthManager())
+            AF.request(url, method: .put, parameters: paramaters, encoding: JSONEncoding.default, interceptor: AuthManager())
                 .validate(statusCode: 200..<300)
                 .response { response in
                     switch response.result {
@@ -145,7 +145,7 @@ final class MyListService {
                 }
             return Disposables.create()
         }
-    }
+    } 
     
     func uploadQuestionList(categoryId: Int, question: String) -> Observable<Bool> {
         
