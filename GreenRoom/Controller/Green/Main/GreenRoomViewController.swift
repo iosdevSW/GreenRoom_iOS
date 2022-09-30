@@ -81,15 +81,16 @@ class GreenRoomViewController: BaseViewController {
                 let vc = QuestionsByCategoryViewController(viewModel: self.viewModel)
                 self.present(vc, animated: true)
             case .popular(question: let question):
-                let vc = MyQuestionAnswerViewController(viewModel: AnswerViewModel(id: question.id))
+                let vc = PrivateAnswerViewController(viewModel: PrivateAnswerViewModel(id: question.id))
                 self.navigationController?.pushViewController(vc, animated: true)
             case .recent(question: let question):
                 print(question)
             case .MyGreenRoom(question: let question):
                 print(question)
             case .MyQuestionList(question: let question):
-                let vc = MyQuestionAnswerViewController(viewModel: AnswerViewModel(id: question.id))
-                self.navigationController?.pushViewController(vc, animated: true)
+                let vc = UINavigationController(rootViewController: PrivateAnswerViewController(viewModel: PrivateAnswerViewModel(id: question.id)))
+                vc.modalPresentationStyle = .fullScreen
+                self.present(vc, animated: true)
             }
         }).disposed(by: disposeBag)
         

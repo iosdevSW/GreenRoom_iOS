@@ -82,13 +82,13 @@ extension CustomTabbarController: CreatePopOverDeleagte {
     
     func didTapGreenRoomCreate() {
         let vc = UINavigationController(rootViewController: CreateGreenRoomViewController())
-        vc.modalPresentationStyle = .overFullScreen
+        vc.modalPresentationStyle = .fullScreen
         present(vc, animated: true)
     }
     
     func didTapQuestionListCreate() {
         let vc = UINavigationController(rootViewController: CreateQuestionViewController())
-        vc.modalPresentationStyle = .overFullScreen
+        vc.modalPresentationStyle = .fullScreen
         present(vc, animated: true)
     }
 }

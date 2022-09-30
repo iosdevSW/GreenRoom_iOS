@@ -6,11 +6,8 @@
 //
 
 import UIKit
-import RxSwift
 
 class MyQuestionListCell: UICollectionViewCell {
-    
-    var disposeBag = DisposeBag()
     
     static let reuseIedentifier = "MyQuestionListCell"
     
@@ -33,9 +30,10 @@ class MyQuestionListCell: UICollectionViewCell {
         $0.textColor = .white
         $0.font = .sfPro(size: 12, family: .Semibold)
         $0.text = "-"
+        $0.sizeToFit()
     }
     
-    private let groupNameLabel = Utilities.shared.generateLabel(text: "-", color: .black, font: .sfPro(size: 12, family: .Semibold))
+    private let groupNameLabel = Utilities.shared.generateLabel(text: "디자인", color: .black, font: .sfPro(size: 12, family: .Semibold))
     
     private lazy var containerView = UIView().then {
         $0.backgroundColor = .white
@@ -43,16 +41,13 @@ class MyQuestionListCell: UICollectionViewCell {
         $0.layer.maskedCorners = [.layerMaxXMaxYCorner,.layerMaxXMinYCorner,.layerMinXMaxYCorner]
         $0.layer.borderWidth = 2
         $0.layer.borderColor = UIColor.mainColor.cgColor
-        $0.backgroundColor = .white
     }
     
     private lazy var profileImageView = UIImageView(frame: .zero).then {
         $0.contentMode = .scaleAspectFill
-        $0.layer.cornerRadius = 35 / 2
-        $0.layer.masksToBounds = true
-        $0.image = UIImage(named: "GreenRoomIcon")
         $0.tintColor = .mainColor
         $0.layer.masksToBounds = false
+        $0.backgroundColor = .customGray
     }
     
     private let categoryLabel = Utilities.shared.generateLabel(text: "디자인", color: .black, font: .sfPro(size: 12, family: .Semibold))
@@ -79,11 +74,12 @@ class MyQuestionListCell: UICollectionViewCell {
     //MARK: - Configure
     private func configureUI(){
         
-        self.backgroundColor = .blue
+        self.backgroundColor = .clear
         
         self.containerView.addSubview(profileImageView)
         self.containerView.addSubview(categoryLabel)
         self.containerView.addSubview(questionTextView)
+        
         self.contentView.addSubview(containerView)
         
         containerView.snp.makeConstraints { make in
@@ -93,19 +89,19 @@ class MyQuestionListCell: UICollectionViewCell {
             make.bottom.equalToSuperview().offset(-10)
         }
         
-        let size = bounds.width / 15
+        let size = frame.size.width / 15
         
         profileImageView.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(12)
-            make.leading.equalToSuperview().offset(12)
+            make.leading.equalToSuperview().offset(20)
             make.width.height.equalTo(size)
         }
         
-        profileImageView.layer.cornerRadius = containerView.bounds.height/6
+        profileImageView.layer.cornerRadius = size / 2
 
         self.categoryLabel.snp.makeConstraints { make in
             make.centerY.equalTo(profileImageView)
-            make.leading.equalTo(profileImageView.snp.trailing).offset(10)
+            make.leading.equalTo(profileImageView.snp.trailing).offset(20)
         }
 
         self.questionTextView.snp.makeConstraints { make in
@@ -120,16 +116,14 @@ class MyQuestionListCell: UICollectionViewCell {
             make.top.equalToSuperview().offset(6)
             make.width.height.equalTo(15)
         }
-        
+
         self.contentView.addSubview(groupCategoryNameLabel)
         groupCategoryNameLabel.snp.makeConstraints { make in
-            make.centerY.equalTo(scrapButton.snp.centerY)
-            make.leading.equalTo(scrapButton.snp.trailing).offset(5)
+            make.trailing.equalToSuperview()
+            make.bottom.equalTo(containerView.snp.top)
         }
-        groupCategoryNameLabel.backgroundColor = .blue
-        groupNameLabel.backgroundColor = .red
-        print(groupNameLabel)
-        self.contentView.addSubview(groupNameLabel)
+
+        self.addSubview(groupNameLabel)
         groupNameLabel.snp.makeConstraints { make in
             make.center.equalToSuperview()
         }
@@ -142,8 +136,6 @@ class MyQuestionListCell: UICollectionViewCell {
         self.categoryLabel.text = question.categoryName
         self.groupNameLabel.text = question.groupName
         self.groupCategoryNameLabel.text = question.groupCategoryName
-        self.profileImageView.image = UIImage(named: "GreenRoomIcon")
-        
     }
     
 }
