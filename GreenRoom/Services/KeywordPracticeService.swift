@@ -13,7 +13,7 @@ import Alamofire
 class KeywordPracticeService {
     func fetchReferenceQuestions(categoryId: String?, title: String?)-> Observable<[QuestionModel]>{
     
-        let urlString = Storage.baseURL + "/api/interview-questions"
+        let urlString = Constants.baseURL + "/api/interview-questions"
 
         let url = URL(string: urlString)!
         
@@ -41,7 +41,7 @@ class KeywordPracticeService {
     }
     
     func fetchGroupList()-> Observable<[groupModel]> {
-        let urlString = Storage.baseURL + "/api/groups"
+        let urlString = Constants.baseURL + "/api/groups"
         let url = URL(string: urlString)!
         
         let access = KeychainWrapper.standard.string(forKey: "accessToken")!
@@ -70,7 +70,7 @@ class KeywordPracticeService {
     }
     
     func addGroup(categoryId: Int, categoryName: String) {
-        let urlString = Storage.baseURL + "/api/groups"
+        let urlString = Constants.baseURL + "/api/groups"
         let url = URL(string: urlString)!
         
         let param: Parameters = [
