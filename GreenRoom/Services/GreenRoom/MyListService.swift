@@ -26,65 +26,127 @@ enum QuestionError: Error, LocalizedError {
     }
 }
 
-struct MyListWithAnswer: Codable {
+struct QuestionWithAnswer: Codable {
     let id: Int
-    let groupCategoryName, categoryName, question, answer: String
+    let groupCategoryName, categoryName, question: String
+    let answer: String?
     let keywords: [String]
+    
+    enum CodingKeys: String, CodingKey {
+        case id, groupCategoryName, categoryName, question, answer, keywords
+    }
 }
 
 final class MyListService {
     
-    func fetchMyQuestionList(completion:@escaping ((Result<[MyQuestion],Error>) -> Void)) {
+    func fetchPrivateQuestions() -> Observable<[PrivateQuestion]> {
+        
         let url = URL(string: "\(Constants.baseURL)/api/my-questions")!
         
-        AF.request(url, method: .get, encoding: URLEncoding.default, interceptor: AuthManager())
-            .validate(statusCode: 200..<300)
-            .responseDecodable(of: [MyQuestion].self) { response in
-                switch response.result {
-                    
-                case .success(let myQuestions):
-                    completion(.success(myQuestions))
-                case .failure(let error):
-                    completion(.failure(error))
+        return Observable.create { emitter in
+            AF.request(url, method: .get, encoding: URLEncoding.default, interceptor: AuthManager())
+                .validate(statusCode: 200..<300)
+                .responseDecodable(of: [PrivateQuestion].self) { response in
+                    switch response.result {
+                        
+                    case .success(let questions):
+                        emitter.onNext(questions)
+                    case .failure(let error):
+                        emitter.onError(error)
+                    }
                 }
-            }
+            return Disposables.create()
+        }
     }
-    func fetchMyQuestion(id: Int) -> Observable<MyListWithAnswer> {
+    
+    func fetchPrivateQuestion(id: Int) -> Observable<QuestionWithAnswer> {
         let url = URL(string: "\(Constants.baseURL)/api/my-questions/\(id)")!
-
+        
         return Observable.create { emitter in
             AF.request(url, encoding: JSONEncoding.default, interceptor: AuthManager())
                 .validate(statusCode: 200..<300)
-                .responseDecodable(of: MyListWithAnswer.self) { response in
+                .responseDecodable(of: QuestionWithAnswer.self) { response in
                     switch response.result {
                     case .success(let answer):
                         emitter.onNext(answer)
                     case .failure(let error):
                         emitter.onError(error)
                     }
-
+                    
                 }
-
+            
             return Disposables.create()
         }
     }
-//    func fetchMyQuestion(id: Int, completion:@escaping((Result<MyListWithAnswer, Error>) -> Void)) {
-//        let url = URL(string: "\(Constants.baseURL)/api/my-questions/\(id)")!
-//
-//        AF.request(url, encoding: JSONEncoding.default, interceptor: AuthManager())
-//            .validate(statusCode: 200..<300)
-//            .responseString { response in
-//                print(response)
-//
-//                switch response.result {
-//                case .success(let result):
-//                    print(result)
-//                case .failure(let error):
-//                    print(error)
-//                }
-//
-//            }
-//    }
+    
+    func updateKeywords(id: Int, keywords: [String], completion:@escaping((Bool) -> Void)) {
+        
+        let paramaters: Parameters = [
+            "keywords": keywords
+        ]
+        
+        let url = "\(Constants.baseURL)/api/my-questions/answer/\(id)"
+        
+        AF.request(url, method: .put, parameters: paramaters, encoding: JSONEncoding.default, interceptor: AuthManager())
+            .validate(statusCode: 200..<300)
+            .response { response in
+                switch response.result {
+                case .success(_):
+                    completion(true)
+                case .failure(_):
+                    completion(false)
+                }
+            }
+    }
+    
+    func uploadKeywords(id: Int, keywords: [String]) -> Observable<Bool> {
+        
+        let paramaters: Parameters = [
+            "keywords": keywords
+        ]
+        
+        return Observable.create { emitter in
+            
+            let url = "\(Constants.baseURL)/api/my-questions/answer/\(id)"
+            
+            AF.request(url, parameters: paramaters, encoding: JSONEncoding.default, interceptor: AuthManager())
+                .validate(statusCode: 200..<300)
+                .response { response in
+                    switch response.result {
+                    case .success(_):
+                        emitter.onNext(true)
+                    case .failure(_):
+                        emitter.onNext(false)
+                    }
+                }
+            return Disposables.create()
+        }
+    }
+    
+    func uploadAnswer(id: Int, answer: String) -> Observable<Bool> {
+        
+        let paramaters: Parameters = [
+            "answer": answer
+        ]
+        
+        return Observable.create { emitter in
+            
+            let url = "\(Constants.baseURL)/api/my-questions/answer/\(id)"
+            
+            AF.request(url, parameters: paramaters, encoding: JSONEncoding.default, interceptor: AuthManager())
+                .validate(statusCode: 200..<300)
+                .response { response in
+                    switch response.result {
+                    case .success(_):
+                        emitter.onNext(true)
+                    case .failure(_):
+                        emitter.onNext(false)
+                    }
+                }
+            return Disposables.create()
+        }
+    }
+    
     func uploadQuestionList(categoryId: Int, question: String) -> Observable<Bool> {
         
         let url = URL(string: "\(Constants.baseURL)/api/my-questions")!

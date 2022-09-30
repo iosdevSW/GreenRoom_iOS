@@ -16,10 +16,10 @@ enum GreenRoomSectionModel: SectionModelType {
     
     enum SectionItem {
         case filtering(interest: String)
-        case popular(question: PopularQuestion)
-        case recent(question: GreenRoomQuestion)
+        case popular(question: PopularPublicQuestion)
+        case recent(question: PublicQuestion)
         case MyGreenRoom(question: Question)
-        case MyQuestionList(question: MyQuestion)
+        case MyQuestionList(question: PrivateQuestion)
     }
     
     case filtering(items: [Item])

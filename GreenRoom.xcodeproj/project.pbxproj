@@ -118,7 +118,6 @@
 		E46E4BFA28DD899C00D1691F /* KeywordRegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E46E4BF928DD899C00D1691F /* KeywordRegisterView.swift */; };
 		E46E4BFC28E0790C00D1691F /* RegisterKeywordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E46E4BFB28E0790C00D1691F /* RegisterKeywordViewModel.swift */; };
 		E46E4BFE28E0AE9200D1691F /* AnswerMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = E46E4BFD28E0AE9200D1691F /* AnswerMode.swift */; };
-		E46E4C0028E0AED000D1691F /* Answer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E46E4BFF28E0AED000D1691F /* Answer.swift */; };
 		E46E4C0228E147E900D1691F /* UITextView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = E46E4C0128E147E900D1691F /* UITextView+.swift */; };
 		E46E4C0428E14FAE00D1691F /* UIViewController+.swift in Sources */ = {isa = PBXBuildFile; fileRef = E46E4C0328E14FAE00D1691F /* UIViewController+.swift */; };
 		E46E4C0628E14FC500D1691F /* UILabel+.swift in Sources */ = {isa = PBXBuildFile; fileRef = E46E4C0528E14FC500D1691F /* UILabel+.swift */; };
@@ -147,13 +146,14 @@
 		E4C4C4C028BDE8AB008826AB /* CreateGreenRoomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4C4C4BF28BDE8AB008826AB /* CreateGreenRoomViewController.swift */; };
 		E4C8AE6928B35519007E010D /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4C8AE6828B35519007E010D /* UserService.swift */; };
 		E4EC67AB28E1CDC200469D17 /* GreenRoomQuestionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4EC67AA28E1CDC200469D17 /* GreenRoomQuestionService.swift */; };
-		E4EC67AE28E1D22300469D17 /* MyQuestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4EC67AD28E1D22300469D17 /* MyQuestion.swift */; };
+		E4EC67AE28E1D22300469D17 /* PrivateQuestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4EC67AD28E1D22300469D17 /* PrivateQuestion.swift */; };
 		E4EC67B128E2056100469D17 /* ScrapSectionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4EC67B028E2056100469D17 /* ScrapSectionModel.swift */; };
 		E4EC67B328E205A600469D17 /* GreenRoomQuestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4EC67B228E205A600469D17 /* GreenRoomQuestion.swift */; };
 		E4EC67B528E2063200469D17 /* ScrapService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4EC67B428E2063200469D17 /* ScrapService.swift */; };
 		E4EF361628C4BED700746050 /* RecentHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4EF361528C4BED600746050 /* RecentHeader.swift */; };
 		E4EF361828C4BF0400746050 /* RecentQuestionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4EF361728C4BF0400746050 /* RecentQuestionCell.swift */; };
 		E4EF361A28C4EA3E00746050 /* RecentPageFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4EF361928C4EA3E00746050 /* RecentPageFooterView.swift */; };
+		E4F8888B28E5E36300840101 /* PopularPublicQuestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4F8888A28E5E36300840101 /* PopularPublicQuestion.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -273,7 +273,6 @@
 		E46E4BF928DD899C00D1691F /* KeywordRegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeywordRegisterView.swift; sourceTree = "<group>"; };
 		E46E4BFB28E0790C00D1691F /* RegisterKeywordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterKeywordViewModel.swift; sourceTree = "<group>"; };
 		E46E4BFD28E0AE9200D1691F /* AnswerMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnswerMode.swift; sourceTree = "<group>"; };
-		E46E4BFF28E0AED000D1691F /* Answer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Answer.swift; sourceTree = "<group>"; };
 		E46E4C0128E147E900D1691F /* UITextView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextView+.swift"; sourceTree = "<group>"; };
 		E46E4C0328E14FAE00D1691F /* UIViewController+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+.swift"; sourceTree = "<group>"; };
 		E46E4C0528E14FC500D1691F /* UILabel+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+.swift"; sourceTree = "<group>"; };
@@ -302,7 +301,7 @@
 		E4C4C4BF28BDE8AB008826AB /* CreateGreenRoomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateGreenRoomViewController.swift; sourceTree = "<group>"; };
 		E4C8AE6828B35519007E010D /* UserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
 		E4EC67AA28E1CDC200469D17 /* GreenRoomQuestionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GreenRoomQuestionService.swift; sourceTree = "<group>"; };
-		E4EC67AD28E1D22300469D17 /* MyQuestion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyQuestion.swift; sourceTree = "<group>"; };
+		E4EC67AD28E1D22300469D17 /* PrivateQuestion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivateQuestion.swift; sourceTree = "<group>"; };
 		E4EC67B028E2056100469D17 /* ScrapSectionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrapSectionModel.swift; sourceTree = "<group>"; };
 		E4EC67B228E205A600469D17 /* GreenRoomQuestion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GreenRoomQuestion.swift; sourceTree = "<group>"; };
 		E4EC67B428E2063200469D17 /* ScrapService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrapService.swift; sourceTree = "<group>"; };
@@ -311,6 +310,7 @@
 		E4EF361928C4EA3E00746050 /* RecentPageFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentPageFooterView.swift; sourceTree = "<group>"; };
 		E4EF362228C5ADA300746050 /* FAQ.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FAQ.swift; sourceTree = "<group>"; };
 		E4EF362328C5ADA300746050 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		E4F8888A28E5E36300840101 /* PopularPublicQuestion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopularPublicQuestion.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -831,10 +831,9 @@
 		E47EE51228C47F0C00618CA6 /* GreenRoom */ = {
 			isa = PBXGroup;
 			children = (
+				E4F8888C28E5E4FC00840101 /* Question */,
 				E49EF3D128B5375D00358340 /* Question.swift */,
 				E46E4BFD28E0AE9200D1691F /* AnswerMode.swift */,
-				E46E4BFF28E0AED000D1691F /* Answer.swift */,
-				E4EC67AD28E1D22300469D17 /* MyQuestion.swift */,
 				E4EC67B228E205A600469D17 /* GreenRoomQuestion.swift */,
 			);
 			path = GreenRoom;
@@ -971,6 +970,15 @@
 				E4206CD528D5E53C0011E117 /* CreateGRViewModel.swift */,
 			);
 			path = Create;
+			sourceTree = "<group>";
+		};
+		E4F8888C28E5E4FC00840101 /* Question */ = {
+			isa = PBXGroup;
+			children = (
+				E4F8888A28E5E36300840101 /* PopularPublicQuestion.swift */,
+				E4EC67AD28E1D22300469D17 /* PrivateQuestion.swift */,
+			);
+			path = Question;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1187,11 +1195,11 @@
 				DBB251E828D98B2F00310820 /* QuestionModel.swift in Sources */,
 				DBA8ED6C28BB4A4C007526CF /* KPRecordingViewController.swift in Sources */,
 				E48F6C6328E340490083B74A /* Auth.swift in Sources */,
-				E46E4C0028E0AED000D1691F /* Answer.swift in Sources */,
 				DBD0821D2897E6EE0092241F /* AppDelegate.swift in Sources */,
 				E46E4BE928DC33D300D1691F /* AnswerViewModel.swift in Sources */,
 				E40BC6B328B7548E00FB557D /* SearchWordHeaderView.swift in Sources */,
 				E445856328C6148F00907950 /* MyGreenRoomCell.swift in Sources */,
+				E4F8888B28E5E36300840101 /* PopularPublicQuestion.swift in Sources */,
 				E46539E428AD33C700F17A6C /* EditProfileInfoViewController.swift in Sources */,
 				E427EC0628C791850046B4AA /* Info.swift in Sources */,
 				E4141AB328AF4499004D74B3 /* Constants.swift in Sources */,
@@ -1207,7 +1215,7 @@
 				E40BC6E428B880FE00FB557D /* SearchResultNotFountCell.swift in Sources */,
 				E40BC6FB28B892C400FB557D /* CoreDataManager.swift in Sources */,
 				E4EC67B128E2056100469D17 /* ScrapSectionModel.swift in Sources */,
-				E4EC67AE28E1D22300469D17 /* MyQuestion.swift in Sources */,
+				E4EC67AE28E1D22300469D17 /* PrivateQuestion.swift in Sources */,
 				DBD082532897E75B0092241F /* KeywordViewModel.swift in Sources */,
 				DB9989E028D5DA280056D40B /* CustomSlider.swift in Sources */,
 				E427EC0B28C7A53D0046B4AA /* DetailQuestionListCell.swift in Sources */,

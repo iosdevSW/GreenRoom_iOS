@@ -228,14 +228,3 @@ final class CreateQuestionViewController: BaseViewController {
         self.dismiss(animated: false)
     }
 }
-
-extension CreateQuestionViewController {
-    
-    func comfirmAlert(title: String, subtitle: String,completion:@escaping(UIAlertAction) -> Void) -> UIAlertController{
-        let alert = UIAlertController(title: title, message: subtitle, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "확인", style: .default, handler: completion))
-        
-        return alert
-    }
-}
-

@@ -10,7 +10,7 @@ import Foundation
 enum Mode: Equatable {
     
     case edit
-    case written(answer: Answer)
+    case written(answer: String)
     case unWritten
     
 }
