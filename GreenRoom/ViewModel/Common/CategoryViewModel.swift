@@ -18,6 +18,8 @@ class CategoryViewModel {
     
     let selectedCategoriesObservable = BehaviorSubject<[Int]>(value: []) // filterView에서 실제 filtering하고있는 카테고리 ids
     
+    let selectedCategoryObservable = BehaviorRelay<Int>(value: -1)
+    
     var tempSelectedCategories: [Int] = [] { // SelectedViewController에서 선택한 카테고리id를 저장할 임시 int배열
         didSet {
             self.tempSelectedCategoriesObservable.onNext(self.tempSelectedCategories)

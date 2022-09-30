@@ -38,13 +38,14 @@ class QuestionListCell: UITableViewCell {
         $0.layer.borderWidth = 1
         $0.layer.borderColor = UIColor.customGray.cgColor
         $0.image = UIImage(named: "check.white")?.withRenderingMode(.alwaysOriginal)
+        $0.isHidden = true
         $0.contentMode = .center
     }
     
     let chevronButton = UIButton(type: .system).then {
         $0.setImage(UIImage(systemName: "chevron.right"), for: .normal)
         $0.tintColor = .customGray
-        $0.isHidden = true
+        $0.isHidden = false
     }
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {

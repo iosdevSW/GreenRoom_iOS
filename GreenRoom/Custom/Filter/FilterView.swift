@@ -10,7 +10,7 @@ import RxSwift
 
 class FilterView: UIView{
     //MARK: - Properties
-    let viewModel: CategoryViewModel
+    let viewModel = CategoryViewModel()
     let disposeBag = DisposeBag()
     
     var selectedCategoriesCollectionView: UICollectionView!
@@ -27,8 +27,7 @@ class FilterView: UIView{
     }
     
     //MARK: - Init
-    init(viewModel: CategoryViewModel) {
-        self.viewModel = viewModel
+    init() {
         super.init(frame: .zero)
         self.configureUI()
         self.bind()

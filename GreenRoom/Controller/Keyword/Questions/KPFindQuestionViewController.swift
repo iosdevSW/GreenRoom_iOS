@@ -14,8 +14,7 @@ import KakaoSDKUser
 
 class KPFindQuestionViewController: BaseViewController{
     //MARK: - Properties
-    private let viewModel: KeywordViewModel
-    private let categoryViewModel = CategoryViewModel()
+    private let viewModel = BaseQuestionsViewModel()
     
     private let searchBarView = UISearchBar().then{
         $0.placeholder = "키워드로 검색해보세요!"
@@ -29,7 +28,7 @@ class KPFindQuestionViewController: BaseViewController{
         $0.layer.cornerRadius = 10
     }
     
-    private lazy var filterView = FilterView(viewModel: categoryViewModel)
+    private lazy var filterView = FilterView()
     
     private var questionListTableView = UITableView().then{
         $0.backgroundColor = .white
@@ -55,8 +54,7 @@ class KPFindQuestionViewController: BaseViewController{
     }
     
     //MARK: - Init
-    init(viewModel: KeywordViewModel){
-        self.viewModel = viewModel
+    init() {
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -69,7 +67,6 @@ class KPFindQuestionViewController: BaseViewController{
         super.viewDidLoad()
         self.view.backgroundColor = .white
         
-        bind()
         hideKeyboardWhenTapped()
         setNavigationItem()
 
@@ -118,28 +115,29 @@ class KPFindQuestionViewController: BaseViewController{
             }).disposed(by: disposeBag)
     }
     
-    @objc func didClickPracticeButton(_ sender: UIButton) {
-        self.navigationController?.pushViewController(KPPrepareViewController(viewmodel: viewModel), animated: true)
-    }
-    
     //MARK: - Bind
-    func bind(){
-        _ = viewModel.tabelTemp // 서비스 로직 호출할땐 응답받는 구조체로 대체 (아직 서비스API 미구현 임시로 string배열로 받음)
-            .bind(to: questionListTableView.rx.items(cellIdentifier: "QuestionListCell", cellType: QuestionListCell.self)) { index, title, cell in
-                cell.mainLabel.text = title
+    override func setupBinding() {
+        viewModel.baseQuestionsObservable // 서비스 로직 호출할땐 응답받는 구조체로 대체 (아직 서비스API 미구현 임시로 string배열로 받음)
+            .bind(to: questionListTableView.rx.items(cellIdentifier: "QuestionListCell", cellType: QuestionListCell.self)) { index, item, cell in
+                cell.mainLabel.text = item.question
+                cell.categoryLabel.text = item.categoryName
+                cell.questionTypeLabel.text = item.questionType
                 
-                let image = UIImage(systemName: "chevron.right")!
-                let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 12, height: 20))
-                imageView.image = image
-                imageView.tintColor = .customGray
-                cell.accessoryView = imageView
                 cell.selectionStyle = .none
-            }
+            }.disposed(by: disposeBag)
         
-        _ = questionListTableView.rx.itemSelected
+        questionListTableView.rx.itemSelected
             .bind(onNext: { indexPath in // 서비스 로직시엔 Id로 다룰 것 같음
                 self.navigationController?.pushViewController(KPGroupsViewController(viewModel: self.viewModel), animated: true)
-            })
+            }).disposed(by: disposeBag)
+        
+        filterView.viewModel.selectedCategoriesObservable
+            .subscribe(onNext: { [weak self] ids in
+                let idString = ids.map{ String($0)}.joined(separator: ",")
+                self?.viewModel.filteringObservable.onNext(idString)
+                
+            }).disposed(by: disposeBag)
+        
     }
     
     //MARK: - ConfigureUI
@@ -166,15 +164,6 @@ class KPFindQuestionViewController: BaseViewController{
             make.leading.equalToSuperview()
             make.trailing.equalToSuperview().offset(-20)
             make.bottom.equalToSuperview()
-        }
-        
-        self.view.addSubview(self.practiceInterviewButton)
-        self.practiceInterviewButton.addTarget(self, action: #selector(self.didClickPracticeButton(_:)), for: .touchUpInside)
-        self.practiceInterviewButton.snp.makeConstraints{ make in
-            make.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.bottom).offset(-10)
-            make.leading.equalToSuperview().offset(35)
-            make.trailing.equalToSuperview().offset(-35)
-            make.height.equalTo(53)
         }
         
         self.view.addSubview(btn)

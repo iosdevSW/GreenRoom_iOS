@@ -71,6 +71,7 @@ class KPGroupEditViewController: BaseViewController {
                 guard let category = CategoryID(rawValue: index) else { return }
                 cell.frameView.layer.borderColor = UIColor.mainColor.cgColor
                 cell.imageView.image = category.SelectedImage
+                self?.categoryViewModel.selectedCategoryObservable.accept(category.rawValue)
                 
             }).disposed(by: disposeBag)
         
@@ -84,6 +85,22 @@ class KPGroupEditViewController: BaseViewController {
                 cell.imageView.image = category.nonSelectedImage
                 
             }).disposed(by: disposeBag)
+        
+     
+        PublishSubject<[String:String]>
+            .combineLatest(self.categoryViewModel.selectedCategoryObservable, questionTextView.rx.text,
+                           resultSelector: {[
+                            "id" : String($0),
+                            "text" : $1!
+                           ]
+            })
+            .bind(onNext: { [weak self]dic in
+                if dic["text"] == "" || dic["text"] == "그룹 이름을 입력해주세요:)" || dic["id"] == "-1" {
+                    self?.completeButton.isHidden = true
+                }else {
+                    self?.completeButton.isHidden = false
+                }
+            }).disposed(by: disposeBag)
     }
     
     //MARK: - ConfigureUI
@@ -96,7 +113,7 @@ class KPGroupEditViewController: BaseViewController {
                 make.leading.equalToSuperview().offset(32)
                 make.top.equalTo(self.view.safeAreaLayoutGuide.snp.top).offset(20)
                 make.width.equalTo(14)
-                make.width.equalTo(12)
+                make.height.equalTo(12)
             }
         }
         

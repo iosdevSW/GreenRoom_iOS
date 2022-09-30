@@ -160,7 +160,7 @@ class KPQuestionsViewController: BaseViewController {
     @objc func didClickQuestionEditButton(_ sender: UIButton) {
         switch sender.tag {
         case 3:
-            let groupVC = KPGroupsViewController(viewModel: viewmodel)
+            let groupVC = KPGroupsViewController(viewModel: BaseQuestionsViewModel())
             self.navigationController?.pushViewController(groupVC, animated: true)
         default:
             print("질문삭제클릭")

@@ -55,7 +55,7 @@ final class InfoHeaderView: UICollectionReusableView {
     
     private var subTitleLabel = Utilities.shared.generateLabel(text: "SubTitleLabel", color: .customGray, font: .sfPro(size: 12, family: .Regular))
    
-    private var filter = FilterView(viewModel: CategoryViewModel())
+    private var filter = FilterView()
 
     //MARK: - Init
     override init(frame: CGRect) {
