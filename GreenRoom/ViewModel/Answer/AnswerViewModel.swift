@@ -16,7 +16,6 @@ final class AnswerViewModel: ViewModelType {
     
     struct Input {
         let text: Observable<String>
-        let returnTrigger: Observable<Void>
         let buttonTap: Observable<Void>
     }
     
@@ -28,7 +27,6 @@ final class AnswerViewModel: ViewModelType {
     }
     
     private let textFieldContentObservable = BehaviorSubject<String>(value: "")
-    private let addAnswerText = PublishSubject<String>()
     
     private let failMessage = PublishRelay<String>()
     private let successMessage = PublishRelay<String>()
@@ -41,14 +39,12 @@ final class AnswerViewModel: ViewModelType {
     
     func transform(input: Input) -> Output {
         input.text.bind(to: textFieldContentObservable).disposed(by: disposeBag)
-        
-        input.returnTrigger.withLatestFrom(textFieldContentObservable)
-            .bind(to: addAnswerText)
-            .disposed(by: disposeBag)
-        
-        input.buttonTap.withLatestFrom(addAnswerText.asObserver())
+
+        input.buttonTap.withLatestFrom(textFieldContentObservable.asObserver())
             .flatMap { [weak self] answer -> Observable<Bool>  in
-                guard let self = self else { return Observable.just(false) }
+                guard let self = self else {
+                    return Observable.just(false)
+                }
                 return self.myListService.uploadAnswer(id: self.id, answer: answer)
             }
             .subscribe(onNext: { [weak self] isSuccess in

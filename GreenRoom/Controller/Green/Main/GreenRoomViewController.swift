@@ -61,24 +61,13 @@ class GreenRoomViewController: BaseViewController {
     
     //MARK: - setup/configure
     override func setupBinding() {
-        viewModel.isLogin()
-            .subscribe(on: MainScheduler.instance)
-            .subscribe(onNext: { isToken in
-                if isToken {
-                    print("자동로그인")
-                }else {
-                    print("로그인필요")
-                    let loginVC = LoginViewController(loginViewModel: LoginViewModel())
-                    loginVC.modalPresentationStyle = .fullScreen
-                    self.present(loginVC, animated: false)
-                }
-            }).disposed(by: disposeBag)
-        
+
         let dataSource = self.dataSource()
         
         let input = GreenRoomViewModel.Input(greenroomTap: self.greenRoomButton.rx.tap.asObservable(),
                                              myListTap: self.questionListButton.rx.tap.asObservable(),
                                              trigger: self.rx.viewWillAppear.asObservable())
+        
         let output = self.viewModel.transform(input: input)
         
         output.greenroom.bind(to: collectionView.rx.items(dataSource: dataSource)).disposed(by: disposeBag)

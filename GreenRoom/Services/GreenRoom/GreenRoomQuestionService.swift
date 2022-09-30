@@ -60,7 +60,6 @@ final class GreenRoomQuestionService {
                 case .success(let questions):
                     emmiter.onNext(questions)
                 case .failure(let error):
-                    print(error)
                     emmiter.onError(error)
                 }
             }
