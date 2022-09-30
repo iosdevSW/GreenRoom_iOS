@@ -31,7 +31,6 @@ final class MyQuestionAnswerViewController: BaseViewController {
     private var collectionView: UICollectionView!
     
     private lazy var input = AnswerViewModel.Input(text: answerTextView.rx.text.orEmpty.asObservable(),
-                                                   returnTrigger: answerTextView.rx.didEndEditing.asObservable(),
                                                    buttonTap: self.doneButton.rx.tap.asObservable())
     
     private lazy var output = self.viewModel.transform(input: input)
