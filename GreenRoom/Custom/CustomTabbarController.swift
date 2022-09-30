@@ -10,9 +10,7 @@ import UIKit
 final class CustomTabbarController: UITabBarController {
     
     var isHidden: Bool = false {
-        didSet {
-            self.createButton.isHidden = tabBar.isHidden
-        }
+        didSet { self.createButton.isHidden = tabBar.isHidden }
     }
     
     lazy var createButton = UIButton().then {
@@ -26,7 +24,8 @@ final class CustomTabbarController: UITabBarController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        NotificationCenter.default.addObserver(self, selector: #selector(didTapUpdateCategories(_:)), name: Notification.Name("Category"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(didTapUpdateCategories(_:)), name: .categoryObserver, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(showLoginViewController), name: .authenticationObserver, object: nil)
         initView()
     }
     
@@ -35,7 +34,6 @@ final class CustomTabbarController: UITabBarController {
     }
     
     private func initView() {
-        
         self.view.addSubview(createButton)
         createButton.snp.makeConstraints { make in
             make.top.equalTo(tabBar.snp.top).offset(-25)
@@ -49,7 +47,6 @@ final class CustomTabbarController: UITabBarController {
             self.createButton.isHidden = selectedIndex == 1
         }
     }
-    
 
     override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
         UIView.animate(withDuration: 0.5) {
@@ -80,9 +77,10 @@ extension CustomTabbarController: UIPopoverPresentationControllerDelegate {
         return .none
     }
 }
+
 extension CustomTabbarController: CreatePopOverDeleagte {
+    
     func didTapGreenRoomCreate() {
-        
         let vc = UINavigationController(rootViewController: CreateGreenRoomViewController())
         vc.modalPresentationStyle = .overFullScreen
         present(vc, animated: true)
@@ -93,6 +91,13 @@ extension CustomTabbarController: CreatePopOverDeleagte {
         vc.modalPresentationStyle = .overFullScreen
         present(vc, animated: true)
     }
+}
+
+extension CustomTabbarController {
     
-    
+    @objc func showLoginViewController() {
+        let loginVC = LoginViewController(loginViewModel: LoginViewModel())
+        loginVC.modalPresentationStyle = .fullScreen
+        self.present(loginVC, animated: false)
+    }
 }

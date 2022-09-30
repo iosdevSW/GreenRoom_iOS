@@ -91,6 +91,7 @@
 		E427EC0828C7937B0046B4AA /* SFProText-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = E427EC0728C7937B0046B4AA /* SFProText-Bold.otf */; };
 		E427EC0B28C7A53D0046B4AA /* DetailQuestionListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E427EC0A28C7A53D0046B4AA /* DetailQuestionListCell.swift */; };
 		E427EC1628C830F60046B4AA /* CategorySelectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E427EC1528C830F60046B4AA /* CategorySelectViewController.swift */; };
+		E44456EE28E6E89B0034A207 /* NotificationName+.swift in Sources */ = {isa = PBXBuildFile; fileRef = E44456ED28E6E89B0034A207 /* NotificationName+.swift */; };
 		E445856128C6143700907950 /* MyGreenRoomHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = E445856028C6143700907950 /* MyGreenRoomHeader.swift */; };
 		E445856328C6148F00907950 /* MyGreenRoomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E445856228C6148F00907950 /* MyGreenRoomCell.swift */; };
 		E445856528C619E700907950 /* MyGreenRoomFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E445856428C619E700907950 /* MyGreenRoomFooterView.swift */; };
@@ -246,6 +247,7 @@
 		E427EC0728C7937B0046B4AA /* SFProText-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFProText-Bold.otf"; sourceTree = "<group>"; };
 		E427EC0A28C7A53D0046B4AA /* DetailQuestionListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailQuestionListCell.swift; sourceTree = "<group>"; };
 		E427EC1528C830F60046B4AA /* CategorySelectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategorySelectViewController.swift; sourceTree = "<group>"; };
+		E44456ED28E6E89B0034A207 /* NotificationName+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NotificationName+.swift"; sourceTree = "<group>"; };
 		E445856028C6143700907950 /* MyGreenRoomHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyGreenRoomHeader.swift; sourceTree = "<group>"; };
 		E445856228C6148F00907950 /* MyGreenRoomCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyGreenRoomCell.swift; sourceTree = "<group>"; };
 		E445856428C619E700907950 /* MyGreenRoomFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyGreenRoomFooterView.swift; sourceTree = "<group>"; };
@@ -812,6 +814,7 @@
 				E46E4C0128E147E900D1691F /* UITextView+.swift */,
 				E46E4C0528E14FC500D1691F /* UILabel+.swift */,
 				E46E4C0728E14FD400D1691F /* Date+.swift */,
+				E44456ED28E6E89B0034A207 /* NotificationName+.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1223,6 +1226,7 @@
 				E4EC67B328E205A600469D17 /* GreenRoomQuestion.swift in Sources */,
 				E46E4BF428DD769A00D1691F /* UIButton+.swift in Sources */,
 				E4C4C4C028BDE8AB008826AB /* CreateGreenRoomViewController.swift in Sources */,
+				E44456EE28E6E89B0034A207 /* NotificationName+.swift in Sources */,
 				DB797A9B289BC0D800ADF65F /* RegisterCategoryViewController.swift in Sources */,
 				E40BC6F928B88FB600FB557D /* RecentSearchModel.xcdatamodeld in Sources */,
 				DBA9451328C653F200B6E16A /* FAQ.swift in Sources */,

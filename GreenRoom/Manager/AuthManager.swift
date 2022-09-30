@@ -34,35 +34,30 @@ class AuthManager: RequestInterceptor {
         guard let url = URL(string: "\(Constants.baseURL)/api/auth/reissue") else { return }
         
         guard let accessToken = KeychainWrapper.standard.string(forKey: "accessToken"),
-                let refreshToken = KeychainWrapper.standard.string(forKey: "refreshToken") else { return }
-        
-        var headers = HTTPHeaders()
-        headers.add(.authorization(bearerToken: accessToken))
-        
-        print(headers)
-        
+                let refreshToken = KeychainWrapper.standard.string(forKey: "refreshToken") else {
+            return NotificationCenter.default.post(name: .authenticationObserver, object: nil)
+        }
+
         let parameters: Parameters = [
             "accessToken": accessToken,
             "refreshToken": refreshToken
         ] 
         
-        print(parameters)
-        AF.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
+        AF.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default)
             .validate(statusCode: 200..<300)
             .responseDecodable(of: Auth.self) { response in
 
             switch response.result {
             case .success(let token):
-                print(token)
-//                print(token.refreshToken, token.accessToken)
-//
-//                KeychainWrapper.standard.set(token.refreshToken, forKey: "RefreshToken")
-//                KeychainWrapper.standard.set(token.accessToken, forKey: "AccessToken")
-
+                print("토큰 갱신 성공")
+                
+                KeychainWrapper.standard.removeAllKeys()
+                KeychainWrapper.standard.set(token.accessToken, forKey: "accessToken")
+                KeychainWrapper.standard.set(token.refreshToken, forKey: "refreshToken")
+                
                 request.retryCount < self.retryLimit ? completion(.retry) : completion(.doNotRetry)
-            case .failure(let error):
-                print(error)
-                completion(.doNotRetryWithError(error))
+            case .failure(_):
+                NotificationCenter.default.post(name: .authenticationObserver, object: nil)
             }
         }
         
