@@ -98,7 +98,8 @@ final class ScrapedQuestionViewController: BaseViewController {
     }
     
     override func setupBinding() {
-        let input = ScrapViewModel.Input(trigger: rx.viewWillAppear.asObservable(),buttonTab: deleteButton.rx.tap.asObservable())
+        let input = ScrapViewModel.Input(trigger: rx.viewWillAppear.asObservable(),
+                                         buttonTab: deleteButton.rx.tap.asObservable())
         
         let output = self.viewModel.transform(input: input)
         output.scrap.bind(to: collectionView.rx.items(dataSource: dataSource())).disposed(by: disposeBag)
@@ -153,9 +154,9 @@ extension ScrapedQuestionViewController {
         collectionView.register(ScrapViewCell.self, forCellWithReuseIdentifier: ScrapViewCell.reuseIdentifier)
     }
     
-    private func dataSource() -> RxCollectionViewSectionedReloadDataSource<GreenRoomSectionModel> {
+    private func dataSource() -> RxCollectionViewSectionedReloadDataSource<ScrapSectionModel> {
         
-        return RxCollectionViewSectionedReloadDataSource<GreenRoomSectionModel> {
+        return RxCollectionViewSectionedReloadDataSource<ScrapSectionModel> {
             (dataSource, collectionView, indexPath, item) in
             
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ScrapViewCell.reuseIdentifier, for: indexPath) as? ScrapViewCell else { return UICollectionViewCell() }

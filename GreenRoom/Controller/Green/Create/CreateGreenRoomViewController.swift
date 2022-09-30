@@ -55,13 +55,13 @@ final class CreateGreenRoomViewController: BaseViewController {
     }
     
     override func setupAttributes() {
+        self.hideKeyboardWhenTapped()
         self.doneButton.isUserInteractionEnabled = false
         self.doneButton.alpha = 0.5
         configureCollectionView()
     }
     
     override func setupBinding() {
-        
         
         collectionView.rx.itemSelected
             .bind(onNext: { [weak self] indexPath in
@@ -88,10 +88,11 @@ final class CreateGreenRoomViewController: BaseViewController {
         viewModel.categories.bind(to: self.collectionView.rx.items(dataSource: self.dataSource())).disposed(by: disposeBag)
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            
             let header = self.collectionView.supplementaryView(forElementKind: UICollectionView.elementKindSectionHeader, at: IndexPath(row: 0, section: 0)) as! CreateGRHeaderView
             
-            
             let input = CreateGRViewModel.Input(question: header.questionTextView.rx.text.orEmpty.asObservable(),
+                                                returnTrigger: header.questionTextView.rx.didEndEditing.asObservable(),
                                                 category: self.collectionView.rx.itemSelected.map { $0.row + 1}.asObservable(),
                                                 submit: self.doneButton.rx.tap.asObservable())
             header.dateContainer.rx
@@ -154,7 +155,7 @@ extension CreateGreenRoomViewController {
         let cellWidth = (screenWidth - CGFloat(42 * 2) - (20 * 3)) / 4
         layout.itemSize = CGSize(width: cellWidth, height: 90)
         
-        layout.sectionInset = UIEdgeInsets(top: 0, left: 42, bottom: 42, right: 42)
+        layout.sectionInset = UIEdgeInsets(top: 0, left: 42, bottom: 80, right: 42)
         layout.headerReferenceSize = CGSize(width: view.bounds.width, height: view.bounds.height * 0.59)
         
         self.collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
@@ -183,14 +184,4 @@ extension CreateGreenRoomViewController {
     }
 }
 
-//MARK: - Alert
-extension CreateGreenRoomViewController {
-    
-    func comfirmAlert(title: String, subtitle: String,completion:@escaping(UIAlertAction) -> Void) -> UIAlertController{
-        let alert = UIAlertController(title: title, message: subtitle, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "확인", style: .default, handler: completion))
-        
-        return alert
-    }
-}
 

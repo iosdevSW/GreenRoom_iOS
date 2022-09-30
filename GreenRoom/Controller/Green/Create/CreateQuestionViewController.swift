@@ -123,6 +123,7 @@ final class CreateQuestionViewController: BaseViewController {
     
     
     override func setupAttributes() {
+        self.hideKeyboardWhenTapped()
         let layout = UICollectionViewFlowLayout()
         
         layout.minimumLineSpacing = 20
@@ -143,6 +144,7 @@ final class CreateQuestionViewController: BaseViewController {
         
         let input = CreateViewModel.Input(question: questionTextView.rx.text.orEmpty.asObservable(),
                                           category: collectionView.rx.itemSelected.map { $0.row + 1}.asObservable(),
+                                          returnTrigger: questionTextView.rx.didEndEditing.asObservable(),
                                           submit: doneButton.rx.tap.asObservable())
         
         questionTextView.rx.didBeginEditing
@@ -193,12 +195,13 @@ final class CreateQuestionViewController: BaseViewController {
         
         let output = viewModel.transform(input: input)
   
+        
         output.isValid
             .bind(to: self.doneButton.rx.isEnabled)
             .disposed(by: disposeBag)
         
         output.isValid
-            .map { $0 ? 1.0 : 0.3}
+            .map { $0 ? 1.0 : 0.5}
             .bind(to: doneButton.rx.alpha)
             .disposed(by: disposeBag)
         
@@ -225,14 +228,3 @@ final class CreateQuestionViewController: BaseViewController {
         self.dismiss(animated: false)
     }
 }
-
-extension CreateQuestionViewController {
-    
-    func comfirmAlert(title: String, subtitle: String,completion:@escaping(UIAlertAction) -> Void) -> UIAlertController{
-        let alert = UIAlertController(title: title, message: subtitle, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "확인", style: .default, handler: completion))
-        
-        return alert
-    }
-}
-

@@ -10,42 +10,58 @@ import SwiftKeychainWrapper
 
 class AuthManager: RequestInterceptor {
     
+    private var retryLimit = 3
+    
     func adapt(_ urlRequest: URLRequest, for session: Session, completion: @escaping (Result<URLRequest, Error>) -> Void) {
         
-        guard urlRequest.url?.absoluteString.hasPrefix(Storage.baseURL) == true,
+        guard urlRequest.url?.absoluteString.hasPrefix(Constants.baseURL) == true,
               let accessToken = KeychainWrapper.standard.string(forKey: "accessToken") else { return }
         
         var urlRequest = urlRequest
         urlRequest.headers.add(.authorization(bearerToken: accessToken))
-        
+
         completion(.success(urlRequest))
     }
     
     func retry(_ request: Request, for session: Session, dueTo error: Error, completion: @escaping (RetryResult) -> Void) {
-        guard let response = request.task?.response as? HTTPURLResponse, response.statusCode == 401 else {
+        
+        
+        guard let response = request.task?.response as? HTTPURLResponse, response.statusCode == 401 || response.statusCode == 403 else {
             completion(.doNotRetryWithError(error))
             return
         }
         
-        guard let url = URL(string: "\(Storage.baseURL)/api/auth/reissue") else { return }
+        guard let url = URL(string: "\(Constants.baseURL)/api/auth/reissue") else { return }
         
-        guard let accessToken = KeychainWrapper.standard.string(forKey: "accessToten"), let refreshToken = KeychainWrapper.standard.string(forKey: "refreshToken") else { return }
+        guard let accessToken = KeychainWrapper.standard.string(forKey: "accessToken"),
+                let refreshToken = KeychainWrapper.standard.string(forKey: "refreshToken") else { return }
         
-        let headers: HTTPHeaders = [
+        var headers = HTTPHeaders()
+        headers.add(.authorization(bearerToken: accessToken))
+        
+        print(headers)
+        
+        let parameters: Parameters = [
             "accessToken": accessToken,
             "refreshToken": refreshToken
-        ]
+        ] 
         
-        AF.request(url,method: .post, encoding: JSONEncoding.default, headers: headers).responseDecodable(of: LoginModel.self) {
-            response in
-            
+        print(parameters)
+        AF.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
+            .validate(statusCode: 200..<300)
+            .responseDecodable(of: Auth.self) { response in
+
             switch response.result {
             case .success(let token):
-                print("token 재발급 완료")
-                KeychainWrapper.standard.removeAllKeys()
-                KeychainWrapper.standard.set(token.refreshToken, forKey: "RefreshToken")
-                KeychainWrapper.standard.set(token.accessToken, forKey: "AccessToken")
+                print(token)
+//                print(token.refreshToken, token.accessToken)
+//
+//                KeychainWrapper.standard.set(token.refreshToken, forKey: "RefreshToken")
+//                KeychainWrapper.standard.set(token.accessToken, forKey: "AccessToken")
+
+                request.retryCount < self.retryLimit ? completion(.retry) : completion(.doNotRetry)
             case .failure(let error):
+                print(error)
                 completion(.doNotRetryWithError(error))
             }
         }

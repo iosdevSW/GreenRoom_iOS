@@ -41,14 +41,14 @@ final class CustomPopUpDatePickerController: BaseViewController {
         let minutes = String(format: "%02d", 0)
         
         let attribute: [NSAttributedString.Key: Any] = [
-            .font: UIFont.sfPro(size: 40, family: .Bold)!,
+            .font: UIFont.sfPro(size: 40, family: .Bold),
             .foregroundColor: UIColor.init(red: 87/255.0, green: 193/255.0, blue: 183/255.0, alpha: 1)
         ]
         
         let mutableAttributeString = NSMutableAttributedString(string: "\(hour)시간 \(minutes)분", attributes: attribute)
         
         let plainAttribute: [NSAttributedString.Key: Any] = [
-            .font: UIFont.sfPro(size: 30, family: .Regular)!,
+            .font: UIFont.sfPro(size: 30, family: .Regular),
             .foregroundColor: UIColor.black
         ]
         
@@ -165,7 +165,8 @@ final class CustomPopUpDatePickerController: BaseViewController {
     }
     
     @objc func didClickApplyButton(_ sender: UIButton) {
-        self.viewModel.comfirmDate.accept(self.viewModel.date.value)
+        
+        self.viewModel.comfirmDate.accept(viewModel.date.value)
         self.dismiss(animated: false)
     }
     
@@ -174,14 +175,14 @@ final class CustomPopUpDatePickerController: BaseViewController {
         let minutes = String(format: "%02d", minutes%60)
         
         let attribute: [NSAttributedString.Key: Any] = [
-            .font: UIFont.sfPro(size: 40, family: .Bold)!,
+            .font: UIFont.sfPro(size: 40, family: .Bold),
             .foregroundColor: UIColor.init(red: 87/255.0, green: 193/255.0, blue: 183/255.0, alpha: 1)
         ]
         
         let mutableAttributeString = NSMutableAttributedString(string: "\(hour)시간 \(minutes)분", attributes: attribute)
         
         let plainAttribute: [NSAttributedString.Key: Any] = [
-            .font: UIFont.sfPro(size: 30, family: .Regular)!,
+            .font: UIFont.sfPro(size: 30, family: .Regular),
             .foregroundColor: UIColor.black
         ]
         

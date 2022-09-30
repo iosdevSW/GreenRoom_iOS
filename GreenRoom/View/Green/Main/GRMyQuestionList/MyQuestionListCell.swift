@@ -6,24 +6,36 @@
 //
 
 import UIKit
+import RxSwift
 
 class MyQuestionListCell: UICollectionViewCell {
     
+    var disposeBag = DisposeBag()
+    
     static let reuseIedentifier = "MyQuestionListCell"
     
-    var question: Question! {
-        didSet {
-            configureUI()
-        }
+    var viewModel: GreenRoomViewModel!
+    
+    var question: PrivateQuestion! {
+        didSet { configure() }
     }
     
-    private lazy var scrapButton = UIButton(frame: CGRect(x: 0, y: 0, width: 12, height: 12)).then {
+    private lazy var scrapButton = UIButton(frame: CGRect(x: 0, y: 0, width: 15, height: 15)).then {
         $0.setImage(UIImage(named: "scrap"), for: .normal)
         $0.tintColor = .customGray
         $0.imageView?.tintColor = .customGray
         $0.contentMode = .scaleAspectFill
         $0.backgroundColor = .clear
     }
+    
+    private var groupCategoryNameLabel = UILabel().then {
+        $0.backgroundColor = .mainColor
+        $0.textColor = .white
+        $0.font = .sfPro(size: 12, family: .Semibold)
+        $0.text = "-"
+    }
+    
+    private let groupNameLabel = Utilities.shared.generateLabel(text: "-", color: .black, font: .sfPro(size: 12, family: .Semibold))
     
     private lazy var containerView = UIView().then {
         $0.backgroundColor = .white
@@ -32,8 +44,8 @@ class MyQuestionListCell: UICollectionViewCell {
         $0.layer.borderWidth = 2
         $0.layer.borderColor = UIColor.mainColor.cgColor
         $0.backgroundColor = .white
-        
     }
+    
     private lazy var profileImageView = UIImageView(frame: .zero).then {
         $0.contentMode = .scaleAspectFill
         $0.layer.cornerRadius = 35 / 2
@@ -50,19 +62,8 @@ class MyQuestionListCell: UICollectionViewCell {
         $0.translatesAutoresizingMaskIntoConstraints = true
         $0.sizeToFit()
         $0.isScrollEnabled = false
+        $0.isEditable = false
         $0.textContainerInset = UIEdgeInsets(top: 6, left: -4, bottom: 13, right:13)
-        
-        let style = NSMutableParagraphStyle()
-        style.lineSpacing = 6
-        $0.attributedText = NSAttributedString(
-            string: "대부분의 프로젝트는 프로세스는 어떠하며 어떤 롤이 었나요?",
-            attributes: [
-                NSAttributedString.Key.paragraphStyle : style,
-                NSAttributedString.Key.font: UIFont.sfPro(size: 16, family: .Regular) ?? .systemFont(ofSize: 16),
-                NSAttributedString.Key.foregroundColor: UIColor.black
-            ])
-        
-        $0.isUserInteractionEnabled = false
     }
     
     //MARK: - LifeCycle
@@ -74,14 +75,11 @@ class MyQuestionListCell: UICollectionViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    override func layoutSubviews() {
-        super.layoutSubviews()
-    }
     
     //MARK: - Configure
     private func configureUI(){
         
-        self.backgroundColor = .white
+        self.backgroundColor = .blue
         
         self.containerView.addSubview(profileImageView)
         self.containerView.addSubview(categoryLabel)
@@ -89,7 +87,6 @@ class MyQuestionListCell: UICollectionViewCell {
         self.contentView.addSubview(containerView)
         
         containerView.snp.makeConstraints { make in
-            
             make.top.equalToSuperview().offset(bounds.size.height*0.18)
             make.leading.equalToSuperview().offset(bounds.size.width * 0.06)
             make.trailing.equalToSuperview().offset(-bounds.size.width * 0.06)
@@ -123,16 +120,30 @@ class MyQuestionListCell: UICollectionViewCell {
             make.top.equalToSuperview().offset(6)
             make.width.height.equalTo(15)
         }
+        
+        self.contentView.addSubview(groupCategoryNameLabel)
+        groupCategoryNameLabel.snp.makeConstraints { make in
+            make.centerY.equalTo(scrapButton.snp.centerY)
+            make.leading.equalTo(scrapButton.snp.trailing).offset(5)
+        }
+        groupCategoryNameLabel.backgroundColor = .blue
+        groupNameLabel.backgroundColor = .red
+        print(groupNameLabel)
+        self.contentView.addSubview(groupNameLabel)
+        groupNameLabel.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+        }
     }
     
     private func configure(){
-        guard let category = CategoryID(rawValue: question.category) else { return }
-        let style = NSMutableParagraphStyle()
-        style.lineSpacing = 6
+        self.questionTextView.initDefaultText(with: self.question.question,
+                                              foregroundColor: .black)
         
-        self.questionTextView.attributedText = NSAttributedString(string: question.question, attributes: [NSAttributedString.Key.paragraphStyle : style])
-        self.categoryLabel.text = category.title
-        self.profileImageView.image = UIImage(named: question.image)
+        self.categoryLabel.text = question.categoryName
+        self.groupNameLabel.text = question.groupName
+        self.groupCategoryNameLabel.text = question.groupCategoryName
+        self.profileImageView.image = UIImage(named: "GreenRoomIcon")
         
     }
+    
 }

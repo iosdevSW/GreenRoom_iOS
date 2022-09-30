@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Storage {
+struct Constants {
     
     static let kakaoAppKey = "a45de08bf74de9630747bd72021eb355"
     

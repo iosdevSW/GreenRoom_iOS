@@ -12,7 +12,9 @@ import Alamofire
 
 class KeywordPracticeService {
     func fetchReferenceQuestions(categoryId: String?, title: String?)-> Observable<[QuestionModel]>{
+    
         let urlString = Storage.baseURL + "/api/interview-questions"
+
         let url = URL(string: urlString)!
         
         var param: Parameters?

@@ -11,10 +11,8 @@ final class PopularQuestionCell: UICollectionViewCell {
     
     static let reuseIdentifer = "PopularQuestionCell"
     //MARK: - Properties
-    var question: Question! {
-        didSet {
-            configureUI()
-        }
+    var question: PopularPublicQuestion! {
+        didSet { configure() }
     }
 
     private lazy var profileImageView = UIImageView(frame: .zero).then {
@@ -44,7 +42,7 @@ final class PopularQuestionCell: UICollectionViewCell {
             string: "대부분의 프로젝트는 프로세스는 어떠하며 어떤 롤이 었나요?",
             attributes: [
                 NSAttributedString.Key.paragraphStyle : style,
-                NSAttributedString.Key.font: UIFont.sfPro(size: 16, family: .Regular) ?? .systemFont(ofSize: 16),
+                NSAttributedString.Key.font: UIFont.sfPro(size: 16, family: .Regular),
                 NSAttributedString.Key.foregroundColor: UIColor.black
             ])
         
@@ -107,12 +105,14 @@ final class PopularQuestionCell: UICollectionViewCell {
     }
     
     private func configure(){
-        guard let category = CategoryID(rawValue: question.category) else { return }
+        
         self.nameLabel.text = question.name
         self.questionTextView.text = question.question
-        self.categoryLabel.text = category.title
+        self.categoryLabel.text = question.categoryName
         self.participantsLabel.text = "\(question.participants)명이 참여하고 있습니다."
-//        self.profileImageView.image = UIImage(systemName: "plus")
+        
+        guard let url = URL(string: question.profileImage) else { return }
+        self.profileImageView.kf.setImage(with: url)
         
     }
 }

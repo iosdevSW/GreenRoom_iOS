@@ -38,16 +38,12 @@ class GreenRoomViewController: BaseViewController {
     
     private let underline = UIView().then {
         $0.backgroundColor = .mainColor
-        $0.setGradient(
-            color1: UIColor(red: 110/255.0, green: 234/255.0, blue: 174/255.0, alpha: 1.0),
-            color2: UIColor(red: 87/255.0, green: 193/255.0, blue: 183/255.0, alpha: 1.0))
+        $0.setGradient()
     }
     
     //MARK: - LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        //        KeychainWrapper.standard.remove(forKey: "accessToken")
-        //        KeychainWrapper.standard.remove(forKey: "refreshToten")
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -87,15 +83,24 @@ class GreenRoomViewController: BaseViewController {
         
         output.greenroom.bind(to: collectionView.rx.items(dataSource: dataSource)).disposed(by: disposeBag)
         
-        Observable.zip(collectionView.rx.itemSelected, collectionView.rx.modelSelected(GreenRoomSectionModel.self)).subscribe(onNext: { [weak self] (indexPath, item) in
+        collectionView.rx.modelSelected(GreenRoomSectionModel.Item.self).subscribe(onNext: { [weak self] item in
             
             guard let self = self else { return }
+            
             switch item {
-            case .filtering(items: let items):
+            case .filtering(interest: _):
                 let vc = QuestionsByCategoryViewController(viewModel: self.viewModel)
+                self.present(vc, animated: true)
+            case .popular(question: let question):
+                let vc = MyQuestionAnswerViewController(viewModel: AnswerViewModel(id: question.id))
                 self.navigationController?.pushViewController(vc, animated: true)
-            default:
-                break
+            case .recent(question: let question):
+                print(question)
+            case .MyGreenRoom(question: let question):
+                print(question)
+            case .MyQuestionList(question: let question):
+                let vc = MyQuestionAnswerViewController(viewModel: AnswerViewModel(id: question.id))
+                self.navigationController?.pushViewController(vc, animated: true)
             }
         }).disposed(by: disposeBag)
         
@@ -226,24 +231,20 @@ extension GreenRoomViewController {
             case .popular(question: let question):
                 guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PopularQuestionCell.reuseIdentifer, for: indexPath) as? PopularQuestionCell else { return UICollectionViewCell() }
                 cell.question = question
-                print("popular")
-                
                 return cell
                 
             case .recent(question: let question):
                 guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RecentQuestionCell.reuseIdentifer, for: indexPath) as? RecentQuestionCell else { return UICollectionViewCell() }
                 cell.question = question
-                print("recent")
                 return cell
             case .MyGreenRoom(question: let question):
                 guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MyGreenRoomCell.reuseIdentifer, for: indexPath) as? MyGreenRoomCell else { return UICollectionViewCell() }
                 cell.question = question
-                print("MyGreenRoom")
                 return cell
             case .MyQuestionList(question: let question):
                 guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MyQuestionListCell.reuseIedentifier, for: indexPath) as? MyQuestionListCell else { return UICollectionViewCell() }
                 cell.question = question
-                print("MyQuestionListCell")
+                cell.viewModel = self.viewModel
                 return cell
             }
         } configureSupplementaryView: { [weak self] dataSource, collectionView, kind,
@@ -415,7 +416,7 @@ extension GreenRoomViewController {
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         
         let groupSize = NSCollectionLayoutSize(
-            widthDimension: .fractionalWidth(0.36),
+            widthDimension: .fractionalWidth(0.4),
             heightDimension: .fractionalHeight(0.24))
         
         let group = NSCollectionLayoutGroup.vertical(
@@ -484,4 +485,3 @@ extension GreenRoomViewController: RecentHeaderDelegate {
         self.navigationController?.pushViewController(vc, animated: true)
     }
 }
-
