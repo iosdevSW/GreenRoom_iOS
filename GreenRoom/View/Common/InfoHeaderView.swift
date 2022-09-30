@@ -13,55 +13,37 @@ final class InfoHeaderView: UICollectionReusableView {
     
     //MARK: - Properties
     var info: Info! {
-        didSet {
-            self.titleLabel.text = info.title
-            self.subTitleLabel.text = info.subTitle
-        }
+        didSet { configure() }
     }
     
-    var filterHidden: Bool = false {
+    var filterShowing: Bool = false {
         didSet {
-            if isUseKP {
-                self.filter.filterButton.isHidden = filterHidden
-                self.filter.selectedCategoriesCollectionView.isHidden = filterHidden
-            } else {
-                filter.removeFromSuperview()
-            }
+            if filterShowing { configureFilterLayout() }
+//            if isUseKP {
+//                self.filterView.filterButton.isHidden = filterHidden
+//                self.filterView.selectedCategoriesCollectionView.isHidden = filterHidden
+//            } else {
+//                filterView.remove FromSuperview()
+//            }
         }
     }
     
     /** 키워드 연습에서 쓰일 경우에 레이아웃 재정의 해주기 위한 프로퍼티 */
     var isUseKP: Bool = false {
-        didSet {
-            titleLabel.snp.remakeConstraints{ make in
-                make.top.equalToSuperview().offset(30)
-                make.leading.equalToSuperview().offset(42)
-            }
-            
-            subTitleLabel.snp.remakeConstraints {
-                $0.leading.equalTo(titleLabel.snp.leading)
-                $0.top.equalTo(titleLabel.snp.bottom).offset(20)
-            }
-            
-            filter.snp.remakeConstraints { make in
-                make.leading.trailing.equalToSuperview()
-                make.bottom.equalToSuperview()
-                make.height.equalTo(80)
-            }
-        }
+        didSet { configureUseKP() }
     }
     
-    var titleLabel = Utilities.shared.generateLabel(text: "Title", color: .black, font: .sfPro(size: 16, family: .Semibold))
-    
+    private var filterView = FilterView()
+    private var titleLabel = Utilities.shared.generateLabel(text: "Title", color: .black, font: .sfPro(size: 16, family: .Semibold))
     private var subTitleLabel = Utilities.shared.generateLabel(text: "SubTitleLabel", color: .customGray, font: .sfPro(size: 12, family: .Regular))
    
-    private var filter = FilterView()
+    
 
     //MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
-        configureUI()
         
+        configureUI()
     }
     
     required init?(coder: NSCoder) {
@@ -73,8 +55,7 @@ final class InfoHeaderView: UICollectionReusableView {
         
         addSubview(titleLabel)
         addSubview(subTitleLabel)
-        addSubview(filter)
-        
+ 
         addLineSpacing(8)
         
         titleLabel.snp.makeConstraints {
@@ -86,14 +67,12 @@ final class InfoHeaderView: UICollectionReusableView {
             $0.leading.equalTo(titleLabel.snp.leading)
             $0.top.equalTo(titleLabel.snp.bottom).offset(20)
         }
-        
-        filter.backgroundColor = .backgroundGray
-        filter.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
-            make.bottom.equalToSuperview().offset(-1)
-            make.height.equalTo(bounds.height * 0.33)
-        }
-        
+
+    }
+    
+    private func configure() {
+        self.titleLabel.text = info.title
+        self.subTitleLabel.text = info.subTitle
     }
     
     private func addLineSpacing(_ spacing: CGFloat) {
@@ -107,5 +86,34 @@ final class InfoHeaderView: UICollectionReusableView {
                                       value: style,
                                       range: NSRange(location: 0, length: attributeString.length))
         subTitleLabel.attributedText = attributeString
+    }
+    
+    private func configureFilterLayout() {
+        addSubview(filterView)
+        
+        filterView.backgroundColor = .backgroundGray
+        filterView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.bottom.equalToSuperview().offset(-1)
+            make.height.equalTo(bounds.height * 0.33)
+        }
+    }
+    
+    private func configureUseKP() {
+        titleLabel.snp.remakeConstraints{ make in
+            make.top.equalToSuperview().offset(30)
+            make.leading.equalToSuperview().offset(42)
+        }
+        
+        subTitleLabel.snp.remakeConstraints {
+            $0.leading.equalTo(titleLabel.snp.leading)
+            $0.top.equalTo(titleLabel.snp.bottom).offset(20)
+        }
+        
+        filterView.snp.remakeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.bottom.equalToSuperview()
+            make.height.equalTo(80)
+        }
     }
 }

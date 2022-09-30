@@ -91,7 +91,7 @@ extension QuestionsByCategoryViewController {
                 
             }
         
-            header.filterHidden = true
+            header.filterShowing = true
             header.info = Info(title: "디자인", subTitle: "관련된 질문리스트를 보여드려요!\n\n질문에 참여 시 동료들의 모든 답변을 확인할 수 있어요 :)")
             return header
         }

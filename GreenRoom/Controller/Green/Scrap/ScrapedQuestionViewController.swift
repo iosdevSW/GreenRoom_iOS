@@ -169,7 +169,7 @@ extension ScrapedQuestionViewController {
                     return UICollectionReusableView()
             }
             
-            header.filterHidden = true
+            header.filterShowing = false
             header.info = Info(title: "관심 질문", subTitle: "관심을 표시한 모든 질문을 보여드려요!\n질문에 참여 시 동료들의 모든 답변을 확인할 수 있어요 :)")
             
             return header
