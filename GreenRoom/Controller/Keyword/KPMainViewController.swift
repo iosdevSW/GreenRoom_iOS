@@ -61,11 +61,11 @@ class KPMainViewController: BaseViewController {
     //MARK: - Bind
     override func setupBinding() {
         //그룹뷰 테이블 뷰 바인딩
-        Observable.of(["그룹이름1","그룹이름2","그룹이름3","그룹이름4","그룹이름5"])
-            .bind(to: groupView.groupTableView.rx.items(cellIdentifier: "GroupCell", cellType: GroupCell.self)) { index, title, cell in
-                cell.groupNameLabel.text = title
-                cell.categoryLabel.text = "공통"
-                cell.questionCountingLabel.text = "질문 0개"
+        viewModel.groupsObservable
+            .bind(to: groupView.groupTableView.rx.items(cellIdentifier: "GroupCell", cellType: GroupCell.self)) { index, item, cell in
+                cell.groupNameLabel.text = item.name
+                cell.categoryLabel.text = item.categoryName
+                cell.questionCountingLabel.text = "질문 \(item.questionCnt)개"
                 cell.selectionStyle = .none
                 cell.editButton.addTarget(self, action: #selector(self.didClickEditButton(_:)), for: .touchUpInside)
             }.disposed(by: disposeBag)

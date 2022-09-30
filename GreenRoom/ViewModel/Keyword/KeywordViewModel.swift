@@ -13,6 +13,7 @@ class KeywordViewModel {
     let disposeBag = DisposeBag()
     let filteringObservable = PublishSubject<[Int]>() //필터링된 카테고리 observable
     let selectedQuestionObservable = BehaviorSubject<[String]>.init(value: [])
+    let groupsObservable = BehaviorRelay<[groupModel]>(value: [])
     var videoURLs: [URL]?
     var selectedQ = BehaviorSubject<[KPDetailModel]>.init(value:[
         KPDetailModel.init(items: [])
@@ -34,6 +35,10 @@ class KeywordViewModel {
         selectedQuestionObservable.subscribe(onNext: { str in
             self.selectedQ.onNext([KPDetailModel(items: str)])
         }).disposed(by: disposeBag)
+        
+        KeywordPracticeService().fetchGroupList()
+            .bind(to: groupsObservable)
+            .disposed(by: disposeBag)
     }
     
     

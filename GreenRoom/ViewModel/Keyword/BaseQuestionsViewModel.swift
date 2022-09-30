@@ -23,7 +23,6 @@ class BaseQuestionsViewModel {
         
         filteringObservable
             .subscribe(onNext: { ids in
-                print(ids)
                 KeywordPracticeService().fetchReferenceQuestions(categoryId: ids, title: nil)
                     .bind(to: self.baseQuestionsObservable)
                     .disposed(by: self.disposeBag)
