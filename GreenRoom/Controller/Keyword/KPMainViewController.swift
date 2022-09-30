@@ -75,7 +75,7 @@ class KPMainViewController: BaseViewController {
     //MARK: - ConfigureUI
     override func configureUI() {
         let keywordLabel = UILabel().then {
-            $0.text = "키워드연습"
+            $0.text = "키워드연습."
             $0.textColor = .mainColor
             $0.font = .sfPro(size: 20, family: .Bold)
             
