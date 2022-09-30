@@ -12,7 +12,7 @@ import RxCocoa
 
 final class CreateGRViewModel: ViewModelType {
     
-    let questionService = GreenRoomQuestionService()
+    private let publicQuestionService = PublicQuestionService()
     
     var disposeBag = DisposeBag()
     

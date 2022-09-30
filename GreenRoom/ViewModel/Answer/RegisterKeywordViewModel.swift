@@ -11,7 +11,7 @@ import RxCocoa
 
 final class RegisterKeywordViewModel: ViewModelType {
     
-    private let myListService: MyListService
+    private let myListService: PrivateQuestionService
     var disposeBag = DisposeBag()
       
     struct Input {
@@ -29,7 +29,7 @@ final class RegisterKeywordViewModel: ViewModelType {
     
     private let id: Int
     
-    init(id: Int, keywords: Observable<[String]>, service: MyListService){
+    init(id: Int, keywords: Observable<[String]>, service: PrivateQuestionService){
         self.id = id
         
         keywords.bind(to: regiteredKeywordObservable).disposed(by: disposeBag)

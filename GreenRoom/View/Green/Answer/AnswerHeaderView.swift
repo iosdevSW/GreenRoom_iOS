@@ -12,7 +12,7 @@ final class AnswerHeaderView: UIView {
     static let reuseIdentifier = "AnswerHeaderView"
     
     //MARK: - Properties
-    var question: QuestionWithAnswer! {
+    var question: PrivateAnswer! {
         didSet { configure() }
     }
     
