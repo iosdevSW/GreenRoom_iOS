@@ -12,6 +12,7 @@ import RxCocoa
 final class KPGroupEditViewController: BaseViewController {
     //MARK: - Properties
     private let viewModel = CategoryViewModel()
+    private let placeHolder = "그룹 이름을 입력해주세요:)"
     
     private var categoryCollectionView: UICollectionView!
     
@@ -87,6 +88,20 @@ final class KPGroupEditViewController: BaseViewController {
                 
             }).disposed(by: disposeBag)
         
+        questionTextView.rx.didBeginEditing
+            .bind(onNext: { [weak self] in
+                if self?.questionTextView.text == self?.placeHolder {
+                    self?.questionTextView.text = ""
+                }
+            }).disposed(by: disposeBag)
+        
+        questionTextView.rx.didEndEditing
+            .bind(onNext: { [weak self] in
+                if self?.questionTextView.text == "" {
+                    self?.questionTextView.text = self?.placeHolder
+                }
+            }).disposed(by: disposeBag)
+        
      
         PublishSubject<[String:String]>
             .combineLatest(self.viewModel.selectedCategoryObservable, questionTextView.rx.text,
@@ -96,7 +111,7 @@ final class KPGroupEditViewController: BaseViewController {
                            ]
             })
             .bind(onNext: { [weak self]dic in
-                if dic["text"] == "" || dic["text"] == "그룹 이름을 입력해주세요:)" || dic["id"] == "-1" {
+                if dic["text"] == "" || dic["text"] == self?.placeHolder || dic["id"] == "-1" {
                     self?.completeButton.isHidden = true
                 }else {
                     self?.completeButton.isHidden = false
