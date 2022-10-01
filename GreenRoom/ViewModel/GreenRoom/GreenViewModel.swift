@@ -96,8 +96,11 @@ extension GreenRoomViewModel {
         
     }
     private func fetchFiltering() -> Observable<[GreenRoomSectionModel]>{
+        
+        let categoryId = CategoryID(rawValue: UserDefaults.standard.integer(forKey: "category")) ?? .common
+        
         return Observable.create { emitter in
-            emitter.onNext([GreenRoomSectionModel.filtering(items:[ GreenRoomSectionModel.Item.filtering(interest: "디자인")])])
+            emitter.onNext([GreenRoomSectionModel.filtering(items:[ GreenRoomSectionModel.Item.filtering(interest: categoryId)])])
             return Disposables.create()
         }
     }
