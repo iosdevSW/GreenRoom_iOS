@@ -6,13 +6,12 @@
 //
 
 import UIKit
-
+import RxSwift
+ 
 final class CustomPopUpDatePickerController: BaseViewController {
     
     //MARK: - Properties
-    var viewModel: CreateGRViewModel!
-    
-    private var datePicker = UIDatePicker()
+    var datePicker = UIDatePicker()
     
     private var blurView = UIVisualEffectView().then {
         $0.effect = UIBlurEffect(style: .dark)
@@ -57,13 +56,12 @@ final class CustomPopUpDatePickerController: BaseViewController {
         $0.attributedText = mutableAttributeString
     }
     
-    private lazy var applyButton = UIButton(type: .system).then{
+    lazy var applyButton = UIButton(type: .system).then{
         $0.setTitle("적용하기", for: .normal)
         $0.setTitleColor(.white, for: .normal)
         $0.titleLabel?.font = .sfPro(size: 20, family: .Semibold)
         $0.layer.cornerRadius = 30
         $0.backgroundColor = .mainColor
-        $0.addTarget(self, action: #selector(didClickApplyButton(_:)), for: .touchUpInside)
     }
     
     private lazy var cancelButton = UIButton(type: .system).then{
@@ -72,11 +70,9 @@ final class CustomPopUpDatePickerController: BaseViewController {
         $0.titleLabel?.font = .sfPro(size: 20, family: .Semibold)
         $0.layer.cornerRadius = 30
         $0.backgroundColor = .customGray
-        $0.addTarget(self, action: #selector(didClickCancelButton(_:)), for: .touchUpInside)
     }
     
-    init(viewModel: CreateGRViewModel){
-        self.viewModel = viewModel
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -149,27 +145,25 @@ final class CustomPopUpDatePickerController: BaseViewController {
     
     override func setupAttributes() {
         configureDatePicker()
-        
     }
     
     override func setupBinding() {
-        viewModel.date.subscribe(onNext: { [weak self] date in
-            guard let self = self else { return }
-            self.setTimeLabel.attributedText = self.getDateAttributeText(minutes: date)
+        datePicker.rx.controlEvent(.valueChanged)
+            .map { self.datePicker.date.getMinutes() }
+            .subscribe(onNext: { [weak self] date in
+                self?.setTimeLabel.attributedText = self?.getDateAttributeText(minutes: date)
+            }).disposed(by: disposeBag)
+        
+        cancelButton.rx.tap.subscribe(onNext: { [weak self] _ in
+            self?.dismiss(animated: true)
+        }).disposed(by: disposeBag)
+        
+        applyButton.rx.tap.subscribe(onNext: { [weak self] _ in
+            self?.dismiss(animated: true)
         }).disposed(by: disposeBag)
     }
+
     //MARK: - Selector
-    @objc func didClickCancelButton(_ sender: UIButton) {
-        self.viewModel.date.accept(60 * 24)
-        self.dismiss(animated: false)
-    }
-    
-    @objc func didClickApplyButton(_ sender: UIButton) {
-        
-        self.viewModel.comfirmDate.accept(viewModel.date.value)
-        self.dismiss(animated: false)
-    }
-    
     private func getDateAttributeText(minutes: Int) -> NSMutableAttributedString {
         let hour = String(format: "%02d", minutes/60)
         let minutes = String(format: "%02d", minutes%60)
@@ -200,17 +194,5 @@ extension CustomPopUpDatePickerController {
         self.datePicker.datePickerMode = .countDownTimer
         datePicker.locale = Locale(identifier: "ko-KR")
         datePicker.timeZone = .autoupdatingCurrent
-        datePicker.addTarget(self, action: #selector(handleDatePicker(_:)), for: .valueChanged)
-    }
-    
-    @objc func handleDatePicker(_ sender: UIDatePicker) {
-        let df = DateFormatter()
-        df.locale = Locale(identifier: "ko_KR")
-        df.dateFormat = "HH:mm"
-        
-        let minutes = df.string(from: sender.date).components(separatedBy: ":")
-            .compactMap { Int($0) }
-        
-        viewModel.date.accept(minutes[0] * 60 + minutes[1])
     }
 }

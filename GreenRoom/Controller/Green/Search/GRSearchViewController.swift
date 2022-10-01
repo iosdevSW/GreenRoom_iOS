@@ -123,8 +123,8 @@ extension GRSearchViewController: UITextFieldDelegate {
 
 //MARK: - CollectionViewDataSource
 extension GRSearchViewController {
-    private func dataSource() -> RxCollectionViewSectionedReloadDataSource<GRSearchModel> {
-        return RxCollectionViewSectionedReloadDataSource<GRSearchModel> {
+    private func dataSource() -> RxCollectionViewSectionedReloadDataSource<SearchSectionModel> {
+        return RxCollectionViewSectionedReloadDataSource<SearchSectionModel> {
             dataSource, collectionView, indexPath, item in
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SearchWordCell.reuseIdentifier, for: indexPath) as? SearchWordCell else { return UICollectionViewCell() }
             cell.tagType = item

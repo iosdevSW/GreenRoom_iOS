@@ -9,7 +9,9 @@ import Foundation
 import RxSwift
 import Alamofire
 
-final class GreenRoomQuestionService {
+final class PublicQuestionService {
+    
+    private let baseURL = Constants.baseURL + "/api/green-questions"
     
 //    func fetchFilteredQuestion(categoryId: Int, completion:@escaping ((Result<[DetailQuestion],Error>) -> Void)) {
 //
@@ -29,15 +31,16 @@ final class GreenRoomQuestionService {
 //    }
     
     func fetchRecentPublicQuestions() -> Observable<[PublicQuestion]>{
-        let url = URL(string: "\(Constants.baseURL)/api/green-questions/recent-questions")!
+        let requestURL = baseURL + "/recent-questions"
         
         return Observable.create { emmiter in
-            AF.request(url, method: .get, encoding: URLEncoding.default, interceptor: AuthManager())
+            AF.request(requestURL, method: .get, encoding: URLEncoding.default, interceptor: AuthManager())
                 .validate(statusCode: 200..<300)
                 .responseDecodable(of: [PublicQuestion].self) { response in
                     
                 switch response.result {
                 case .success(let questions):
+                    print(questions)
                     emmiter.onNext(questions)
                 case .failure(let error):
                     emmiter.onError(error)
@@ -49,10 +52,11 @@ final class GreenRoomQuestionService {
     }
     
     func fetchPopularPublicQuestions() -> Observable<[PopularPublicQuestion]>{
-        let url = URL(string: "\(Constants.baseURL)/api/green-questions/popular-questions")!
+        
+        let requestURL = baseURL + "/popular-questions"
         
         return Observable.create { emmiter in
-            AF.request(url, method: .get, encoding: URLEncoding.default, interceptor: AuthManager())
+            AF.request(requestURL, method: .get, encoding: URLEncoding.default, interceptor: AuthManager())
                 .validate(statusCode: 200..<300)
                 .responseDecodable(of: [PopularPublicQuestion].self) { response in
                     
@@ -68,14 +72,15 @@ final class GreenRoomQuestionService {
         
     }
     
-    func uploadQuestionList(categoryId: Int, question: String, date: Date) -> Observable<Bool> {
+    func uploadQuestionList(categoryId: Int, question: String, expiredAt: String) -> Observable<Bool> {
         
-        let url = URL(string: "\(Constants.baseURL)/api/my-questions")!
-        
-        let parameters = UploadQuestionModel(categoryId: categoryId, question: question)
+        let parameters = UploadPublicQuestionModel(categoryId: categoryId,
+                                                   question: question,
+                                                   expiredAt: expiredAt)
         
         return Observable.create { emitter in
-            AF.request(url, method: .post, parameters: parameters, encoder: .json, interceptor: AuthManager()).responseData { response in
+            AF.request(self.baseURL, method: .post, parameters: parameters, encoder: .json, interceptor: AuthManager()).responseString { response in
+                
                 switch response.result {
                 case .success(_):
                     if response.response?.statusCode == 400 {

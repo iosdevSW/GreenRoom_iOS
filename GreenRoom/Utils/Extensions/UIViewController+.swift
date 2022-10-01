@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import RxSwift
 
 extension UIViewController {
     // 회원가입 네비게이션바 아이템 설정
@@ -29,5 +30,23 @@ extension UIViewController {
     
     @objc func dismissKeyboard(){
         self.view.endEditing(true)
+    }
+    
+    func showAlert(title : String, message: String? = nil) -> Observable<Bool> {
+        
+        return Observable.create { [weak self] observer in
+            let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+            
+            alertController.addAction(UIAlertAction(title: "확인", style: .default) { _ in
+                observer.onNext(true)
+            })
+            alertController.addAction(UIAlertAction(title: "취소", style: .cancel))
+            
+            self?.present(alertController, animated: true, completion: nil)
+            
+            return Disposables.create {
+                alertController.dismiss(animated: true, completion: nil)
+            }
+        }
     }
 }

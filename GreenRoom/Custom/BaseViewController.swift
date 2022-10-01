@@ -23,7 +23,7 @@ class BaseViewController: UIViewController {
     }
     
     func configureUI() {
-        // Override Layout
+        self.view.backgroundColor = .white
     }
     
     func setupAttributes() {

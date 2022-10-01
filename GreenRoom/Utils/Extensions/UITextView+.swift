@@ -9,7 +9,8 @@ import UIKit
 
 extension UITextView {
     
-    func initDefaultText(with text: String, foregroundColor color: UIColor) {
+    func initDefaultText(with text: String, foregroundColor color: UIColor,
+                         font: UIFont = .sfPro(size: 16, family: .Regular)) {
         
         let style = NSMutableParagraphStyle()
         style.lineSpacing = 10
@@ -17,7 +18,7 @@ extension UITextView {
         self.attributedText = NSAttributedString(string: text,
                                                attributes: [
                                                 NSAttributedString.Key.paragraphStyle : style,
-                                                NSAttributedString.Key.font: UIFont.sfPro(size: 16, family: .Regular),
+                                                NSAttributedString.Key.font: font,
                                                 NSAttributedString.Key.foregroundColor: color
                                                ])
     }

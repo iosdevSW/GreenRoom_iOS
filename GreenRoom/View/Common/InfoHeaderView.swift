@@ -13,55 +13,22 @@ final class InfoHeaderView: UICollectionReusableView {
     
     //MARK: - Properties
     var info: Info! {
-        didSet {
-            self.titleLabel.text = info.title
-            self.subTitleLabel.text = info.subTitle
-        }
+        didSet { configure() }
     }
     
-    var filterHidden: Bool = false {
-        didSet {
-            if isUseKP {
-                self.filter.filterButton.isHidden = filterHidden
-                self.filter.selectedCategoriesCollectionView.isHidden = filterHidden
-            } else {
-                filter.removeFromSuperview()
-            }
-        }
+    var filterShowing: Bool = false {
+        didSet { filterShowing ? configureFilterLayout() : filterView.removeFromSuperview() }
     }
     
-    /** 키워드 연습에서 쓰일 경우에 레이아웃 재정의 해주기 위한 프로퍼티 */
-    var isUseKP: Bool = false {
-        didSet {
-            titleLabel.snp.remakeConstraints{ make in
-                make.top.equalToSuperview().offset(30)
-                make.leading.equalToSuperview().offset(42)
-            }
-            
-            subTitleLabel.snp.remakeConstraints {
-                $0.leading.equalTo(titleLabel.snp.leading)
-                $0.top.equalTo(titleLabel.snp.bottom).offset(20)
-            }
-            
-            filter.snp.remakeConstraints { make in
-                make.leading.trailing.equalToSuperview()
-                make.bottom.equalToSuperview()
-                make.height.equalTo(80)
-            }
-        }
-    }
-    
-    var titleLabel = Utilities.shared.generateLabel(text: "Title", color: .black, font: .sfPro(size: 16, family: .Semibold))
-    
+    private var filterView = FilterView(viewModel: CategoryViewModel())
+    private var titleLabel = Utilities.shared.generateLabel(text: "Title", color: .black, font: .sfPro(size: 16, family: .Semibold))
     private var subTitleLabel = Utilities.shared.generateLabel(text: "SubTitleLabel", color: .customGray, font: .sfPro(size: 12, family: .Regular))
-   
-    private var filter = FilterView()
-
+    
     //MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
-        configureUI()
         
+        configureUI()
     }
     
     required init?(coder: NSCoder) {
@@ -70,13 +37,9 @@ final class InfoHeaderView: UICollectionReusableView {
     
     private func configureUI(){
         self.backgroundColor = .white
-        
         addSubview(titleLabel)
         addSubview(subTitleLabel)
-        addSubview(filter)
-        
-        addLineSpacing(8)
-        
+
         titleLabel.snp.makeConstraints {
             $0.top.equalToSuperview().offset(bounds.size.height * 0.1)
             $0.leading.equalToSuperview().offset(bounds.size.width * 0.08)
@@ -87,25 +50,31 @@ final class InfoHeaderView: UICollectionReusableView {
             $0.top.equalTo(titleLabel.snp.bottom).offset(20)
         }
         
-        filter.backgroundColor = .backgroundGray
-        filter.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
-            make.bottom.equalToSuperview().offset(-1)
-            make.height.equalTo(bounds.height * 0.33)
-        }
-        
     }
     
-    private func addLineSpacing(_ spacing: CGFloat) {
-        guard let text = subTitleLabel.text else { return }
-         let attributeString = NSMutableAttributedString(string: text)
-
-         let style = NSMutableParagraphStyle()
-
-         style.lineSpacing = spacing
-         attributeString.addAttribute(.paragraphStyle,
-                                      value: style,
-                                      range: NSRange(location: 0, length: attributeString.length))
+    private func configure() {
+        self.titleLabel.text = info.title
+        
+        let attributeString = NSMutableAttributedString(string: info.subTitle)
+        
+        let style = NSMutableParagraphStyle()
+        
+        style.lineSpacing = 10
+        attributeString.addAttribute(.paragraphStyle,
+                                     value: style,
+                                     range: NSRange(location: 0, length: attributeString.length))
         subTitleLabel.attributedText = attributeString
+    }
+
+    
+    private func configureFilterLayout() {
+        addSubview(filterView)
+        
+        filterView.backgroundColor = .backgroundGray
+        filterView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.height.equalTo(frame.size.height * 0.33)
+            make.top.equalTo(subTitleLabel.snp.bottom).offset(20)
+        }
     }
 }

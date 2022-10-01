@@ -8,7 +8,7 @@
 import UIKit
 import RxSwift
 
-final class MyQuestionAnswerViewController: BaseViewController {
+final class PrivateAnswerViewController: BaseViewController {
     
     //MARK: - Properties
     private var mode: Mode = .unWritten {
@@ -27,11 +27,12 @@ final class MyQuestionAnswerViewController: BaseViewController {
         }
     }
     
-    private var viewModel: AnswerViewModel!
+    private var viewModel: PrivateAnswerViewModel!
     private var collectionView: UICollectionView!
     
-    private lazy var input = AnswerViewModel.Input(text: answerTextView.rx.text.orEmpty.asObservable(),
-                                                   buttonTap: self.doneButton.rx.tap.asObservable())
+    private lazy var input = PrivateAnswerViewModel.Input(text: answerTextView.rx.text.orEmpty.asObservable(),
+                                                          deleteButtonTrigger: deleteButton.rx.tap.flatMap { self.showAlert(title: "질문 삭제", message: "마이질문을 삭제하시겠습니까?\n한 번 삭제 후 되돌릴 수 없습니다.")},
+                                                          doneButtonTrigger: self.doneButton.rx.tap.asObservable())
     
     private lazy var output = self.viewModel.transform(input: input)
     
@@ -84,11 +85,11 @@ final class MyQuestionAnswerViewController: BaseViewController {
         
     }
     //MARK: - Lifecycle
-    init(viewModel: AnswerViewModel){
+    init(viewModel: PrivateAnswerViewModel){
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
         
-        self.keywordView = KeywordRegisterView(viewModel: RegisterKeywordViewModel(id: viewModel.id, keywords: output.keywords, service: MyListService()))
+        self.keywordView = KeywordRegisterView(viewModel: RegisterKeywordViewModel(id: viewModel.id, keywords: output.keywords, service: PrivateQuestionService()))
     }
     
     required init?(coder: NSCoder) {
@@ -103,7 +104,6 @@ final class MyQuestionAnswerViewController: BaseViewController {
         super.viewWillAppear(animated)
 
         self.navigationController?.navigationBar.tintColor = .white
-//        self.navigationItem.backButtonTitle = ""
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .done, target: self, action: #selector(handleDismissal))
         
         guard let tabbarcontroller = tabBarController as? CustomTabbarController else { return }
@@ -169,10 +169,6 @@ final class MyQuestionAnswerViewController: BaseViewController {
                 self?.mode = .edit
             }).disposed(by: disposeBag)
         
-        deleteButton.rx.tap.subscribe(onNext: {
-            
-        }).disposed(by: disposeBag)
-        
         answerTextView.rx.didBeginEditing
             .subscribe(onNext: { [weak self] _ in
                 guard let self = self else { return }
@@ -209,8 +205,7 @@ final class MyQuestionAnswerViewController: BaseViewController {
         
         output.successMessage.emit(onNext: { [weak self] message in
             guard let self = self else { return }
-            
-            let alert = self.comfirmAlert(title: "작성 완료", subtitle: message) { _ in
+            let alert = self.comfirmAlert(title: "삭제 완료", subtitle: message) { _ in
                 self.dismiss(animated: true)
             }
             self.present(alert, animated: true)
@@ -218,9 +213,8 @@ final class MyQuestionAnswerViewController: BaseViewController {
         
         output.failMessage.emit(onNext: { [weak self] message in
             guard let self = self else { return }
-            
-            let alert = self.comfirmAlert(title: "작성 실패", subtitle: message) { _ in
-                print("다시 작성")
+            let alert = self.comfirmAlert(title: "삭제 실패", subtitle: message) { _ in
+                
             }
             self.present(alert, animated: true)
         }).disposed(by: disposeBag)
@@ -246,12 +240,12 @@ final class MyQuestionAnswerViewController: BaseViewController {
     
     //MARK: - Selector
     @objc func handleDismissal(){
-        self.navigationController?.popViewController(animated: true)
+        self.dismiss(animated: false)
     }
 }
 
 //MARK: - SetMode
-extension MyQuestionAnswerViewController {
+extension PrivateAnswerViewController {
     
     private func setWrittenMode(answer: String) {
         self.defaultView.isHidden = true

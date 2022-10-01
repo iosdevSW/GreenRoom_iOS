@@ -9,18 +9,19 @@ import Foundation
 import RxSwift
 import RxCocoa
 
-final class AnswerViewModel: ViewModelType {
+final class PrivateAnswerViewModel: ViewModelType {
     
-    private let myListService = MyListService()
+    private let privateQuestionService = PrivateQuestionService()
     var disposeBag = DisposeBag()
     
     struct Input {
         let text: Observable<String>
-        let buttonTap: Observable<Void>
+        let deleteButtonTrigger: Observable<Bool>
+        let doneButtonTrigger: Observable<Void>
     }
     
     struct Output {
-        let answer: Observable<QuestionWithAnswer>
+        let answer: Observable<PrivateAnswer>
         let keywords: Observable<[String]>
         let successMessage: Signal<String>
         let failMessage: Signal<String>
@@ -40,21 +41,27 @@ final class AnswerViewModel: ViewModelType {
     func transform(input: Input) -> Output {
         input.text.bind(to: textFieldContentObservable).disposed(by: disposeBag)
 
-        input.buttonTap.withLatestFrom(textFieldContentObservable.asObserver())
+        input.doneButtonTrigger.withLatestFrom(textFieldContentObservable.asObserver())
             .flatMap { [weak self] answer -> Observable<Bool>  in
                 guard let self = self else {
                     return Observable.just(false)
                 }
-                return self.myListService.uploadAnswer(id: self.id, answer: answer)
+                return self.privateQuestionService.uploadAnswer(id: self.id, answer: answer)
             }
             .subscribe(onNext: { [weak self] isSuccess in
                 isSuccess ? self?.successMessage.accept("답변 작성이 완료되었습니다.") : self?.failMessage.accept("글자수는 500자를 초과할 수 없습니다.")
             }).disposed(by: disposeBag)
         
-        let output = self.myListService.fetchPrivateQuestion(id: self.id)
+        input.deleteButtonTrigger.asObservable().flatMap { _ in
+            self.privateQuestionService.removeAnswer(id: self.id)
+        }.subscribe { [weak self] competable in
+            competable ? self?.successMessage.accept("나의 질문이 삭제되었습니다.") : self?.failMessage.accept("에러욤")
+        }.disposed(by: disposeBag)
+        
+        let output = self.privateQuestionService.fetchPrivateQuestion(id: self.id)
 
         return Output(answer: output.asObservable(),
-                      keywords: output.map { $0.keywords},
+                      keywords: output.map { $0.keywords },
                       successMessage: successMessage.asSignal(),
                       failMessage: failMessage.asSignal())
     }

@@ -12,9 +12,10 @@ import RxDataSources
 final class CreateGreenRoomViewController: BaseViewController {
     
     private var collectionView: UICollectionView!
-    private let viewModel = CreateGRViewModel()
-
-    private lazy var doneButton = UIButton().then {
+    private let viewModel = CreatePublicQuestionViewModel()
+    private lazy var datePickerController = CustomPopUpDatePickerController()
+    
+    private let submitButton = UIButton().then {
         $0.backgroundColor = .mainColor
         $0.setTitle("작성완료", for: .normal)
         $0.setTitleColor(.white, for: .normal)
@@ -39,14 +40,14 @@ final class CreateGreenRoomViewController: BaseViewController {
     override func configureUI() {
         self.view.backgroundColor = .white
         self.view.addSubview(collectionView)
-        self.view.addSubview(doneButton)
+        self.view.addSubview(submitButton)
         
         collectionView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
             make.top.bottom.equalTo(view.safeAreaLayoutGuide)
         }
         
-        doneButton.snp.makeConstraints { make in
+        submitButton.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(13)
             make.trailing.equalToSuperview().offset(-13)
             make.bottom.equalToSuperview().offset(-35)
@@ -56,8 +57,7 @@ final class CreateGreenRoomViewController: BaseViewController {
     
     override func setupAttributes() {
         self.hideKeyboardWhenTapped()
-        self.doneButton.isUserInteractionEnabled = false
-        self.doneButton.alpha = 0.5
+        self.submitButton.alpha = 0.5
         configureCollectionView()
     }
     
@@ -87,55 +87,59 @@ final class CreateGreenRoomViewController: BaseViewController {
         
         viewModel.categories.bind(to: self.collectionView.rx.items(dataSource: self.dataSource())).disposed(by: disposeBag)
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
             
-            let header = self.collectionView.supplementaryView(forElementKind: UICollectionView.elementKindSectionHeader, at: IndexPath(row: 0, section: 0)) as! CreateGRHeaderView
+            guard let header = self.collectionView.supplementaryView(forElementKind: UICollectionView.elementKindSectionHeader, at: IndexPath(row: 0, section: 0)) as? CreateGRHeaderView else { return }
             
-            let input = CreateGRViewModel.Input(question: header.questionTextView.rx.text.orEmpty.asObservable(),
-                                                returnTrigger: header.questionTextView.rx.didEndEditing.asObservable(),
-                                                category: self.collectionView.rx.itemSelected.map { $0.row + 1}.asObservable(),
-                                                submit: self.doneButton.rx.tap.asObservable())
+            header.questionTextView.rx.text.orEmpty.subscribe(onNext: {
+                print($0)
+            }).disposed(by: self.disposeBag)
+            let input = CreatePublicQuestionViewModel.Input(date: self.datePickerController.datePicker.rx.date.asObservable(),
+                                                            dateApplyTrigger: self.datePickerController.applyButton.rx.tap.asObservable(),
+                                                            question: header.questionTextView.rx.text.orEmpty.asObservable(),
+                                                            category: self.collectionView.rx.itemSelected.map { $0.row + 1}.asObservable(),
+                                                            submit: self.submitButton.rx.tap.asObservable())
             header.dateContainer.rx
                 .tapGesture()
                 .when(.recognized)
-                .subscribe(onNext: { _ in
-                    let vc = CustomPopUpDatePickerController(viewModel: self.viewModel)
-                    vc.modalPresentationStyle = .overCurrentContext
-                    self.present(vc, animated: true)
+                .subscribe(onNext: { [weak self] _ in
+                    guard let self = self else { return }
+                    self.datePickerController.modalPresentationStyle = .overCurrentContext
+                    self.present(self.datePickerController, animated: true)
                 }).disposed(by: self.disposeBag)
             
             let output = self.viewModel.transform(input: input)
             
-            header.bind(date: output.comfirmDate.asObservable())
+            header.bind(date: output.comfirmDate)
             
             output.isValid
-                .bind(to: self.doneButton.rx.isEnabled)
+                .bind(to: self.submitButton.rx.isEnabled)
                 .disposed(by: self.disposeBag)
             
             output.isValid
                 .map { $0 ? 1.0 : 0.5}
-                .bind(to: self.doneButton.rx.alpha)
+                .bind(to: self.submitButton.rx.alpha)
                 .disposed(by: self.disposeBag)
+            
 
             output.successMessage.emit(onNext: { [weak self] message in
                 guard let self = self else { return }
-
+                
                 let alert = self.comfirmAlert(title: "작성 완료", subtitle: message) { _ in
                     self.dismiss(animated: true)
                 }
                 self.present(alert, animated: true)
             }).disposed(by: self.disposeBag)
-
+            
             output.failMessage.emit(onNext: { [weak self] message in
                 guard let self = self else { return }
-
+                
                 let alert = self.comfirmAlert(title: "작성 실패", subtitle: message) { _ in
                     print("다시 작성")
                 }
                 self.present(alert, animated: true)
             }).disposed(by: self.disposeBag)
         }
-        
         
     }
     
@@ -175,7 +179,7 @@ extension CreateGreenRoomViewController {
             guard let category = CategoryID(rawValue: indexPath.row + 1) else { return UICollectionViewCell() }
             cell.imageView.image = category.nonSelectedImage
             cell.titleLabel.text = category.title
-                        
+            
             return cell
         } configureSupplementaryView: { dataSource, collectionView, kind, indexPath in
             guard let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: CreateGRHeaderView.reuseIdentifier, for: indexPath) as? CreateGRHeaderView else { return UICollectionReusableView() }

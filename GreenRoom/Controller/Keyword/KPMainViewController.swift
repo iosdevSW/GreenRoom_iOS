@@ -8,7 +8,7 @@
 import UIKit
 import RxSwift
 
-class KPMainViewController: BaseViewController {
+final class KPMainViewController: BaseViewController {
     //MARK: - Properties
     
     let viewModel: KeywordViewModel
@@ -50,7 +50,7 @@ class KPMainViewController: BaseViewController {
     }
     
     @objc func didclickFindButton(_ sender: UIButton) {
-        let vc = sender.tag == 0 ? KPFindQuestionViewController() : KPQuestionsViewController(viewModel: viewModel)
+        let vc = sender.tag == 0 ? KPFindQuestionViewController() : KPGreenRoomQuestionsViewController()
         self.navigationController?.pushViewController(vc, animated: true)
     }
     

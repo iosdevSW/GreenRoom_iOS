@@ -17,8 +17,8 @@ class GreenRoomViewModel: ViewModelType {
         case MyList
     }
     
-    private var greenroomQuestionService = GreenRoomQuestionService()
-    private var myListService = MyListService()
+    private var publicQuestionService = PublicQuestionService()
+    private var myListService = PrivateQuestionService()
     
     var disposeBag = DisposeBag()
     
@@ -74,11 +74,11 @@ extension GreenRoomViewModel {
     
     private func fetchGreenRoomTap() -> Observable<[GreenRoomSectionModel]>{
         
-        let popuplar = self.greenroomQuestionService.fetchPopularPublicQuestions().map{ questions in
+        let popuplar = self.publicQuestionService.fetchPopularPublicQuestions().map{ questions in
             [GreenRoomSectionModel.popular(items: questions.map { GreenRoomSectionModel.Item.popular(question: $0)})]
         }
         
-        let recent = self.greenroomQuestionService.fetchRecentPublicQuestions().map { questions in
+        let recent = self.publicQuestionService.fetchRecentPublicQuestions().map { questions in
             [GreenRoomSectionModel.recent(items: questions.map { GreenRoomSectionModel.Item.recent(question: $0)})]
         }
         
@@ -96,8 +96,11 @@ extension GreenRoomViewModel {
         
     }
     private func fetchFiltering() -> Observable<[GreenRoomSectionModel]>{
+        
+        let categoryId = CategoryID(rawValue: UserDefaults.standard.integer(forKey: "category")) ?? .common
+        
         return Observable.create { emitter in
-            emitter.onNext([GreenRoomSectionModel.filtering(items:[ GreenRoomSectionModel.Item.filtering(interest: "디자인")])])
+            emitter.onNext([GreenRoomSectionModel.filtering(items:[ GreenRoomSectionModel.Item.filtering(interest: categoryId)])])
             return Disposables.create()
         }
     }

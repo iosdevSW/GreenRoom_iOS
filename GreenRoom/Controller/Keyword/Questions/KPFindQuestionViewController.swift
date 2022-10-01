@@ -12,7 +12,7 @@ import RxSwift
 import RxCocoa
 import KakaoSDKUser
 
-class KPFindQuestionViewController: BaseViewController{
+final class KPFindQuestionViewController: BaseViewController{
     //MARK: - Properties
     private let viewModel = BaseQuestionsViewModel()
     
@@ -28,7 +28,7 @@ class KPFindQuestionViewController: BaseViewController{
         $0.layer.cornerRadius = 10
     }
     
-    private lazy var filterView = FilterView()
+    private lazy var filterView = FilterView(viewModel: CategoryViewModel())
     
     private var questionListTableView = UITableView().then{
         $0.backgroundColor = .white

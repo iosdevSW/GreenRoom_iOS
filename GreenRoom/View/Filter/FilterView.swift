@@ -8,14 +8,14 @@
 import UIKit
 import RxSwift
 
-class FilterView: UIView{
+final class FilterView: UIView {
     //MARK: - Properties
-    let viewModel = CategoryViewModel()
+    let viewModel: CategoryViewModel
     let disposeBag = DisposeBag()
     
-    var selectedCategoriesCollectionView: UICollectionView!
+    private var selectedCategoriesCollectionView: UICollectionView!
     
-    let filterButton = UIButton(type: .roundedRect).then{
+    private let filterButton = UIButton(type: .roundedRect).then{
         $0.backgroundColor = .mainColor
         $0.setTitle("필터 ", for: .normal)
         $0.setTitleColor(.white, for: .normal)
@@ -27,8 +27,11 @@ class FilterView: UIView{
     }
     
     //MARK: - Init
-    init() {
+    init(viewModel: CategoryViewModel){
+        self.viewModel = viewModel
         super.init(frame: .zero)
+        
+        self.configureCollectionView()
         self.configureUI()
         self.bind()
     }
@@ -40,22 +43,20 @@ class FilterView: UIView{
     private func bind() {
         
         filterButton.rx.tap.subscribe(onNext: {
-            NotificationCenter.default.post(name: Notification.Name("Category"), object: nil, userInfo: ["viewModel": self.viewModel])
+            NotificationCenter.default.post(name: .categoryObserver, object: nil, userInfo: ["viewModel": self.viewModel])
         }).disposed(by: disposeBag)
         
         viewModel.selectedCategoriesObservable.asObserver()
-            .bind(to: self.selectedCategoriesCollectionView.rx.items(cellIdentifier: "ItemsCell", cellType: FilterItemsCell.self)) {index, id ,cell in
-                guard let category = CategoryID(rawValue: id) else { return }
-                let attributedString = NSMutableAttributedString.init(string: category.title)
-                attributedString.addAttribute(NSAttributedString.Key.underlineStyle, value: 1, range: NSRange(location: 0, length: category.title.count))
-                cell.itemLabel.attributedText = attributedString
+            .bind(to: self.selectedCategoriesCollectionView.rx.items(cellIdentifier: "ItemsCell", cellType: FilterItemsCell.self)) { index, id ,cell in
+                cell.category = CategoryID(rawValue: id)
             }.disposed(by: disposeBag)
     }
     
     //MARK: - CofigureUI
     private func configureUI() {
-        self.addSubview(self.filterButton)
+        self.backgroundColor = .backgroundGray
         
+        self.addSubview(self.filterButton)
         self.filterButton.snp.makeConstraints{ make in
             make.top.equalToSuperview().offset(14)
             make.leading.equalToSuperview().offset(40)
@@ -63,27 +64,29 @@ class FilterView: UIView{
             make.width.equalTo(60)
         }
         
-        let flowLayout = UICollectionViewFlowLayout().then{
-            $0.scrollDirection = .horizontal
-            $0.minimumInteritemSpacing = 16
-        }
         
-        self.selectedCategoriesCollectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout).then{
-            $0.backgroundColor = .clear
-            $0.register(FilterItemsCell.self, forCellWithReuseIdentifier: "ItemsCell")
-            $0.delegate = self
-            
-            self.addSubview($0)
-            $0.snp.makeConstraints{ make in
-                make.top.equalTo(filterButton.snp.bottom).offset(6)
-                make.leading.equalTo(filterButton.snp.leading)
-                make.trailing.equalToSuperview()
-//                make.height.equalTo(bounds.height * 3/8)
-                make.bottom.equalToSuperview().offset(-6)
-            }
+        self.addSubview(selectedCategoriesCollectionView)
+        selectedCategoriesCollectionView.snp.makeConstraints{ make in
+            make.top.equalTo(filterButton.snp.bottom).offset(6)
+            make.leading.trailing.equalToSuperview()
+            make.bottom.equalToSuperview().offset(-6)
         }
     }
+    
+    private func configureCollectionView() {
+        let flowLayout = UICollectionViewFlowLayout()
+        flowLayout.scrollDirection = .horizontal
+        flowLayout.minimumInteritemSpacing = 16
+        flowLayout.sectionInset = UIEdgeInsets(top: 0, left: 40, bottom: 0, right: 0)
+        
+        self.selectedCategoriesCollectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
+        selectedCategoriesCollectionView.backgroundColor = .clear
+        selectedCategoriesCollectionView.register(FilterItemsCell.self, forCellWithReuseIdentifier: "ItemsCell")
+        selectedCategoriesCollectionView.delegate = self
+    }
+
 }
+
 
 extension FilterView: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -94,7 +97,7 @@ extension FilterView: UICollectionViewDelegateFlowLayout {
             .subscribe(onNext: { items in
                 let id = items[indexPath.item]
                 let category = CategoryID(rawValue: id)
-
+                
                 tempLabel.font = .sfPro(size: 12, family: .Regular)
                 tempLabel.text = category?.title
             }).disposed(by: disposeBag)
