@@ -12,7 +12,7 @@ final class KPGroupsViewController: BaseViewController {
     private let viewModel: BaseQuestionsViewModel
     
     let groupView = GroupView().then {
-        $0.groupCountingLabel.text = "총 N개의 그룹"
+//        $0.groupCountingLabel.text = "총 N개의 그룹"
         $0.backgroundColor = .white
     }
     

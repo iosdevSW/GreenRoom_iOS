@@ -7,9 +7,14 @@
 
 import UIKit
 
-struct groupModel: Codable {
+struct GroupModel: Codable {
     let id: Int
     let name: String
     let categoryName: String
     let questionCnt: Int
+}
+
+enum GroupStatus {
+    case zero
+    case notZero
 }

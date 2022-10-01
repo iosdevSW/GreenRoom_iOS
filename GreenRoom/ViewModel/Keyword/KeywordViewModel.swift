@@ -11,10 +11,13 @@ import RxSwift
 
 class KeywordViewModel {
     let disposeBag = DisposeBag()
-    let filteringObservable = PublishSubject<[Int]>() //필터링된 카테고리 observable
-    let selectedQuestionObservable = BehaviorSubject<[String]>.init(value: [])
-    let groupsObservable = BehaviorRelay<[groupModel]>(value: [])
-    var videoURLs: [URL]?
+    
+    let selectedQuestionObservable = BehaviorSubject<[String]>.init(value: []) // 선택된 연습 질문
+    
+    // 그룹
+    let groupsObservable = BehaviorRelay<[GroupModel]>(value: [])
+    let groupCounting = PublishSubject<Int>()
+    
     var selectedQ = BehaviorSubject<[KPDetailModel]>.init(value:[
         KPDetailModel.init(items: [])
     ])
@@ -30,16 +33,23 @@ class KeywordViewModel {
     var keywordOnOff = true
     var recordingType: RecordingType = .camera
     var goalPersent: CGFloat?
+    var videoURLs: [URL]?
     
     init(){
         selectedQuestionObservable.subscribe(onNext: { str in
             self.selectedQ.onNext([KPDetailModel(items: str)])
         }).disposed(by: disposeBag)
         
+        groupsObservable.asObservable()
+            .map{ $0.count }
+            .bind(to: groupCounting)
+            .disposed(by: disposeBag)
+    }
+    
+    func updateGroupList(){
         KeywordPracticeService().fetchGroupList()
             .bind(to: groupsObservable)
             .disposed(by: disposeBag)
     }
-    
     
 }

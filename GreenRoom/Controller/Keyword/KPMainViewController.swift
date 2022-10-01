@@ -12,9 +12,7 @@ final class KPMainViewController: BaseViewController {
     //MARK: - Properties
     private let viewModel: KeywordViewModel
     
-    private lazy var groupView = GroupView().then {
-        $0.groupCountingLabel.text = "그룹을 추가해주세요 :)"
-    }
+    private lazy var groupView = GroupView()
     
     private let findQuestionButton = ChevronButton(type: .system).then {
         $0.setConfigure(title: "면접 질문 찾기",
@@ -49,6 +47,8 @@ final class KPMainViewController: BaseViewController {
         super.viewWillAppear(animated)
         self.tabBarController?.tabBar.isHidden = false
         self.viewModel.selectedQuestionTemp = [] // 선택된 질문 초기화
+        self.viewModel.updateGroupList()
+        print("리셋되라!")
     }
     
     //MARK: - Selector
@@ -57,7 +57,13 @@ final class KPMainViewController: BaseViewController {
     }
     
     @objc func didClickEditButton(_ sender: UIButton) {
-        self.navigationController?.pushViewController(KPGroupEditViewController(), animated: true)
+        guard let group = viewModel.groupsObservable.value.filter({ $0.id == sender.tag}).first else { return }
+    
+        let vc = KPGroupEditViewController(groupId: group.id,
+                                           categoryId: 1,
+                                           categoryName: group.name)
+        
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     //MARK: - Bind
@@ -69,8 +75,19 @@ final class KPMainViewController: BaseViewController {
                 cell.categoryLabel.text = item.categoryName
                 cell.questionCountingLabel.text = "질문 \(item.questionCnt)개"
                 cell.selectionStyle = .none
+                cell.editButton.tag = item.id
+                
                 cell.editButton.addTarget(self, action: #selector(self.didClickEditButton(_:)), for: .touchUpInside)
             }.disposed(by: disposeBag)
+        
+        viewModel.groupCounting
+            .bind(onNext: { [weak self] count in
+                if count == 0 {
+                    self?.groupView.groupStatus = .zero
+                } else {
+                    self?.groupView.groupStatus = .notZero
+                }
+            }).disposed(by: disposeBag)
         
         findQuestionButton.rx.tap
             .bind(onNext: { [weak self] _ in
@@ -94,7 +111,7 @@ final class KPMainViewController: BaseViewController {
     //MARK: - ConfigureUI
     override func configureUI() {
         let keywordLabel = UILabel().then {
-            $0.text = "키워드연습."
+            $0.text = "키워드연습"
             $0.textColor = .mainColor
             $0.font = .sfPro(size: 20, family: .Bold)
             

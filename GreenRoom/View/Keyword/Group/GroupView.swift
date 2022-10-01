@@ -9,13 +9,27 @@ import UIKit
 
 final class GroupView: UIView {
     //MARK: - Properties
+    var groupStatus: GroupStatus = .zero {
+        didSet {
+            if groupStatus == .zero {
+                groupCountingLabel.text = "그룹을 추가해주세요 :)"
+                notFoundImageView.isHidden = false
+                guideLabel.isHidden = false
+            } else {
+                groupCountingLabel.text = "총 N개의 그룹"
+                notFoundImageView.isHidden = true
+                guideLabel.isHidden = true
+            }
+        }
+    }
+    
     lazy var groupTableView = UITableView().then {
         $0.backgroundColor = .clear
         $0.separatorStyle = .none
         $0.register(GroupCell.self, forCellReuseIdentifier: "GroupCell")
     }
     
-    let groupCountingLabel = UILabel().then {
+    private let groupCountingLabel = UILabel().then {
         $0.font = .sfPro(size: 16, family: .Semibold)
         $0.textColor = .customDarkGray
     }

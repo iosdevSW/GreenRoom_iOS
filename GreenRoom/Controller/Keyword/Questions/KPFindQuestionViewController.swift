@@ -28,7 +28,9 @@ final class KPFindQuestionViewController: BaseViewController{
         $0.layer.cornerRadius = 10
     }
     
-    private lazy var filterView = FilterView(viewModel: CategoryViewModel())
+    private lazy var filterView = FilterView(viewModel: CategoryViewModel()).then {
+        $0.backgroundColor = .white
+    }
     
     private var questionListTableView = UITableView().then{
         $0.backgroundColor = .white

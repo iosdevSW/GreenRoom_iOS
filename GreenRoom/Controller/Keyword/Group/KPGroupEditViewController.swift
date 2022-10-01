@@ -12,13 +12,15 @@ import RxCocoa
 final class KPGroupEditViewController: BaseViewController {
     //MARK: - Properties
     private let viewModel = CategoryViewModel()
+    
     private let placeHolder = "그룹 이름을 입력해주세요:)"
+    private var groupId: Int?
     
     private var categoryCollectionView: UICollectionView!
     
     private lazy var questionTextView = UITextView().then {
         $0.font = .sfPro(size: 16, family: .Regular)
-        $0.text = "그룹 이름을 입력해주세요:)"
+        $0.text = placeHolder
         $0.textColor = .customGray
         $0.backgroundColor = .white
         $0.textContainerInset = UIEdgeInsets(top: 16.0, left: 16.0, bottom: 16.0, right: 16.0)
@@ -41,6 +43,20 @@ final class KPGroupEditViewController: BaseViewController {
     }
     
     //MARK: - Init
+    init(){
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    init(groupId: Int, categoryId: Int, categoryName: String) {
+        super.init(nibName: nil, bundle: nil)
+        self.groupId = groupId
+        self.viewModel.selectedCategoryObservable.accept(categoryId)
+        self.questionTextView.text = categoryName
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     //MARK: - LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -55,13 +71,20 @@ final class KPGroupEditViewController: BaseViewController {
     //MARK: - Bind
     override func setupBinding() {
         self.viewModel.categories
-            .bind(to: self.categoryCollectionView.rx.items(cellIdentifier: "categoryCell", cellType: CategoryCell.self)) {index, title ,cell in
+            .bind(to: self.categoryCollectionView.rx.items(cellIdentifier: "categoryCell", cellType: CategoryCell.self)) {[weak self] index, title ,cell in
                 let id = index + 1
                 guard let category = CategoryID(rawValue: id) else { return }
                 
                 cell.imageView.image = category.nonSelectedImage
                 cell.frameView.layer.borderColor = UIColor.customGray.cgColor
                 cell.titleLabel.text = category.title
+                
+                if self?.viewModel.selectedCategoryObservable.value == id {
+                    cell.isSelected = true
+                    self?.categoryCollectionView.selectItem(at: IndexPath(item: index, section: 0), animated: false, scrollPosition: .centeredVertically)
+                    cell.frameView.layer.borderColor = UIColor.mainColor.cgColor
+                    cell.imageView.image = category.SelectedImage
+                }
                 
             }.disposed(by: disposeBag)
         
@@ -74,7 +97,6 @@ final class KPGroupEditViewController: BaseViewController {
                 cell.frameView.layer.borderColor = UIColor.mainColor.cgColor
                 cell.imageView.image = category.SelectedImage
                 self?.viewModel.selectedCategoryObservable.accept(category.rawValue)
-                
             }).disposed(by: disposeBag)
         
         categoryCollectionView.rx.itemDeselected
@@ -85,7 +107,6 @@ final class KPGroupEditViewController: BaseViewController {
                 guard let category = CategoryID(rawValue: index) else { return }
                 cell.frameView.layer.borderColor = UIColor.customGray.cgColor
                 cell.imageView.image = category.nonSelectedImage
-                
             }).disposed(by: disposeBag)
         
         questionTextView.rx.didBeginEditing
@@ -102,8 +123,8 @@ final class KPGroupEditViewController: BaseViewController {
                 }
             }).disposed(by: disposeBag)
         
-     
-        PublishSubject<[String:String]>
+        
+        PublishSubject<[String : String]>
             .combineLatest(self.viewModel.selectedCategoryObservable, questionTextView.rx.text,
                            resultSelector: {[
                             "id" : String($0),
@@ -116,6 +137,27 @@ final class KPGroupEditViewController: BaseViewController {
                 }else {
                     self?.completeButton.isHidden = false
                 }
+            }).disposed(by: disposeBag)
+        
+        completeButton.rx.tap
+            .bind(onNext: { [weak self] in
+                guard let vc = self else { return }
+                guard let categoryName = vc.questionTextView.text else { return }
+                let categoryId = vc.viewModel.selectedCategoryObservable.value
+                
+                if let groupId = vc.groupId { // 편집
+                    KeywordPracticeService().editGroup(groupId: groupId,
+                                                       categoryId: categoryId,
+                                                       categoryName: categoryName){ isSuccess in
+                        vc.navigationController?.popViewController(animated: true)
+                    }
+                }else { // 추가
+                    KeywordPracticeService().addGroup(categoryId: categoryId,
+                                                      categoryName: categoryName){ isSuccess in
+                        vc.navigationController?.popViewController(animated: true)
+                    }
+                }
+                
             }).disposed(by: disposeBag)
     }
     
