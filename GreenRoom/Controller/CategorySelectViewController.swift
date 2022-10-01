@@ -192,12 +192,7 @@ final class CategorySelectViewController: BaseViewController {
         
         self.viewModel.tempSelectedCategoriesObservable
             .bind(to: self.selectedCategoriesCollectionView.rx.items(cellIdentifier: "ItemsCell", cellType: FilterItemsCell.self)) { index, id, cell in
-                guard let category = CategoryID(rawValue: id) else { return }
-                let title = category.title
-                let attributedString = NSMutableAttributedString.init(string: title)
-                attributedString.addAttribute(NSAttributedString.Key.underlineStyle, value: 1, range: NSRange(location: 0, length: title.count))
-                cell.itemLabel.attributedText = attributedString
-                
+                cell.category = CategoryID(rawValue: id)
             }.disposed(by: disposeBag)
     }
 }
