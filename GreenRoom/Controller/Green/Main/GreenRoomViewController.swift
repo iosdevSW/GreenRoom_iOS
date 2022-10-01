@@ -81,8 +81,7 @@ class GreenRoomViewController: BaseViewController {
                 let vc = QuestionsByCategoryViewController(viewModel: self.viewModel)
                 self.present(vc, animated: true)
             case .popular(question: let question):
-                let vc = PrivateAnswerViewController(viewModel: PrivateAnswerViewModel(id: question.id))
-                self.navigationController?.pushViewController(vc, animated: true)
+                break
             case .recent(question: let question):
                 print(question)
             case .MyGreenRoom(question: let question):
@@ -213,9 +212,9 @@ extension GreenRoomViewController {
             (dataSource, collectionView, indexPath, item) in
             
             switch item {
-            case .filtering(interest: let text):
+            case .filtering(interest: let category):
                 guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: GRFilteringCell.reuseIdentifier, for: indexPath) as? GRFilteringCell else { return UICollectionViewCell() }
-                cell.filtering = text
+                cell.category = category
                 return cell
                 
             case .popular(question: let question):
@@ -471,7 +470,7 @@ extension GreenRoomViewController {
 
 extension GreenRoomViewController: RecentHeaderDelegate {
     func didTapViewAllQeustionsButton() {
-        let vc = DetailRecentQuestionViewController(viewModel: GRDetailViewModel())
+        let vc = RecentPublicQuestionsViewController(viewModel: RecentPublicQuestionsViewModel())
         self.navigationController?.pushViewController(vc, animated: true)
     }
 }
