@@ -22,5 +22,24 @@ extension Date {
             .compactMap { Int($0) }
         return minutes[0] * 60 + minutes[1]
     }
+    
+    func getRemainedTime(date: String) -> String {
+        let format = DateFormatter()
+        format.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        
+        guard let endTime = format.date(from: date.replacingOccurrences(of: "T", with: " ")) else {return "?"}
+
+        var useTime = Int(endTime.timeIntervalSince(self))
+        
+        let hour = useTime / 3600
+        
+        useTime %= 3600
+        
+        let minute = useTime / 60
+        
+        return String(format: "%02d", hour) + ":" + String(format: "%02d", minute)
+        
+    }
 }
 
+ 

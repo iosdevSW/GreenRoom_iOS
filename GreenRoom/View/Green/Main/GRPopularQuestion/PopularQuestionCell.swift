@@ -27,6 +27,7 @@ final class PopularQuestionCell: UICollectionViewCell {
     private let nameLabel = Utilities.shared.generateLabel(text: "박면접", color: .gray, font: .sfPro(size: 12, family: .Regular))
     private let categoryLabel = Utilities.shared.generateLabel(text: "디자인", color: .black, font: .sfPro(size: 12, family: .Regular))
     private let participantsLabel = Utilities.shared.generateLabel(text: "N명이 참여하고 있습니다.", color: .mainColor, font: .sfPro(size: 12, family: .Bold))
+    private let expiredLabel = Utilities.shared.generateLabel(text: "23:59 남음", color: .point, font: .sfPro(size: 12, family: .Bold))
     
     private lazy var questionTextView = UITextView().then {
         $0.backgroundColor = .white
@@ -101,6 +102,11 @@ final class PopularQuestionCell: UICollectionViewCell {
             make.height.equalTo(83)
         }
         
+        self.contentView.addSubview(expiredLabel)
+        expiredLabel.snp.makeConstraints { make in
+            make.top.equalTo(questionTextView.snp.bottom).offset(5)
+            make.trailing.equalToSuperview().offset(-20)
+        }
         
     }
     
@@ -114,5 +120,8 @@ final class PopularQuestionCell: UICollectionViewCell {
         guard let url = URL(string: question.profileImage) else { return }
         self.profileImageView.kf.setImage(with: url)
         
+        let expiredAt = Date().getRemainedTime(date: question.expiredAt)
+        
+        expiredLabel.text = "\(expiredAt) 남음"
     }
 }
