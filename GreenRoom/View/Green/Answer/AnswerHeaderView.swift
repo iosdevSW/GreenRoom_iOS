@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import RxSwift
 
 final class AnswerHeaderView: UIView {
     
@@ -25,19 +26,10 @@ final class AnswerHeaderView: UIView {
     }
     
     private lazy var questionTextView = UITextView().then {
-        $0.isEditable = false
         $0.textContainerInset = UIEdgeInsets(top: 30, left: 30, bottom: 0, right:30)
         $0.translatesAutoresizingMaskIntoConstraints = true
         $0.sizeToFit()
         $0.backgroundColor = .clear
-        let style = NSMutableParagraphStyle()
-        style.lineSpacing = 6
-        
-        $0.attributedText = NSAttributedString(string: "입사 5년 후, 10년 후 자신의 모습은 어떨 것이라고 생각합니까?",
-                                               attributes: [
-                                                NSAttributedString.Key.paragraphStyle : style,
-                                                 NSAttributedString.Key.font: UIFont.sfPro(size: 20, family: .Regular)
-                                                ])
     }
     
     override init(frame: CGRect) {
@@ -51,19 +43,13 @@ final class AnswerHeaderView: UIView {
     
     private func configure() {
         
-        let style = NSMutableParagraphStyle()
-        style.lineSpacing = 6
-        
-        self.questionTextView.attributedText = NSAttributedString(string: question.question,
-                                               attributes: [
-                                                NSAttributedString.Key.paragraphStyle : style,
-                                                 NSAttributedString.Key.font: UIFont.sfPro(size: 20, family: .Regular)
-                                                ])
-        
+        self.questionTextView.initDefaultText(with: question.question, foregroundColor: .black, font: .sfPro(size: 20, family: .Regular))
         self.categoryLabel.text = question.categoryName
+        self.questionTextView.isEditable = question.groupCategoryName.isEmpty
     }
     
     private func configureUI() {
+        
         self.backgroundColor = .mainColor
         self.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(categoryLabel)
