@@ -14,9 +14,7 @@ final class DetailQuestionListCell: UICollectionViewCell {
     static let reuseIdentifier = "DetailQuestionListCell"
     //MARK: - Properties
     var question: Question! {
-        didSet {
-            configureUI()
-        }
+        didSet { configureUI() }
     }
     
     private lazy var containerView = UIView().then {

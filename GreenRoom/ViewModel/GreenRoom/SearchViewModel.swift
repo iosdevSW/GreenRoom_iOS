@@ -19,15 +19,15 @@ final class SearchViewModel: ViewModelType {
     }
     
     struct Output {
-        let result: Observable<[GRSearchModel]>
+        let result: Observable<[SearchSectionModel]>
     }
     
-    private var recentKeywords = BehaviorSubject<[GRSearchModel]>(value: [
-        GRSearchModel.recent(header: "최근 검색어",items: [])
+    private var recentKeywords = BehaviorSubject<[SearchSectionModel]>(value: [
+        SearchSectionModel.recent(header: "최근 검색어",items: [])
     ])
     
-    private var popularKeywords = BehaviorSubject<[GRSearchModel]>(value: [
-        GRSearchModel.recent(header: "인기 검색어",items: [])
+    private var popularKeywords = BehaviorSubject<[SearchSectionModel]>(value: [
+        SearchSectionModel.popular(header: "인기 검색어",items: [])
     ])
     
     func transform(input: Input) -> Output {
@@ -44,7 +44,7 @@ final class SearchViewModel: ViewModelType {
     private func fetchKeywords() {
         recentKeywords.onNext(
             [
-                GRSearchModel.recent(
+                SearchSectionModel.recent(
                     header: "최근 검색어",
                     items: CoreDataManager.shared.loadFromCoreData(request: RecentSearchKeyword.fetchRequest())
                         .sorted { $0.date! > $1.date! }
@@ -58,9 +58,9 @@ final class SearchViewModel: ViewModelType {
             case .success(let keywords):
                 print("DEBUG: popular")
                 self?.popularKeywords.onNext([
-                        GRSearchModel.popular(
+                    SearchSectionModel.popular(
                             header: "인기 검색어",
-                            items: keywords.map { GRSearchModel.Item(text: $0, type: .popular) }
+                            items: keywords.map { SearchSectionModel.Item(text: $0, type: .popular) }
                         )]
                 )
             case .failure(_):

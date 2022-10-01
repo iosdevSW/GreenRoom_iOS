@@ -44,6 +44,8 @@ class LoginService{
         let urlString = Constants.baseURL + "/api/users/join"
         let url = URL(string: urlString)!
         
+        UserDefaults.standard.set(category, forKey: "category")
+        
         let param: Parameters = [
             "accessToken" : accessToken,
             "oauthType" : oauthType,

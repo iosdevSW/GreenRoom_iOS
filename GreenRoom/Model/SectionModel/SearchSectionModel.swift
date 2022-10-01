@@ -8,7 +8,7 @@
 import Foundation
 import Differentiator
 
-enum GRSearchModel: SectionModelType {
+enum SearchSectionModel: SectionModelType {
 
     typealias Item = SearchTagItem
     
@@ -24,7 +24,7 @@ enum GRSearchModel: SectionModelType {
         }
     }
     
-    init(original: GRSearchModel, items: [Item]) {
+    init(original: SearchSectionModel, items: [Item]) {
         switch original {
         case .recent(header: let header, let items):
             self = .recent(header: header, items: items)
