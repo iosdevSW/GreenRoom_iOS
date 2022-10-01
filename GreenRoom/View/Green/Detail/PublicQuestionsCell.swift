@@ -9,12 +9,12 @@ import Foundation
 
 import UIKit
 
-final class DetailQuestionListCell: UICollectionViewCell {
+final class PublicQuestionsCell: UICollectionViewCell {
     
-    static let reuseIdentifier = "DetailQuestionListCell"
+    static let reuseIdentifier = "PublicQuestionsCell"
     //MARK: - Properties
-    var question: Question! {
-        didSet { configureUI() }
+    var question: PublicQuestion! {
+        didSet { self.configure() }
     }
     
     private lazy var containerView = UIView().then {
@@ -35,7 +35,8 @@ final class DetailQuestionListCell: UICollectionViewCell {
     }
     
     private let categoryLabel = Utilities.shared.generateLabel(text: "디자인", color: .black, font: .sfPro(size: 12, family: .Semibold))
-
+    private let expiredLabel = Utilities.shared.generateLabel(text: "23:59 남음", color: .point, font: .sfPro(size: 12, family: .Bold))
+    
     private lazy var questionTextView = UITextView().then {
         $0.backgroundColor = .clear
         $0.translatesAutoresizingMaskIntoConstraints = true
@@ -53,17 +54,10 @@ final class DetailQuestionListCell: UICollectionViewCell {
                  NSAttributedString.Key.font: UIFont.sfPro(size: 14, family: .Regular)
                 ]
         )
-        
-        
     }
 
     private lazy var showContentsButton = ChevronButton()
-        
-//        .then {
-//        $0.setImage(UIImage(systemName: "chevron.right"), for: .normal)
-//        $0.contentMode = .scaleAspectFill
-//        $0.imageView?.tintColor = .gray
-//    }
+
    //MARK: - LifeCycle
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -90,6 +84,7 @@ final class DetailQuestionListCell: UICollectionViewCell {
         self.containerView.addSubview(categoryLabel)
         self.containerView.addSubview(questionTextView)
         self.containerView.addSubview(showContentsButton)
+        self.containerView.addSubview(expiredLabel)
         
         let margin = self.bounds.width / 20
         
@@ -110,23 +105,29 @@ final class DetailQuestionListCell: UICollectionViewCell {
             make.bottom.trailing.equalToSuperview()
         }
         
+        expiredLabel.snp.makeConstraints { make in
+            make.centerY.equalTo(categoryLabel)
+            make.leading.equalTo(categoryLabel.snp.trailing).offset(8)
+        }
+        
         self.showContentsButton.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
             make.width.height.equalTo(30)
             make.trailing.equalToSuperview().offset(-6)
         }
-
     }
     
     private func configure(){
-        guard let category = CategoryID(rawValue: question.category) else { return }
-        let style = NSMutableParagraphStyle()
-        style.lineSpacing = 6
         
-        self.questionTextView.attributedText = NSAttributedString(string: question.question, attributes: [NSAttributedString.Key.paragraphStyle : style])
-        self.categoryLabel.text = category.title
-        self.profileImageView.image = UIImage(named: question.image)
+        self.questionTextView.text = question.question
+        self.categoryLabel.text = question.categoryName
         
+        guard let url = URL(string: question.profileImage) else { return }
+        self.profileImageView.kf.setImage(with: url)
+        
+        self.expiredLabel.text = question.expired ? "답변 종료" : "\(question.remainedTime) 남음"
+        self.alpha = question.expired ? 0.3 : 1.0
+  
     }
 }
 

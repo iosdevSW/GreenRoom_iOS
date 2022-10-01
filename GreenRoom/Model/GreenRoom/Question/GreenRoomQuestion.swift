@@ -12,6 +12,10 @@ struct PublicQuestion: Codable {
     let id: Int
     let categoryName, profileImage, question, expiredAt: String
     let participated, expired: Bool
+    
+    var remainedTime: String {
+        return Date().getRemainedTime(date: expiredAt)
+    }
 }
 
 struct DetailQuestion: Codable {

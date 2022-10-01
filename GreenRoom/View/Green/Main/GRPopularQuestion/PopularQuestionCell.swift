@@ -120,8 +120,6 @@ final class PopularQuestionCell: UICollectionViewCell {
         guard let url = URL(string: question.profileImage) else { return }
         self.profileImageView.kf.setImage(with: url)
         
-        let expiredAt = Date().getRemainedTime(date: question.expiredAt)
-        
-        expiredLabel.text = "\(expiredAt) 남음"
+        expiredLabel.text = "\(question.remainedTime) 남음"
     }
 }

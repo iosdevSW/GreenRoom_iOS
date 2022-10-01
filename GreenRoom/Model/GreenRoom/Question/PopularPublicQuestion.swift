@@ -13,5 +13,9 @@ struct PopularPublicQuestion: Codable {
     let categoryName, profileImage, name: String
     let participants: Int
     let question, expiredAt: String
+    
+    var remainedTime: String {
+        return Date().getRemainedTime(date: expiredAt)
+    }
 }
 
