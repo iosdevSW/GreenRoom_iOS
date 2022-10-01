@@ -10,11 +10,22 @@ import RxSwift
 
 final class KPMainViewController: BaseViewController {
     //MARK: - Properties
+    private let viewModel: KeywordViewModel
     
-    let viewModel: KeywordViewModel
-    lazy var groupView = GroupView().then {
+    private lazy var groupView = GroupView().then {
         $0.groupCountingLabel.text = "그룹을 추가해주세요 :)"
-        $0.addGroupButton.addTarget(self, action: #selector(self.didClickAddGroupButton(_:)), for: .touchUpInside)
+    }
+    
+    private let findQuestionButton = ChevronButton(type: .system).then {
+        $0.setConfigure(title: "면접 질문 찾기",
+                        bgColor: .mainColor,
+                        radius: 15)
+    }
+    
+    private let participatedQuestionsButton = ChevronButton(type: .system).then {
+        $0.setConfigure(title: "참여한 질문",
+                        bgColor: .sub,
+                        radius: 15)
     }
     
     //MARK: - Init
@@ -45,15 +56,6 @@ final class KPMainViewController: BaseViewController {
         print("didTapScrap")
     }
     
-    @objc func didClickAddGroupButton(_ sender: UIButton) {
-        self.navigationController?.pushViewController(KPGroupEditViewController(), animated: true)
-    }
-    
-    @objc func didclickFindButton(_ sender: UIButton) {
-        let vc = sender.tag == 0 ? KPFindQuestionViewController() : KPGreenRoomQuestionsViewController()
-        self.navigationController?.pushViewController(vc, animated: true)
-    }
-    
     @objc func didClickEditButton(_ sender: UIButton) {
         self.navigationController?.pushViewController(KPGroupEditViewController(), animated: true)
     }
@@ -69,7 +71,24 @@ final class KPMainViewController: BaseViewController {
                 cell.selectionStyle = .none
                 cell.editButton.addTarget(self, action: #selector(self.didClickEditButton(_:)), for: .touchUpInside)
             }.disposed(by: disposeBag)
-        //그룹 데이터 한번 더 구독하여 nil일 경우 등록된 글 없음처리해주기.
+        
+        findQuestionButton.rx.tap
+            .bind(onNext: { [weak self] _ in
+                let vc =  KPFindQuestionViewController()
+                self?.navigationController?.pushViewController(vc, animated: true)
+            }).disposed(by: disposeBag)
+        
+        participatedQuestionsButton.rx.tap
+            .bind(onNext: { [weak self] _ in
+                let vc = KPGreenRoomQuestionsViewController()
+                self?.navigationController?.pushViewController(vc, animated: true)
+            }).disposed(by: disposeBag)
+        
+        self.groupView.addGroupButton.rx.tap
+            .bind(onNext: { [weak self] in
+                self?.navigationController?.pushViewController(KPGroupEditViewController(), animated: true)
+            }).disposed(by: disposeBag)
+            
     }
     
     //MARK: - ConfigureUI
@@ -86,34 +105,20 @@ final class KPMainViewController: BaseViewController {
             }
         }
         
-        let findQuestionButton = ChevronButton(type: .system).then {
-            $0.setConfigure(title: "면접 질문 찾기",
-                            bgColor: .mainColor,
-                            radius: 15)
-            $0.tag = 0
-            self.view.addSubview($0)
-            $0.addTarget(self, action: #selector(didclickFindButton(_:)), for: .touchUpInside)
-            $0.snp.makeConstraints{ make in
-                make.leading.equalToSuperview().offset(38)
-                make.trailing.equalToSuperview().offset(-38)
-                make.top.equalTo(keywordLabel.snp.bottom).offset(33)
-                make.height.equalTo(55)
-            }
+        self.view.addSubview(self.findQuestionButton)
+        self.findQuestionButton.snp.makeConstraints{ make in
+            make.leading.equalToSuperview().offset(38)
+            make.trailing.equalToSuperview().offset(-38)
+            make.top.equalTo(keywordLabel.snp.bottom).offset(33)
+            make.height.equalTo(55)
         }
         
-        let participatedQuestionsButton = ChevronButton(type: .system).then {
-            $0.setConfigure(title: "참여한 질문",
-                            bgColor: .sub,
-                            radius: 15)
-            $0.tag = 1
-            self.view.addSubview($0)
-            $0.addTarget(self, action: #selector(didclickFindButton(_:)), for: .touchUpInside)
-            $0.snp.makeConstraints{ make in
-                make.leading.equalToSuperview().offset(38)
-                make.trailing.equalToSuperview().offset(-38)
-                make.top.equalTo(findQuestionButton.snp.bottom).offset(12)
-                make.height.equalTo(55)
-            }
+        self.view.addSubview(self.participatedQuestionsButton)
+        self.participatedQuestionsButton.snp.makeConstraints{ make in
+            make.leading.equalToSuperview().offset(38)
+            make.trailing.equalToSuperview().offset(-38)
+            make.top.equalTo(findQuestionButton.snp.bottom).offset(12)
+            make.height.equalTo(55)
         }
         
         self.view.addSubview(self.groupView)

@@ -7,7 +7,7 @@
 
 import UIKit
 
-class GroupView: UIView {
+final class GroupView: UIView {
     //MARK: - Properties
     lazy var groupTableView = UITableView().then {
         $0.backgroundColor = .clear
@@ -38,11 +38,11 @@ class GroupView: UIView {
         }
     }
     
-    let notFoundImageView = UIImageView().then {
+    private let notFoundImageView = UIImageView().then {
         $0.image = UIImage(named: "NotFound")?.withRenderingMode(.alwaysOriginal)
     }
     
-    let guideLabel = UILabel().then {
+    private let guideLabel = UILabel().then {
         $0.text = "등록된 글이 없어요"
         $0.textColor = UIColor(red: 0.341, green: 0.757, blue: 0.718, alpha: 1).withAlphaComponent(0.2)
         $0.font = .sfPro(size: 12, family: .Bold)

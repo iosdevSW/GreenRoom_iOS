@@ -7,9 +7,9 @@
 
 import UIKit
 
-class KPGroupsViewController: BaseViewController {
+final class KPGroupsViewController: BaseViewController {
     //MARK: - Properties
-    let viewModel: BaseQuestionsViewModel
+    private let viewModel: BaseQuestionsViewModel
     
     let groupView = GroupView().then {
         $0.groupCountingLabel.text = "총 N개의 그룹"

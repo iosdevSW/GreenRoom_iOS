@@ -8,36 +8,36 @@
 import UIKit
 import RxCocoa
 
-class KPQuestionsViewController: BaseViewController {
+final class KPQuestionsViewController: BaseViewController {
     //MARK: - Properties
     private let viewmodel: KeywordViewModel
     private var isEditingMode = false
     
-    let categoryLabel = PaddingLabel(padding: .init(top: 2, left: 10, bottom: 2, right: 10)).then {
+    private let categoryLabel = PaddingLabel(padding: .init(top: 2, left: 10, bottom: 2, right: 10)).then {
         $0.text = "공통"
         $0.backgroundColor = .mainColor
         $0.textColor = .white
         $0.font = .sfPro(size: 16, family: .Semibold)
     }
     
-    let groupNameLabel = UILabel().then {
+    private let groupNameLabel = UILabel().then {
         $0.text = "그룹이름제한10글자"
         $0.textColor = .black
         $0.font = .sfPro(size: 20, family: .Bold)
     }
     
-    let allSelectButton = UIButton(type: .system).then {
+    private let allSelectButton = UIButton(type: .system).then {
         $0.setTitle("모두선택", for: .normal)
         $0.setTitleColor(.mainColor, for: .normal)
     }
     
-    let questionCountingLabel = UILabel().then {
+    private let questionCountingLabel = UILabel().then {
         $0.text = "질문N개"
         $0.textColor = .black
         $0.font = .sfPro(size: 12, family: .Regular)
     }
     
-    let keywordOnButton = UIButton(type: .system).then{
+    private let keywordOnButton = UIButton(type: .system).then{
         $0.setTitle("키워드 ON", for: .normal)
         $0.setTitleColor(.white, for: .normal)
         $0.titleLabel?.font = .sfPro(size: 16, family: .Semibold)
@@ -52,7 +52,7 @@ class KPQuestionsViewController: BaseViewController {
         $0.layer.shadowOffset = CGSize(width: 0, height: 5)
     }
     
-    let keywordOffButton = UIButton(type: .system).then{
+    private let keywordOffButton = UIButton(type: .system).then{
         $0.setTitle("키워드 OFF", for: .normal)
         $0.setTitleColor(.white, for: .normal)
         $0.titleLabel?.font = .sfPro(size: 16, family: .Semibold)
@@ -66,7 +66,7 @@ class KPQuestionsViewController: BaseViewController {
         $0.layer.shadowOffset = CGSize(width: 0, height: 5)
     }
     
-    let moveGroupButton = UIButton(type: .system).then{
+    private let moveGroupButton = UIButton(type: .system).then{
         $0.setTitle("그룹이동", for: .normal)
         $0.setTitleColor(.white, for: .normal)
         $0.titleLabel?.font = .sfPro(size: 16, family: .Semibold)
@@ -81,7 +81,7 @@ class KPQuestionsViewController: BaseViewController {
         $0.layer.shadowOffset = CGSize(width: 0, height: 5)
     }
     
-    let deleteQuestionButton = UIButton(type: .system).then{
+    private let deleteQuestionButton = UIButton(type: .system).then{
         $0.setTitle("키워드 OFF", for: .normal)
         $0.setTitleColor(.white, for: .normal)
         $0.titleLabel?.font = .sfPro(size: 16, family: .Semibold)
@@ -95,7 +95,7 @@ class KPQuestionsViewController: BaseViewController {
         $0.layer.shadowOffset = CGSize(width: 0, height: 5)
     }
     
-    var questionListTableView = UITableView().then{
+    private var questionListTableView = UITableView().then{
         $0.backgroundColor = .white
         $0.register(QuestionListCell.self, forCellReuseIdentifier: "QuestionListCell")
         $0.allowsMultipleSelection = true
@@ -103,7 +103,7 @@ class KPQuestionsViewController: BaseViewController {
         $0.allowsMultipleSelectionDuringEditing = true
     }
     
-    let practiceInterviewButton = UIButton(type: .system).then{
+    private let practiceInterviewButton = UIButton(type: .system).then{
         $0.backgroundColor = .mainColor
         $0.setTitle("n개의 면접 연습하기", for: .normal)
         $0.setTitleColor(.white, for: .normal)

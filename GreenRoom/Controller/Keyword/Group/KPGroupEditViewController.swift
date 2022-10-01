@@ -9,10 +9,11 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-class KPGroupEditViewController: BaseViewController {
+final class KPGroupEditViewController: BaseViewController {
     //MARK: - Properties
+    private let viewModel = CategoryViewModel()
+    
     private var categoryCollectionView: UICollectionView!
-    let categoryViewModel = CategoryViewModel()
     
     private lazy var questionTextView = UITextView().then {
         $0.font = .sfPro(size: 16, family: .Regular)
@@ -26,7 +27,7 @@ class KPGroupEditViewController: BaseViewController {
         $0.layer.borderWidth = 2
     }
     
-    let completeButton = UIButton(type: .system).then{
+    private let completeButton = UIButton(type: .system).then{
         $0.backgroundColor = .mainColor
         $0.setTitle("작성완료", for: .normal)
         $0.setTitleColor(.white, for: .normal)
@@ -52,7 +53,7 @@ class KPGroupEditViewController: BaseViewController {
     
     //MARK: - Bind
     override func setupBinding() {
-        self.categoryViewModel.categories
+        self.viewModel.categories
             .bind(to: self.categoryCollectionView.rx.items(cellIdentifier: "categoryCell", cellType: CategoryCell.self)) {index, title ,cell in
                 let id = index + 1
                 guard let category = CategoryID(rawValue: id) else { return }
@@ -71,7 +72,7 @@ class KPGroupEditViewController: BaseViewController {
                 guard let category = CategoryID(rawValue: index) else { return }
                 cell.frameView.layer.borderColor = UIColor.mainColor.cgColor
                 cell.imageView.image = category.SelectedImage
-                self?.categoryViewModel.selectedCategoryObservable.accept(category.rawValue)
+                self?.viewModel.selectedCategoryObservable.accept(category.rawValue)
                 
             }).disposed(by: disposeBag)
         
@@ -88,7 +89,7 @@ class KPGroupEditViewController: BaseViewController {
         
      
         PublishSubject<[String:String]>
-            .combineLatest(self.categoryViewModel.selectedCategoryObservable, questionTextView.rx.text,
+            .combineLatest(self.viewModel.selectedCategoryObservable, questionTextView.rx.text,
                            resultSelector: {[
                             "id" : String($0),
                             "text" : $1!
