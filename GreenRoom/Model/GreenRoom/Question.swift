@@ -15,7 +15,4 @@ struct Question: Codable {
     let question: String
 }
 
-struct UploadQuestionModel: Codable {
-    let categoryId: Int
-    let question: String
-}
+
