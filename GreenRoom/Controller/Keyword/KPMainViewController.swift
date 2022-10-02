@@ -60,7 +60,7 @@ final class KPMainViewController: BaseViewController {
         guard let group = viewModel.groupsObservable.value.filter({ $0.id == sender.tag}).first else { return }
     
         let vc = KPGroupEditViewController(groupId: group.id,
-                                           categoryId: 1,
+                                           categoryId: group.categoryId,
                                            categoryName: group.name)
         
         self.navigationController?.pushViewController(vc, animated: true)
@@ -72,7 +72,7 @@ final class KPMainViewController: BaseViewController {
         viewModel.groupsObservable
             .bind(to: groupView.groupTableView.rx.items(cellIdentifier: "GroupCell", cellType: GroupCell.self)) { index, item, cell in
                 cell.groupNameLabel.text = item.name
-                cell.categoryLabel.text = item.categoryName
+                cell.categoryLabel.text = CategoryID(rawValue: item.categoryId)?.title
                 cell.questionCountingLabel.text = "질문 \(item.questionCnt)개"
                 cell.selectionStyle = .none
                 cell.editButton.tag = item.id
