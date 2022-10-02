@@ -133,6 +133,7 @@
 		E47D1D1E28E9AC82004EE4DE /* FileringViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E47D1D1D28E9AC82004EE4DE /* FileringViewModel.swift */; };
 		E47D1D2028E9B4FA004EE4DE /* FileringSectionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E47D1D1F28E9B4FA004EE4DE /* FileringSectionModel.swift */; };
 		E47D1D2328E9BC21004EE4DE /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = E47D1D2228E9BC21004EE4DE /* Category.swift */; };
+		E47D1D2528E9C5BA004EE4DE /* MyPublicQuestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = E47D1D2428E9C5BA004EE4DE /* MyPublicQuestion.swift */; };
 		E47EE51628C48B7800618CA6 /* SFProText-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = E49CC16B28C331E4009216E1 /* SFProText-Semibold.otf */; };
 		E48F6C6328E340490083B74A /* Auth.swift in Sources */ = {isa = PBXBuildFile; fileRef = E48F6C6228E340490083B74A /* Auth.swift */; };
 		E48F8B4F28C26864007AAF40 /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E48F8B4E28C26864007AAF40 /* AuthManager.swift */; };
@@ -299,6 +300,7 @@
 		E47D1D1D28E9AC82004EE4DE /* FileringViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileringViewModel.swift; sourceTree = "<group>"; };
 		E47D1D1F28E9B4FA004EE4DE /* FileringSectionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileringSectionModel.swift; sourceTree = "<group>"; };
 		E47D1D2228E9BC21004EE4DE /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
+		E47D1D2428E9C5BA004EE4DE /* MyPublicQuestion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPublicQuestion.swift; sourceTree = "<group>"; };
 		E48F6C6228E340490083B74A /* Auth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Auth.swift; sourceTree = "<group>"; };
 		E48F8B4E28C26864007AAF40 /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
 		E49CC15528C326DA009216E1 /* EditProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewModel.swift; sourceTree = "<group>"; };
@@ -577,11 +579,11 @@
 		DBD082382897E75A0092241F /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				DB9D9F3C28E702200061D7DB /* Common */,
 				DB9D9F4628E702740061D7DB /* Answer */,
 				DB9D9F4128E702390061D7DB /* Keyword */,
-				DB9D9F3C28E702200061D7DB /* Common */,
-				E49CC15428C326CD009216E1 /* MyPage */,
 				E47EE51028C47D9800618CA6 /* GreenRoom */,
+				E49CC15428C326CD009216E1 /* MyPage */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -925,6 +927,13 @@
 			path = Common;
 			sourceTree = "<group>";
 		};
+		E47D1D2628E9CA2C004EE4DE /* Answer */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Answer;
+			sourceTree = "<group>";
+		};
 		E47EE51028C47D9800618CA6 /* GreenRoom */ = {
 			isa = PBXGroup;
 			children = (
@@ -941,6 +950,7 @@
 		E47EE51228C47F0C00618CA6 /* GreenRoom */ = {
 			isa = PBXGroup;
 			children = (
+				E47D1D2628E9CA2C004EE4DE /* Answer */,
 				E44456FE28E763F80034A207 /* Create */,
 				E4F8888C28E5E4FC00840101 /* Question */,
 				E49EF3D128B5375D00358340 /* Question.swift */,
@@ -1071,6 +1081,7 @@
 				E4F8888A28E5E36300840101 /* PopularPublicQuestion.swift */,
 				E4EC67B228E205A600469D17 /* GreenRoomQuestion.swift */,
 				E4EC67AD28E1D22300469D17 /* PrivateQuestion.swift */,
+				E47D1D2428E9C5BA004EE4DE /* MyPublicQuestion.swift */,
 			);
 			path = Question;
 			sourceTree = "<group>";
@@ -1282,6 +1293,7 @@
 				E46E4BEF28DD732900D1691F /* UIColor+.swift in Sources */,
 				E4206CD428D5E2F90011E117 /* CreateGRHeaderView.swift in Sources */,
 				DBD082602897E7740092241F /* LoginService.swift in Sources */,
+				E47D1D2528E9C5BA004EE4DE /* MyPublicQuestion.swift in Sources */,
 				E46E4BFE28E0AE9200D1691F /* AnswerMode.swift in Sources */,
 				E46E4C0228E147E900D1691F /* UITextView+.swift in Sources */,
 				DBA8ED7C28BF931F007526CF /* ReviewCell.swift in Sources */,
