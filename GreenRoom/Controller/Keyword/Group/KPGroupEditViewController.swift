@@ -8,6 +8,7 @@
 import UIKit
 import RxSwift
 import RxCocoa
+import Alamofire
 
 final class KPGroupEditViewController: BaseViewController {
     //MARK: - Properties
@@ -62,10 +63,21 @@ final class KPGroupEditViewController: BaseViewController {
         super.viewDidLoad()
         self.view.backgroundColor = .white
         self.hideKeyboardWhenTapped()
+        
+        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.left"),
+                                                           style: .plain,
+                                                           target: self,
+                                                           action: #selector(dismissal))
+        navigationItem.leftBarButtonItem?.tintColor = .mainColor
     }
     
     override func viewWillAppear(_ animated: Bool) {
         self.tabBarController?.tabBar.isHidden = true
+    }
+    
+    //MARK: - Selector
+    @objc func dismissal(){
+        self.dismiss(animated: false)
     }
     
     //MARK: - Bind
@@ -149,12 +161,12 @@ final class KPGroupEditViewController: BaseViewController {
                     KeywordPracticeService().editGroup(groupId: groupId,
                                                        categoryId: categoryId,
                                                        categoryName: categoryName){ isSuccess in
-                        vc.navigationController?.popViewController(animated: true)
+                        self?.dismiss(animated: true)
                     }
                 }else { // 추가
                     KeywordPracticeService().addGroup(categoryId: categoryId,
                                                       categoryName: categoryName){ isSuccess in
-                        vc.navigationController?.popViewController(animated: true)
+                        self?.dismiss(animated: true)
                     }
                 }
                 

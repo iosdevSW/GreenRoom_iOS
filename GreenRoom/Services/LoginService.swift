@@ -66,16 +66,11 @@ class LoginService{
     }
     
     static func logout()->Observable<Bool>{
-        let accessToken = KeychainWrapper.standard.string(forKey: "accessToken")!
-        
-        let headers: HTTPHeaders = [
-            "Authorization": "Bearer \(accessToken)"
-        ]
-        
         let urlString = Constants.baseURL + "/api/auth/logout"
         let url = URL(string: urlString)!
+        
         return Observable.create{ emitter in
-            AF.request(url, method: .post, headers: headers,interceptor: AuthManager()).validate().response { response in
+            AF.request(url, method: .post, interceptor: AuthManager()).validate().response { response in
                 switch response.result {
                 case .success(_):
                     print("성공")

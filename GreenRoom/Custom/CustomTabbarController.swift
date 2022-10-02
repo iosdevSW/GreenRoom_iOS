@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Alamofire
 
 final class CustomTabbarController: UITabBarController {
     
@@ -24,8 +25,7 @@ final class CustomTabbarController: UITabBarController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        NotificationCenter.default.addObserver(self, selector: #selector(didTapUpdateCategories(_:)), name: .categoryObserver, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(showLoginViewController), name: .authenticationObserver, object: nil)
+        addObserver()
         initView()
     }
     
@@ -54,6 +54,7 @@ final class CustomTabbarController: UITabBarController {
         }
     }
     
+    //MARK: - Selector
     @objc func didTapUpdateCategories(_ notification: NSNotification) {
         guard let viewModel = notification.userInfo?["viewModel"] as? CategoryViewModel else { return }
         let vc = CategorySelectViewController(viewModel: viewModel)
@@ -70,6 +71,32 @@ final class CustomTabbarController: UITabBarController {
         popoverVC.popoverPresentationController?.permittedArrowDirections = .init(rawValue: 0)
         popoverVC.delegate = self
         self.present(popoverVC, animated: true, completion: nil)
+    }
+    
+    @objc func didTapEditGroupButton(_ notification: NSNotification) {
+        guard let group = notification.userInfo?["groupEdit"] as? GroupModel else { return }
+        let EditVC = KPGroupEditViewController(groupId: group.id,
+                                           categoryId: group.categoryId,
+                                           categoryName: group.name)
+        let vc = UINavigationController(rootViewController: EditVC)
+        vc.modalPresentationStyle = .fullScreen
+        present(vc, animated: true)
+    }
+    
+    @objc func didTapAddGroupButton(_ notification: NSNotification) {
+        let vc = UINavigationController(rootViewController: KPGroupEditViewController())
+        vc.modalPresentationStyle = .fullScreen
+        present(vc, animated: true)
+    }
+    
+    
+    
+    //MARK: - AddObserver
+    func addObserver(){
+        NotificationCenter.default.addObserver(self, selector: #selector(didTapUpdateCategories(_:)), name: .categoryObserver, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(showLoginViewController), name: .authenticationObserver, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(didTapEditGroupButton(_:)), name: .editGroupObserver, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(didTapAddGroupButton(_:)), name: .AddGroupObserver, object: nil)
     }
 }
 extension CustomTabbarController: UIPopoverPresentationControllerDelegate {

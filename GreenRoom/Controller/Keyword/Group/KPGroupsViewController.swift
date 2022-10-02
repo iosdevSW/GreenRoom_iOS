@@ -11,8 +11,7 @@ final class KPGroupsViewController: BaseViewController {
     //MARK: - Properties
     private let viewModel: BaseQuestionsViewModel
     
-    let groupView = GroupView().then {
-//        $0.groupCountingLabel.text = "총 N개의 그룹"
+    let groupView = GroupView(viewModel: GroupViewModel()).then {
         $0.backgroundColor = .white
     }
     
@@ -30,6 +29,18 @@ final class KPGroupsViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        groupView.viewModel.updateGroupList()
+    }
+    
+    //MARK: Selector
+    
+    //MARK: - Bind
+    override func setupBinding() {
+      
     }
     
     //MARK: - ConfigureUI

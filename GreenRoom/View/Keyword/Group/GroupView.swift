@@ -6,22 +6,13 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
 
 final class GroupView: UIView {
     //MARK: - Properties
-    var groupStatus: GroupStatus = .zero {
-        didSet {
-            if groupStatus == .zero {
-                groupCountingLabel.text = "그룹을 추가해주세요 :)"
-                notFoundImageView.isHidden = false
-                guideLabel.isHidden = false
-            } else {
-                groupCountingLabel.text = "총 N개의 그룹"
-                notFoundImageView.isHidden = true
-                guideLabel.isHidden = true
-            }
-        }
-    }
+    let viewModel: GroupViewModel
+    let disposeBag = DisposeBag()
     
     lazy var groupTableView = UITableView().then {
         $0.backgroundColor = .clear
@@ -63,8 +54,10 @@ final class GroupView: UIView {
     }
     
     //MARK: - Init
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    init(viewModel: GroupViewModel) {
+        self.viewModel = viewModel
+        super.init(frame: .zero)
+        self.bind()
         self.backgroundColor = .customGray.withAlphaComponent(0.1)
         
         configureUI()
@@ -72,6 +65,57 @@ final class GroupView: UIView {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func setColorHilightAttribute(text: String, hilightString: String, color: UIColor) -> NSMutableAttributedString {
+        let attributedStr = NSMutableAttributedString(string: text)
+        attributedStr.addAttribute(.foregroundColor, value: color, range: (text as NSString).range(of: hilightString))
+        
+        return attributedStr
+    }
+    
+    //MARK: - Selector
+    @objc func didClickEditButton(_ sender: UIButton) {
+        guard let group = viewModel.groupsObservable.value.filter({ $0.id == sender.tag}).first else { return }
+    
+        NotificationCenter.default.post(name: .editGroupObserver, object: nil, userInfo: ["groupEdit" : group ] )
+    }
+    
+    //MARK: Bind
+    func bind() {
+        viewModel.groupsObservable
+            .bind(to: self.groupTableView.rx.items(cellIdentifier: "GroupCell", cellType: GroupCell.self)) { index, item, cell in
+                cell.groupNameLabel.text = item.name
+                cell.categoryLabel.text = CategoryID(rawValue: item.categoryId)?.title
+                cell.questionCountingLabel.attributedText = self.setColorHilightAttribute(text: "질문 \(item.questionCnt)개",
+                                                                                     hilightString: "\(item.questionCnt)",
+                                                                                     color: .point)
+                cell.selectionStyle = .none
+                cell.editButton.tag = item.id
+                
+                cell.editButton.addTarget(self, action: #selector(self.didClickEditButton(_:)), for: .touchUpInside)
+            }.disposed(by: disposeBag)
+        
+        viewModel.groupCounting
+            .bind(onNext: { [weak self] count in
+                if count == 0 {
+                    self?.groupCountingLabel.text = "그룹을 추가해주세요 :)"
+                    self?.notFoundImageView.isHidden = false
+                    self?.guideLabel.isHidden = false
+                } else {
+                    self?.notFoundImageView.isHidden = true
+                    self?.guideLabel.isHidden = true
+                    self?.groupCountingLabel.attributedText = self?.setColorHilightAttribute(text: "총 \(count)개의 그룹",
+                                                                                       hilightString: "\(count)개",
+                                                                                       color: .point)
+                }
+            }).disposed(by: disposeBag)
+        
+        self.addGroupButton.rx.tap
+            .bind(onNext: {
+                NotificationCenter.default.post(name: .AddGroupObserver, object: nil)
+            }).disposed(by: disposeBag)
+        
     }
     
     //MARK: - ConfigureUI

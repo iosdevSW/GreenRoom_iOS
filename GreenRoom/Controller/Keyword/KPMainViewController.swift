@@ -12,7 +12,7 @@ final class KPMainViewController: BaseViewController {
     //MARK: - Properties
     private let viewModel: KeywordViewModel
     
-    private lazy var groupView = GroupView()
+    private lazy var groupView = GroupView(viewModel: GroupViewModel())
     
     private let findQuestionButton = ChevronButton(type: .system).then {
         $0.setConfigure(title: "면접 질문 찾기",
@@ -47,8 +47,7 @@ final class KPMainViewController: BaseViewController {
         super.viewWillAppear(animated)
         self.tabBarController?.tabBar.isHidden = false
         self.viewModel.selectedQuestionTemp = [] // 선택된 질문 초기화
-        self.viewModel.updateGroupList()
-        print("리셋되라!")
+        self.groupView.viewModel.updateGroupList()
     }
     
     //MARK: - Selector
@@ -56,39 +55,8 @@ final class KPMainViewController: BaseViewController {
         print("didTapScrap")
     }
     
-    @objc func didClickEditButton(_ sender: UIButton) {
-        guard let group = viewModel.groupsObservable.value.filter({ $0.id == sender.tag}).first else { return }
-    
-        let vc = KPGroupEditViewController(groupId: group.id,
-                                           categoryId: group.categoryId,
-                                           categoryName: group.name)
-        
-        self.navigationController?.pushViewController(vc, animated: true)
-    }
-    
     //MARK: - Bind
     override func setupBinding() {
-        //그룹뷰 테이블 뷰 바인딩
-        viewModel.groupsObservable
-            .bind(to: groupView.groupTableView.rx.items(cellIdentifier: "GroupCell", cellType: GroupCell.self)) { index, item, cell in
-                cell.groupNameLabel.text = item.name
-                cell.categoryLabel.text = CategoryID(rawValue: item.categoryId)?.title
-                cell.questionCountingLabel.text = "질문 \(item.questionCnt)개"
-                cell.selectionStyle = .none
-                cell.editButton.tag = item.id
-                
-                cell.editButton.addTarget(self, action: #selector(self.didClickEditButton(_:)), for: .touchUpInside)
-            }.disposed(by: disposeBag)
-        
-        viewModel.groupCounting
-            .bind(onNext: { [weak self] count in
-                if count == 0 {
-                    self?.groupView.groupStatus = .zero
-                } else {
-                    self?.groupView.groupStatus = .notZero
-                }
-            }).disposed(by: disposeBag)
-        
         findQuestionButton.rx.tap
             .bind(onNext: { [weak self] _ in
                 let vc =  KPFindQuestionViewController()
@@ -100,12 +68,6 @@ final class KPMainViewController: BaseViewController {
                 let vc = KPGreenRoomQuestionsViewController()
                 self?.navigationController?.pushViewController(vc, animated: true)
             }).disposed(by: disposeBag)
-        
-        self.groupView.addGroupButton.rx.tap
-            .bind(onNext: { [weak self] in
-                self?.navigationController?.pushViewController(KPGroupEditViewController(), animated: true)
-            }).disposed(by: disposeBag)
-            
     }
     
     //MARK: - ConfigureUI

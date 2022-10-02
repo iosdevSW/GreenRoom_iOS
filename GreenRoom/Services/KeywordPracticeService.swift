@@ -14,7 +14,7 @@ class KeywordPracticeService {
     ///기본,그린룸 질문조회
     func fetchReferenceQuestions(categoryId: String?, title: String?)-> Observable<[QuestionModel]>{
     
-        let urlString = Constants.baseURL + "/api/-questions"
+        let urlString = Constants.baseURL + "/api/interview-questions"
 
         let url = URL(string: urlString)!
         
@@ -24,7 +24,7 @@ class KeywordPracticeService {
             
         if categoryId != nil { param?["category"] = categoryId }
         if title != nil { param?["title"] = title }
-        
+
         return Observable.create { emitter in
             let request = AF.request(url, method: .get, parameters: param ,encoding: URLEncoding.default, interceptor: AuthManager())
             
@@ -32,7 +32,6 @@ class KeywordPracticeService {
                 switch res.result {
                 case .success(let data):
                     emitter.onNext(data)
-                    emitter.onCompleted()
                 case .failure(let error):
                     print(error.localizedDescription)
                 }
@@ -48,7 +47,6 @@ class KeywordPracticeService {
         
         return Observable.create{ emitter in
             let request = AF.request(url, method: .get, interceptor: AuthManager())
-            
             request.responseDecodable(of: [GroupModel].self) { response in
                 switch response.result {
                 case .success(let data):

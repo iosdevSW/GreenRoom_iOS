@@ -13,8 +13,3 @@ struct GroupModel: Codable {
     let categoryId: Int
     let questionCnt: Int
 }
-
-enum GroupStatus {
-    case zero
-    case notZero
-}

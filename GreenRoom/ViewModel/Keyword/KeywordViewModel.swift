@@ -13,11 +13,7 @@ class KeywordViewModel {
     let disposeBag = DisposeBag()
     
     let selectedQuestionObservable = BehaviorSubject<[String]>.init(value: []) // 선택된 연습 질문
-    
-    // 그룹
-    let groupsObservable = BehaviorRelay<[GroupModel]>(value: [])
-    let groupCounting = PublishSubject<Int>()
-    
+
     var selectedQ = BehaviorSubject<[KPDetailModel]>.init(value:[
         KPDetailModel.init(items: [])
     ])
@@ -39,17 +35,5 @@ class KeywordViewModel {
         selectedQuestionObservable.subscribe(onNext: { str in
             self.selectedQ.onNext([KPDetailModel(items: str)])
         }).disposed(by: disposeBag)
-        
-        groupsObservable.asObservable()
-            .map{ $0.count }
-            .bind(to: groupCounting)
-            .disposed(by: disposeBag)
     }
-    
-    func updateGroupList(){
-        KeywordPracticeService().fetchGroupList()
-            .bind(to: groupsObservable)
-            .disposed(by: disposeBag)
-    }
-    
 }
