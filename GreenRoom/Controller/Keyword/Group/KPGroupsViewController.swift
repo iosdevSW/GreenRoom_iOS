@@ -40,7 +40,15 @@ final class KPGroupsViewController: BaseViewController {
     
     //MARK: - Bind
     override func setupBinding() {
-      
+        groupView.groupTableView.rx.modelSelected(GroupModel.self).asDriver()
+            .map { $0.id }
+            .drive(onNext: { [weak self] groupId in
+                guard let question = self?.viewModel.selectedQuestionObservable.value else { return }
+                KeywordPracticeService().addInterViewQuestion(groupId: groupId,
+                                                              questionId: question.id,
+                                                              questionTypeCode: question.questionTypeCode)
+                self?.navigationController?.popViewController(animated: true)
+            }).disposed(by: disposeBag)
     }
     
     //MARK: - ConfigureUI

@@ -128,8 +128,9 @@ final class KPFindQuestionViewController: BaseViewController{
                 cell.selectionStyle = .none
             }.disposed(by: disposeBag)
         
-        questionListTableView.rx.itemSelected
-            .bind(onNext: { indexPath in // 서비스 로직시엔 Id로 다룰 것 같음
+        questionListTableView.rx.modelSelected(ReferenceQuestionModel.self)
+            .bind(onNext: { question in
+                self.viewModel.selectedQuestionObservable.accept(question)
                 self.navigationController?.pushViewController(KPGroupsViewController(viewModel: self.viewModel), animated: true)
             }).disposed(by: disposeBag)
         

@@ -201,8 +201,8 @@ final class KPQuestionsViewController: BaseViewController {
     
     //MARK: - Bind
     override func setupBinding() {
-        viewmodel.groupInfo.asDriver()
-            .drive(onNext: { [weak self] groupInfo in
+        viewmodel.groupInfo
+            .bind(onNext: { [weak self] groupInfo in
                 guard let info = groupInfo else { return }
                 self?.categoryLabel.text = info.categoryName
                 self?.groupNameLabel.text = info.name
@@ -224,6 +224,7 @@ final class KPQuestionsViewController: BaseViewController {
             let registerTextColor = item.register == true ? UIColor.point : UIColor.customDarkGray
             cell.questionTypeLabel.text = registerText
             cell.questionTypeLabel.textColor = registerTextColor
+            cell.categoryLabel.text = item.categoryName
             
             if self.isEditingMode {
                 cell.chevronButton.isHidden = true

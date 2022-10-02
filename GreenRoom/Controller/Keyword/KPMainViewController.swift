@@ -77,7 +77,6 @@ final class KPMainViewController: BaseViewController {
                 vc.viewModel.selectedGroupID.accept(groupID)
                 vc.navigationController?.pushViewController(KPQuestionsViewController(viewModel: vc.viewModel), animated: true)
             }).disposed(by: disposeBag)
-        
     }
     
     //MARK: - ConfigureUI

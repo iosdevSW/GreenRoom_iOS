@@ -48,6 +48,7 @@ class KeywordPracticeService {
             request.responseDecodable(of: GroupQuestionModel.self) { response in
                 switch response.result {
                 case .success(let model):
+                    print(model)
                     emitter.onNext(model)
                 case .failure(let error):
                     emitter.onError(error)
@@ -56,7 +57,31 @@ class KeywordPracticeService {
             }
             return Disposables.create()
         }
+    }
+    
+    ///면접 연습용 질문 담기
+    func addInterViewQuestion(groupId: Int, questionId: Int, questionTypeCode: Int) {
+        let urlString = Constants.baseURL + "/api/interview-questions"
+        let url = URL(string: urlString)!
         
+        let param: Parameters = [
+            "groupId" : groupId,
+            "questionId" : questionId,
+            "questionTypeCode" : questionTypeCode
+        ]
+        print(param)
+        
+        let request = AF.request(url, method: .post, parameters: param, encoding: JSONEncoding.default, interceptor: AuthManager()).validate(statusCode: 200..<300)
+        
+        request.responseString(){ response in
+            switch response.result {
+            case .success(_):
+                print("성공")
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+
     }
     
     ///그룹 목록 조회
