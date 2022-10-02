@@ -10,9 +10,10 @@ import UIKit
 final class FilterItemsCell: UICollectionViewCell {
     
     //MARK: - Properties
-    var category: CategoryID? {
+    var category: Category? {
         didSet { configure() }
     }
+    
     private let itemLabel = UILabel().then{
         $0.textColor = . customGray
         $0.font = .sfPro(size: 12, family: .Regular)

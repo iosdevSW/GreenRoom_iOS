@@ -8,7 +8,21 @@
 import UIKit
 
 class CategoryCell: UICollectionViewCell {
+    
     //MARK: - Properties
+    var category: Category! {
+        didSet { configure() }
+    }
+    
+    override var isSelected: Bool {
+        didSet {
+            self.frameView.layer.borderColor = self.isSelected ? UIColor.mainColor.cgColor : UIColor.customGray.cgColor
+            
+            let imageName = self.isSelected ? category.selectedImageName : category.defaultImageName
+            self.imageView.image = UIImage(named: imageName)
+        }
+    }
+    
     let frameView = UIView().then{
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.layer.borderWidth = 2
@@ -26,9 +40,12 @@ class CategoryCell: UICollectionViewCell {
         $0.font = .sfPro(size: 12, family: .Semibold)
         $0.textColor = .customDarkGray
     }
+    
     //MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
+        self.layer.borderColor = UIColor.customGray.cgColor
         self.addSubview(self.frameView)
         frameView.snp.makeConstraints{ make in
             make.leading.trailing.top.equalToSuperview()
@@ -51,5 +68,10 @@ class CategoryCell: UICollectionViewCell {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func configure() {
+        self.imageView.image = UIImage(named: category.defaultImageName)
+        self.titleLabel.text = category.title
     }
 }

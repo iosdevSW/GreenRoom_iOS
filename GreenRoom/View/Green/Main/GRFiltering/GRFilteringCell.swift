@@ -12,7 +12,7 @@ final class GRFilteringCell: UICollectionViewCell {
     static let reuseIdentifier = "GRFilteringCell"
     
     //MARK: - Properties
-    var category: CategoryID! {
+    var category: Category! {
         didSet {
             self.filteringLabel.text = category.title
         }

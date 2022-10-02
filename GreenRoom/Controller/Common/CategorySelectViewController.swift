@@ -141,58 +141,40 @@ final class CategorySelectViewController: BaseViewController {
     }
     
     override func setupBinding() {
-        self.categoryCollectionView.rx.itemSelected
-            .bind(onNext: { indexPath in
-                let cell = self.categoryCollectionView.cellForItem(at: indexPath) as! CategoryCell
-                let id = indexPath.row + 1
-                
-                guard let category = CategoryID(rawValue: id) else { return }
-                
-                cell.frameView.layer.borderColor = UIColor.mainColor.cgColor
-                cell.imageView.image = category.SelectedImage
-                
-                self.viewModel.tempSelectedCategories.append(id)
-                
-        }).disposed(by: disposeBag)
         
-        self.categoryCollectionView.rx.itemDeselected
-            .bind(onNext: { [self] indexPath in
-                let cell = self.categoryCollectionView.cellForItem(at: indexPath) as! CategoryCell
-                let id = indexPath.row + 1
-                
-                guard let category = CategoryID(rawValue: id) else { return }
-                cell.frameView.layer.borderColor = UIColor.customGray.cgColor
-                cell.imageView.image = category.nonSelectedImage
-                
-                
-                if let index = self.viewModel.tempSelectedCategories.firstIndex(of: id) {
-                    viewModel.tempSelectedCategories.remove(at: index)
-                }
+        categoryCollectionView.rx.itemSelected
+            .bind(onNext: { [weak self] indexPath in
+                let cell = self?.categoryCollectionView.cellForItem(at: indexPath) as! CategoryCell
+                cell.isSelected = true
+                self?.viewModel.selectedCategoryObservable.accept(indexPath.row + 1)
                 
             }).disposed(by: disposeBag)
         
+        categoryCollectionView.rx.itemDeselected
+            .bind(onNext: { [weak self] indexPath in
+                let cell = self?.categoryCollectionView.cellForItem(at: indexPath) as! CategoryCell
+                cell.isSelected = false
+                
+                if let index = self?.viewModel.tempSelectedCategories.firstIndex(of: indexPath.row + 1) {
+                    self?.viewModel.tempSelectedCategories.remove(at: index)
+                }
+                
+            }).disposed(by: disposeBag)
+
         self.viewModel.categories
             .bind(to: self.categoryCollectionView.rx.items(cellIdentifier: "categoryCell", cellType: CategoryCell.self)) {index, title ,cell in
-                let id = index + 1
-                guard let category = CategoryID(rawValue: id) else { return }
+                guard let category = Category(rawValue: index+1) else { return }
                 
-                if self.viewModel.tempSelectedCategories.contains(id){
+                if self.viewModel.tempSelectedCategories.contains(index + 1) {
                     cell.isSelected = true
                     self.categoryCollectionView.selectItem(at: IndexPath(item: index, section: 0), animated: false, scrollPosition: .centeredVertically)
-                    cell.frameView.layer.borderColor = UIColor.mainColor.cgColor
-                    cell.imageView.image = category.SelectedImage
-                }else {
-                    cell.imageView.image = category.nonSelectedImage
-                    cell.frameView.layer.borderColor = UIColor.customGray.cgColor
                 }
-                cell.titleLabel.text = category.title
-                
+                cell.category = category
             }.disposed(by: disposeBag)
-        
         
         self.viewModel.tempSelectedCategoriesObservable
             .bind(to: self.selectedCategoriesCollectionView.rx.items(cellIdentifier: "ItemsCell", cellType: FilterItemsCell.self)) { index, id, cell in
-                cell.category = CategoryID(rawValue: id)
+                cell.category = Category(rawValue: id)
             }.disposed(by: disposeBag)
     }
 }
@@ -243,7 +225,7 @@ extension CategorySelectViewController {
 extension CategorySelectViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let id = self.viewModel.tempSelectedCategories[indexPath.item]
-        let category = CategoryID(rawValue: id)
+        let category = Category(rawValue: id)
         
         let tempLabel = UILabel()
         tempLabel.font = .sfPro(size: 12, family: .Regular)

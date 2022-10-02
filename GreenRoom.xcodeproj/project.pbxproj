@@ -101,7 +101,7 @@
 		E445856128C6143700907950 /* MyGreenRoomHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = E445856028C6143700907950 /* MyGreenRoomHeader.swift */; };
 		E445856328C6148F00907950 /* MyGreenRoomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E445856228C6148F00907950 /* MyGreenRoomCell.swift */; };
 		E445856528C619E700907950 /* MyGreenRoomFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E445856428C619E700907950 /* MyGreenRoomFooterView.swift */; };
-		E4460DD328CA01D400AFA108 /* QuestionsByCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4460DD228CA01D400AFA108 /* QuestionsByCategoryViewController.swift */; };
+		E4460DD328CA01D400AFA108 /* FilteringQuestionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4460DD228CA01D400AFA108 /* FilteringQuestionViewController.swift */; };
 		E4460DD528CA05A100AFA108 /* QuestionByCategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4460DD428CA05A100AFA108 /* QuestionByCategoryCell.swift */; };
 		E4460DD728CAF5BD00AFA108 /* GreenroomCommonHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4460DD628CAF5BD00AFA108 /* GreenroomCommonHeaderView.swift */; };
 		E44D507E28BE56A10086C447 /* PrivateQuestionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E44D507D28BE56A10086C447 /* PrivateQuestionService.swift */; };
@@ -130,6 +130,9 @@
 		E470539528AB81EC00884B56 /* MyPageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E470539428AB81EC00884B56 /* MyPageModel.swift */; };
 		E470539728AB856D00884B56 /* SettingHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = E470539628AB856D00884B56 /* SettingHeader.swift */; };
 		E470539928AB882900884B56 /* SettingRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = E470539828AB882900884B56 /* SettingRow.swift */; };
+		E47D1D1E28E9AC82004EE4DE /* FileringViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E47D1D1D28E9AC82004EE4DE /* FileringViewModel.swift */; };
+		E47D1D2028E9B4FA004EE4DE /* FileringSectionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E47D1D1F28E9B4FA004EE4DE /* FileringSectionModel.swift */; };
+		E47D1D2328E9BC21004EE4DE /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = E47D1D2228E9BC21004EE4DE /* Category.swift */; };
 		E47EE51628C48B7800618CA6 /* SFProText-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = E49CC16B28C331E4009216E1 /* SFProText-Semibold.otf */; };
 		E48F6C6328E340490083B74A /* Auth.swift in Sources */ = {isa = PBXBuildFile; fileRef = E48F6C6228E340490083B74A /* Auth.swift */; };
 		E48F8B4F28C26864007AAF40 /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E48F8B4E28C26864007AAF40 /* AuthManager.swift */; };
@@ -262,7 +265,7 @@
 		E445856028C6143700907950 /* MyGreenRoomHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyGreenRoomHeader.swift; sourceTree = "<group>"; };
 		E445856228C6148F00907950 /* MyGreenRoomCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyGreenRoomCell.swift; sourceTree = "<group>"; };
 		E445856428C619E700907950 /* MyGreenRoomFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyGreenRoomFooterView.swift; sourceTree = "<group>"; };
-		E4460DD228CA01D400AFA108 /* QuestionsByCategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionsByCategoryViewController.swift; sourceTree = "<group>"; };
+		E4460DD228CA01D400AFA108 /* FilteringQuestionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilteringQuestionViewController.swift; sourceTree = "<group>"; };
 		E4460DD428CA05A100AFA108 /* QuestionByCategoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionByCategoryCell.swift; sourceTree = "<group>"; };
 		E4460DD628CAF5BD00AFA108 /* GreenroomCommonHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GreenroomCommonHeaderView.swift; sourceTree = "<group>"; };
 		E44D507D28BE56A10086C447 /* PrivateQuestionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivateQuestionService.swift; sourceTree = "<group>"; };
@@ -293,6 +296,9 @@
 		E470539428AB81EC00884B56 /* MyPageModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageModel.swift; sourceTree = "<group>"; };
 		E470539628AB856D00884B56 /* SettingHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingHeader.swift; sourceTree = "<group>"; };
 		E470539828AB882900884B56 /* SettingRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingRow.swift; sourceTree = "<group>"; };
+		E47D1D1D28E9AC82004EE4DE /* FileringViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileringViewModel.swift; sourceTree = "<group>"; };
+		E47D1D1F28E9B4FA004EE4DE /* FileringSectionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileringSectionModel.swift; sourceTree = "<group>"; };
+		E47D1D2228E9BC21004EE4DE /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
 		E48F6C6228E340490083B74A /* Auth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Auth.swift; sourceTree = "<group>"; };
 		E48F8B4E28C26864007AAF40 /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
 		E49CC15528C326DA009216E1 /* EditProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewModel.swift; sourceTree = "<group>"; };
@@ -583,7 +589,7 @@
 		DBD0823D2897E75A0092241F /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				E427EC1528C830F60046B4AA /* CategorySelectViewController.swift */,
+				E47D1D2128E9BC02004EE4DE /* Common */,
 				DBE7A54828996BBF00E9A4E9 /* Authentication */,
 				DBD0823E2897E75A0092241F /* Green */,
 				DBD082402897E75A0092241F /* MyPage */,
@@ -683,7 +689,6 @@
 				E427EC0428C7917F0046B4AA /* Common */,
 				E40BC70D28B8990700FB557D /* CoreDataModel */,
 				E49EF3D528B5377C00358340 /* SectionModel */,
-				DBD082502897E75B0092241F /* LoginModel.swift */,
 				E47EE51228C47F0C00618CA6 /* GreenRoom */,
 				DB07821828C5B2210091EEFE /* MyPage */,
 				DBB251E728D98B2F00310820 /* QuestionModel.swift */,
@@ -792,8 +797,10 @@
 		E427EC0428C7917F0046B4AA /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				DBD082502897E75B0092241F /* LoginModel.swift */,
 				E427EC0528C791850046B4AA /* Info.swift */,
 				E48F6C6228E340490083B74A /* Auth.swift */,
+				E47D1D2228E9BC21004EE4DE /* Category.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -818,6 +825,7 @@
 		E44456FC28E735620034A207 /* Question */ = {
 			isa = PBXGroup;
 			children = (
+				E4460DD228CA01D400AFA108 /* FilteringQuestionViewController.swift */,
 				E4A1761328C64B47009D1DFE /* RecentPublicQuestionsViewController.swift */,
 			);
 			path = Question;
@@ -844,7 +852,6 @@
 			isa = PBXGroup;
 			children = (
 				DBD0823F2897E75A0092241F /* GreenRoomViewController.swift */,
-				E4460DD228CA01D400AFA108 /* QuestionsByCategoryViewController.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -910,11 +917,20 @@
 			path = Create;
 			sourceTree = "<group>";
 		};
+		E47D1D2128E9BC02004EE4DE /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				E427EC1528C830F60046B4AA /* CategorySelectViewController.swift */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
 		E47EE51028C47D9800618CA6 /* GreenRoom */ = {
 			isa = PBXGroup;
 			children = (
 				DBD0823A2897E75A0092241F /* GreenViewModel.swift */,
 				E461E42E28CE1EBE001EBF74 /* RecentPublicQuestionsViewModel.swift */,
+				E47D1D1D28E9AC82004EE4DE /* FileringViewModel.swift */,
 				E4206CD128D4A1240011E117 /* ScrabViewModel.swift */,
 				E461E42128CB1445001EBF74 /* SearchViewModel.swift */,
 				E4EC67AF28E1E35F00469D17 /* Create */,
@@ -963,6 +979,7 @@
 				E40BC6B428B756EE00FB557D /* SearchSectionModel.swift */,
 				E4206CD728D5EE810011E117 /* CreateGRModel.swift */,
 				E4EC67B028E2056100469D17 /* ScrapSectionModel.swift */,
+				E47D1D1F28E9B4FA004EE4DE /* FileringSectionModel.swift */,
 				DBA8ED7528BF1790007526CF /* KPDetailModel.swift */,
 				DBA8ED7928BF8009007526CF /* KPReviewModel.swift */,
 			);
@@ -1211,7 +1228,7 @@
 				E40BC6E628B8834100FB557D /* SearchResultHeaderView.swift in Sources */,
 				DBA8ED7428BDDCA1007526CF /* DetailCell.swift in Sources */,
 				DBB251EA28D98C7000310820 /* KeywordPracticeService.swift in Sources */,
-				E4460DD328CA01D400AFA108 /* QuestionsByCategoryViewController.swift in Sources */,
+				E4460DD328CA01D400AFA108 /* FilteringQuestionViewController.swift in Sources */,
 				E4EF361628C4BED700746050 /* RecentHeader.swift in Sources */,
 				DB006B9328C342E200867013 /* KPQuestionsViewController.swift in Sources */,
 				E49EF3D228B5375D00358340 /* Question.swift in Sources */,
@@ -1220,6 +1237,7 @@
 				E444570028E764140034A207 /* UploadPrivateQuestionModel.swift in Sources */,
 				DBA9451528C6540400B6E16A /* CreateViewModel.swift in Sources */,
 				E40BC6E828B8868D00FB557D /* BaseViewController.swift in Sources */,
+				E47D1D2028E9B4FA004EE4DE /* FileringSectionModel.swift in Sources */,
 				E470539928AB882900884B56 /* SettingRow.swift in Sources */,
 				E40BC6B528B756EE00FB557D /* SearchSectionModel.swift in Sources */,
 				E4EF361828C4BF0400746050 /* RecentQuestionCell.swift in Sources */,
@@ -1230,6 +1248,7 @@
 				DBFB297028B351F400B1DAC9 /* QuestionListCell.swift in Sources */,
 				E4EC67AB28E1CDC200469D17 /* PublicQuestionService.swift in Sources */,
 				E445856528C619E700907950 /* MyGreenRoomFooterView.swift in Sources */,
+				E47D1D1E28E9AC82004EE4DE /* FileringViewModel.swift in Sources */,
 				E461E42028CB0D9B001EBF74 /* MyQuestionListCell.swift in Sources */,
 				E470539528AB81EC00884B56 /* MyPageModel.swift in Sources */,
 				DBD0825D2897E75B0092241F /* LoginModel.swift in Sources */,
@@ -1281,6 +1300,7 @@
 				E445856328C6148F00907950 /* MyGreenRoomCell.swift in Sources */,
 				E4F8888B28E5E36300840101 /* PopularPublicQuestion.swift in Sources */,
 				E46539E428AD33C700F17A6C /* EditProfileInfoViewController.swift in Sources */,
+				E47D1D2328E9BC21004EE4DE /* Category.swift in Sources */,
 				E427EC0628C791850046B4AA /* Info.swift in Sources */,
 				E4141AB328AF4499004D74B3 /* Constants.swift in Sources */,
 				E427EC0328C791150046B4AA /* InfoHeaderView.swift in Sources */,

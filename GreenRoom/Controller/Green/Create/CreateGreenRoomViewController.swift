@@ -66,22 +66,14 @@ final class CreateGreenRoomViewController: BaseViewController {
         collectionView.rx.itemSelected
             .bind(onNext: { [weak self] indexPath in
                 let cell = self?.collectionView.cellForItem(at: indexPath) as! CategoryCell
-                let index = indexPath.row+1
                 
-                guard let category = CategoryID(rawValue: index) else { return }
-                cell.frameView.layer.borderColor = UIColor.mainColor.cgColor
-                cell.imageView.image = category.SelectedImage
-                
+                cell.isSelected = true
             }).disposed(by: disposeBag)
         
         collectionView.rx.itemDeselected
             .bind(onNext: { [weak self] indexPath in
                 let cell = self?.collectionView.cellForItem(at: indexPath) as! CategoryCell
-                let index = indexPath.row + 1
-                
-                guard let category = CategoryID(rawValue: index) else { return }
-                cell.frameView.layer.borderColor = UIColor.customGray.cgColor
-                cell.imageView.image = category.nonSelectedImage
+                cell.isSelected = false
                 
             }).disposed(by: disposeBag)
         
@@ -176,9 +168,8 @@ extension CreateGreenRoomViewController {
             
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "categoryCell", for: indexPath) as? CategoryCell else { return UICollectionViewCell() }
             
-            guard let category = CategoryID(rawValue: indexPath.row + 1) else { return UICollectionViewCell() }
-            cell.imageView.image = category.nonSelectedImage
-            cell.titleLabel.text = category.title
+            guard let category = Category(rawValue: indexPath.row + 1) else { return UICollectionViewCell() }
+            cell.category = category
             
             return cell
         } configureSupplementaryView: { dataSource, collectionView, kind, indexPath in
