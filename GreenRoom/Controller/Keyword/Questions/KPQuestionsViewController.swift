@@ -136,6 +136,7 @@ final class KPQuestionsViewController: BaseViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.tabBarController?.tabBar.isHidden = true
+        self.viewmodel.updateGroupQuestions()
     }
     
     //MARK: - Method
@@ -148,6 +149,13 @@ final class KPQuestionsViewController: BaseViewController {
                                          target: self,
                                          action: #selector(didClickEditButton(_:)))
         self.navigationItem.rightBarButtonItem = editButton
+    }
+    
+    private func setColorHilightAttribute(text: String, hilightString: String, color: UIColor) -> NSMutableAttributedString {
+        let attributedStr = NSMutableAttributedString(string: text)
+        attributedStr.addAttribute(.foregroundColor, value: color, range: (text as NSString).range(of: hilightString))
+        
+        return attributedStr
     }
     
     //MARK: - Selector
@@ -193,26 +201,38 @@ final class KPQuestionsViewController: BaseViewController {
     
     //MARK: - Bind
     override func setupBinding() {
-        viewmodel.tabelTemp // 서비스 로직 호출할땐 응답받는 구조체로 대체 (아직 서비스API 미구현 임시로 string배열로 받음)
-            .bind(to: questionListTableView.rx.items(cellIdentifier: "QuestionListCell", cellType: QuestionListCell.self)) { index, title, cell in
-                // init
-                cell.selectionStyle = .none
-                cell.mainLabel.textColor = .black
-                cell.checkBox.backgroundColor = .white
-                cell.checkBox.layer.borderWidth = 1
-                
-                cell.mainLabel.text = title
-                cell.questionTypeLabel.text = "등록"
-                cell.questionTypeLabel.textColor = .point
-                
-                if self.isEditingMode {
-                    cell.chevronButton.isHidden = true
-                    cell.checkBox.isHidden = false
-                } else {
-                    cell.chevronButton.isHidden = false
-                    cell.checkBox.isHidden = true
-                }
-            }.disposed(by: disposeBag)
+        viewmodel.groupInfo.asDriver()
+            .drive(onNext: { [weak self] groupInfo in
+                guard let info = groupInfo else { return }
+                self?.categoryLabel.text = info.categoryName
+                self?.groupNameLabel.text = info.name
+                self?.questionCountingLabel.attributedText = self?.setColorHilightAttribute(text: "질문 \(info.questionCnt)개",
+                                                                                      hilightString: "\(info.questionCnt)",
+                                                                                      color: .point)
+            }).disposed(by: disposeBag)
+        
+        viewmodel.groupQuestions.bind(to: questionListTableView.rx.items(cellIdentifier: "QuestionListCell", cellType: QuestionListCell.self)) { index, item, cell in
+            // init
+            cell.selectionStyle = .none
+            cell.mainLabel.textColor = .black
+            cell.checkBox.backgroundColor = .white
+            cell.checkBox.layer.borderWidth = 1
+            
+            cell.mainLabel.text = item.question
+            
+            let registerText = item.register == true ? "등록" : "미등록"
+            let registerTextColor = item.register == true ? UIColor.point : UIColor.customDarkGray
+            cell.questionTypeLabel.text = registerText
+            cell.questionTypeLabel.textColor = registerTextColor
+            
+            if self.isEditingMode {
+                cell.chevronButton.isHidden = true
+                cell.checkBox.isHidden = false
+            } else {
+                cell.chevronButton.isHidden = false
+                cell.checkBox.isHidden = true
+            }
+        }.disposed(by: disposeBag)
         
         questionListTableView.rx.itemSelected
             .bind(onNext: { indexPath in // 서비스 로직시엔 Id로 다룰 것 같음

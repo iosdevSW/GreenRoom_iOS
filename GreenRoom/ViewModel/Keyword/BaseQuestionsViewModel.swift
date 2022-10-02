@@ -12,9 +12,9 @@ import RxSwift
 class BaseQuestionsViewModel {
     let disposeBag = DisposeBag()
     
-    let baseQuestionsObservable = BehaviorSubject<[QuestionModel]>(value: []) // 기본,그린룸 질문
+    let baseQuestionsObservable = BehaviorSubject<[ReferenceQuestionModel]>(value: []) // 기본,그린룸 질문
     
-    let selectedQuestionObservable = PublishSubject<QuestionModel>() // 선택한 질문
+    let selectedQuestionObservable = PublishSubject<ReferenceQuestionModel>() // 선택한 질문
     
     let filteringObservable = PublishSubject<String>() //필터링된 카테고리 observable
     

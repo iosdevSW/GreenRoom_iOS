@@ -25,7 +25,7 @@ final class GroupView: UIView {
         $0.textColor = .customDarkGray
     }
     
-    let addGroupButton = UIButton(type: .system).then {
+    private let addGroupButton = UIButton(type: .system).then {
         let title = "그룹추가"
         if #available(iOS 15.0, *) {
             var config = UIButton.Configuration.plain()
@@ -67,7 +67,7 @@ final class GroupView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setColorHilightAttribute(text: String, hilightString: String, color: UIColor) -> NSMutableAttributedString {
+    private func setColorHilightAttribute(text: String, hilightString: String, color: UIColor) -> NSMutableAttributedString {
         let attributedStr = NSMutableAttributedString(string: text)
         attributedStr.addAttribute(.foregroundColor, value: color, range: (text as NSString).range(of: hilightString))
         
@@ -82,7 +82,7 @@ final class GroupView: UIView {
     }
     
     //MARK: Bind
-    func bind() {
+    private func bind() {
         viewModel.groupsObservable
             .bind(to: self.groupTableView.rx.items(cellIdentifier: "GroupCell", cellType: GroupCell.self)) { index, item, cell in
                 cell.groupNameLabel.text = item.name
@@ -110,7 +110,7 @@ final class GroupView: UIView {
                                                                                        color: .point)
                 }
             }).disposed(by: disposeBag)
-        
+    
         self.addGroupButton.rx.tap
             .bind(onNext: {
                 NotificationCenter.default.post(name: .AddGroupObserver, object: nil)

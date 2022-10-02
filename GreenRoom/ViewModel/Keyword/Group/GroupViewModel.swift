@@ -13,7 +13,8 @@ class GroupViewModel {
     let disposeBag = DisposeBag()
     
     let groupsObservable = BehaviorRelay<[GroupModel]>(value: [])
-    let groupCounting = PublishSubject<Int>()
+    
+    let groupCounting = PublishSubject<Int>()    
     
     init(){
         groupsObservable.asObservable()

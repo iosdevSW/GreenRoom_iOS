@@ -12,23 +12,20 @@ import Alamofire
 
 class KeywordPracticeService {
     ///기본,그린룸 질문조회
-    func fetchReferenceQuestions(categoryId: String?, title: String?)-> Observable<[QuestionModel]>{
-    
+    func fetchReferenceQuestions(categoryId: String?, title: String?)-> Observable<[ReferenceQuestionModel]>{
         let urlString = Constants.baseURL + "/api/interview-questions"
-
         let url = URL(string: urlString)!
         
         var param: Parameters?
         
         if categoryId != nil || title != nil { param  = Parameters() }
-            
         if categoryId != nil { param?["category"] = categoryId }
         if title != nil { param?["title"] = title }
 
         return Observable.create { emitter in
             let request = AF.request(url, method: .get, parameters: param ,encoding: URLEncoding.default, interceptor: AuthManager())
             
-            request.responseDecodable(of: [QuestionModel].self) { res in
+            request.responseDecodable(of: [ReferenceQuestionModel].self) { res in
                 switch res.result {
                 case .success(let data):
                     emitter.onNext(data)
@@ -38,6 +35,28 @@ class KeywordPracticeService {
             }
             return Disposables.create()
         }
+    }
+    
+    ///그룹에 속한 면접질문 조회
+    func fetchGroupQuestions(groupId: Int)-> Observable<GroupQuestionModel> {
+        let urlString = Constants.baseURL + "/api/groups/\(groupId)/questions"
+        let url = URL(string: urlString)!
+        
+        return Observable.create { emitter in
+            let request = AF.request(url, method: .get, interceptor: AuthManager())
+            
+            request.responseDecodable(of: GroupQuestionModel.self) { response in
+                switch response.result {
+                case .success(let model):
+                    emitter.onNext(model)
+                case .failure(let error):
+                    emitter.onError(error)
+                    print(error.localizedDescription)
+                }
+            }
+            return Disposables.create()
+        }
+        
     }
     
     ///그룹 목록 조회

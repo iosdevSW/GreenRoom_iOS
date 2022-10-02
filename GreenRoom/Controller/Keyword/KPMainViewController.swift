@@ -47,6 +47,7 @@ final class KPMainViewController: BaseViewController {
         super.viewWillAppear(animated)
         self.tabBarController?.tabBar.isHidden = false
         self.viewModel.selectedQuestionTemp = [] // 선택된 질문 초기화
+        self.viewModel.selectedGroupID.accept(nil) // 선택된 그룹 초기화
         self.groupView.viewModel.updateGroupList()
     }
     
@@ -68,6 +69,15 @@ final class KPMainViewController: BaseViewController {
                 let vc = KPGreenRoomQuestionsViewController()
                 self?.navigationController?.pushViewController(vc, animated: true)
             }).disposed(by: disposeBag)
+        
+        groupView.groupTableView.rx.modelSelected(GroupModel.self).asDriver()
+            .map { $0.id }
+            .drive(onNext: { [weak self] groupID in
+                guard let vc = self else { return }
+                vc.viewModel.selectedGroupID.accept(groupID)
+                vc.navigationController?.pushViewController(KPQuestionsViewController(viewModel: vc.viewModel), animated: true)
+            }).disposed(by: disposeBag)
+        
     }
     
     //MARK: - ConfigureUI
