@@ -213,14 +213,12 @@ final class PrivateQuestionService {
             AF.request(requestURL, method: .delete, interceptor: AuthManager())
                 .validate(statusCode: 200..<300)
                 .response { response in
+                    print(response.response?.statusCode)
                 switch response.result {
                 case .success(_):
                     emitter.onNext(true)
-//                    completable(.completed)
                 case .failure(_):
                     emitter.onNext(false)
-//                    let error = response.response?.statusCode == 403 ? QuestionError.notAuthorization : QuestionError.unKnownError
-//                    completable(.error(error))
                 }
             }
             return Disposables.create()

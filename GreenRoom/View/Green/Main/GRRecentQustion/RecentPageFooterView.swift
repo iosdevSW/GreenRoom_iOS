@@ -13,8 +13,6 @@ final class RecentPageFooterView: UICollectionReusableView {
     
     static let reuseIdentifier = "RecentPageFooterView"
     
-//    let subject = PublishSubject<Int>()
-    
     private let bannerPageControl = UIPageControl().then{
         $0.pageIndicatorTintColor = .customGray
         $0.currentPageIndicatorTintColor = .mainColor
@@ -39,6 +37,7 @@ final class RecentPageFooterView: UICollectionReusableView {
     
     func bind(input: PublishSubject<Int>, pageNumber: Int) {
         self.bannerPageControl.numberOfPages = pageNumber
+        
         input.subscribe(onNext: { [weak self] currentPage in
             self?.bannerPageControl.currentPage = currentPage
         }).disposed(by: disposeBag)

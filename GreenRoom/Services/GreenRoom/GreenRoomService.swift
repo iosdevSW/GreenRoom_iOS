@@ -19,7 +19,6 @@ final class GreenRoomService {
             .validate(statusCode: 200..<300)
             .responseDecodable(of: [String].self) {
                 response in
-                print("DEBUG: \(response.result)")
                 switch response.result {
                 case .success(let keywords):
                     completion(.success(keywords))

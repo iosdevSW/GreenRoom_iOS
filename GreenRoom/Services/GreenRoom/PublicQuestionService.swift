@@ -13,23 +13,29 @@ final class PublicQuestionService {
     
     private let baseURL = Constants.baseURL + "/api/green-questions"
     
-//    func fetchFilteredQuestion(categoryId: Int, completion:@escaping ((Result<[DetailQuestion],Error>) -> Void)) {
-//
-//        let url = URL(string: "\(Constants.baseURL)/api/green-questions?categoryId=\(categoryId)")!
-//
-//        AF.request(url, method: .get, encoding: URLEncoding.default, interceptor: AuthManager())
-//            .validate(statusCode: 200..<300)
-//            .responseDecodable(of: [DetailQuestion].self) { response in
-//            switch response.result {
-//
-//            case .success(let detailQuestions):
-//                completion(.success(detailQuestions))
-//            case .failure(let error):
-//                completion(.failure(error))
-//            }
-//        }
-//    }
+    /** 내가 관심있어 하는 직무에 대한 질문들 조회*/
+    func fetchFilteredQuestion(categoryId: Int) -> Observable<[PublicQuestion]> {
+
+        let requestURL = baseURL +  "?categoryId=\(categoryId)"
+        
+        return Observable.create { emitter in
+            
+            AF.request(requestURL, method: .get, encoding: URLEncoding.default, interceptor: AuthManager())
+                .validate(statusCode: 200..<300)
+                .responseDecodable(of: [PublicQuestion].self) { response in
+                switch response.result {
+                case .success(let questions):
+                    emitter.onNext(questions)
+                case .failure(let error):
+                    emitter.onError(error)
+                }
+            }
+
+            return Disposables.create()
+        }
+    }
     
+    /** 최근 그린룸 질문 조회*/
     func fetchRecentPublicQuestions() -> Observable<[PublicQuestion]>{
         let requestURL = baseURL + "/recent-questions"
         
@@ -40,7 +46,6 @@ final class PublicQuestionService {
                     
                 switch response.result {
                 case .success(let questions):
-                    print(questions)
                     emmiter.onNext(questions)
                 case .failure(let error):
                     emmiter.onError(error)
@@ -48,9 +53,9 @@ final class PublicQuestionService {
             }
             return Disposables.create()
         }
-        
     }
     
+    /** 인기있는 그린룸 질문 조회*/
     func fetchPopularPublicQuestions() -> Observable<[PopularPublicQuestion]>{
         
         let requestURL = baseURL + "/popular-questions"
@@ -71,7 +76,7 @@ final class PublicQuestionService {
         }
         
     }
-    
+    /** 그린룸 질문 생성*/
     func uploadQuestionList(categoryId: Int, question: String, expiredAt: String) -> Observable<Bool> {
         
         let parameters = UploadPublicQuestionModel(categoryId: categoryId,
@@ -96,7 +101,26 @@ final class PublicQuestionService {
             }
             return Disposables.create()
         }
+    }
+    
+    /** 내가 생성한 그린룸 질문 */
+    func fetchPublicQuestions(page: Int = 0) -> Observable<MyPublicQuestion>{
         
+        let requestURL = baseURL + "/create-questions"
+        
+        return Observable.create { emitter in
+            AF.request(requestURL, method: .get, encoding: URLEncoding.default, interceptor: AuthManager())
+                .validate(statusCode: 200..<300)
+                .responseDecodable(of: MyPublicQuestion.self) { response in
+                    switch response.result {
+                    case .success(let question):
+                        emitter.onNext(question)
+                    case .failure(let error):
+                        emitter.onError(error)
+                    }
+                }
+            return Disposables.create()
+        }
     }
     
 }
