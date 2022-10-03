@@ -106,10 +106,11 @@ extension GreenRoomViewModel {
     }
     
     private func fetchMyGreenRoom() -> Observable<[GreenRoomSectionModel]>{
-        return Observable<[GreenRoomSectionModel]>.of([GreenRoomSectionModel.MyGreenRoom(items: [
-            GreenRoomSectionModel.Item.MyGreenRoom(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
-            GreenRoomSectionModel.Item.MyGreenRoom(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
-            GreenRoomSectionModel.Item.MyGreenRoom(question: Question(image: "", name: "박면접", participants: 2, category: 2, question: "하이요~")),
-        ])])
+        
+        let mygreeon = publicQuestionService.fetchPublicQuestions(page: 0)
+            .map { question in
+                [GreenRoomSectionModel.MyGreenRoom(items: [GreenRoomSectionModel.Item.MyGreenRoom(question: question)])]
+            }
+        return mygreeon
     }
 }
