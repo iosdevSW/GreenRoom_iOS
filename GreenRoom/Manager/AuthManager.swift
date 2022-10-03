@@ -14,8 +14,13 @@ class AuthManager: RequestInterceptor {
     
     func adapt(_ urlRequest: URLRequest, for session: Session, completion: @escaping (Result<URLRequest, Error>) -> Void) {
         
-        guard urlRequest.url?.absoluteString.hasPrefix(Constants.baseURL) == true,
-              let accessToken = KeychainWrapper.standard.string(forKey: "accessToken") else { return }
+        guard urlRequest.url?.absoluteString.hasPrefix(Constants.baseURL) == true else { return }
+        guard let accessToken = KeychainWrapper.standard.string(forKey: "accessToken") else {
+            DispatchQueue.main.async {
+                NotificationCenter.default.post(name: .authenticationObserver, object: nil)
+            }
+            return
+        }
         
         var urlRequest = urlRequest
         urlRequest.headers.add(.authorization(bearerToken: accessToken))
@@ -24,7 +29,6 @@ class AuthManager: RequestInterceptor {
     }
     
     func retry(_ request: Request, for session: Session, dueTo error: Error, completion: @escaping (RetryResult) -> Void) {
-        
         
         guard let response = request.task?.response as? HTTPURLResponse, response.statusCode == 401 || response.statusCode == 403 else {
             completion(.doNotRetryWithError(error))
@@ -35,7 +39,10 @@ class AuthManager: RequestInterceptor {
         
         guard let accessToken = KeychainWrapper.standard.string(forKey: "accessToken"),
                 let refreshToken = KeychainWrapper.standard.string(forKey: "refreshToken") else {
-            return NotificationCenter.default.post(name: .authenticationObserver, object: nil)
+            DispatchQueue.main.async {
+                NotificationCenter.default.post(name: .authenticationObserver, object: nil)
+            }
+            return
         }
 
         let parameters: Parameters = [
@@ -57,7 +64,9 @@ class AuthManager: RequestInterceptor {
                 
                 request.retryCount < self.retryLimit ? completion(.retry) : completion(.doNotRetry)
             case .failure(_):
-                NotificationCenter.default.post(name: .authenticationObserver, object: nil)
+                DispatchQueue.main.async {
+                    NotificationCenter.default.post(name: .authenticationObserver, object: nil)
+                }
             }
         }
         

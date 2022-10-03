@@ -8,15 +8,20 @@
 import UIKit
 import RxSwift
 import RxCocoa
+import Alamofire
 
-class KPGroupEditViewController: BaseViewController {
+final class KPGroupEditViewController: BaseViewController {
     //MARK: - Properties
+    private let viewModel = CategoryViewModel()
+    
+    private let placeHolder = "그룹 이름을 입력해주세요:)"
+    private var groupId: Int?
+    
     private var categoryCollectionView: UICollectionView!
-    let categoryViewModel = CategoryViewModel()
     
     private lazy var questionTextView = UITextView().then {
         $0.font = .sfPro(size: 16, family: .Regular)
-        $0.text = "그룹 이름을 입력해주세요:)"
+        $0.text = placeHolder
         $0.textColor = .customGray
         $0.backgroundColor = .white
         $0.textContainerInset = UIEdgeInsets(top: 16.0, left: 16.0, bottom: 16.0, right: 16.0)
@@ -26,7 +31,7 @@ class KPGroupEditViewController: BaseViewController {
         $0.layer.borderWidth = 2
     }
     
-    let completeButton = UIButton(type: .system).then{
+    private let completeButton = UIButton(type: .system).then{
         $0.backgroundColor = .mainColor
         $0.setTitle("작성완료", for: .normal)
         $0.setTitleColor(.white, for: .normal)
@@ -39,24 +44,55 @@ class KPGroupEditViewController: BaseViewController {
     }
     
     //MARK: - Init
+    init(){
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    init(groupId: Int, categoryId: Int, categoryName: String) {
+        super.init(nibName: nil, bundle: nil)
+        self.groupId = groupId
+        self.viewModel.selectedCategoryObservable.accept(categoryId)
+        self.questionTextView.text = categoryName
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     //MARK: - LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
         self.hideKeyboardWhenTapped()
+        
+        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.left"),
+                                                           style: .plain,
+                                                           target: self,
+                                                           action: #selector(dismissal))
+        navigationItem.leftBarButtonItem?.tintColor = .mainColor
     }
     
     override func viewWillAppear(_ animated: Bool) {
         self.tabBarController?.tabBar.isHidden = true
     }
     
+    //MARK: - Selector
+    @objc func dismissal(){
+        self.dismiss(animated: false)
+    }
+    
     //MARK: - Bind
     override func setupBinding() {
+
         self.categoryViewModel.categories
             .bind(to: self.categoryCollectionView.rx.items(cellIdentifier: "categoryCell", cellType: CategoryCell.self)) {index, title ,cell in
                 guard let category = Category(rawValue: index+1) else { return }
                 
                 cell.category = category
+                
+                if self.categoryViewModel.selectedCategoryObservable.value == index + 1 {
+                    cell.isSelected = true
+                    self.categoryCollectionView.selectItem(at: IndexPath(item: index, section: 0), animated: false, scrollPosition: .centeredVertically)
+                }
             }.disposed(by: disposeBag)
         
         categoryCollectionView.rx.itemSelected
@@ -64,30 +100,65 @@ class KPGroupEditViewController: BaseViewController {
                 let cell = self?.categoryCollectionView.cellForItem(at: indexPath) as! CategoryCell
                 cell.isSelected = true
                 self?.categoryViewModel.selectedCategoryObservable.accept(indexPath.row + 1)
-                
+
             }).disposed(by: disposeBag)
         
         categoryCollectionView.rx.itemDeselected
             .bind(onNext: { [weak self] indexPath in
                 let cell = self?.categoryCollectionView.cellForItem(at: indexPath) as! CategoryCell
                 cell.isSelected = false
-                
+
             }).disposed(by: disposeBag)
         
-     
-        PublishSubject<[String:String]>
-            .combineLatest(self.categoryViewModel.selectedCategoryObservable, questionTextView.rx.text,
+        questionTextView.rx.didBeginEditing
+            .bind(onNext: { [weak self] in
+                if self?.questionTextView.text == self?.placeHolder {
+                    self?.questionTextView.text = ""
+                }
+            }).disposed(by: disposeBag)
+        
+        questionTextView.rx.didEndEditing
+            .bind(onNext: { [weak self] in
+                if self?.questionTextView.text == "" {
+                    self?.questionTextView.text = self?.placeHolder
+                }
+            }).disposed(by: disposeBag)
+        
+        
+        PublishSubject<[String : String]>
+            .combineLatest(self.viewModel.selectedCategoryObservable, questionTextView.rx.text,
                            resultSelector: {[
                             "id" : String($0),
                             "text" : $1!
                            ]
             })
             .bind(onNext: { [weak self]dic in
-                if dic["text"] == "" || dic["text"] == "그룹 이름을 입력해주세요:)" || dic["id"] == "-1" {
+                if dic["text"] == "" || dic["text"] == self?.placeHolder || dic["id"] == "-1" {
                     self?.completeButton.isHidden = true
                 }else {
                     self?.completeButton.isHidden = false
                 }
+            }).disposed(by: disposeBag)
+        
+        completeButton.rx.tap
+            .bind(onNext: { [weak self] in
+                guard let vc = self else { return }
+                guard let categoryName = vc.questionTextView.text else { return }
+                let categoryId = vc.viewModel.selectedCategoryObservable.value
+                
+                if let groupId = vc.groupId { // 편집
+                    KeywordPracticeService().editGroup(groupId: groupId,
+                                                       categoryId: categoryId,
+                                                       categoryName: categoryName){ isSuccess in
+                        self?.dismiss(animated: true)
+                    }
+                }else { // 추가
+                    KeywordPracticeService().addGroup(categoryId: categoryId,
+                                                      categoryName: categoryName){ isSuccess in
+                        self?.dismiss(animated: true)
+                    }
+                }
+                
             }).disposed(by: disposeBag)
     }
     
