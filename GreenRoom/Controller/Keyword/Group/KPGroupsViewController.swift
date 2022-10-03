@@ -7,12 +7,11 @@
 
 import UIKit
 
-class KPGroupsViewController: BaseViewController {
+final class KPGroupsViewController: BaseViewController {
     //MARK: - Properties
-    let viewModel: BaseQuestionsViewModel
+    private let viewModel: BaseQuestionsViewModel
     
-    let groupView = GroupView().then {
-        $0.groupCountingLabel.text = "총 N개의 그룹"
+    let groupView = GroupView(viewModel: GroupViewModel()).then {
         $0.backgroundColor = .white
     }
     
@@ -30,6 +29,26 @@ class KPGroupsViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        groupView.viewModel.updateGroupList()
+    }
+    
+    //MARK: Selector
+    
+    //MARK: - Bind
+    override func setupBinding() {
+        groupView.groupTableView.rx.modelSelected(GroupModel.self).asDriver()
+            .map { $0.id }
+            .drive(onNext: { [weak self] groupId in
+                guard let question = self?.viewModel.selectedQuestionObservable.value else { return }
+                KeywordPracticeService().addInterViewQuestion(groupId: groupId,
+                                                              questionId: question.id,
+                                                              questionTypeCode: question.questionTypeCode)
+                self?.navigationController?.popViewController(animated: true)
+            }).disposed(by: disposeBag)
     }
     
     //MARK: - ConfigureUI

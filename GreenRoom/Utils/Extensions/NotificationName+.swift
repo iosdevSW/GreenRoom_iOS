@@ -11,6 +11,8 @@ extension Notification.Name {
     
     static let categoryObserver = Notification.Name("categoryObserver")
     static let authenticationObserver = Notification.Name("authenticationObserver")
+    static let editGroupObserver = Notification.Name("editGroupObserver")
+    static let AddGroupObserver = Notification.Name("addGroupObserver")
 }
 
 
