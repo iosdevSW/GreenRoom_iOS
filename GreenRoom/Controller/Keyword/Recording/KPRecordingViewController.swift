@@ -148,7 +148,7 @@ class KPRecordingViewController: BaseViewController{
 //            }
 //        }
         
-        if urls.count >= viewmodel.selectedQuestionTemp.count {
+        if urls.count >= viewmodel.selectedQuestionObservable.value.count {
             if viewmodel.keywordOnOff{
                 viewmodel.videoURLs = urls
                 self.navigationController?.pushViewController(KPFinishViewController(viewmodel: viewmodel), animated: true)

@@ -244,7 +244,7 @@ extension KPPrepareViewController {
                 questionsTableView.addSubview(MyCell.cellSnapshot!)
                 
                 if tempQuestionStorage == nil {
-                    tempQuestionStorage = viewmodel.selectedQuestionTemp
+                    tempQuestionStorage = viewmodel.selectedQuestionObservable.value
                 }
                 
                 UIView.animate(withDuration: 0.25, animations: { () -> Void in
@@ -302,7 +302,7 @@ extension KPPrepareViewController {
                     
                 }, completion: { (finished) -> Void in
                     if finished {
-                        self.viewmodel.selectedQuestionTemp = self.tempQuestionStorage!
+                        self.viewmodel.selectedQuestionObservable.accept(self.tempQuestionStorage!) 
                         self.tempQuestionStorage = nil
                         Initial.initialIndexPath = nil
                         MyCell.cellSnapshot!.removeFromSuperview()
