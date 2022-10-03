@@ -12,7 +12,7 @@ import Alamofire
 final class ScrapService {
     
     func fetchScrapQuestions() -> Observable<[PublicQuestion]> {
-        let url = URL(string: "\(Constants.baseURL)/api/green-questions/scrap")!
+        let url = "\(Constants.baseURL)/api/green-questions/scrap"
         
         return Observable.create { emitter in
             AF.request(url, method: .get, encoding: URLEncoding.default, interceptor: AuthManager())
@@ -29,25 +29,27 @@ final class ScrapService {
         }
     }
     
-    func updateScrapQuestion(id: Int) {
-        let url = URL(string: "\(Constants.baseURL)/api/green-questions/scrap")!
+    func updateScrapQuestion(id: Int) -> Observable<Bool> {
+        let url = "\(Constants.baseURL)/api/green-questions/scrap"
         
         let parameter: Parameters = ["id" : id]
-        AF.request(url, method: .post, parameters: parameter, encoding: JSONEncoding.default,interceptor: AuthManager())
-            .validate(statusCode: 200..<300)
-            .responseString { response in
-            switch response.result {
-            case .success(let success):
-                print(success)
-            case .failure(let error):
-                print("DEBUG: Scrap error \(error.localizedDescription)")
+        return Observable.create { emitter in
+            AF.request(url, method: .post, parameters: parameter, encoding: JSONEncoding.default,interceptor: AuthManager())
+                .validate(statusCode: 200..<300)
+                .responseString { response in
+                switch response.result {
+                case .success(_):
+                    emitter.onNext(true)
+                case .failure(_):
+                    emitter.onNext(false)
+                }
             }
-            
+            return Disposables.create()
         }
     }
     
     func deleteScrapQuestion(ids: [Int]) {
-        let url = URL(string: "\(Constants.baseURL)/api/green-questions/scrap")!
+        let url = "\(Constants.baseURL)/api/green-questions/scrap"
         
         let parameter = ["ids" : ids]
         

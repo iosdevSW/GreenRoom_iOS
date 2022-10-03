@@ -7,6 +7,7 @@
 
 import UIKit
 
+/// 특정 카테고리나 검색에 대한 결과를 보여주는 셀 B2, B3-1
 final class QuestionByCategoryCell: UICollectionViewCell {
     
     static let reuseIdentifier = "QuestionByCategoryCell"

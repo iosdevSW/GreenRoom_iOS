@@ -17,11 +17,3 @@ struct PublicQuestion: Codable {
         return Date().getRemainedTime(date: expiredAt)
     }
 }
-
-struct DetailQuestion: Codable {
-    let id: Int
-    let categoryName, profileImage, name: String
-    let participants: Int
-    let question, answer, expiredAt: String
-    let participated: Bool
-}

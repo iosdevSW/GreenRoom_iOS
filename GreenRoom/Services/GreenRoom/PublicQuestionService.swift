@@ -15,7 +15,7 @@ final class PublicQuestionService {
     
     /** 내가 관심있어 하는 직무에 대한 질문들 조회*/
     func fetchFilteredQuestion(categoryId: Int) -> Observable<[PublicQuestion]> {
-
+        
         let requestURL = baseURL +  "?categoryId=\(categoryId)"
         
         return Observable.create { emitter in
@@ -23,14 +23,14 @@ final class PublicQuestionService {
             AF.request(requestURL, method: .get, encoding: URLEncoding.default, interceptor: AuthManager())
                 .validate(statusCode: 200..<300)
                 .responseDecodable(of: [PublicQuestion].self) { response in
-                switch response.result {
-                case .success(let questions):
-                    emitter.onNext(questions)
-                case .failure(let error):
-                    emitter.onError(error)
+                    switch response.result {
+                    case .success(let questions):
+                        emitter.onNext(questions)
+                    case .failure(let error):
+                        emitter.onError(error)
+                    }
                 }
-            }
-
+            
             return Disposables.create()
         }
     }
@@ -44,13 +44,13 @@ final class PublicQuestionService {
                 .validate(statusCode: 200..<300)
                 .responseDecodable(of: [PublicQuestion].self) { response in
                     
-                switch response.result {
-                case .success(let questions):
-                    emmiter.onNext(questions)
-                case .failure(let error):
-                    emmiter.onError(error)
+                    switch response.result {
+                    case .success(let questions):
+                        emmiter.onNext(questions)
+                    case .failure(let error):
+                        emmiter.onError(error)
+                    }
                 }
-            }
             return Disposables.create()
         }
     }
@@ -65,13 +65,13 @@ final class PublicQuestionService {
                 .validate(statusCode: 200..<300)
                 .responseDecodable(of: [PopularPublicQuestion].self) { response in
                     
-                switch response.result {
-                case .success(let questions):
-                    emmiter.onNext(questions)
-                case .failure(let error):
-                    emmiter.onError(error)
+                    switch response.result {
+                    case .success(let questions):
+                        emmiter.onNext(questions)
+                    case .failure(let error):
+                        emmiter.onError(error)
+                    }
                 }
-            }
             return Disposables.create()
         }
         
@@ -121,6 +121,53 @@ final class PublicQuestionService {
                 }
             return Disposables.create()
         }
+    }
+    
+    /** 그린룸질문 상세정보 조회 */
+    func fetchDetailPublicQuestion(id: Int) -> Observable<DetailPublicAnswer> {
+        let requestURL = baseURL + "/\(id)"
+        
+        return Observable.create { emitter in
+            AF.request(requestURL, method: .get, encoding: URLEncoding.default, interceptor: AuthManager())
+                .validate(statusCode: 200..<300)
+                .responseDecodable(of: DetailPublicQuestionDTO.self) { response in
+                    switch response.result {
+                    case .success(let question):
+
+                        var output = DetailPublicAnswer(question: question, answers: [PublicAnswer(id: 0, profileImage: "", answer: "zzz"),PublicAnswer(id: 0, profileImage: "", answer: "zzz"),PublicAnswer(id: 0, profileImage: "", answer: "zzz"),PublicAnswer(id: 0, profileImage: "", answer: "zzz")])
+                        
+                        if question.participated && question.expired {
+                            self.fetchDetailAnswer(id: question.id) { result in
+                                switch result {
+                                case .success(let answers):
+                                    output.answers = answers
+                                case .failure(_):
+                                    break
+                                }
+                            }
+                        }
+                        emitter.onNext(output)
+                    case .failure(let error):
+                        emitter.onError(error)
+                    }
+                }
+            return Disposables.create()
+        }
+    }
+    
+    func fetchDetailAnswer(id: Int, completion: @escaping(Result<[PublicAnswer], Error>) -> Void){
+        let requestURL = baseURL + "/\(id)/answers"
+        
+        AF.request(requestURL, method: .get, encoding: URLEncoding.default, interceptor: AuthManager())
+            .validate(statusCode: 200..<300)
+            .responseDecodable(of: [PublicAnswer].self) { response in
+                switch response.result {
+                case .success(let question):
+                    completion(.success(question))
+                case .failure(let error):
+                    completion(.failure(error))
+                }
+            }
     }
     
 }

@@ -18,22 +18,30 @@ class GreenRoomViewController: BaseViewController {
     let viewModel = GreenRoomViewModel()
     private var collectionView: UICollectionView!
     
-    private lazy var greenRoomButton = UIButton().then {
+    private let greenRoomButton = UIButton().then {
         $0.setTitle("그린룸", for: .normal)
         $0.setTitleColor(.mainColor, for: .normal)
         $0.titleLabel?.font = .sfPro(size: 20, family: .Bold)
         $0.backgroundColor = .clear
-        $0.addTarget(self, action: #selector(filterGreenRoom), for: .touchUpInside)
-        $0.tag = 0
     }
     
-    private lazy var questionListButton = UIButton().then {
+    private let questionListButton = UIButton().then {
         $0.setTitle("질문리스트", for: .normal)
         $0.setTitleColor(.customGray, for: .normal)
         $0.titleLabel?.font = .sfPro(size: 20, family: .Bold)
         $0.backgroundColor = .clear
-        $0.addTarget(self, action: #selector(filterGreenRoom), for: .touchUpInside)
-        $0.tag = 1
+    }
+    private let searchButton = UIButton().then {
+        $0.setImage(UIImage(systemName: "magnifyingglass"), for: .normal)
+        $0.titleLabel?.font = .sfPro(size: 20, family: .Bold)
+        $0.backgroundColor = .clear
+    }
+    
+    private let bookmarkButton = UIButton().then {
+        $0.setImage(UIImage(systemName: "bookmark"), for: .normal)
+        $0.imageView?.contentMode = .scaleAspectFill
+        $0.titleLabel?.font = .sfPro(size: 20, family: .Bold)
+        $0.backgroundColor = .clear
     }
     
     private let underline = UIView().then {
@@ -60,6 +68,11 @@ class GreenRoomViewController: BaseViewController {
     }
     
     //MARK: - setup/configure
+    override func setupAttributes() {
+        self.configureNavigationBar()
+        self.configureCollecitonView()
+    }
+    
     override func setupBinding() {
 
         let dataSource = self.dataSource()
@@ -78,19 +91,49 @@ class GreenRoomViewController: BaseViewController {
             
             switch item {
             case .filtering(interest: _):
-                let vc = QuestionsByCategoryViewController(viewModel: self.viewModel)
-                self.present(vc, animated: true)
+                let vc = FilteringQuestionViewController(viewModel: FilteringViewModel(publicQuestionService: PublicQuestionService()))
+                self.navigationController?.pushViewController(vc, animated: true)
             case .popular(question: let question):
-                break
+                let vc = PublicAnswerViewController(viewModel: PublicAnswerViewModel(id: question.id, scrapService: ScrapService(), publicQuestionService: PublicQuestionService()))
+                self.navigationController?.pushViewController(vc, animated: true)
             case .recent(question: let question):
-                print(question)
+                let vc = PublicAnswerViewController(viewModel: PublicAnswerViewModel(id: question.id, scrapService: ScrapService(), publicQuestionService: PublicQuestionService()))
+                self.navigationController?.pushViewController(vc, animated: true)
             case .MyGreenRoom(question: let question):
-                print(question)
+                let vc = PublicAnswerViewController(viewModel: PublicAnswerViewModel(id: question.id!,scrapService: ScrapService(), publicQuestionService: PublicQuestionService()))
+                self.navigationController?.pushViewController(vc, animated: true)
             case .MyQuestionList(question: let question):
                 let vc = UINavigationController(rootViewController: PrivateAnswerViewController(viewModel: PrivateAnswerViewModel(id: question.id)))
                 vc.modalPresentationStyle = .fullScreen
                 self.present(vc, animated: true)
             }
+        }).disposed(by: disposeBag)
+        
+        Observable.merge(greenRoomButton.rx.tap.map { 0 }, questionListButton.rx.tap.map { 1 })
+            .subscribe(onNext: { tag in
+                
+                let questionColor: UIColor = tag == 0 ? .customGray : .mainColor
+                let greenRoomColor: UIColor = tag == 0 ? .mainColor : .customGray
+                
+                self.questionListButton.setTitleColor(questionColor, for: .normal)
+                self.greenRoomButton.setTitleColor(greenRoomColor, for: .normal)
+                self.disposeBag = DisposeBag()
+                self.setupBinding()
+                
+                let layout = tag == 0 ? self.greenRoomLayout() : self.myListLayout()
+                self.collectionView.setCollectionViewLayout(layout, animated: true)
+                self.collectionView.layoutSubviews()
+                
+            }).disposed(by: disposeBag)
+        
+        searchButton.rx.tap.subscribe(onNext: {
+            let vc = GRSearchViewController(viewModel: SearchViewModel())
+            self.navigationController?.pushViewController(vc, animated: true)
+        }).disposed(by: disposeBag)
+        
+        bookmarkButton.rx.tap.subscribe(onNext: {
+            let vc = ScrapedQuestionViewController(viewModel: ScrapViewModel())
+            self.navigationController?.pushViewController(vc, animated: true)
         }).disposed(by: disposeBag)
         
     }
@@ -103,17 +146,10 @@ class GreenRoomViewController: BaseViewController {
         iconView.contentMode = .scaleAspectFit
         
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: iconView)
+        
         navigationItem.rightBarButtonItems = [
-            UIBarButtonItem(
-                image: UIImage(systemName: "bookmark"),
-                style: .plain,
-                target: self,
-                action: #selector(didTapScrap)),
-            UIBarButtonItem(
-                image: UIImage(systemName: "magnifyingglass"),
-                style: .plain,
-                target: self,
-                action: #selector(didTapSearch))
+            UIBarButtonItem(customView: bookmarkButton),
+            UIBarButtonItem(customView: searchButton)
         ]
         
         navigationController?.navigationBar.tintColor = .mainColor
@@ -152,40 +188,13 @@ class GreenRoomViewController: BaseViewController {
         
     }
     
-    override func setupAttributes() {
-        self.configureNavigationBar()
-        self.configureCollecitonView()
-    }
     
-    //MARK: - Selector
-    @objc func filterGreenRoom(_ sender: UIButton){
-        let questionColor: UIColor = sender.tag == 0 ? .customGray : .mainColor
-        let greenRoomColor: UIColor = sender.tag == 0 ? .mainColor : .customGray
-        
-        self.questionListButton.setTitleColor(questionColor, for: .normal)
-        self.greenRoomButton.setTitleColor(greenRoomColor, for: .normal)
-        self.disposeBag = DisposeBag()
-        setupBinding()
-        let layout = sender.tag == 0 ? self.GRLayout() : self.myListLayout()
-        self.collectionView.setCollectionViewLayout(layout, animated: true)
-        self.collectionView.layoutSubviews()
-    }
-    
-    @objc func didTapSearch(){
-        let vc = GRSearchViewController(viewModel: SearchViewModel())
-        self.navigationController?.pushViewController(vc, animated: true)
-    }
-    
-    @objc func didTapScrap(){
-        let vc = ScrapedQuestionViewController(viewModel: ScrapViewModel())
-        self.navigationController?.pushViewController(vc, animated: true)
-    }
 }
 
 //MARK: - collectionView
 extension GreenRoomViewController {
     private func configureCollecitonView(){
-        let layout = self.GRLayout()
+        let layout = self.greenRoomLayout()
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.backgroundColor = .white
         collectionView.register(GRFilteringCell.self, forCellWithReuseIdentifier: GRFilteringCell.reuseIdentifier)
@@ -229,6 +238,7 @@ extension GreenRoomViewController {
             case .MyGreenRoom(question: let question):
                 guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MyGreenRoomCell.reuseIdentifer, for: indexPath) as? MyGreenRoomCell else { return UICollectionViewCell() }
                 cell.question = question
+                cell.delegate = self
                 return cell
             case .MyQuestionList(question: let question):
                 guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MyQuestionListCell.reuseIedentifier, for: indexPath) as? MyQuestionListCell else { return UICollectionViewCell() }
@@ -236,8 +246,7 @@ extension GreenRoomViewController {
                 cell.viewModel = self.viewModel
                 return cell
             }
-        } configureSupplementaryView: { [weak self] dataSource, collectionView, kind,
-            indexPath in
+        } configureSupplementaryView: { [weak self] dataSource, collectionView, kind, indexPath in
             
             guard let self = self else { return UICollectionReusableView() }
             
@@ -282,7 +291,7 @@ extension GreenRoomViewController {
         return UICollectionViewCompositionalLayout { [weak self] (sectionIndex: Int, layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
             
             switch sectionIndex {
-            case 0: return self?.generateMyGRLayout()
+            case 0: return self?.generateMyGreenRoomLayout()
             default: return self?.generateMyQuestionListLayout()
             }
         }
@@ -313,14 +322,14 @@ extension GreenRoomViewController {
         
     }
     //MARK: - GreenRoomLayout
-    private func GRLayout() -> UICollectionViewLayout {
+    private func greenRoomLayout() -> UICollectionViewLayout {
         return UICollectionViewCompositionalLayout { [weak self] (sectionIndex: Int, layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
             
             switch sectionIndex {
             case 0: return self?.generateFilteringLayout()
             case 1: return self?.generatePopularQuestionLayout()
             case 2: return self?.generateRecentQuestionLayout()
-            default: return self?.generateMyGRLayout()
+            default: return self?.generateMyGreenRoomLayout()
             }
         }
     }
@@ -389,10 +398,8 @@ extension GreenRoomViewController {
         section.visibleItemsInvalidationHandler = { [weak self] _, contentOffset, environment in
             
             let bannerIndex = Int(max(0, round(contentOffset.x / environment.container.contentSize.width)))
-            
-            if environment.container.contentSize.height == environment.container.contentSize.width {
-                self?.viewModel.currentBannerPage.onNext(bannerIndex)
-            }
+
+            self?.viewModel.currentBannerPage.onNext(bannerIndex)
         }
         
         return section
@@ -435,7 +442,7 @@ extension GreenRoomViewController {
         
     }
     
-    func generateMyGRLayout() -> NSCollectionLayoutSection {
+    func generateMyGreenRoomLayout() -> NSCollectionLayoutSection {
         
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
         
@@ -468,9 +475,18 @@ extension GreenRoomViewController {
     }
 }
 
+//MARK: - RecentHeaderDelegate
 extension GreenRoomViewController: RecentHeaderDelegate {
     func didTapViewAllQeustionsButton() {
         let vc = RecentPublicQuestionsViewController(viewModel: RecentPublicQuestionsViewModel())
         self.navigationController?.pushViewController(vc, animated: true)
+    }
+}
+
+extension GreenRoomViewController: MyGreenRoomCellDelegate {
+    func didTapNext() {
+    }
+    
+    func didTapPrev() {
     }
 }

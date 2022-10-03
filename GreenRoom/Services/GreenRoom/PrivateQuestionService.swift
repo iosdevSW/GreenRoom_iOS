@@ -32,17 +32,6 @@ enum QuestionError: Error, LocalizedError {
     }
 }
 
-struct PrivateAnswer: Codable {
-    let id: Int
-    let groupCategoryName, categoryName, question: String
-    let answer: String?
-    let keywords: [String]
-    
-    enum CodingKeys: String, CodingKey {
-        case id, groupCategoryName, categoryName, question, answer, keywords
-    }
-}
-
 final class PrivateQuestionService {
     
     private var baseURL = "\(Constants.baseURL)/api/my-questions"
@@ -213,7 +202,6 @@ final class PrivateQuestionService {
             AF.request(requestURL, method: .delete, interceptor: AuthManager())
                 .validate(statusCode: 200..<300)
                 .response { response in
-                    print(response.response?.statusCode)
                 switch response.result {
                 case .success(_):
                     emitter.onNext(true)
