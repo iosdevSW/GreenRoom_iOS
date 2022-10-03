@@ -18,22 +18,22 @@ final class ScrapedQuestionViewController: BaseViewController {
     
     var editMode: Bool = false {
         didSet {
-            disposeBag = DisposeBag()
-            setupBinding()
-            
+            self.collectionView.reloadData()
             self.deleteButton.isHidden = !editMode
+            self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: self.editMode ? cancelButton : editButton)
         }
     }
     
-    private lazy var editButton = UIBarButtonItem(title: "편집",
-                                                  style: .plain,
-                                                  target: self,
-                                                  action: #selector(didTapEditButton(_:)))
+    private lazy var editButton = UIButton().then {
+        $0.setTitle("편집", for: .normal)
+        $0.setTitleColor(.mainColor, for: .normal)
+    }
     
-    private lazy var cancelButton = UIBarButtonItem(title: "취소",
-                                                    style: .plain,
-                                                    target: self,
-                                                    action: #selector(didTapCancleButton(_:)))
+    private lazy var cancelButton = UIButton().then {
+        $0.setTitle("취소", for: .normal)
+        $0.setTitleColor(.mainColor, for: .normal)
+    }
+
     
     private lazy var deleteButton = UIButton().then {
         $0.backgroundColor = .mainColor
@@ -77,7 +77,7 @@ final class ScrapedQuestionViewController: BaseViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.navigationItem.rightBarButtonItem = editButton
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: editButton)
         guard let tabbarcontroller = tabBarController as? CustomTabbarController else { return }
         tabbarcontroller.createButton.isHidden = true
         self.tabBarController?.tabBar.isHidden = true
@@ -98,10 +98,22 @@ final class ScrapedQuestionViewController: BaseViewController {
     }
     
     override func setupBinding() {
+        
+        editButton.rx.tap.asObservable()
+            .subscribe(onNext: {
+                self.editMode = true
+            }).disposed(by: disposeBag)
+        
+        cancelButton.rx.tap.asObservable()
+            .subscribe(onNext: {
+                self.editMode = false
+            }).disposed(by: disposeBag)
+        
         let input = ScrapViewModel.Input(trigger: rx.viewWillAppear.asObservable(),
                                          buttonTab: deleteButton.rx.tap.asObservable())
         
         let output = self.viewModel.transform(input: input)
+        
         output.scrap.bind(to: collectionView.rx.items(dataSource: dataSource())).disposed(by: disposeBag)
         
         self.collectionView.rx.itemSelected
@@ -123,16 +135,6 @@ final class ScrapedQuestionViewController: BaseViewController {
                 }
                 
             }).disposed(by: disposeBag)
-    }
-    
-    @objc func didTapEditButton(_ sender: UIBarButtonItem) {
-        editMode = true
-        self.navigationItem.rightBarButtonItem = cancelButton
-    }
-    
-    @objc func didTapCancleButton(_ sender: UIBarButtonItem) {
-        editMode = false
-        self.navigationItem.rightBarButtonItem = editButton
     }
 }
 
@@ -161,6 +163,7 @@ extension ScrapedQuestionViewController {
             
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ScrapViewCell.reuseIdentifier, for: indexPath) as? ScrapViewCell else { return UICollectionViewCell() }
             cell.editMode = self.editMode
+            cell.question = item
             return cell
             
         } configureSupplementaryView: { dataSource, collectionView, kind, indexPath in

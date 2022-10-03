@@ -144,15 +144,20 @@ class ScrapViewCell: UICollectionViewCell {
     
     private func configure(){
 
-        self.questionTextView.initDefaultText(with: question.question, foregroundColor: .black)
+        
+        self.questionTextView.initDefaultText(with: self.question.question, foregroundColor: .black)
 
-        self.categoryLabel.text = question.categoryName
+        self.categoryLabel.text = self.question.categoryName
         
-        self.alpha = question.expired ? 0.3 : 1.0
-        self.backgroundColor = question.participated ? .white : .mainColor
+        self.alpha = self.question.expired ? 0.3 : 1.0
+        self.containerView.backgroundColor = self.question.participated ? .white : .mainColor
         
-        guard let url = URL(string: question.profileImage) else { return }
+        guard let url = URL(string: self.question.profileImage) else { return }
         self.profileImageView.kf.setImage(with: url)
+        
+        self.questionStateLabel.text = self.question.expired ? "답변 종료" : (self.question.participated ? "참여 완료" : "\(self.question.remainedTime) 남음")
+    
+
     }
     
 }

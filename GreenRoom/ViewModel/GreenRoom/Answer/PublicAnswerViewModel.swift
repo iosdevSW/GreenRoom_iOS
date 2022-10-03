@@ -28,6 +28,8 @@ final class PublicAnswerViewModel: ViewModelType {
     }
     
     private let textFieldContentObservable = BehaviorSubject<String>(value: "")
+    private let scrapStateObservable = BehaviorSubject<Bool>(value: false)
+    private let detailPublicAnswer = PublishSubject<DetailPublicAnswer>()
     
     private let failMessage = PublishRelay<String>()
     private let successMessage = PublishRelay<String>()
@@ -42,15 +44,22 @@ final class PublicAnswerViewModel: ViewModelType {
     
     func transform(input: Input) -> Output {
         
-        let scrapUpdateState = input.scrapButtonTrigger.flatMap { _ -> Observable<Bool> in
-            return self.scrapService.updateScrapQuestion(id: self.id)
+        publicQuestionService.fetchDetailPublicQuestion(id: id)
+            .subscribe(onNext: { [weak self] question in
+                self?.scrapStateObservable.onNext(question.question.scrap)
+                self?.detailPublicAnswer.onNext(question)
+            }).disposed(by: disposeBag)
+        
+        input.scrapButtonTrigger.withLatestFrom(scrapStateObservable)
+            .flatMap { state in
+                return state ? self.scrapService.deleteScrapQuestion(ids: [self.id]) : self.scrapService.updateScrapQuestion(id: self.id)
+            }.bind(to: scrapStateObservable)
+            .disposed(by: disposeBag)
+        
+        let output = detailPublicAnswer.map { detailPublicAnswer in
+            return PublicAnswerSectionModel(header: detailPublicAnswer.question, items: detailPublicAnswer.answers)
         }
         
-        let output = publicQuestionService.fetchDetailPublicQuestion(id: id)
-            .map { detailPublicAnswer in
-                return PublicAnswerSectionModel(header: detailPublicAnswer.question, items: detailPublicAnswer.answers)
-            }
-        
-        return Output(answer: output, scrapUpdateState: scrapUpdateState)
+        return Output(answer: output, scrapUpdateState: scrapStateObservable.asObservable())
     }
 }
