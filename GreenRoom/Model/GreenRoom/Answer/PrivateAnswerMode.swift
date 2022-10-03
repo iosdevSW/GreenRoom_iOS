@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum Mode: Equatable {
+enum PrivateAnswerMode: Equatable {
     
     case edit
     case written(answer: String)

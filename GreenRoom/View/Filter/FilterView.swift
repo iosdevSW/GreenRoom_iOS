@@ -48,7 +48,7 @@ final class FilterView: UIView {
         
         viewModel.selectedCategoriesObservable.asObserver()
             .bind(to: self.selectedCategoriesCollectionView.rx.items(cellIdentifier: "ItemsCell", cellType: FilterItemsCell.self)) { index, id ,cell in
-                cell.category = CategoryID(rawValue: id)
+                cell.category = Category(rawValue: id)
             }.disposed(by: disposeBag)
     }
     
@@ -69,7 +69,7 @@ final class FilterView: UIView {
         selectedCategoriesCollectionView.snp.makeConstraints{ make in
             make.top.equalTo(filterButton.snp.bottom).offset(6)
             make.leading.trailing.equalToSuperview()
-            make.bottom.equalToSuperview().offset(-6)
+            make.bottom.equalToSuperview()
         }
     }
     
@@ -96,7 +96,7 @@ extension FilterView: UICollectionViewDelegateFlowLayout {
             .take(1)
             .subscribe(onNext: { items in
                 let id = items[indexPath.item]
-                let category = CategoryID(rawValue: id)
+                let category = Category(rawValue: id)
                 
                 tempLabel.font = .sfPro(size: 12, family: .Regular)
                 tempLabel.text = category?.title

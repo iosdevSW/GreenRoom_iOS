@@ -15,10 +15,10 @@ enum GreenRoomSectionModel: SectionModelType {
     typealias Item = SectionItem
     
     enum SectionItem {
-        case filtering(interest: CategoryID)
+        case filtering(interest: Category)
         case popular(question: PopularPublicQuestion)
         case recent(question: PublicQuestion)
-        case MyGreenRoom(question: Question)
+        case MyGreenRoom(question: MyPublicQuestion)
         case MyQuestionList(question: PrivateQuestion)
     }
     

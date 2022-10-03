@@ -82,43 +82,32 @@ final class KPGroupEditViewController: BaseViewController {
     
     //MARK: - Bind
     override func setupBinding() {
-        self.viewModel.categories
-            .bind(to: self.categoryCollectionView.rx.items(cellIdentifier: "categoryCell", cellType: CategoryCell.self)) {[weak self] index, title ,cell in
-                let id = index + 1
-                guard let category = CategoryID(rawValue: id) else { return }
+
+        self.categoryViewModel.categories
+            .bind(to: self.categoryCollectionView.rx.items(cellIdentifier: "categoryCell", cellType: CategoryCell.self)) {index, title ,cell in
+                guard let category = Category(rawValue: index+1) else { return }
                 
-                cell.imageView.image = category.nonSelectedImage
-                cell.frameView.layer.borderColor = UIColor.customGray.cgColor
-                cell.titleLabel.text = category.title
+                cell.category = category
                 
-                if self?.viewModel.selectedCategoryObservable.value == id {
+                if self.categoryViewModel.selectedCategoryObservable.value == index + 1 {
                     cell.isSelected = true
-                    self?.categoryCollectionView.selectItem(at: IndexPath(item: index, section: 0), animated: false, scrollPosition: .centeredVertically)
-                    cell.frameView.layer.borderColor = UIColor.mainColor.cgColor
-                    cell.imageView.image = category.SelectedImage
+                    self.categoryCollectionView.selectItem(at: IndexPath(item: index, section: 0), animated: false, scrollPosition: .centeredVertically)
                 }
-                
             }.disposed(by: disposeBag)
         
         categoryCollectionView.rx.itemSelected
             .bind(onNext: { [weak self] indexPath in
                 let cell = self?.categoryCollectionView.cellForItem(at: indexPath) as! CategoryCell
-                let index = indexPath.row+1
-                
-                guard let category = CategoryID(rawValue: index) else { return }
-                cell.frameView.layer.borderColor = UIColor.mainColor.cgColor
-                cell.imageView.image = category.SelectedImage
-                self?.viewModel.selectedCategoryObservable.accept(category.rawValue)
+                cell.isSelected = true
+                self?.categoryViewModel.selectedCategoryObservable.accept(indexPath.row + 1)
+
             }).disposed(by: disposeBag)
         
         categoryCollectionView.rx.itemDeselected
             .bind(onNext: { [weak self] indexPath in
                 let cell = self?.categoryCollectionView.cellForItem(at: indexPath) as! CategoryCell
-                let index = indexPath.row + 1
-                
-                guard let category = CategoryID(rawValue: index) else { return }
-                cell.frameView.layer.borderColor = UIColor.customGray.cgColor
-                cell.imageView.image = category.nonSelectedImage
+                cell.isSelected = false
+
             }).disposed(by: disposeBag)
         
         questionTextView.rx.didBeginEditing

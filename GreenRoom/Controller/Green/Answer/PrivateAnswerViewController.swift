@@ -11,7 +11,7 @@ import RxSwift
 final class PrivateAnswerViewController: BaseViewController {
     
     //MARK: - Properties
-    private var mode: Mode = .unWritten {
+    private var mode: PrivateAnswerMode = .unWritten {
         didSet {
             switch self.mode {
             case .edit:
@@ -36,7 +36,7 @@ final class PrivateAnswerViewController: BaseViewController {
     
     private lazy var output = self.viewModel.transform(input: input)
     
-    private var headerView = AnswerHeaderView(frame: .zero)
+    private var headerView = QuestionHeaderView(frame: .zero)
     private var keywordView: KeywordRegisterView!
     
     private lazy var defaultView = UIImageView().then {
@@ -193,7 +193,7 @@ final class PrivateAnswerViewController: BaseViewController {
         self.output.answer.subscribe(onNext: { [weak self] answer in
             
             guard let self = self else { return }
-            self.headerView.question = answer
+            self.headerView.question = Question(question: answer.question, categoryName: answer.categoryName, groupCategoryName: answer.groupCategoryName)
 
             if let answer = answer.answer {
                 self.mode = .written(answer: answer)

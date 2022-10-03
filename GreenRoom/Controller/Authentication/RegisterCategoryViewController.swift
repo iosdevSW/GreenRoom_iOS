@@ -51,32 +51,23 @@ class RegisterCategoryViewController: UIViewController{
         self.categoryView.rx.itemSelected
             .bind(onNext: { indexPath in
                 let cell = self.categoryView.cellForItem(at: indexPath) as! CategoryCell
-                let index = indexPath.row+1
                 
-                guard let category = CategoryID(rawValue: index) else { return }
-                cell.frameView.layer.borderColor = UIColor.mainColor.cgColor
-                cell.imageView.image = category.SelectedImage
-                
+                guard let category = Category(rawValue: indexPath.row + 1) else { return }
+                cell.isSelected = true
                 self.selectedCategory = category.title
-                self.categoryId = index
+                self.categoryId = indexPath.row + 1
         }).disposed(by: disposeBag)
         
         self.categoryView.rx.itemDeselected
             .bind(onNext: { indexPath in
                 let cell = self.categoryView.cellForItem(at: indexPath) as! CategoryCell
-                let index = indexPath.row+1
-                
-                guard let category = CategoryID(rawValue: index) else { return }
-                cell.frameView.layer.borderColor = UIColor.customGray.cgColor
-                cell.imageView.image = category.nonSelectedImage
-                
+                cell.isSelected = false
             }).disposed(by: disposeBag)
         
         self.viewModel.categories
             .bind(to: self.categoryView.rx.items(cellIdentifier: "categoryCell", cellType: CategoryCell.self)) {index, title ,cell in
-                guard let category = CategoryID(rawValue: index+1) else { return }
-                cell.imageView.image = category.nonSelectedImage
-                cell.titleLabel.text = category.title
+                guard let category = Category(rawValue: index+1) else { return }
+                cell.category = category
             }.disposed(by: disposeBag)
     }
 }

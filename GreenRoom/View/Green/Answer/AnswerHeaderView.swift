@@ -8,12 +8,12 @@
 import UIKit
 import RxSwift
 
-final class AnswerHeaderView: UIView {
+final class QuestionHeaderView: UIView {
     
-    static let reuseIdentifier = "AnswerHeaderView"
+    static let reuseIdentifier = "QuestionHeaderView"
     
     //MARK: - Properties
-    var question: PrivateAnswer! {
+    var question: Question! {
         didSet { configure() }
     }
     
@@ -44,6 +44,7 @@ final class AnswerHeaderView: UIView {
     private func configure() {
         
         self.questionTextView.initDefaultText(with: question.question, foregroundColor: .black, font: .sfPro(size: 20, family: .Regular))
+        
         self.categoryLabel.text = question.categoryName
         self.questionTextView.isEditable = question.groupCategoryName.isEmpty
     }

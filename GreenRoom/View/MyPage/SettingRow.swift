@@ -81,9 +81,9 @@ final class SettingRow: UICollectionViewCell {
             self.infoLabel.attributedText = Utilities.shared.textWithIcon(text: "한국어", image: UIImage(systemName: "globe"),imageColor: .mainColor,iconPosition: .right)
         case .interest:
             let cateogryId = UserDefaults.standard.object(forKey: "CategoryID") as? Int ?? 1
-            let category = CategoryID(rawValue: cateogryId) ?? .common
+            let category = Category(rawValue: cateogryId) ?? .common
             
-            self.infoLabel.attributedText = Utilities.shared.textWithIcon(text: category.title, image: category.SelectedImage, imageColor: nil, iconPosition: .right)
+            self.infoLabel.attributedText = Utilities.shared.textWithIcon(text: category.title, image: UIImage(named: category.selectedImageName), imageColor: nil, iconPosition: .right)
         case .version:
             return
         default:

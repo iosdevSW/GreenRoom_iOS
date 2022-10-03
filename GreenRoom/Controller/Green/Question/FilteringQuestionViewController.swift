@@ -9,12 +9,16 @@ import UIKit
 import RxSwift
 import RxDataSources
 
-final class QuestionsByCategoryViewController: BaseViewController {
+final class FilteringQuestionViewController: BaseViewController {
     
     var collectionView: UICollectionView!
-    var viewModel: GreenRoomViewModel!
+    var viewModel: FilteringViewModel!
     
-    init(viewModel: GreenRoomViewModel){
+    private let notFoundImageView = UIImageView().then {
+        $0.image = UIImage(named: "NotFound")?.withRenderingMode(.alwaysOriginal)
+    }
+    
+    init(viewModel: FilteringViewModel){
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
@@ -44,9 +48,18 @@ final class QuestionsByCategoryViewController: BaseViewController {
     }
      
     override func configureUI() {
+        self.view.backgroundColor = .white
+        
         self.view.addSubview(collectionView)
         collectionView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
+        }
+        
+        self.collectionView.addSubview(self.notFoundImageView)
+        self.collectionView.snp.makeConstraints { make in
+            make.centerY.equalToSuperview().offset(-80)
+            make.centerX.equalToSuperview()
+            make.width.height.equalTo(86)
         }
     }
     
@@ -55,17 +68,21 @@ final class QuestionsByCategoryViewController: BaseViewController {
     }
     
     override func setupBinding() {
-//        self.viewModel.recent.bind(to: collectionView.rx.items(dataSource: self.dataSource())).disposed(by: disposeBag)
+        
+        let input = FilteringViewModel.Input(categoryObservable: Observable.just(2))
+        
+        viewModel.transform(input: input).publicQuestions.bind(to: self.collectionView.rx.items(dataSource: dataSource()))
+            .disposed(by: disposeBag)
     }
 }
 
 //MARK: - CollectionView
-extension QuestionsByCategoryViewController {
+extension FilteringQuestionViewController {
     
     private func configureCollectionView(){
         let layout = UICollectionViewFlowLayout()
         layout.itemSize = CGSize(width: view.bounds.width * 0.9, height: view.bounds.height/4)
-        layout.headerReferenceSize = CGSize(width: view.bounds.width , height: view.bounds.height * 0.14)
+        layout.headerReferenceSize = CGSize(width: view.frame.size.width , height: view.bounds.height * 0.18)
         layout.minimumLineSpacing = view.bounds.size.height * 0.03
         layout.sectionInset = UIEdgeInsets(top: 20, left: 0, bottom: 0, right: 0)
         
@@ -75,12 +92,12 @@ extension QuestionsByCategoryViewController {
         collectionView.register(QuestionByCategoryCell.self, forCellWithReuseIdentifier: QuestionByCategoryCell.reuseIdentifier)
     }
     
-    private func dataSource() -> RxCollectionViewSectionedReloadDataSource<GreenRoomSectionModel> {
-        return RxCollectionViewSectionedReloadDataSource<GreenRoomSectionModel> {
+    private func dataSource() -> RxCollectionViewSectionedReloadDataSource<FilteringSectionModel> {
+        return RxCollectionViewSectionedReloadDataSource<FilteringSectionModel> {
             (dataSource, collectionView, indexPath, item) in
             
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: QuestionByCategoryCell.reuseIdentifier, for: indexPath) as? QuestionByCategoryCell else { return UICollectionViewCell() }
-
+            self.notFoundImageView.removeFromSuperview()
             return cell
         } configureSupplementaryView: { dataSource, collectionView, kind,
             indexPath in
@@ -88,11 +105,11 @@ extension QuestionsByCategoryViewController {
             guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: InfoHeaderView.reuseIdentifier, for: indexPath) as? InfoHeaderView else {
                 
                     return UICollectionReusableView()
-                
             }
-        
+            
+            let info = dataSource[indexPath.row].header
             header.filterShowing = true
-            header.info = Info(title: "디자인", subTitle: "관련된 질문리스트를 보여드려요!\n\n질문에 참여 시 동료들의 모든 답변을 확인할 수 있어요 :)")
+            header.info = info
             return header
         }
     }

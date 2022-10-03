@@ -32,17 +32,6 @@ enum QuestionError: Error, LocalizedError {
     }
 }
 
-struct PrivateAnswer: Codable {
-    let id: Int
-    let groupCategoryName, categoryName, question: String
-    let answer: String?
-    let keywords: [String]
-    
-    enum CodingKeys: String, CodingKey {
-        case id, groupCategoryName, categoryName, question, answer, keywords
-    }
-}
-
 final class PrivateQuestionService {
     
     private var baseURL = "\(Constants.baseURL)/api/my-questions"
@@ -216,11 +205,8 @@ final class PrivateQuestionService {
                 switch response.result {
                 case .success(_):
                     emitter.onNext(true)
-//                    completable(.completed)
                 case .failure(_):
                     emitter.onNext(false)
-//                    let error = response.response?.statusCode == 403 ? QuestionError.notAuthorization : QuestionError.unKnownError
-//                    completable(.error(error))
                 }
             }
             return Disposables.create()

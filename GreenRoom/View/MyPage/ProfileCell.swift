@@ -78,11 +78,11 @@ final class ProfileCell: UICollectionViewCell {
     
     //MARK: - Configure
     private func configure() {
-        guard let user = user, let category = CategoryID(rawValue: user.categoryID) else {
+        guard let user = user, let category = Category(rawValue: user.categoryID) else {
             return
         }
         
-        nameLabel.attributedText = Utilities.shared.textWithIcon(text: " \(user.name)", image: category.SelectedImage, font: .sfPro(size: 12, family: .Regular), textColor: .black, imageColor: nil, iconPosition: .left)
+        nameLabel.attributedText = Utilities.shared.textWithIcon(text: " \(user.name)", image: UIImage(named: category.selectedImageName), font: .sfPro(size: 12, family: .Regular), textColor: .black, imageColor: nil, iconPosition: .left)
         profileImageView.layer.borderColor = UIColor.white.cgColor
         profileImageView.layer.borderWidth = 4
         

@@ -6,12 +6,23 @@
 //
 
 import UIKit
+import RxSwift
+
+protocol MyGreenRoomCellDelegate: AnyObject {
+    func didTapNext()
+    func didTapPrev()
+}
 
 final class MyGreenRoomCell: UICollectionViewCell {
     
     static let reuseIdentifer = "MyGreenRoomCell"
+    
     //MARK: - Properties
-    var question: Question! {
+    private var disposeBag = DisposeBag()
+    
+    weak var delegate: MyGreenRoomCellDelegate?
+    
+    var question: MyPublicQuestion! {
         didSet { configure() }
     }
     
@@ -46,12 +57,12 @@ final class MyGreenRoomCell: UICollectionViewCell {
         $0.isUserInteractionEnabled = false
     }
     
-    
-    
     //MARK: - LifeCycle
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
         configureUI()
+        bind()
     }
     
     required init?(coder: NSCoder) {
@@ -64,6 +75,7 @@ final class MyGreenRoomCell: UICollectionViewCell {
         
         let topLine = UIView()
         topLine.backgroundColor = .mainColor
+        
         self.contentView.addSubview(topLine)
         topLine.snp.makeConstraints { make in
             make.leading.trailing.top.equalToSuperview()
@@ -103,8 +115,21 @@ final class MyGreenRoomCell: UICollectionViewCell {
     }
     
     private func configure(){
-//        guard let category = CategoryID(rawValue: question.category) else { return }
         
         self.questionTextView.text = question.question
+        leftButton.isHidden = !question.hasPrev
+        rightButton.isHidden = !question.hasNext
+    }
+    
+    func bind() {
+        leftButton.rx.tap.subscribe(onNext: {
+            print("prev")
+            self.delegate?.didTapNext()
+        }).disposed(by: disposeBag)
+        
+        rightButton.rx.tap.subscribe(onNext: {
+            print("next")
+            self.delegate?.didTapPrev()
+        }).disposed(by: disposeBag)
     }
 }
