@@ -30,14 +30,8 @@ final class PrivateAnswerViewController: BaseViewController {
     private var viewModel: PrivateAnswerViewModel!
     private var collectionView: UICollectionView!
     
-    private lazy var input = PrivateAnswerViewModel.Input(text: answerTextView.rx.text.orEmpty.asObservable(),
-                                                          deleteButtonTrigger: deleteButton.rx.tap.flatMap { self.showAlert(title: "질문 삭제", message: "마이질문을 삭제하시겠습니까?\n한 번 삭제 후 되돌릴 수 없습니다.")},
-                                                          doneButtonTrigger: self.doneButton.rx.tap.asObservable())
-    
-    private lazy var output = self.viewModel.transform(input: input)
-    
     private var headerView = QuestionHeaderView(frame: .zero)
-    private var keywordView: KeywordRegisterView!
+    private var keywordView: KeywordRegisterView?
     
     private lazy var defaultView = UIImageView().then {
         $0.image = UIImage(named: "NotFound")?.withRenderingMode(.alwaysOriginal)
@@ -81,15 +75,13 @@ final class PrivateAnswerViewController: BaseViewController {
         $0.layer.borderWidth = 2
         $0.isScrollEnabled = true
         
-        $0.initDefaultText(with: viewModel.getPlaceholder(), foregroundColor: .lightGray)
+        $0.initDefaultText(with: viewModel.placeholder, foregroundColor: .lightGray)
         
     }
     //MARK: - Lifecycle
     init(viewModel: PrivateAnswerViewModel){
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
-        
-        self.keywordView = KeywordRegisterView(viewModel: RegisterKeywordViewModel(id: viewModel.id, keywords: output.keywords, service: PrivateQuestionService()))
     }
     
     required init?(coder: NSCoder) {
@@ -121,10 +113,8 @@ final class PrivateAnswerViewController: BaseViewController {
     
     //MARK: - Configure
     override func configureUI() {
-        self.view.backgroundColor = .white
+        super.configureUI()
         
-        self.hideKeyboardWhenTapped()
-
         let headerHeight = UIScreen.main.bounds.height * 0.3
         
         self.view.addSubview(headerView)
@@ -153,7 +143,6 @@ final class PrivateAnswerViewController: BaseViewController {
             make.height.equalTo(60)
             make.bottom.equalTo(view.safeAreaLayoutGuide)
         }
-        
     }
     
     override func setupAttributes() {
@@ -164,6 +153,15 @@ final class PrivateAnswerViewController: BaseViewController {
     
     override func setupBinding() {
         
+        let input = PrivateAnswerViewModel.Input(text: answerTextView.rx.text.orEmpty.asObservable(),
+                                                 keywords: keywordView?.output.registeredKeywords ?? .of([]),
+                                                 deleteButtonTrigger: deleteButton.rx.tap.flatMap { self.showAlert(title: "질문 삭제", message: "마이질문을 삭제하시겠습니까?\n한 번 삭제 후 되돌릴 수 없습니다.")},
+                                                 doneButtonTrigger: self.doneButton.rx.tap.asObservable())
+        
+        let output = viewModel.transform(input: input)
+        
+        keywordView = KeywordRegisterView(viewModel: RegisterKeywordViewModel(id: viewModel.id, keywords: output.keywords))
+        
         answerPostButton.rx.tap
             .subscribe(onNext: { [weak self] _ in
                 self?.mode = .edit
@@ -173,7 +171,7 @@ final class PrivateAnswerViewController: BaseViewController {
             .subscribe(onNext: { [weak self] _ in
                 guard let self = self else { return }
                 
-                if self.answerTextView.text == self.viewModel.getPlaceholder() {
+                if self.answerTextView.text == self.viewModel.placeholder {
                     self.answerTextView.text = nil
                     self.answerTextView.textColor = .black
                 }
@@ -185,12 +183,12 @@ final class PrivateAnswerViewController: BaseViewController {
                 guard let self = self else { return }
                 
                 if self.answerTextView.text.isEmpty || self.answerTextView.text == nil {
-                    self.answerTextView.initDefaultText(with: self.viewModel.getPlaceholder(),
+                    self.answerTextView.initDefaultText(with: self.viewModel.placeholder,
                                                         foregroundColor: .lightGray)
                 }
             }).disposed(by: disposeBag)
         
-        self.output.answer.subscribe(onNext: { [weak self] answer in
+        output.answer.subscribe(onNext: { [weak self] answer in
             
             guard let self = self else { return }
             self.headerView.question = Question(question: answer.question, categoryName: answer.categoryName, groupCategoryName: answer.groupCategoryName)
@@ -205,7 +203,7 @@ final class PrivateAnswerViewController: BaseViewController {
         
         output.successMessage.emit(onNext: { [weak self] message in
             guard let self = self else { return }
-            let alert = self.comfirmAlert(title: "삭제 완료", subtitle: message) { _ in
+            let alert = self.comfirmAlert(title: "등록 완료", subtitle: message) { _ in
                 self.dismiss(animated: true)
             }
             self.present(alert, animated: true)
@@ -213,7 +211,7 @@ final class PrivateAnswerViewController: BaseViewController {
         
         output.failMessage.emit(onNext: { [weak self] message in
             guard let self = self else { return }
-            let alert = self.comfirmAlert(title: "삭제 실패", subtitle: message) { _ in
+            let alert = self.comfirmAlert(title: "등록 실패", subtitle: message) { _ in
                 
             }
             self.present(alert, animated: true)
@@ -222,6 +220,8 @@ final class PrivateAnswerViewController: BaseViewController {
     
     private func configureTextViewLayout() {
         
+        guard let keywordView = keywordView else { return }
+
         self.view.addSubview(keywordView)
         keywordView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()

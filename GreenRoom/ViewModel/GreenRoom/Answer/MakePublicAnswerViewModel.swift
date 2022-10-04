@@ -1,17 +1,17 @@
 //
-//  AnswerViewModel.swift
+//  MakePublicAnswerViewModel.swift
 //  GreenRoom
 //
-//  Created by Doyun Park on 2022/09/22.
+//  Created by Doyun Park on 2022/10/04.
 //
-
 import Foundation
 import RxSwift
 import RxCocoa
 
-final class PrivateAnswerViewModel: ViewModelType {
+final class MakePublicAnswerViewModel: ViewModelType {
     
-    private let privateQuestionService = PrivateQuestionService()
+    var publicQuestionService: PublicQuestionService
+    
     var disposeBag = DisposeBag()
     
     var placeholder: String {
@@ -26,13 +26,11 @@ final class PrivateAnswerViewModel: ViewModelType {
     struct Input {
         let text: Observable<String>
         let keywords: Observable<[String]>
-        let deleteButtonTrigger: Observable<Bool>
         let doneButtonTrigger: Observable<Void>
     }
     
     struct Output {
-        let answer: Observable<PrivateAnswer>
-        let keywords: Observable<[String]>
+        let question: Observable<PublicAnswerSectionModel>
         let successMessage: Signal<String>
         let failMessage: Signal<String>
     }
@@ -41,13 +39,15 @@ final class PrivateAnswerViewModel: ViewModelType {
     private let failMessage = PublishRelay<String>()
     private let successMessage = PublishRelay<String>()
     
-    let id: Int
+    let answer: PublicAnswerSectionModel
     
-    init(id: Int){
-        self.id = id
+    init(answer: PublicAnswerSectionModel, publicQuestionService: PublicQuestionService){
+        self.answer = answer
+        self.publicQuestionService = publicQuestionService
     }
     
     func transform(input: Input) -> Output {
+
         input.text.bind(to: textFieldContentObservable).disposed(by: disposeBag)
 
         input.doneButtonTrigger.withLatestFrom(Observable.zip(textFieldContentObservable.asObserver(),input.keywords.asObservable()))
@@ -55,18 +55,14 @@ final class PrivateAnswerViewModel: ViewModelType {
                 guard let self = self else {
                     return Observable.just(false)
                 }
-                return self.privateQuestionService.uploadAnswer(id: self.id, answer: answer, keywords: keywords)
+                return self.publicQuestionService.uploadAnswer(id: self.answer.header.id, answer: answer, keywords: keywords)
             }
             .subscribe(onNext: { [weak self] isSuccess in
                 isSuccess ? self?.successMessage.accept("답변 작성이 완료되었습니다.") : self?.failMessage.accept("글자수는 500자를 초과할 수 없습니다.")
             }).disposed(by: disposeBag)
-
-        let output = self.privateQuestionService.fetchPrivateQuestion(id: self.id)
-
-        return Output(answer: output.asObservable(),
-                      keywords: output.map { $0.keywords },
+        
+        return Output(question: Observable.just(answer),
                       successMessage: successMessage.asSignal(),
                       failMessage: failMessage.asSignal())
     }
-
 }

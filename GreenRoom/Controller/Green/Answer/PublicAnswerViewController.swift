@@ -18,8 +18,14 @@ final class PublicAnswerViewController: BaseViewController {
     }
     
     private let viewModel: PublicAnswerViewModel
-    private var headerView = QuestionHeaderView(frame: .zero)
+    
+    private lazy var input = PublicAnswerViewModel.Input(scrapButtonTrigger: scrapButton.rx.tap.asObservable(),
+                                            registerGreenRoomTrigger: boxButton.rx.tap.asObservable())
+    
+    private lazy var output = viewModel.transform(input: input)
+    
     private var collectionView: UICollectionView!
+    private var headerView = QuestionHeaderView(frame: .zero)
     
     private var answerPostButton = UIButton().then {
         $0.backgroundColor = .point
@@ -112,10 +118,6 @@ final class PublicAnswerViewController: BaseViewController {
     }
     
     override func setupBinding() {
-        let input = PublicAnswerViewModel.Input(scrapButtonTrigger: scrapButton.rx.tap.asObservable(),
-                                                registerGreenRoomTrigger: boxButton.rx.tap.asObservable())
-        
-        let output = viewModel.transform(input: input)
         
         output.scrapUpdateState
             .subscribe(onNext: { completable in
@@ -132,6 +134,14 @@ final class PublicAnswerViewController: BaseViewController {
         }).disposed(by: disposeBag)
         
         output.answer.map{ [$0] }.bind(to: collectionView.rx.items(dataSource: dataSource())).disposed(by: disposeBag)
+        
+        answerPostButton.rx.tap
+            .withLatestFrom(output.answer)
+            .subscribe(onNext: { [weak self] answer in
+                let vc = MakePublicAnswerViewController(viewModel: MakePublicAnswerViewModel(answer: answer, publicQuestionService: PublicQuestionService()))
+                self?.navigationController?.pushViewController(vc, animated: false)
+        }).disposed(by: disposeBag)
+        
     }
     
     //MARK: - Selector
@@ -187,9 +197,13 @@ extension PublicAnswerViewController {
         case .expires:
             self.answerPostButton.setTitleColor(.mainColor, for: .normal)
             self.answerPostButton.backgroundColor = .white
+            self.answerPostButton.layer.borderColor = UIColor.mainColor.cgColor
+            self.answerPostButton.layer.borderWidth = 1
             self.answerPostButton.alpha = 0.3
         case .participated:
             self.answerPostButton.backgroundColor = .mainColor
+            self.answerPostButton.setTitle("참여 완료", for: .normal)
+            self.answerPostButton.isEnabled = false
         }
     }
 }

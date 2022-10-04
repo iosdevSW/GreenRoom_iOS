@@ -83,13 +83,13 @@ final class KPGroupEditViewController: BaseViewController {
     //MARK: - Bind
     override func setupBinding() {
 
-        self.categoryViewModel.categories
+        self.viewModel.categories
             .bind(to: self.categoryCollectionView.rx.items(cellIdentifier: "categoryCell", cellType: CategoryCell.self)) {index, title ,cell in
                 guard let category = Category(rawValue: index+1) else { return }
                 
                 cell.category = category
                 
-                if self.categoryViewModel.selectedCategoryObservable.value == index + 1 {
+                if self.viewModel.selectedCategoryObservable.value == index + 1 {
                     cell.isSelected = true
                     self.categoryCollectionView.selectItem(at: IndexPath(item: index, section: 0), animated: false, scrollPosition: .centeredVertically)
                 }
@@ -99,7 +99,7 @@ final class KPGroupEditViewController: BaseViewController {
             .bind(onNext: { [weak self] indexPath in
                 let cell = self?.categoryCollectionView.cellForItem(at: indexPath) as! CategoryCell
                 cell.isSelected = true
-                self?.categoryViewModel.selectedCategoryObservable.accept(indexPath.row + 1)
+                self?.viewModel.selectedCategoryObservable.accept(indexPath.row + 1)
 
             }).disposed(by: disposeBag)
         

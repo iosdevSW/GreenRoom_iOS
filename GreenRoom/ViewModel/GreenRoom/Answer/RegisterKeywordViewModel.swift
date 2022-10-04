@@ -11,7 +11,6 @@ import RxCocoa
 
 final class RegisterKeywordViewModel: ViewModelType {
     
-    private let myListService: PrivateQuestionService
     var disposeBag = DisposeBag()
       
     struct Input {
@@ -25,15 +24,14 @@ final class RegisterKeywordViewModel: ViewModelType {
     
     private let textFieldContentObservable = BehaviorSubject<String>(value: "")
     private let addKeywordObservable = PublishSubject<String>()
-    private let regiteredKeywordObservable = BehaviorRelay<[String]>(value: [])
+    private let registeredKeywordObservable = BehaviorRelay<[String]>(value: [])
     
     private let id: Int
     
-    init(id: Int, keywords: Observable<[String]>, service: PrivateQuestionService){
+    init(id: Int, keywords: Observable<[String]> = .of([])){
         self.id = id
         
-        keywords.bind(to: regiteredKeywordObservable).disposed(by: disposeBag)
-        self.myListService = service
+        keywords.bind(to: registeredKeywordObservable).disposed(by: disposeBag)
     }
     
     func transform(input: Input) -> Output {
@@ -45,16 +43,10 @@ final class RegisterKeywordViewModel: ViewModelType {
         
         addKeywordObservable.subscribe(onNext: { [weak self] keyword in
             guard let self = self else { return }
-            
-            self.myListService.updateKeywords(id: self.id, keywords: self.regiteredKeywordObservable.value + [keyword]) { isSuccess in
-                if isSuccess {
-                    self.regiteredKeywordObservable.accept(self.regiteredKeywordObservable.value + [keyword])
-                }
-            }
-            
+            self.registeredKeywordObservable.accept(self.registeredKeywordObservable.value + [keyword])
         }).disposed(by: disposeBag)
         
-        return Output(registeredKeywords: self.regiteredKeywordObservable.asObservable())
+        return Output(registeredKeywords: self.registeredKeywordObservable.asObservable())
     }
     
 }

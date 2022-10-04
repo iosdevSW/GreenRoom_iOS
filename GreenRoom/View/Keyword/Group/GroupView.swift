@@ -86,7 +86,7 @@ final class GroupView: UIView {
         viewModel.groupsObservable
             .bind(to: self.groupTableView.rx.items(cellIdentifier: "GroupCell", cellType: GroupCell.self)) { index, item, cell in
                 cell.groupNameLabel.text = item.name
-                cell.categoryLabel.text = CategoryID(rawValue: item.categoryId)?.title
+                cell.categoryLabel.text = Category(rawValue: item.categoryId)?.title
                 cell.questionCountingLabel.attributedText = self.setColorHilightAttribute(text: "질문 \(item.questionCnt)개",
                                                                                      hilightString: "\(item.questionCnt)",
                                                                                      color: .point)

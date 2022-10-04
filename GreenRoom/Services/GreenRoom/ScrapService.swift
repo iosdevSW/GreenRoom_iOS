@@ -58,7 +58,7 @@ final class ScrapService {
             AF.request(url, method: .post, parameters: parameter, encoding: JSONEncoding.default, interceptor: AuthManager())
                 .responseString { response in
                 switch response.result {
-                case .success(let res):
+                case .success(_):
                     emitter.onNext(false)
                 case .failure(_):
                     emitter.onNext(true)

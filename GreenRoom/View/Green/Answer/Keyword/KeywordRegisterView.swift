@@ -11,18 +11,18 @@ import RxCocoa
 import RxDataSources
 
 final class KeywordRegisterView: UIView {
-    
-    private var collectionView: UICollectionView!
+
     private var disposeBag = DisposeBag()
     
     var viewModel: RegisterKeywordViewModel
     
     private lazy var input = RegisterKeywordViewModel.Input(
         inputKeyword: self.keywordTextField.rx.text.orEmpty.asObservable(),
-        trigger: keywordTextField.rx.controlEvent([.editingDidEndOnExit]).asObservable()
-    )
+        trigger: keywordTextField.rx.controlEvent([.editingDidEndOnExit]).asObservable())
     
-    private lazy var output = viewModel.transform(input: input)
+    lazy var output = viewModel.transform(input: input)
+    
+    private var collectionView: UICollectionView!
     
     private lazy var keywordTextField = UITextField().then {
         $0.layer.borderColor = UIColor.mainColor.cgColor
@@ -31,10 +31,9 @@ final class KeywordRegisterView: UIView {
         $0.placeholder = "키워드를 등록해주세요!"
         $0.font = .sfPro(size: 12, family: .Semibold)
         $0.textColor = .black
-        
         $0.leftViewMode = .always
         
-        let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
+        let imageView = UIImageView(frame: CGRect(x: 10, y: 0, width: 30, height: 30))
         imageView.image = UIImage(systemName: "checkmark.circle.fill")
         imageView.tintColor = .point
         
@@ -59,12 +58,12 @@ final class KeywordRegisterView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
+    //MARK: - Configure
     private func configureUI() {
         self.backgroundColor = .white
         
         let margin = 30
-        
         let textFieldMargin = 25
         
         self.addSubview(keywordTextField)
@@ -100,7 +99,6 @@ final class KeywordRegisterView: UIView {
         self.collectionView.register(KeywordCell.self, forCellWithReuseIdentifier: KeywordCell.reuseIdentifier)
         self.collectionView.rx.setDelegate(self)
             .disposed(by: self.disposeBag)
-
     }
     
     private func bind() {
@@ -110,7 +108,8 @@ final class KeywordRegisterView: UIView {
                 cell.keyword = keyword
             }.disposed(by: disposeBag)
         
-        self.keywordTextField.rx.controlEvent([.editingDidEndOnExit]).subscribe(onNext:{ [weak self] _ in
+        self.keywordTextField.rx.controlEvent([.editingDidEndOnExit])
+            .subscribe(onNext:{ [weak self] _ in
             self?.keywordTextField.text = nil
         }).disposed(by: disposeBag)
     }
@@ -131,7 +130,6 @@ extension KeywordRegisterView: UICollectionViewDelegateFlowLayout {
                 label.text = keywords[indexPath.row]
             }).disposed(by: disposeBag)
         
-//        let size = label.frame.size
         return CGSize(width: label.intrinsicContentSize.width + 16, height: 24)
     }
 }
