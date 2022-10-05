@@ -18,17 +18,11 @@ class KeywordViewModel {
     
     let groupQuestions = BehaviorRelay<[GroupQuestion]>(value: [])
     
-    let selectedQuestionObservable = BehaviorSubject<[String]>.init(value: []) // 선택된 연습 질문
+    let selectedQuestionObservable = BehaviorRelay<[String]>.init(value: []) // 선택된 연습 질문
 
     var selectedQ = BehaviorSubject<[KPDetailModel]>.init(value:[
         KPDetailModel.init(items: [])
     ])
-    
-    var selectedQuestionTemp = [String]() {
-        didSet{
-            selectedQuestionObservable.onNext(self.selectedQuestionTemp)
-        }
-    }
     
     var keywordOnOff = true
     var recordingType: RecordingType = .camera

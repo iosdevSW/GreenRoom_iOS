@@ -131,12 +131,12 @@ final class KPQuestionsViewController: BaseViewController {
         self.view.backgroundColor = .white
         hideKeyboardWhenTapped()
         setNavigationItem()
+        self.viewmodel.updateGroupQuestions()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.tabBarController?.tabBar.isHidden = true
-        self.viewmodel.updateGroupQuestions()
     }
     
     //MARK: - Method
@@ -190,7 +190,7 @@ final class KPQuestionsViewController: BaseViewController {
         self.isEditingMode = !self.isEditingMode
         self.questionListTableView.reloadData()
         
-        viewmodel.selectedQuestionTemp = []
+        viewmodel.selectedQuestionObservable.accept([])
         
         self.moveGroupButton.isHidden = true
         self.deleteQuestionButton.isHidden = true
@@ -211,7 +211,8 @@ final class KPQuestionsViewController: BaseViewController {
                                                                                       color: .point)
             }).disposed(by: disposeBag)
         
-        viewmodel.groupQuestions.bind(to: questionListTableView.rx.items(cellIdentifier: "QuestionListCell", cellType: QuestionListCell.self)) { index, item, cell in
+        viewmodel.groupQuestions
+            .bind(to: questionListTableView.rx.items(cellIdentifier: "QuestionListCell", cellType: QuestionListCell.self)) { index, item, cell in
             // init
             cell.selectionStyle = .none
             cell.mainLabel.textColor = .black
@@ -246,7 +247,9 @@ final class KPQuestionsViewController: BaseViewController {
                 }
                 
                 let title = cell.mainLabel.text!
-                self.viewmodel.selectedQuestionTemp.append(title)
+                var questions = self.viewmodel.selectedQuestionObservable.value
+                questions.append(title)
+                self.viewmodel.selectedQuestionObservable.accept(questions)
             }).disposed(by: disposeBag)
         
         questionListTableView.rx.itemDeselected
@@ -260,8 +263,10 @@ final class KPQuestionsViewController: BaseViewController {
                 }
                 
                 let title = cell.mainLabel.text!
-                if let index = self.viewmodel.selectedQuestionTemp.firstIndex(of: title){
-                    self.viewmodel.selectedQuestionTemp.remove(at: index)
+                var questions = self.viewmodel.selectedQuestionObservable.value
+                if let index = questions.firstIndex(of: title){
+                    questions.remove(at: index)
+                    self.viewmodel.selectedQuestionObservable.accept(questions)
                 }
             }).disposed(by: disposeBag)
             
@@ -274,7 +279,6 @@ final class KPQuestionsViewController: BaseViewController {
                     }else {
                         self.moveGroupButton.isHidden = false
                         self.deleteQuestionButton.isHidden = false
-                        
                     }
                 } else {
                     if titles.count == 0 {

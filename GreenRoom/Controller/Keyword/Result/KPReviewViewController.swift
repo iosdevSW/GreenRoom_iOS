@@ -73,7 +73,7 @@ extension KPReviewViewController {
                 cell.keywordPersent.text = "75%"
 //                cell.keywordLabel.text = "천진난만 현실적 적극적 테스트적 끄적끄적"
             }
-            let title = self.viewModel.selectedQuestionTemp[indexPath.row]
+            let title = self.viewModel.selectedQuestionObservable.value[indexPath.row]
             cell.questionLabel.text = "Q\(indexPath.row+1)\n\(title)"
             cell.categoryLabel.text = "공통"
     

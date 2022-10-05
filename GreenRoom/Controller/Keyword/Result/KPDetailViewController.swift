@@ -98,7 +98,7 @@ extension KPDetailViewController {
                 }
             }
             
-            let title = self.viewmodel.selectedQuestionTemp[indexPath.row]
+            let title = self.viewmodel.selectedQuestionObservable.value[indexPath.row]
             cell.questionLabel.text = "Q\(indexPath.row+1)\n\(title)"
             cell.categoryLabel.text = "공통"
             cell.sttAnswer.text = "다각적인 소통법으로 구성원의 적극적 참여를 끌어낸 경험이 있습니다. OO 기업 상품기획팀 인턴 당시, 팀 공동 과제로 브랜드 기획을 맡았습니다. 천진난만한 성격으로 자연스레 리더를 도맡았고 자료를 공유하며 동기부여하기 위해 노력한 결과 장군감이다라는 수식어를 얻었습니다."
