@@ -130,7 +130,7 @@ final class MakePublicAnswerViewController: BaseViewController {
         let output = viewModel.transform(input: input)
         
         output.question.subscribe(onNext: { question in
-            self.headerView.question = Question(question: question.header.question, categoryName: question.header.categoryName, groupCategoryName: "")
+            self.headerView.question = Question(id: question.header.id, question: question.header.question, categoryName: question.header.categoryName, groupCategoryName: "")
         }).disposed(by: disposeBag)
         output.successMessage.emit(onNext: { [weak self] message in
             guard let self = self else { return }
