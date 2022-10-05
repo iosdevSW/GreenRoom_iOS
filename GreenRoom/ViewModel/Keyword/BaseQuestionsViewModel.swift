@@ -16,7 +16,7 @@ class BaseQuestionsViewModel {
     
     let selectedQuestionObservable = BehaviorRelay<ReferenceQuestionModel?>(value: nil) // 선택한 질문
     
-    let filteringObservable = PublishSubject<String>() //필터링된 카테고리 observable
+    let filteringObservable = BehaviorRelay<String?>(value: nil) //필터링된 카테고리 observable
     
     init() {
         KeywordPracticeService().fetchReferenceQuestions(categoryId: nil, title: nil, page: nil)

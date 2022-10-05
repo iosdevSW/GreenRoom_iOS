@@ -136,10 +136,18 @@ final class KPFindQuestionViewController: BaseViewController{
         filterView.viewModel.selectedCategoriesObservable
             .subscribe(onNext: { [weak self] ids in
                 let idString = ids.map{ String($0)}.joined(separator: ",")
-                self?.viewModel.filteringObservable.onNext(idString)
-                
+                self?.viewModel.filteringObservable.accept(idString)
+                self?.searchBarView.text = nil
             }).disposed(by: disposeBag)
         
+        searchBarView.rx.text
+            .bind(onNext: { [weak self] text in
+                guard let self = self else { return }
+                let idString = self.viewModel.filteringObservable.value
+                KeywordPracticeService().fetchReferenceQuestions(categoryId: idString, title: text, page: nil)
+                    .bind(to: self.viewModel.baseQuestionsObservable)
+                    .disposed(by: self.disposeBag)
+            }).disposed(by: disposeBag)
     }
     
     //MARK: - ConfigureUI
