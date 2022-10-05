@@ -29,7 +29,7 @@ final class FilteringViewModel: ViewModelType {
         
         let models = input.categoryObservable.flatMap { categoryId in
             self.publicQuestionService.fetchFilteredQuestion(categoryId: categoryId)
-                .map { questions in
+                .map { questions -> [FilteringSectionModel] in
                     return [FilteringSectionModel(header: Info(title: Category(rawValue: categoryId)?.title ?? "공통", subTitle: "관련된 질문리스트를 보여드려요!\n질문에 참여 시 동료들의 모든 답변을 확인할 수 있어요 :)"), items: questions)]
                 }
         }

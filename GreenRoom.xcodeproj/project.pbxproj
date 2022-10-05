@@ -73,6 +73,7 @@
 		DBE7A54F28996C2000E9A4E9 /* CheckLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBE7A54E28996C2000E9A4E9 /* CheckLabel.swift */; };
 		DBFB296A28B2267A00B1DAC9 /* FilterItemsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBFB296928B2267A00B1DAC9 /* FilterItemsCell.swift */; };
 		DBFB297028B351F400B1DAC9 /* QuestionListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBFB296F28B351F400B1DAC9 /* QuestionListCell.swift */; };
+		E4036A3428ED989600C0F707 /* FilteringQuestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4036A3328ED989600C0F707 /* FilteringQuestion.swift */; };
 		E40BC69D28B5F35A00FB557D /* SearchWordCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E40BC69C28B5F35A00FB557D /* SearchWordCell.swift */; };
 		E40BC6B328B7548E00FB557D /* SearchWordHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E40BC6B228B7548E00FB557D /* SearchWordHeaderView.swift */; };
 		E40BC6B528B756EE00FB557D /* SearchSectionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E40BC6B428B756EE00FB557D /* SearchSectionModel.swift */; };
@@ -251,6 +252,7 @@
 		DBE7A54E28996C2000E9A4E9 /* CheckLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckLabel.swift; sourceTree = "<group>"; };
 		DBFB296928B2267A00B1DAC9 /* FilterItemsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterItemsCell.swift; sourceTree = "<group>"; };
 		DBFB296F28B351F400B1DAC9 /* QuestionListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionListCell.swift; sourceTree = "<group>"; };
+		E4036A3328ED989600C0F707 /* FilteringQuestion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilteringQuestion.swift; sourceTree = "<group>"; };
 		E40BC69C28B5F35A00FB557D /* SearchWordCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchWordCell.swift; sourceTree = "<group>"; };
 		E40BC6B228B7548E00FB557D /* SearchWordHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchWordHeaderView.swift; sourceTree = "<group>"; };
 		E40BC6B428B756EE00FB557D /* SearchSectionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchSectionModel.swift; sourceTree = "<group>"; };
@@ -1152,6 +1154,7 @@
 				E4EC67B228E205A600469D17 /* PublicQuestion.swift */,
 				E4EC67AD28E1D22300469D17 /* PrivateQuestion.swift */,
 				E47D1D2428E9C5BA004EE4DE /* MyPublicQuestion.swift */,
+				E4036A3328ED989600C0F707 /* FilteringQuestion.swift */,
 				E4A2E9FB28EACCBA00E7F5C0 /* Question.swift */,
 			);
 			path = Question;
@@ -1362,6 +1365,7 @@
 				E4843D4E28EC657B00329DC4 /* MakePublicAnswerViewModel.swift in Sources */,
 				E46E4BFA28DD899C00D1691F /* KeywordRegisterView.swift in Sources */,
 				DBA8ED7A28BF8009007526CF /* KPReviewModel.swift in Sources */,
+				E4036A3428ED989600C0F707 /* FilteringQuestion.swift in Sources */,
 				DB9D9F4928E702740061D7DB /* PrivateAnswerViewModel.swift in Sources */,
 				E4141ACB28AF79E7004D74B3 /* FAQViewController.swift in Sources */,
 				DB006B8E28C3282700867013 /* KPGroupEditViewController.swift in Sources */,

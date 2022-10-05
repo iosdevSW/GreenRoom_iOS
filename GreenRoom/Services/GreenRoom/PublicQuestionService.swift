@@ -15,7 +15,7 @@ final class PublicQuestionService {
     
     //MARK: - 조회
     /** 내가 관심있어 하는 직무에 대한 질문들 조회*/
-    func fetchFilteredQuestion(categoryId: Int) -> Observable<[PublicQuestion]> {
+    func fetchFilteredQuestion(categoryId: Int) -> Observable<[FilteringQuestion]> {
         
         let requestURL = baseURL +  "?categoryId=\(categoryId)"
         
@@ -23,7 +23,7 @@ final class PublicQuestionService {
             
             AF.request(requestURL, method: .get, encoding: URLEncoding.default, interceptor: AuthManager())
                 .validate(statusCode: 200..<300)
-                .responseDecodable(of: [PublicQuestion].self) { response in
+                .responseDecodable(of: [FilteringQuestion].self) { response in
                     switch response.result {
                     case .success(let questions):
                         emitter.onNext(questions)
@@ -184,6 +184,31 @@ final class PublicQuestionService {
             "id": id,
             "answer": answer,
             "keywords": keywords
+        ]
+        
+        return Observable.create { emitter in
+            AF.request(requestURL, method: .post, parameters: parameters, encoding: JSONEncoding.default, interceptor: AuthManager())
+                .validate(statusCode: 200..<300)
+                .responseString { response in
+                    switch response.result {
+                    case .success(let stre):
+                        print(stre)
+                        emitter.onNext(true)
+                    case .failure(_):
+                        emitter.onNext(false)
+                    }
+                }
+            return Disposables.create()
+        }
+    }
+    
+    func participateGreenRoom(groupId: Int, questionId: Int) -> Observable<Bool> {
+        
+        let requestURL = baseURL + "/group"
+        
+        let parameters: Parameters = [
+            "groupId": groupId,
+            "questionId": questionId
         ]
         
         return Observable.create { emitter in

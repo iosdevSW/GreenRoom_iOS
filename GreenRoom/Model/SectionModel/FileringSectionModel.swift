@@ -18,7 +18,7 @@ struct FilteringSectionModel {
 
 extension FilteringSectionModel: SectionModelType {
     
-    typealias Item = PublicQuestion
+    typealias Item = FilteringQuestion
     
     init(original: FilteringSectionModel, items: [Item]) {
         self = original
