@@ -182,15 +182,11 @@ final class KPQuestionsViewController: BaseViewController {
         self.keywordOffButton.isHidden = false
     }
     
-    @objc func didClickAllSelectButton(_ sender: UIButton) {
-        print("didClickSelectAll")
-    }
-    
     @objc func didClickEditButton(_ sender: UIButton) {
         self.isEditingMode = !self.isEditingMode
         self.questionListTableView.reloadData()
         
-        viewmodel.selectedQuestionObservable.accept([])
+        viewmodel.selectedQuestions.accept([])
         
         self.moveGroupButton.isHidden = true
         self.deleteQuestionButton.isHidden = true
@@ -206,74 +202,73 @@ final class KPQuestionsViewController: BaseViewController {
                 guard let info = groupInfo else { return }
                 self?.categoryLabel.text = info.categoryName
                 self?.groupNameLabel.text = info.name
-                self?.questionCountingLabel.attributedText = self?.setColorHilightAttribute(text: "질문 \(info.questionCnt)개",
-                                                                                      hilightString: "\(info.questionCnt)",
-                                                                                      color: .point)
+                self?.questionCountingLabel
+                    .attributedText = self?.setColorHilightAttribute(text: "질문 \(info.questionCnt)개",
+                                                                     hilightString: "\(info.questionCnt)",
+                                                                     color: .point)
             }).disposed(by: disposeBag)
         
         viewmodel.groupQuestions
             .bind(to: questionListTableView.rx.items(cellIdentifier: "QuestionListCell", cellType: QuestionListCell.self)) { index, item, cell in
             // init
-            cell.selectionStyle = .none
-            cell.mainLabel.textColor = .black
-            cell.checkBox.backgroundColor = .white
-            cell.checkBox.layer.borderWidth = 1
-            
-            cell.mainLabel.text = item.question
-            
-            let registerText = item.register == true ? "등록" : "미등록"
-            let registerTextColor = item.register == true ? UIColor.point : UIColor.customDarkGray
-            cell.questionTypeLabel.text = registerText
-            cell.questionTypeLabel.textColor = registerTextColor
-            cell.categoryLabel.text = item.categoryName
-            
-            if self.isEditingMode {
-                cell.chevronButton.isHidden = true
-                cell.checkBox.isHidden = false
-            } else {
-                cell.chevronButton.isHidden = false
-                cell.checkBox.isHidden = true
-            }
-        }.disposed(by: disposeBag)
+                if self.viewmodel.selectedQuestions.value.contains(where: { $0.id == item.id}) {
+                    cell.isSelected = true
+                }else {
+                    cell.isSelected = false
+                }
+                cell.isEditMode = self.isEditingMode
+                cell.mainLabel.text = item.question
+                
+                let registerText = item.register == true ? "등록" : "미등록"
+                let registerTextColor = item.register == true ? UIColor.point : UIColor.customDarkGray
+                cell.questionTypeLabel.text = registerText
+                cell.questionTypeLabel.textColor = registerTextColor
+                cell.categoryLabel.text = item.categoryName
+                
+                if self.isEditingMode {
+                    cell.chevronButton.isHidden = true
+                    cell.checkBox.isHidden = false
+                } else {
+                    cell.chevronButton.isHidden = false
+                    cell.checkBox.isHidden = true
+                }
+            }.disposed(by: disposeBag)
         
         questionListTableView.rx.itemSelected
             .bind(onNext: { indexPath in // 서비스 로직시엔 Id로 다룰 것 같음
                 let cell = self.questionListTableView.cellForRow(at: indexPath) as! QuestionListCell
-                if self.isEditingMode {
-                    cell.checkBox.backgroundColor = .mainColor
-                    cell.checkBox.layer.borderWidth = 0
-                } else {
-                    cell.mainLabel.textColor = .darken
-                }
-                
-                let title = cell.mainLabel.text!
-                var questions = self.viewmodel.selectedQuestionObservable.value
-                questions.append(title)
-                self.viewmodel.selectedQuestionObservable.accept(questions)
+                cell.isSelected = true
+
+            }).disposed(by: disposeBag)
+        
+        questionListTableView.rx.modelSelected(GroupQuestion.self)
+            .bind(onNext: { question in
+                var questions = self.viewmodel.selectedQuestions.value
+                questions.append(question)
+                self.viewmodel.selectedQuestions.accept(questions)
             }).disposed(by: disposeBag)
         
         questionListTableView.rx.itemDeselected
             .bind(onNext: { indexPath in // 서비스 로직시엔 Id로 다룰 것 같음
                 let cell = self.questionListTableView.cellForRow(at: indexPath) as! QuestionListCell
-                if self.isEditingMode {
-                    cell.checkBox.backgroundColor = .white
-                    cell.checkBox.layer.borderWidth = 1
-                } else {
-                    cell.mainLabel.textColor = .black
-                }
-                
-                let title = cell.mainLabel.text!
-                var questions = self.viewmodel.selectedQuestionObservable.value
-                if let index = questions.firstIndex(of: title){
+                cell.isSelected = false
+            }).disposed(by: disposeBag)
+        
+        questionListTableView.rx.modelDeselected(GroupQuestion.self)
+            .bind(onNext: { question in
+                let findId = question.id
+                var questions = self.viewmodel.selectedQuestions.value
+                let ids = questions.map { $0.id }
+                if let index = ids.firstIndex(of: findId){
                     questions.remove(at: index)
-                    self.viewmodel.selectedQuestionObservable.accept(questions)
+                    self.viewmodel.selectedQuestions.accept(questions)
                 }
             }).disposed(by: disposeBag)
             
-        viewmodel.selectedQuestionObservable
-            .bind(onNext: { titles in // 서비스 로직 호출할땐 응답받는 구조체로 대체 (아직 서비스API 미구현 임시로 string배열로 받음)
+        viewmodel.selectedQuestions
+            .bind(onNext: { questions in
                 if self.isEditingMode {
-                    if titles.count == 0 {
+                    if questions.count == 0 {
                         self.moveGroupButton.isHidden = true
                         self.deleteQuestionButton.isHidden = true
                     }else {
@@ -281,16 +276,28 @@ final class KPQuestionsViewController: BaseViewController {
                         self.deleteQuestionButton.isHidden = false
                     }
                 } else {
-                    if titles.count == 0 {
+                    if questions.count == 0 {
                         self.practiceInterviewButton.isHidden = true
                     }else {
-                        self.practiceInterviewButton.setTitle("\(titles.count)개의 면접 연습하기", for: .normal)
+                        self.practiceInterviewButton.setTitle("\(questions.count)개의 면접 연습하기", for: .normal)
                         self.practiceInterviewButton.isHidden = false
                     }
                     self.keywordOnButton.isHidden = true
                     self.keywordOffButton.isHidden = true
                 }
-               
+            }).disposed(by: disposeBag)
+        
+        self.allSelectButton.rx.tap
+            .bind(onNext: { [weak self] in
+                guard let vm = self?.viewmodel else { return }
+                let count = vm.selectedQuestions.value.count
+                
+                if count >= 1 { // 질문이 하나 이사이면 모두 해제
+                    vm.selectedQuestions.accept([])
+                } else { // 하나도 없으면 전체 선택
+                    vm.selectedQuestions.accept(vm.groupQuestions.value)
+                }
+                self?.questionListTableView.reloadData()
             }).disposed(by: disposeBag)
     }
     
@@ -315,7 +322,6 @@ final class KPQuestionsViewController: BaseViewController {
         }
         
         self.view.addSubview(self.allSelectButton)
-        self.allSelectButton.addTarget(self, action: #selector(self.didClickAllSelectButton(_:)), for: .touchUpInside)
         self.allSelectButton.snp.makeConstraints{ make in
             make.trailing.equalToSuperview().offset(-38)
             make.centerY.equalTo(self.groupNameLabel.snp.centerY)

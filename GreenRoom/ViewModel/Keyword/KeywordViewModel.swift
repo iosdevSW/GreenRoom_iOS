@@ -18,6 +18,8 @@ class KeywordViewModel {
     
     let groupQuestions = BehaviorRelay<[GroupQuestion]>(value: [])
     
+    let selectedQuestions = BehaviorRelay<[GroupQuestion]>(value: [])
+    
     let selectedQuestionObservable = BehaviorRelay<[String]>.init(value: []) // 선택된 연습 질문
 
     var selectedQ = BehaviorSubject<[KPDetailModel]>.init(value:[

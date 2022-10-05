@@ -8,7 +8,29 @@
 import UIKit
 
 class QuestionListCell: UITableViewCell {
+    var isEditMode = false
+    
     //MARK: - Properties
+    override var isSelected: Bool {
+        didSet {
+            if isEditMode {
+                if isSelected {
+                    self.checkBox.backgroundColor = .mainColor
+                    self.checkBox.layer.borderWidth = 0
+                } else {
+                    self.checkBox.backgroundColor = .white
+                    self.checkBox.layer.borderWidth = 1
+                }
+            } else {
+                if isSelected {
+                    self.mainLabel.textColor = .darken
+                }else {
+                    self.mainLabel.textColor = .black
+                }
+            }
+        }
+    
+    }
     let mainLabel = UILabel().then {
         $0.text = "여기는 면접질문 항목란입니다."
         $0.numberOfLines = 0
