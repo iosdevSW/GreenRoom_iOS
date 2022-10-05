@@ -160,6 +160,12 @@ final class KPGroupEditViewController: BaseViewController {
                 }
                 
             }).disposed(by: disposeBag)
+        
+        questionTextView.rx.text
+            .bind(onNext: { text in
+                guard let text = text else { return }
+                self.questionTextView.text = String(text.prefix(10))
+            }).disposed(by: disposeBag)
     }
     
     //MARK: - ConfigureUI

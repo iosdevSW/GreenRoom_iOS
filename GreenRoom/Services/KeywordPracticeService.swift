@@ -12,15 +12,17 @@ import Alamofire
 
 class KeywordPracticeService {
     ///기본,그린룸 질문조회
-    func fetchReferenceQuestions(categoryId: String?, title: String?)-> Observable<[ReferenceQuestionModel]>{
+    func fetchReferenceQuestions(categoryId: String?, title: String?, page: Int?)-> Observable<[ReferenceQuestionModel]>{
         let urlString = Constants.baseURL + "/api/interview-questions"
         let url = URL(string: urlString)!
         
         var param: Parameters?
         
-        if categoryId != nil || title != nil { param  = Parameters() }
+        if categoryId != nil || title != nil || page != nil { param  = Parameters() }
+        
         if categoryId != nil { param?["category"] = categoryId }
         if title != nil { param?["title"] = title }
+        if page != nil { param?["page"] = page }
 
         return Observable.create { emitter in
             let request = AF.request(url, method: .get, parameters: param ,encoding: URLEncoding.default, interceptor: AuthManager())
