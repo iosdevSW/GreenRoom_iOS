@@ -36,6 +36,4 @@ struct PublicAnswer: Codable {
 struct DetailPublicAnswer: Codable {
     let question: DetailPublicQuestionDTO
     var answers: [PublicAnswer]
-    
-    
 }

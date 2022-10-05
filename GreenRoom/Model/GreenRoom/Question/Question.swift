@@ -8,6 +8,7 @@
 import Foundation
 
 struct Question {
+    let id: Int
     let question: String
     let categoryName: String
     let groupCategoryName: String

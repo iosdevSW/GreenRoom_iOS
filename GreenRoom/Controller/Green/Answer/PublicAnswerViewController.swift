@@ -126,7 +126,7 @@ final class PublicAnswerViewController: BaseViewController {
         
         output.answer.subscribe(onNext: { [weak self] answer in
             guard let self = self else { return }
-            self.headerView.question = Question(question: answer.header.question, categoryName: answer.header.categoryName, groupCategoryName: answer.header.categoryName)
+            self.headerView.question = Question(id: answer.header.id, question: answer.header.question, categoryName: answer.header.categoryName, groupCategoryName: answer.header.categoryName)
             self.collectionView.alpha = answer.header.mode == .permission ? 1.0 : 0.5
             self.mode = answer.header.mode
             self.scrapButton.setImage(UIImage(systemName: answer.header.scrap ? "star.fill" : "star"), for: .normal)

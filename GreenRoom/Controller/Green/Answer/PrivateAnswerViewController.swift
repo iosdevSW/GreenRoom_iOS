@@ -191,7 +191,7 @@ final class PrivateAnswerViewController: BaseViewController {
         output.answer.subscribe(onNext: { [weak self] answer in
             
             guard let self = self else { return }
-            self.headerView.question = Question(question: answer.question, categoryName: answer.categoryName, groupCategoryName: answer.groupCategoryName)
+            self.headerView.question = Question(id: answer.id, question: answer.question, categoryName: answer.categoryName, groupCategoryName: answer.groupCategoryName)
 
             if let answer = answer.answer {
                 self.mode = .written(answer: answer)

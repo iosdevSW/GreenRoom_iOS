@@ -6,38 +6,41 @@
 //
 
 import UIKit
+import RxSwift
+
+protocol ScrapViewCellDelegate: AnyObject {
+    func didSelectScrapCell(isSelected: Bool, question: PublicQuestion)
+}
 
 class ScrapViewCell: UICollectionViewCell {
     
     static let reuseIdentifier = "ScrapViewCell"
     
     //MARK: - Properties
+    var disposeBag = DisposeBag()
+    
     var question: PublicQuestion! {
         didSet { configure() }
     }
     
     var editMode: Bool = false {
-        didSet {
-            selectIndicator.isHidden = !editMode
-        }
+        didSet { selectIndicator.isHidden = !editMode }
     }
     
-    override var isSelected: Bool{
-        didSet {
-            self.selectIndicator.backgroundColor = self.isSelected ? .mainColor : .white
-            self.selectIndicator.setImage(self.isSelected ? UIImage(systemName: "checkmark") : nil, for: .normal)
-            self.selectIndicator.layer.borderColor = self.isSelected ? UIColor.white.cgColor : UIColor.customGray.cgColor
-        }
+    var willRemove: Bool = false {
+        didSet { isSelected() }
     }
+    
+    weak var delegate: ScrapViewCellDelegate?
     
     private lazy var selectIndicator = UIButton().then {
-        $0.backgroundColor = .mainColor
-        $0.setImage(UIImage(systemName: "checkmark"), for: .normal)
+        $0.backgroundColor = .white
         $0.imageView?.contentMode = .scaleAspectFit
-        $0.imageView?.tintColor = .white
         $0.layer.cornerRadius = 22/2
-        $0.layer.borderColor = UIColor.white.cgColor
+        $0.layer.borderColor = UIColor.customGray.cgColor
         $0.layer.borderWidth = 1
+        $0.tintColor = .white
+        
     }
     
     private lazy var containerView = UIView().then {
@@ -83,27 +86,30 @@ class ScrapViewCell: UICollectionViewCell {
         $0.font = .sfPro(size: 12, family: .Bold)
         $0.text = "답변 완료"
     }
+    
    //MARK: - LifeCycle
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
         configureUI()
+        bind()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     //MARK: - Configure
     private func configureUI(){
         
         let bottomMargin = bounds.height * 0.1
         let sideMargin = bounds.width * 0.07
         
-        self.backgroundColor = .white
+        self.backgroundColor = .clear
         self.contentView.addSubview(containerView)
         containerView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
-            make.top.equalToSuperview().offset(30)
+            make.top.equalToSuperview().offset(40)
             make.bottom.equalToSuperview().offset(-30)
         }
         
@@ -123,15 +129,15 @@ class ScrapViewCell: UICollectionViewCell {
 
         self.containerView.addSubview(questionTextView)
         self.questionTextView.snp.makeConstraints { make in
-            make.trailing.equalToSuperview()
-            make.leading.top.equalToSuperview()
+            make.trailing.leading.equalToSuperview()
+            make.top.equalToSuperview()
             make.bottom.equalTo(categoryLabel.snp.top)
         }
         
         self.contentView.addSubview(selectIndicator)
         selectIndicator.snp.makeConstraints { make in
             make.leading.equalTo(questionTextView.snp.leading)
-            make.top.equalToSuperview()
+            make.top.equalToSuperview().offset(10)
             make.width.height.equalTo(22)
         }
         
@@ -145,21 +151,33 @@ class ScrapViewCell: UICollectionViewCell {
     }
     
     private func configure(){
-
-        
         self.questionTextView.initDefaultText(with: self.question.question, foregroundColor: .black)
 
         self.categoryLabel.text = self.question.categoryName
         
-        self.alpha = self.question.expired ? 0.3 : 1.0
-        self.containerView.backgroundColor = self.question.participated ? .white : .mainColor
         
         guard let url = URL(string: self.question.profileImage) else { return }
         self.profileImageView.kf.setImage(with: url)
         
         self.questionStateLabel.text = self.question.expired ? "답변 종료" : (self.question.participated ? "참여 완료" : "\(self.question.remainedTime) 남음")
     
-        self.containerView.backgroundColor = question.expired ? .white : .mainColor
+        self.containerView.backgroundColor = question.expired || question.participated ? .white : .mainColor
+
+        self.containerView.alpha = self.question.expired ? 0.3 : 1.0
     }
     
+    private func bind() {
+        selectIndicator.rx.tap
+            .subscribe(onNext: { [weak self] _ in
+                guard let self = self else { return }
+                self.willRemove.toggle()
+                self.delegate?.didSelectScrapCell(isSelected: self.willRemove, question: self.question)
+            }).disposed(by: disposeBag)
+    }
+    
+    private func isSelected() {
+        self.selectIndicator.backgroundColor = self.willRemove ? .mainColor : .white
+        self.selectIndicator.setImage(self.willRemove ? UIImage(systemName: "checkmark")?.withAlignmentRectInsets(UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)) : nil, for: .normal)
+        self.selectIndicator.layer.borderColor = self.willRemove ? UIColor.white.cgColor : UIColor.customGray.cgColor
+    }
 }

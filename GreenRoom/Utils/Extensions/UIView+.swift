@@ -53,5 +53,13 @@ extension UIView {
         self.layer.addSublayer(layer)
         self.layer.masksToBounds = true
     }
+    
+    func setBackgroundImage(image: UIImage){
+        UIGraphicsBeginImageContext(self.frame.size)
+        image.draw(in: self.bounds)
+        guard let patternImage: UIImage = UIGraphicsGetImageFromCurrentImageContext() else { return }
+        UIGraphicsEndImageContext()
+        self.backgroundColor = UIColor(patternImage: patternImage)
+    }
 }
 

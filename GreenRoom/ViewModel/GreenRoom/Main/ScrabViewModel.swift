@@ -7,6 +7,7 @@
 
 import Foundation
 import RxSwift
+import RxRelay
 
 final class ScrapViewModel: ViewModelType {
     
@@ -22,34 +23,38 @@ final class ScrapViewModel: ViewModelType {
     struct Output {
         let scrap: Observable<[ScrapSectionModel]>
     }
+
+    let selectedIndexesObservable = BehaviorRelay<[Int]>(value: [])
+    let cancelIndexObservable = PublishSubject<Int>()
     
-    private let recent = BehaviorSubject<[GreenRoomSectionModel]>(value: [])
+    private let scrapObesrvable = BehaviorSubject<[ScrapSectionModel]>(value: [])
     
-    let selectedIndexesObservable = BehaviorSubject<[Int]>(value: [])
-    
-    var selectedIndexes: [Int] = [] { 
-        didSet {
-            self.selectedIndexesObservable.onNext(self.selectedIndexes)
-        }
-    }
-    
+
     func transform(input: Input) -> Output {
-        let output = input.trigger.flatMap { _ -> Observable<[PublicQuestion]> in
-            return self.scrapService.fetchScrapQuestions()
-        }.map {
-            return [ScrapSectionModel(items: $0)]
-        }
-//
-//        subscribe(onNext: { [weak self] _ in
-//            guard let self = self else { return }
-//            self.fetchRecent()
-//        }).disposed(by: disposeBag)
         
-        input.buttonTab.subscribe(onNext: {
-//            selectedIndex해당하는 것들 모두 삭제.
+        input.trigger.flatMap { _ -> Observable<[PublicQuestion]> in
+            return self.scrapService.fetchScrapQuestions()
+        }.map { [ScrapSectionModel(items: $0)] }
+            .bind(to: scrapObesrvable)
+            .disposed(by: disposeBag)
+
+        cancelIndexObservable.subscribe(onNext: { [weak self] removeID in
+            guard let values = self?.selectedIndexesObservable.value.filter({
+                removeID != $0
+            }) else { return }
+            self?.selectedIndexesObservable.accept(values)
         }).disposed(by: disposeBag)
         
-        return Output(scrap: output)
+        input.buttonTab.withLatestFrom(selectedIndexesObservable.asObservable())
+            .flatMap { ids in
+                return self.scrapService.deleteScrapQuestion(ids: ids)
+            }.flatMap { _ -> Observable<[PublicQuestion]> in
+                return self.scrapService.fetchScrapQuestions()
+            }.map { [ScrapSectionModel(items: $0)] }
+                .bind(to: scrapObesrvable)
+                .disposed(by: disposeBag)
+
+        return Output(scrap: scrapObesrvable.asObservable())
     }
     
 }

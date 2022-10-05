@@ -111,30 +111,14 @@ final class ScrapedQuestionViewController: BaseViewController {
         
         let input = ScrapViewModel.Input(trigger: rx.viewWillAppear.asObservable(),
                                          buttonTab: deleteButton.rx.tap.asObservable())
+     
+        deleteButton.rx.tap
+            .subscribe(onNext: {
+                self.editMode = false
+            }).disposed(by: disposeBag)
         
         let output = self.viewModel.transform(input: input)
-        
         output.scrap.bind(to: collectionView.rx.items(dataSource: dataSource())).disposed(by: disposeBag)
-        
-        self.collectionView.rx.itemSelected
-            .bind(onNext: { indexPath in
-                guard let cell = self.collectionView.cellForItem(at: indexPath) as? ScrapViewCell else { return }
-                
-                cell.isSelected = true
-                self.viewModel.selectedIndexes.append(indexPath.row)
-        }).disposed(by: disposeBag)
-        
-        self.collectionView.rx.itemDeselected
-            .bind(onNext: { [self] indexPath in
-                guard let cell = self.collectionView.cellForItem(at: indexPath) as? ScrapViewCell else { return }
-                
-                cell.isSelected = false
-                
-                if let index = self.viewModel.selectedIndexes.firstIndex(of: indexPath.row) {
-                    viewModel.selectedIndexes.remove(at: index)
-                }
-                
-            }).disposed(by: disposeBag)
     }
 }
 
@@ -150,7 +134,9 @@ extension ScrapedQuestionViewController {
         layout.sectionInset = UIEdgeInsets(top: 0, left: margin, bottom: margin * 3, right: margin)
         layout.headerReferenceSize = CGSize(width: view.bounds.width, height: view.bounds.height*0.14)
         
+
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.backgroundColor = .backgroundGray
         collectionView.allowsMultipleSelection = true
         collectionView.register(InfoHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: InfoHeaderView.reuseIdentifier)
         collectionView.register(ScrapViewCell.self, forCellWithReuseIdentifier: ScrapViewCell.reuseIdentifier)
@@ -164,6 +150,7 @@ extension ScrapedQuestionViewController {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ScrapViewCell.reuseIdentifier, for: indexPath) as? ScrapViewCell else { return UICollectionViewCell() }
             cell.editMode = self.editMode
             cell.question = item
+            cell.delegate = self
             return cell
             
         } configureSupplementaryView: { dataSource, collectionView, kind, indexPath in
@@ -178,4 +165,20 @@ extension ScrapedQuestionViewController {
             return header
         }
     }
+}
+
+//MARK: - ScrapViewCellDelegate
+extension ScrapedQuestionViewController: ScrapViewCellDelegate {
+    
+    func didSelectScrapCell(isSelected: Bool, question: PublicQuestion) {
+        
+        if isSelected {
+            self.viewModel.selectedIndexesObservable
+                .accept(self.viewModel.selectedIndexesObservable.value + [question.id])
+        } else {
+            self.viewModel.cancelIndexObservable.onNext(question.id)
+        }
+         
+    }
+
 }
