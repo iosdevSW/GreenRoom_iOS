@@ -13,6 +13,7 @@ final class PublicQuestionService {
     
     private let baseURL = Constants.baseURL + "/api/green-questions"
     
+    //MARK: - 조회
     /** 내가 관심있어 하는 직무에 대한 질문들 조회*/
     func fetchFilteredQuestion(categoryId: Int) -> Observable<[PublicQuestion]> {
         
@@ -55,54 +56,6 @@ final class PublicQuestionService {
         }
     }
     
-    /** 인기있는 그린룸 질문 조회*/
-    func fetchPopularPublicQuestions() -> Observable<[PopularPublicQuestion]>{
-        
-        let requestURL = baseURL + "/popular-questions"
-        
-        return Observable.create { emmiter in
-            AF.request(requestURL, method: .get, encoding: URLEncoding.default, interceptor: AuthManager())
-                .validate(statusCode: 200..<300)
-                .responseDecodable(of: [PopularPublicQuestion].self) { response in
-                    
-                    switch response.result {
-                    case .success(let questions):
-                        emmiter.onNext(questions)
-                    case .failure(let error):
-                        emmiter.onError(error)
-                    }
-                }
-            return Disposables.create()
-        }
-        
-    }
-    /** 그린룸 질문 생성*/
-    func uploadQuestionList(categoryId: Int, question: String, expiredAt: String) -> Observable<Bool> {
-        
-        let parameters = UploadPublicQuestionModel(categoryId: categoryId,
-                                                   question: question,
-                                                   expiredAt: expiredAt)
-        
-        return Observable.create { emitter in
-            AF.request(self.baseURL, method: .post, parameters: parameters, encoder: .json, interceptor: AuthManager()).responseString { response in
-                
-                switch response.result {
-                case .success(_):
-                    if response.response?.statusCode == 400 {
-                        emitter.onError(QuestionError.exceedMaximumLength)
-                    } else if response.response?.statusCode == 404 {
-                        emitter.onError(QuestionError.invalidCategory)
-                    } else {
-                        emitter.onNext(true)
-                    }
-                case .failure(let error):
-                    emitter.onError(error)
-                }
-            }
-            return Disposables.create()
-        }
-    }
-    
     /** 내가 생성한 그린룸 질문 */
     func fetchPublicQuestions(page: Int = 0) -> Observable<MyPublicQuestion>{
         
@@ -134,7 +87,7 @@ final class PublicQuestionService {
                     switch response.result {
                     case .success(let question):
 
-                        var output = DetailPublicAnswer(question: question, answers: [PublicAnswer(id: 0, profileImage: "", answer: "zzz"),PublicAnswer(id: 0, profileImage: "", answer: "zzz"),PublicAnswer(id: 0, profileImage: "", answer: "zzz"),PublicAnswer(id: 0, profileImage: "", answer: "zzz")])
+                        var output = DetailPublicAnswer(question: question, answers: [PublicAnswer(id: 0, profileImage: "", answer: ""),PublicAnswer(id: 0, profileImage: "", answer: ""),PublicAnswer(id: 0, profileImage: "", answer: ""),PublicAnswer(id: 0, profileImage: "", answer: "")])
                         
                         if question.participated && question.expired {
                             self.fetchDetailAnswer(id: question.id) { result in
@@ -169,5 +122,83 @@ final class PublicQuestionService {
                 }
             }
     }
+
     
+    //MARK: - 생성
+    /** 인기있는 그린룸 질문 조회*/
+    func fetchPopularPublicQuestions() -> Observable<[PopularPublicQuestion]>{
+        
+        let requestURL = baseURL + "/popular-questions"
+        
+        return Observable.create { emmiter in
+            AF.request(requestURL, method: .get, encoding: URLEncoding.default, interceptor: AuthManager())
+                .validate(statusCode: 200..<300)
+                .responseDecodable(of: [PopularPublicQuestion].self) { response in
+                    
+                    switch response.result {
+                    case .success(let questions):
+                        emmiter.onNext(questions)
+                    case .failure(let error):
+                        emmiter.onError(error)
+                    }
+                }
+            return Disposables.create()
+        }
+        
+    }
+    /** 그린룸 질문 생성*/
+    func uploadQuestionList(categoryId: Int, question: String, expiredAt: String) -> Observable<Bool> {
+        
+        let parameters: Parameters = [
+            "categoryId" : categoryId,
+            "question": question,
+            "expiredAt": expiredAt
+        ]
+        
+        return Observable.create { emitter in
+            AF.request(self.baseURL, method: .post, parameters: parameters, encoding:JSONEncoding.default, interceptor: AuthManager()).responseString { response in
+                
+                switch response.result {
+                case .success(_):
+                    if response.response?.statusCode == 400 {
+                        emitter.onError(QuestionError.exceedMaximumLength)
+                    } else if response.response?.statusCode == 404 {
+                        emitter.onError(QuestionError.invalidCategory)
+                    } else {
+                        emitter.onNext(true)
+                    }
+                case .failure(let error):
+                    emitter.onError(error)
+                }
+            }
+            return Disposables.create()
+        }
+    }
+    
+    
+    /** 그린룸 질문에 대한 답변 등록*/
+    func uploadAnswer(id: Int, answer: String, keywords: [String]) -> Observable<Bool> {
+        let requestURL = baseURL + "/answer"
+        
+        let parameters: Parameters = [
+            "id": id,
+            "answer": answer,
+            "keywords": keywords
+        ]
+        
+        return Observable.create { emitter in
+            AF.request(requestURL, method: .post, parameters: parameters, encoding: JSONEncoding.default, interceptor: AuthManager())
+                .validate(statusCode: 200..<300)
+                .responseString { response in
+                    switch response.result {
+                    case .success(let stre):
+                        print(stre)
+                        emitter.onNext(true)
+                    case .failure(_):
+                        emitter.onNext(false)
+                    }
+                }
+            return Disposables.create()
+        }
+    }
 }

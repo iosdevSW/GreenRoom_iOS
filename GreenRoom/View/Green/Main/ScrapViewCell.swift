@@ -96,7 +96,7 @@ class ScrapViewCell: UICollectionViewCell {
     //MARK: - Configure
     private func configureUI(){
         
-        let bottomMargin = bounds.height * 0.08
+        let bottomMargin = bounds.height * 0.1
         let sideMargin = bounds.width * 0.07
         
         self.backgroundColor = .white
@@ -127,6 +127,7 @@ class ScrapViewCell: UICollectionViewCell {
             make.leading.top.equalToSuperview()
             make.bottom.equalTo(categoryLabel.snp.top)
         }
+        
         self.contentView.addSubview(selectIndicator)
         selectIndicator.snp.makeConstraints { make in
             make.leading.equalTo(questionTextView.snp.leading)
@@ -139,6 +140,7 @@ class ScrapViewCell: UICollectionViewCell {
             make.top.equalTo(containerView.snp.bottom).offset(8)
             make.trailing.equalToSuperview()
         }
+        
         selectIndicator.isHidden = true
     }
     
@@ -157,7 +159,7 @@ class ScrapViewCell: UICollectionViewCell {
         
         self.questionStateLabel.text = self.question.expired ? "답변 종료" : (self.question.participated ? "참여 완료" : "\(self.question.remainedTime) 남음")
     
-
+        self.containerView.backgroundColor = question.expired ? .white : .mainColor
     }
     
 }

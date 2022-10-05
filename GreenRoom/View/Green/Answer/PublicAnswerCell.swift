@@ -39,8 +39,6 @@ final class PublicAnswerCell: UICollectionViewCell {
     //MARK: - init
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
-        configureUI()
     }
     
     required init?(coder: NSCoder) {
@@ -72,14 +70,14 @@ final class PublicAnswerCell: UICollectionViewCell {
     private func configureReverseUI() {
         
         let imageSize = frame.size.width * 0.1
-        
-        profileImageView.snp.remakeConstraints{ make in
+        self.addSubview(profileImageView)
+        profileImageView.snp.makeConstraints{ make in
             make.centerY.equalToSuperview()
             make.trailing.equalToSuperview().offset(-40)
             make.width.height.equalTo(imageSize)
         }
-        
-        answerLabel.snp.remakeConstraints { make in
+        self.addSubview(answerLabel)
+        answerLabel.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
             make.leading.equalToSuperview().offset(40)
             make.trailing.equalTo(profileImageView.snp.leading).offset(-40)

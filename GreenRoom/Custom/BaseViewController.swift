@@ -27,7 +27,7 @@ class BaseViewController: UIViewController {
     }
     
     func setupAttributes() {
-        // Override Attributes
+        self.hideKeyboardWhenTapped()
     }
     
     func setData() {

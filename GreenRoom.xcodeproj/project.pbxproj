@@ -140,6 +140,9 @@
 		E47D1D2C28EA0330004EE4DE /* PublicAnswerHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E47D1D2B28EA0330004EE4DE /* PublicAnswerHeaderView.swift */; };
 		E47EE51628C48B7800618CA6 /* SFProText-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = E49CC16B28C331E4009216E1 /* SFProText-Semibold.otf */; };
 		E4843CFC28EAD06700329DC4 /* PublicAnswerSectionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4843CFB28EAD06700329DC4 /* PublicAnswerSectionModel.swift */; };
+		E4843D4C28EC60E200329DC4 /* MakePublicAnswerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4843D4B28EC60E200329DC4 /* MakePublicAnswerViewController.swift */; };
+		E4843D4E28EC657B00329DC4 /* MakePublicAnswerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4843D4D28EC657B00329DC4 /* MakePublicAnswerViewModel.swift */; };
+		E4843D5028EC687700329DC4 /* UploadPublicAnswerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4843D4F28EC687700329DC4 /* UploadPublicAnswerModel.swift */; };
 		E48F6C6328E340490083B74A /* Auth.swift in Sources */ = {isa = PBXBuildFile; fileRef = E48F6C6228E340490083B74A /* Auth.swift */; };
 		E48F8B4F28C26864007AAF40 /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E48F8B4E28C26864007AAF40 /* AuthManager.swift */; };
 		E49CC15628C326DA009216E1 /* EditProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E49CC15528C326DA009216E1 /* EditProfileViewModel.swift */; };
@@ -316,6 +319,9 @@
 		E47D1D2928EA012A004EE4DE /* PublicAnswerMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicAnswerMode.swift; sourceTree = "<group>"; };
 		E47D1D2B28EA0330004EE4DE /* PublicAnswerHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicAnswerHeaderView.swift; sourceTree = "<group>"; };
 		E4843CFB28EAD06700329DC4 /* PublicAnswerSectionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicAnswerSectionModel.swift; sourceTree = "<group>"; };
+		E4843D4B28EC60E200329DC4 /* MakePublicAnswerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakePublicAnswerViewController.swift; sourceTree = "<group>"; };
+		E4843D4D28EC657B00329DC4 /* MakePublicAnswerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakePublicAnswerViewModel.swift; sourceTree = "<group>"; };
+		E4843D4F28EC687700329DC4 /* UploadPublicAnswerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadPublicAnswerModel.swift; sourceTree = "<group>"; };
 		E48F6C6228E340490083B74A /* Auth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Auth.swift; sourceTree = "<group>"; };
 		E48F8B4E28C26864007AAF40 /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
 		E49CC15528C326DA009216E1 /* EditProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewModel.swift; sourceTree = "<group>"; };
@@ -480,6 +486,7 @@
 				DB9D9F4728E702740061D7DB /* PrivateAnswerViewModel.swift */,
 				E4A2E9F128EAB7D700E7F5C0 /* PublicAnswerViewModel.swift */,
 				DB9D9F4828E702740061D7DB /* RegisterKeywordViewModel.swift */,
+				E4843D4D28EC657B00329DC4 /* MakePublicAnswerViewModel.swift */,
 			);
 			path = Answer;
 			sourceTree = "<group>";
@@ -851,6 +858,7 @@
 			children = (
 				E46E4BE328DC213800D1691F /* PrivateAnswerViewController.swift */,
 				E47D1D2728E9FF43004EE4DE /* PublicAnswerViewController.swift */,
+				E4843D4B28EC60E200329DC4 /* MakePublicAnswerViewController.swift */,
 			);
 			path = Answer;
 			sourceTree = "<group>";
@@ -876,6 +884,7 @@
 			isa = PBXGroup;
 			children = (
 				E44456FF28E764140034A207 /* UploadPrivateQuestionModel.swift */,
+				E4843D4F28EC687700329DC4 /* UploadPublicAnswerModel.swift */,
 				E444570128E764260034A207 /* UploadPublicQuestionModel.swift */,
 			);
 			path = Create;
@@ -1293,6 +1302,7 @@
 				DBA8ED7828BF7457007526CF /* KPReviewViewController.swift in Sources */,
 				E46E4C0628E14FC500D1691F /* UILabel+.swift in Sources */,
 				E4460DD728CAF5BD00AFA108 /* GreenroomCommonHeaderView.swift in Sources */,
+				E4843D4C28EC60E200329DC4 /* MakePublicAnswerViewController.swift in Sources */,
 				E4C4C4AE28BCA53D008826AB /* GreenRoomService.swift in Sources */,
 				E46E4C0428E14FAE00D1691F /* UIViewController+.swift in Sources */,
 				DB9D9F4528E702390061D7DB /* KeywordViewModel.swift in Sources */,
@@ -1349,6 +1359,7 @@
 				DBBA9481289968CD00264405 /* PaddingLabel.swift in Sources */,
 				DBA8ED7E28C0A4D7007526CF /* KPMainViewController.swift in Sources */,
 				DBD082542897E75B0092241F /* MyPageViewModel.swift in Sources */,
+				E4843D4E28EC657B00329DC4 /* MakePublicAnswerViewModel.swift in Sources */,
 				E46E4BFA28DD899C00D1691F /* KeywordRegisterView.swift in Sources */,
 				DBA8ED7A28BF8009007526CF /* KPReviewModel.swift in Sources */,
 				DB9D9F4928E702740061D7DB /* PrivateAnswerViewModel.swift in Sources */,
@@ -1399,6 +1410,7 @@
 				E4EC67B128E2056100469D17 /* ScrapSectionModel.swift in Sources */,
 				E4A2E9F628EABC2D00E7F5C0 /* PublicAnswerStatusHeaderView.swift in Sources */,
 				E4EC67AE28E1D22300469D17 /* PrivateQuestion.swift in Sources */,
+				E4843D5028EC687700329DC4 /* UploadPublicAnswerModel.swift in Sources */,
 				DB9989E028D5DA280056D40B /* CustomSlider.swift in Sources */,
 				E427EC0B28C7A53D0046B4AA /* PublicQuestionsCell.swift in Sources */,
 				DBA9451828C71A4F00B6E16A /* FilterView.swift in Sources */,

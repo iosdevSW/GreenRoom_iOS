@@ -32,6 +32,12 @@ enum QuestionError: Error, LocalizedError {
     }
 }
 
+//protocol QuestionService {
+//    var baseURL: String { get }
+//    
+//    func updateQuestion(categoryId: Int, question: String)
+//}
+
 final class PrivateQuestionService {
     
     private var baseURL = "\(Constants.baseURL)/api/my-questions"
@@ -41,10 +47,13 @@ final class PrivateQuestionService {
         
         let requestURL = self.baseURL
         
-        let parameters = UploadPrivateQuestionModel(categoryId: categoryId, question: question)
+        let parameters: Parameters = [
+            "categoryId": categoryId,
+            "question": question
+        ]
         
         return Observable.create { emitter in
-            AF.request(requestURL, method: .post, parameters: parameters, encoder: .json, interceptor: AuthManager()).responseData { response in
+            AF.request(requestURL, method: .post, parameters: parameters, encoding: JSONEncoding.default, interceptor: AuthManager()).responseData { response in
                 switch response.result {
                 case .success(_):
                     if response.response?.statusCode == 400 {
@@ -62,13 +71,17 @@ final class PrivateQuestionService {
         }
     }
     
-    func updateQuestion(id: Int, categoryID: Int, question: String) -> Observable<Bool> {
+    func updateQuestion(id: Int, categoryId: Int, question: String) -> Observable<Bool> {
         let requestURL = self.baseURL + "/\(id)"
         
-        let parameters = UploadPrivateQuestionModel(categoryId: categoryID, question: question)
+        let parameters: Parameters = [
+            "id": id,
+            "categoryId": categoryId,
+            "question": question
+        ]
         
         return Observable.create { emitter in
-            AF.request(requestURL, method: .put, parameters: parameters, encoder: .json, interceptor: AuthManager()).responseData { response in
+            AF.request(requestURL, method: .put, parameters: parameters, encoding: JSONEncoding.default, interceptor: AuthManager()).responseData { response in
                 switch response.result {
                 case .success(_):
                     if response.response?.statusCode == 400 {
@@ -85,6 +98,7 @@ final class PrivateQuestionService {
             return Disposables.create()
         }
     }
+    
     /** 내가 작성한 질문 리스트 조회*/
     func fetchPrivateQuestions() -> Observable<[PrivateQuestion]> {
         
@@ -131,23 +145,23 @@ final class PrivateQuestionService {
      내가 작성한 질문(id)에 대한 키워드 수정
      하나의 API로 수정 및 삭제, 추가 가능
      */
-    func updateKeywords(id: Int, keywords: [String], completion:@escaping((Bool) -> Void)) {
-        
-        let paramaters: Parameters = ["keywords": keywords]
-        
-        let requestURL = baseURL + "/answer/\(id)"
-        
-        AF.request(requestURL, method: .put, parameters: paramaters, encoding: JSONEncoding.default, interceptor: AuthManager())
-            .validate(statusCode: 200..<300)
-            .response { response in
-                switch response.result {
-                case .success(_):
-                    completion(true)
-                case .failure(_):
-                    completion(false)
-                }
-            }
-    }
+//    func updateKeywords(id: Int, keywords: [String], completion:@escaping((Bool) -> Void)) {
+//        
+//        let paramaters: Parameters = ["keywords": keywords]
+//        
+//        let requestURL = baseURL + "/answer/\(id)"
+//        
+//        AF.request(requestURL, method: .put, parameters: paramaters, encoding: JSONEncoding.default, interceptor: AuthManager())
+//            .validate(statusCode: 200..<300)
+//            .response { response in
+//                switch response.result {
+//                case .success(_):
+//                    completion(true)
+//                case .failure(_):
+//                    completion(false)
+//                }
+//            }
+//    }
     
     func uploadKeywords(id: Int, keywords: [String]) -> Observable<Bool> {
         
@@ -171,9 +185,12 @@ final class PrivateQuestionService {
     }
     
     /** 내가 작성한 질문(id)에 대한 답변 수정*/
-    func uploadAnswer(id: Int, answer: String) -> Observable<Bool> {
+    func uploadAnswer(id: Int, answer: String, keywords: [String]) -> Observable<Bool> {
         
-        let paramaters: Parameters = ["answer": answer]
+        let paramaters: Parameters = [
+            "answer": answer,
+            "keywords": keywords
+        ]
         let reuqestURL = baseURL + "/answer/\(id)"
         
         return Observable.create { emitter in

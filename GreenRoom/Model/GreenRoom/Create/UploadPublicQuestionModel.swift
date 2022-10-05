@@ -1,13 +1,13 @@
+////
+////  UploadPublicQuestionModel.swift
+////  GreenRoom
+////
+////  Created by Doyun Park on 2022/10/01.
+////
 //
-//  UploadPublicQuestionModel.swift
-//  GreenRoom
+//import Foundation
 //
-//  Created by Doyun Park on 2022/10/01.
-//
-
-import Foundation
-
-struct UploadPublicQuestionModel: Encodable {
-    let categoryId: Int
-    let question, expiredAt: String
-}
+//struct UploadPublicQuestionModel: Encodable {
+//    let categoryId: Int
+//    let question, expiredAt: String
+//}
