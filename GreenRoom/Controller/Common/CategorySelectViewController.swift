@@ -73,14 +73,16 @@ final class CategorySelectViewController: BaseViewController {
         self.viewModel.selectedCategoriesObservable
             .take(1)
             .subscribe(onNext:{ ids in
-                self.viewModel.tempSelectedCategories = ids
+                self.viewModel.tempSelectedCategoriesObservable
+                    .accept(ids)
             }).disposed(by: disposeBag)
         
         self.dismiss(animated: false)
     }
     
     @objc func didClickApplyButton(_ sender: UIButton) {
-        self.viewModel.selectedCategoriesObservable.onNext(viewModel.tempSelectedCategories)
+        self.viewModel.selectedCategoriesObservable
+            .onNext(viewModel.tempSelectedCategoriesObservable.value)
         self.dismiss(animated: false)
     }
     
@@ -140,13 +142,17 @@ final class CategorySelectViewController: BaseViewController {
         }
     }
     
+    //MARK: - Bind
     override func setupBinding() {
-        
         categoryCollectionView.rx.itemSelected
             .bind(onNext: { [weak self] indexPath in
                 let cell = self?.categoryCollectionView.cellForItem(at: indexPath) as! CategoryCell
                 cell.isSelected = true
-                self?.viewModel.selectedCategoryObservable.accept(indexPath.row + 1)
+                
+                if var ids = self?.viewModel.tempSelectedCategoriesObservable.value {
+                    ids.append(indexPath.row + 1)
+                    self?.viewModel.tempSelectedCategoriesObservable.accept(ids)
+                }
                 
             }).disposed(by: disposeBag)
         
@@ -155,8 +161,11 @@ final class CategorySelectViewController: BaseViewController {
                 let cell = self?.categoryCollectionView.cellForItem(at: indexPath) as! CategoryCell
                 cell.isSelected = false
                 
-                if let index = self?.viewModel.tempSelectedCategories.firstIndex(of: indexPath.row + 1) {
-                    self?.viewModel.tempSelectedCategories.remove(at: index)
+                guard var ids = self?.viewModel.tempSelectedCategoriesObservable.value else { return }
+                
+                if let index = ids.firstIndex(of: indexPath.row + 1) {
+                    ids.remove(at: index)
+                    self?.viewModel.tempSelectedCategoriesObservable.accept(ids)
                 }
                 
             }).disposed(by: disposeBag)
@@ -164,12 +173,14 @@ final class CategorySelectViewController: BaseViewController {
         self.viewModel.categories
             .bind(to: self.categoryCollectionView.rx.items(cellIdentifier: "categoryCell", cellType: CategoryCell.self)) {index, title ,cell in
                 guard let category = Category(rawValue: index+1) else { return }
+                cell.category = category
                 
-                if self.viewModel.tempSelectedCategories.contains(index + 1) {
+                let ids = self.viewModel.tempSelectedCategoriesObservable.value
+                if ids.contains(index + 1) {
                     cell.isSelected = true
                     self.categoryCollectionView.selectItem(at: IndexPath(item: index, section: 0), animated: false, scrollPosition: .centeredVertically)
                 }
-                cell.category = category
+                
             }.disposed(by: disposeBag)
         
         self.viewModel.tempSelectedCategoriesObservable
@@ -224,7 +235,7 @@ extension CategorySelectViewController {
 
 extension CategorySelectViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let id = self.viewModel.tempSelectedCategories[indexPath.item]
+        let id = self.viewModel.tempSelectedCategoriesObservable.value[indexPath.item]
         let category = Category(rawValue: id)
         
         let tempLabel = UILabel()

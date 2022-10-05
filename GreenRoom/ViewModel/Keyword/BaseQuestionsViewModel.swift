@@ -19,15 +19,19 @@ class BaseQuestionsViewModel {
     let filteringObservable = PublishSubject<String>() //필터링된 카테고리 observable
     
     init() {
-        KeywordPracticeService().fetchReferenceQuestions(categoryId: nil, title: nil)
+        KeywordPracticeService().fetchReferenceQuestions(categoryId: nil, title: nil, page: nil)
             .bind(to: baseQuestionsObservable)
             .disposed(by: disposeBag)
         
         filteringObservable
             .subscribe(onNext: { ids in
-                KeywordPracticeService().fetchReferenceQuestions(categoryId: ids, title: nil)
+                KeywordPracticeService().fetchReferenceQuestions(categoryId: ids, title: nil, page: nil)
                     .bind(to: self.baseQuestionsObservable)
                     .disposed(by: self.disposeBag)
             }).disposed(by: disposeBag)
+    }
+    
+    func pagingQuestions(categoryId: Int, title: String, page: Int) {
+        
     }
 }

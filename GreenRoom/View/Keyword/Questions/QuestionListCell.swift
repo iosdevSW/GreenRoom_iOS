@@ -51,8 +51,9 @@ class QuestionListCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         configureUI()
-        self.backgroundColor = .white
         
+        self.backgroundColor = .white
+        self.selectionStyle = .none
         
     }
     

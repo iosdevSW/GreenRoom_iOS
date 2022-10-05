@@ -119,13 +119,12 @@ final class KPFindQuestionViewController: BaseViewController{
     
     //MARK: - Bind
     override func setupBinding() {
-        viewModel.baseQuestionsObservable // 서비스 로직 호출할땐 응답받는 구조체로 대체 (아직 서비스API 미구현 임시로 string배열로 받음)
+        viewModel.baseQuestionsObservable
             .bind(to: questionListTableView.rx.items(cellIdentifier: "QuestionListCell", cellType: QuestionListCell.self)) { index, item, cell in
                 cell.mainLabel.text = item.question
                 cell.categoryLabel.text = item.categoryName
                 cell.questionTypeLabel.text = item.questionType
                 
-                cell.selectionStyle = .none
             }.disposed(by: disposeBag)
         
         questionListTableView.rx.modelSelected(ReferenceQuestionModel.self)
