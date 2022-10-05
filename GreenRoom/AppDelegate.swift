@@ -73,7 +73,7 @@ extension AppDelegate {
             let navAppearance = UINavigationBarAppearance()
             navAppearance.configureWithOpaqueBackground()
             
-            tabbarAppearance.backgroundColor = .white
+            navAppearance.backgroundColor = .clear
             UINavigationBar().compactAppearance = navAppearance
             UINavigationBar().scrollEdgeAppearance = navAppearance
             UINavigationBar().standardAppearance = navAppearance
