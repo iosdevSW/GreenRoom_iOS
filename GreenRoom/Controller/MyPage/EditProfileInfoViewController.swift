@@ -23,7 +23,7 @@ class EditProfileInfoViewController: BaseViewController {
     }
     
     private lazy var nameTextField = UITextField().then {
-        $0.text = "박도윤"
+        $0.text = "박면접"
         $0.textAlignment = .right
         $0.textColor = .black
         $0.font = .sfPro(size: 16, family: .Bold)
