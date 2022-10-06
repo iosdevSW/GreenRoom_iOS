@@ -30,8 +30,7 @@ final class MakePublicAnswerViewController: BaseViewController {
         $0.layer.cornerRadius = 15
         $0.layer.borderWidth = 2
         $0.isScrollEnabled = true
-        
-        $0.initDefaultText(with: viewModel.placeholder, foregroundColor: .lightGray)
+        $0.attributedText = viewModel.placeholder.addLineSpacing(foregroundColor: .lightGray)
     }
     
     //MARK: - Lifecycle
@@ -117,8 +116,7 @@ final class MakePublicAnswerViewController: BaseViewController {
                 
                 guard let self = self else { return }
                 if self.answerTextView.text.isEmpty || self.answerTextView.text == nil {
-                    self.answerTextView.initDefaultText(with: self.viewModel.placeholder,
-                                                        foregroundColor: .lightGray)
+                    self.answerTextView.attributedText = self.viewModel.placeholder.addLineSpacing(foregroundColor: .lightGray)
                 }
             }).disposed(by: disposeBag)
         

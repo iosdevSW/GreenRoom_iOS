@@ -74,10 +74,9 @@ final class PrivateAnswerViewController: BaseViewController {
         $0.layer.cornerRadius = 15
         $0.layer.borderWidth = 2
         $0.isScrollEnabled = true
-        
-        $0.initDefaultText(with: viewModel.placeholder, foregroundColor: .lightGray)
-        
+        $0.attributedText = viewModel.placeholder.addLineSpacing(foregroundColor: .lightGray)
     }
+    
     //MARK: - Lifecycle
     init(viewModel: PrivateAnswerViewModel){
         self.viewModel = viewModel
@@ -171,10 +170,9 @@ final class PrivateAnswerViewController: BaseViewController {
                 guard let self = self else { return }
                 
                 if self.answerTextView.text.isEmpty || self.answerTextView.text == nil {
-                    self.answerTextView.initDefaultText(with:
-                                                            self.viewModel.placeholder,
-                                                        foregroundColor: .lightGray)
+                    self.answerTextView.attributedText = self.viewModel.placeholder.addLineSpacing(foregroundColor: .lightGray)
                 }
+                
             }).disposed(by: disposeBag)
         
         let input = PrivateAnswerViewModel.Input(text: answerTextView.rx.text.orEmpty.asObservable(), endEditingTrigger: self.answerTextView.rx.didEndEditing.asObservable(),
@@ -258,7 +256,7 @@ extension PrivateAnswerViewController {
         self.defaultLabel.isHidden = true
         self.answerPostButton.isHidden = true
         
-        self.answerTextView.initDefaultText(with: answer, foregroundColor: .black)
+        self.answerTextView.attributedText = answer.addLineSpacing(foregroundColor: .lightGray)
         configureTextViewLayout()
     }
     
