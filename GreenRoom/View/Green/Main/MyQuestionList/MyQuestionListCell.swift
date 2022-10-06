@@ -11,18 +11,14 @@ class MyQuestionListCell: UICollectionViewCell {
     
     static let reuseIedentifier = "MyQuestionListCell"
     
-    var viewModel: GreenRoomViewModel!
-    
     var question: PrivateQuestion! {
         didSet { configure() }
     }
     
-    private lazy var scrapButton = UIButton(frame: CGRect(x: 0, y: 0, width: 15, height: 15)).then {
-        $0.setImage(UIImage(named: "scrap"), for: .normal)
+    private lazy var iconImageView = UIImageView().then {
+        $0.image = UIImage(named: "scrap")
         $0.tintColor = .customGray
-        $0.imageView?.tintColor = .customGray
         $0.contentMode = .scaleAspectFill
-        $0.backgroundColor = .clear
     }
     
     private var groupCategoryNameLabel = UILabel().then {
@@ -30,10 +26,11 @@ class MyQuestionListCell: UICollectionViewCell {
         $0.textColor = .white
         $0.font = .sfPro(size: 12, family: .Semibold)
         $0.text = "-"
-        $0.sizeToFit()
     }
     
-    private let groupNameLabel = Utilities.shared.generateLabel(text: "디자인", color: .black, font: .sfPro(size: 12, family: .Semibold))
+    private let groupNameLabel = Utilities.shared.generateLabel(text: "디자인", color: .black, font: .sfPro(size: 12, family: .Semibold)).then {
+        $0.backgroundColor = .mainColor
+    }
     
     private lazy var containerView = UIView().then {
         $0.backgroundColor = .white
@@ -52,13 +49,8 @@ class MyQuestionListCell: UICollectionViewCell {
     
     private let categoryLabel = Utilities.shared.generateLabel(text: "디자인", color: .black, font: .sfPro(size: 12, family: .Semibold))
     
-    private lazy var questionTextView = UITextView().then {
-        $0.backgroundColor = .clear
-        $0.translatesAutoresizingMaskIntoConstraints = true
-        $0.sizeToFit()
-        $0.isScrollEnabled = false
-        $0.isEditable = false
-        $0.textContainerInset = UIEdgeInsets(top: 6, left: -4, bottom: 13, right:13)
+    private lazy var questionLabel = PaddingLabel(padding: UIEdgeInsets(top: 6, left: 0, bottom: 6, right: 6)).then {
+        $0.numberOfLines = 0
     }
     
     //MARK: - LifeCycle
@@ -78,8 +70,8 @@ class MyQuestionListCell: UICollectionViewCell {
         
         self.containerView.addSubview(profileImageView)
         self.containerView.addSubview(categoryLabel)
-        self.containerView.addSubview(questionTextView)
-        
+        self.containerView.addSubview(questionLabel)
+        self.contentView.addSubview(groupCategoryNameLabel)
         self.contentView.addSubview(containerView)
         
         containerView.snp.makeConstraints { make in
@@ -104,35 +96,29 @@ class MyQuestionListCell: UICollectionViewCell {
             make.leading.equalTo(profileImageView.snp.trailing).offset(20)
         }
 
-        self.questionTextView.snp.makeConstraints { make in
+        self.questionLabel.snp.makeConstraints { make in
             make.leading.equalTo(categoryLabel.snp.leading)
             make.top.equalTo(categoryLabel.snp.bottom)
-            make.trailing.bottom.equalToSuperview()
+            make.trailing.equalToSuperview()
+            make.bottom.equalToSuperview()
         }
         
-        self.contentView.addSubview(scrapButton)
-        scrapButton.snp.makeConstraints { make in
+        self.contentView.addSubview(iconImageView)
+        iconImageView.snp.makeConstraints { make in
             make.leading.equalTo(containerView.snp.leading)
-            make.top.equalToSuperview().offset(6)
-            make.width.height.equalTo(15)
+            make.top.equalToSuperview().offset(3)
+            make.width.height.equalTo(16)
         }
-
-        self.contentView.addSubview(groupCategoryNameLabel)
+        
+        
         groupCategoryNameLabel.snp.makeConstraints { make in
-            make.trailing.equalToSuperview()
-            make.bottom.equalTo(containerView.snp.top)
-        }
-
-        self.addSubview(groupNameLabel)
-        groupNameLabel.snp.makeConstraints { make in
-            make.center.equalToSuperview()
+            make.leading.equalTo(iconImageView.snp.trailing).offset(15)
+            make.centerY.equalTo(iconImageView.snp.centerY)
         }
     }
     
     private func configure(){
-        self.questionTextView.initDefaultText(with: self.question.question,
-                                              foregroundColor: .black)
-        
+        self.questionLabel.attributedText = question.question.addLineSpacing(foregroundColor: .black)
         self.categoryLabel.text = question.categoryName
         self.groupNameLabel.text = question.groupName
         self.groupCategoryNameLabel.text = question.groupCategoryName

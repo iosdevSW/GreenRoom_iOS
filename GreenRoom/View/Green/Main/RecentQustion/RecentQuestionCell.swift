@@ -23,13 +23,9 @@ final class RecentQuestionCell: UICollectionViewCell {
     
     private let categoryLabel = Utilities.shared.generateLabel(text: "디자인", color: .black, font: .sfPro(size: 12, family: .Semibold))
 
-    private lazy var questionTextView = UITextView().then {
-        $0.backgroundColor = .clear
-        $0.translatesAutoresizingMaskIntoConstraints = true
-        $0.sizeToFit()
-        $0.isScrollEnabled = false
-        $0.textContainerInset = UIEdgeInsets(top: 13, left: 13, bottom: 5, right:13)
-        $0.isUserInteractionEnabled = false
+    private lazy var questionLabel = PaddingLabel(padding: UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15)).then {
+        $0.backgroundColor = .white
+        $0.numberOfLines = 0
     }
     
    //MARK: - LifeCycle
@@ -50,8 +46,8 @@ final class RecentQuestionCell: UICollectionViewCell {
         self.contentView.layer.borderColor = UIColor.mainColor.cgColor
         
         self.backgroundColor = .white
-        self.contentView.addSubview(questionTextView)
-        self.questionTextView.snp.makeConstraints { make in
+        self.contentView.addSubview(questionLabel)
+        self.questionLabel.snp.makeConstraints { make in
             make.trailing.equalToSuperview()
             make.leading.top.equalToSuperview()
             make.height.equalTo(110)
@@ -65,7 +61,7 @@ final class RecentQuestionCell: UICollectionViewCell {
         
         self.contentView.addSubview(profileImageView)
         profileImageView.snp.makeConstraints { make in
-            make.top.equalTo(questionTextView.snp.bottom).offset(10)
+            make.top.equalTo(questionLabel.snp.bottom).offset(10)
             make.trailing.equalToSuperview().offset(-13)
             make.width.height.equalTo(frame.size.width * 0.15)
         }
@@ -73,7 +69,7 @@ final class RecentQuestionCell: UICollectionViewCell {
     
     private func configure(){
         
-        self.questionTextView.initDefaultText(with: question.question, foregroundColor: .black)
+        self.questionLabel.attributedText = question.question.addLineSpacing(foregroundColor: .black)
         
         self.categoryLabel.text = question.categoryName
         guard let url = URL(string: question.profileImage) else { return }

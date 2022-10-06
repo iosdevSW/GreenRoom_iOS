@@ -29,25 +29,12 @@ final class PopularQuestionCell: UICollectionViewCell {
     private let participantsLabel = Utilities.shared.generateLabel(text: "N명이 참여하고 있습니다.", color: .mainColor, font: .sfPro(size: 12, family: .Bold))
     private let expiredLabel = Utilities.shared.generateLabel(text: "23:59 남음", color: .point, font: .sfPro(size: 12, family: .Bold))
     
-    private lazy var questionTextView = UITextView().then {
+    private lazy var questionLabel = PaddingLabel(padding: UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15)).then {
         $0.backgroundColor = .white
-        $0.font = .sfPro(size: 16, family: .Regular)
-        $0.textColor = .black
-        $0.textContainerInset = UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15)
+        $0.numberOfLines = 0
+        
         $0.layer.cornerRadius = 15
         $0.layer.maskedCorners = [.layerMaxXMaxYCorner,.layerMaxXMinYCorner,.layerMinXMaxYCorner]
-        
-        let style = NSMutableParagraphStyle()
-        style.lineSpacing = 6
-        $0.attributedText = NSAttributedString(
-            string: "대부분의 프로젝트는 프로세스는 어떠하며 어떤 롤이 었나요?",
-            attributes: [
-                NSAttributedString.Key.paragraphStyle : style,
-                NSAttributedString.Key.font: UIFont.sfPro(size: 16, family: .Regular),
-                NSAttributedString.Key.foregroundColor: UIColor.black
-            ])
-        
-        $0.isUserInteractionEnabled = false
         $0.layer.borderWidth = 2
         $0.layer.borderColor = UIColor.mainColor.cgColor
     }
@@ -94,8 +81,8 @@ final class PopularQuestionCell: UICollectionViewCell {
             make.top.equalToSuperview()
         }
 
-        self.contentView.addSubview(questionTextView)
-        questionTextView.snp.makeConstraints { make in
+        self.contentView.addSubview(questionLabel)
+        questionLabel.snp.makeConstraints { make in
             make.top.equalTo(categoryLabel.snp.bottom).offset(5)
             make.leading.equalTo(profileImageView.snp.trailing).offset(15)
             make.trailing.equalToSuperview().offset(-20)
@@ -104,16 +91,16 @@ final class PopularQuestionCell: UICollectionViewCell {
         
         self.contentView.addSubview(expiredLabel)
         expiredLabel.snp.makeConstraints { make in
-            make.top.equalTo(questionTextView.snp.bottom).offset(5)
+            make.bottom.equalToSuperview().offset(-10)
+            make.top.equalTo(questionLabel.snp.bottom).offset(5)
             make.trailing.equalToSuperview().offset(-20)
         }
-        
+  
     }
     
     private func configure(){
-        
         self.nameLabel.text = question.name
-        self.questionTextView.text = question.question
+        self.questionLabel.attributedText = question.question.addLineSpacing(foregroundColor: .black)
         self.categoryLabel.text = question.categoryName
         self.participantsLabel.text = "\(question.participants)명이 참여하고 있습니다."
         
