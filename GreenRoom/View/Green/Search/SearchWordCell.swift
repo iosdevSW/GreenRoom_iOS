@@ -12,11 +12,8 @@ final class SearchWordCell: UICollectionViewCell {
     static let reuseIdentifier = "SearchWordCell"
     
     //MARK: - Properties
-    var tagType: SearchTagItem? {
+    var tagType: SearchTagItem! {
         didSet {
-            guard let tagType = tagType else {
-                return
-            }
             self.tagLabel.text = tagType.text
             self.contentView.backgroundColor = tagType.type.backgroundColor
             self.contentView.layer.borderColor = tagType.type.borderColor.cgColor
