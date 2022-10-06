@@ -64,6 +64,17 @@ final class RecentPublicQuestionsViewController: BaseViewController {
         let output = self.viewModel.transform(input: input)
         
         output.recent.bind(to: collectionView.rx.items(dataSource: dataSource())).disposed(by: disposeBag)
+        
+        collectionView.rx.modelSelected(GreenRoomSectionModel.Item.self)
+            .subscribe(onNext: { question in
+                switch question {
+                case .recent(question: let question):
+                    let vc = PublicAnswerViewController(viewModel: PublicAnswerViewModel(id: question.id, scrapService: ScrapService(), publicQuestionService: PublicQuestionService()))
+                    self.navigationController?.pushViewController(vc, animated: false)
+                default: return
+                }
+                
+            }).disposed(by: disposeBag)
     }
 }
 
