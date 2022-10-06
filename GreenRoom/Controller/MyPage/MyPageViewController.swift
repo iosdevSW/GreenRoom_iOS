@@ -100,7 +100,6 @@ extension MyPageViewController {
         collectionView.register(SettingHeader.self, forSupplementaryViewOfKind: SettingHeader.reuseIdentifier, withReuseIdentifier: SettingHeader.reuseIdentifier)
         collectionView.register(SettingRow.self, forCellWithReuseIdentifier: SettingRow.reuseIdentifier)
         collectionView.register(SetNotificationRow.self, forCellWithReuseIdentifier: SetNotificationRow.reuseIdentifier)
-        collectionView.isScrollEnabled = false
     }
     
     //MARK: - CollectionViewDataSoruce
@@ -210,7 +209,6 @@ extension MyPageViewController: ProfileCellDelegate, PHPickerViewControllerDeleg
             itemProvider.loadObject(ofClass: UIImage.self) { [weak self] image, error in
                 guard let image = image as? UIImage else { return }
                 self?.profile.accept(image)
-//                self?.viewModel.profileImageObservable.onNext(image)
             }
         }
     }
