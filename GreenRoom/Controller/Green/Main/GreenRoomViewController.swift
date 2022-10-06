@@ -15,7 +15,7 @@ import RxViewController
 class GreenRoomViewController: BaseViewController {
     
     //MARK: - Properties
-    let viewModel = GreenRoomViewModel()
+    let viewModel: MainGreenRoomViewModel
     private var collectionView: UICollectionView!
     
     private let greenRoomButton = UIButton().then {
@@ -26,7 +26,7 @@ class GreenRoomViewController: BaseViewController {
     }
     
     private let questionListButton = UIButton().then {
-        $0.setTitle("질문리스트", for: .normal)
+        $0.setTitle("마이 리스트", for: .normal)
         $0.setTitleColor(.customGray, for: .normal)
         $0.titleLabel?.font = .sfPro(size: 20, family: .Bold)
         $0.backgroundColor = .clear
@@ -50,6 +50,15 @@ class GreenRoomViewController: BaseViewController {
     }
     
     //MARK: - LifeCycle
+    init(viewModel: MainGreenRoomViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
     }
@@ -77,7 +86,7 @@ class GreenRoomViewController: BaseViewController {
 
         let dataSource = self.dataSource()
         
-        let input = GreenRoomViewModel.Input(greenroomTap: self.greenRoomButton.rx.tap.asObservable(),
+        let input = MainGreenRoomViewModel.Input(greenroomTap: self.greenRoomButton.rx.tap.asObservable(),
                                              myListTap: self.questionListButton.rx.tap.asObservable(),
                                              trigger: self.rx.viewWillAppear.asObservable())
         
@@ -90,17 +99,24 @@ class GreenRoomViewController: BaseViewController {
             guard let self = self else { return }
             
             switch item {
-            case .filtering(interest: _):
-                let vc = FilteringQuestionViewController(viewModel: FilteringViewModel(publicQuestionService: PublicQuestionService()))
+            case .filtering(interest: let category):
+                let vc = FilteringQuestionViewController(viewModel: FilteringViewModel(categoryId: category.rawValue, publicQuestionService: PublicQuestionService()))
                 self.navigationController?.pushViewController(vc, animated: true)
             case .popular(question: let question):
-                let vc = PublicAnswerViewController(viewModel: PublicAnswerViewModel(id: question.id, scrapService: ScrapService(), publicQuestionService: PublicQuestionService()))
+                let vc = PublicAnswerViewController(viewModel: PublicAnswerViewModel(id: question.id,
+                                                                                     scrapService: ScrapService(),
+                                                                                     publicQuestionService: PublicQuestionService()))
                 self.navigationController?.pushViewController(vc, animated: true)
             case .recent(question: let question):
-                let vc = PublicAnswerViewController(viewModel: PublicAnswerViewModel(id: question.id, scrapService: ScrapService(), publicQuestionService: PublicQuestionService()))
+                let vc = PublicAnswerViewController(viewModel: PublicAnswerViewModel(id: question.id,
+                                                                                     scrapService: ScrapService(),
+                                                                                     publicQuestionService: PublicQuestionService()))
                 self.navigationController?.pushViewController(vc, animated: true)
             case .MyGreenRoom(question: let question):
-                let vc = PublicAnswerViewController(viewModel: PublicAnswerViewModel(id: question.id!,scrapService: ScrapService(), publicQuestionService: PublicQuestionService()))
+                guard let id = question.id else { return }
+                let vc = PublicAnswerViewController(viewModel: PublicAnswerViewModel(id: id,
+                                                                                     scrapService: ScrapService(),
+                                                                                     publicQuestionService: PublicQuestionService()))
                 self.navigationController?.pushViewController(vc, animated: true)
             case .MyQuestionList(question: let question):
                 let vc = UINavigationController(rootViewController: PrivateAnswerViewController(viewModel: PrivateAnswerViewModel(id: question.id)))
@@ -185,10 +201,7 @@ class GreenRoomViewController: BaseViewController {
             make.top.equalTo(underline.snp.bottom)
             make.bottom.equalToSuperview()
         }
-        
     }
-    
-    
 }
 
 //MARK: - collectionView
@@ -223,6 +236,7 @@ extension GreenRoomViewController {
             switch item {
             case .filtering(interest: let category):
                 guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: GRFilteringCell.reuseIdentifier, for: indexPath) as? GRFilteringCell else { return UICollectionViewCell() }
+                print(category.title)
                 cell.category = category
                 return cell
                 
@@ -243,7 +257,6 @@ extension GreenRoomViewController {
             case .MyQuestionList(question: let question):
                 guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MyQuestionListCell.reuseIedentifier, for: indexPath) as? MyQuestionListCell else { return UICollectionViewCell() }
                 cell.question = question
-                cell.viewModel = self.viewModel
                 return cell
             }
         } configureSupplementaryView: { [weak self] dataSource, collectionView, kind, indexPath in
@@ -484,9 +497,11 @@ extension GreenRoomViewController: RecentHeaderDelegate {
 }
 
 extension GreenRoomViewController: MyGreenRoomCellDelegate {
+    
     func didTapNext() {
     }
     
     func didTapPrev() {
     }
+    
 }

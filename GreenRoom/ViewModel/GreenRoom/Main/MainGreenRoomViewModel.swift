@@ -10,7 +10,7 @@ import SwiftKeychainWrapper
 import RxSwift
 import RxCocoa
 
-class GreenRoomViewModel: ViewModelType {
+class MainGreenRoomViewModel: ViewModelType {
     
     enum GreenRoomMode: Int {
         case GreenRoom = 0
@@ -70,7 +70,7 @@ class GreenRoomViewModel: ViewModelType {
 }
 
 //MARK: - API Service
-extension GreenRoomViewModel {
+extension MainGreenRoomViewModel {
     
     private func fetchGreenRoomTap() -> Observable<[GreenRoomSectionModel]>{
         
@@ -97,7 +97,7 @@ extension GreenRoomViewModel {
     }
     private func fetchFiltering() -> Observable<[GreenRoomSectionModel]>{
         
-        let categoryId = Category(rawValue: UserDefaults.standard.integer(forKey: "category")) ?? .common
+        let categoryId = Category(rawValue: UserDefaults.standard.integer(forKey: "CategoryID")) ?? .common
         
         return Observable.create { emitter in
             emitter.onNext([GreenRoomSectionModel.filtering(items:[ GreenRoomSectionModel.Item.filtering(interest: categoryId) ])])
