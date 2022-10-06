@@ -61,7 +61,7 @@
 		DBD0821F2897E6EE0092241F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD0821E2897E6EE0092241F /* SceneDelegate.swift */; };
 		DBD082262897E6F30092241F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DBD082252897E6F30092241F /* Assets.xcassets */; };
 		DBD082292897E6F30092241F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DBD082272897E6F30092241F /* LaunchScreen.storyboard */; };
-		DBD082522897E75B0092241F /* GreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD0823A2897E75A0092241F /* GreenViewModel.swift */; };
+		DBD082522897E75B0092241F /* MainGreenRoomViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD0823A2897E75A0092241F /* MainGreenRoomViewModel.swift */; };
 		DBD082542897E75B0092241F /* MyPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD0823C2897E75A0092241F /* MyPageViewModel.swift */; };
 		DBD082552897E75B0092241F /* GreenRoomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD0823F2897E75A0092241F /* GreenRoomViewController.swift */; };
 		DBD082562897E75B0092241F /* MyPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD082412897E75A0092241F /* MyPageViewController.swift */; };
@@ -240,7 +240,7 @@
 		DBD082252897E6F30092241F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DBD082282897E6F30092241F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		DBD0822A2897E6F30092241F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		DBD0823A2897E75A0092241F /* GreenViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GreenViewModel.swift; sourceTree = "<group>"; };
+		DBD0823A2897E75A0092241F /* MainGreenRoomViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainGreenRoomViewModel.swift; sourceTree = "<group>"; };
 		DBD0823C2897E75A0092241F /* MyPageViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyPageViewModel.swift; sourceTree = "<group>"; };
 		DBD0823F2897E75A0092241F /* GreenRoomViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GreenRoomViewController.swift; sourceTree = "<group>"; };
 		DBD082412897E75A0092241F /* MyPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyPageViewController.swift; sourceTree = "<group>"; };
@@ -642,11 +642,11 @@
 			isa = PBXGroup;
 			children = (
 				E461E42828CE1463001EBF74 /* Main */,
-				E44456FC28E735620034A207 /* Question */,
-				E44456FB28E735580034A207 /* Answer */,
 				E49F7D8728BC7D5E000AB49B /* Create */,
 				E49EF3DA28B5E98D00358340 /* Search */,
 				E44456FD28E7356F0034A207 /* Scrap */,
+				E44456FC28E735620034A207 /* Question */,
+				E44456FB28E735580034A207 /* Answer */,
 			);
 			path = Green;
 			sourceTree = "<group>";
@@ -1014,7 +1014,7 @@
 		E4843CFD28EB117A00329DC4 /* Main */ = {
 			isa = PBXGroup;
 			children = (
-				DBD0823A2897E75A0092241F /* GreenViewModel.swift */,
+				DBD0823A2897E75A0092241F /* MainGreenRoomViewModel.swift */,
 				E4206CD128D4A1240011E117 /* ScrabViewModel.swift */,
 				E461E42128CB1445001EBF74 /* SearchViewModel.swift */,
 			);
@@ -1354,7 +1354,7 @@
 				E4460DD528CA05A100AFA108 /* QuestionByCategoryCell.swift in Sources */,
 				E49CC15628C326DA009216E1 /* EditProfileViewModel.swift in Sources */,
 				E445856128C6143700907950 /* MyGreenRoomHeader.swift in Sources */,
-				DBD082522897E75B0092241F /* GreenViewModel.swift in Sources */,
+				DBD082522897E75B0092241F /* MainGreenRoomViewModel.swift in Sources */,
 				E49EF3DC28B5E9AC00358340 /* GRSearchViewController.swift in Sources */,
 				E4141ABC28AF528E004D74B3 /* FAQCell.swift in Sources */,
 				DBA8ED7228BDC945007526CF /* KPDetailViewController.swift in Sources */,

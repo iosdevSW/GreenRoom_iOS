@@ -25,6 +25,7 @@ final class MakePublicAnswerViewModel: ViewModelType {
     
     struct Input {
         let text: Observable<String>
+        let endEditingTrigger: Observable<Void>
         let keywords: Observable<[String]>
         let doneButtonTrigger: Observable<Void>
     }
@@ -48,9 +49,10 @@ final class MakePublicAnswerViewModel: ViewModelType {
     
     func transform(input: Input) -> Output {
 
-        input.text.bind(to: textFieldContentObservable).disposed(by: disposeBag)
+        input.endEditingTrigger.withLatestFrom(input.text)
+            .bind(to: textFieldContentObservable).disposed(by: disposeBag)
 
-        input.doneButtonTrigger.withLatestFrom(Observable.zip(textFieldContentObservable.asObserver(),input.keywords.asObservable()))
+        input.doneButtonTrigger.withLatestFrom(Observable.zip(textFieldContentObservable.asObserver(), input.keywords.asObservable()))
             .flatMap { [weak self] answer, keywords -> Observable<Bool>  in
                 guard let self = self else {
                     return Observable.just(false)
