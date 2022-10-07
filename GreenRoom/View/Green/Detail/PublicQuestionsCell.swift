@@ -68,6 +68,10 @@ final class PublicQuestionsCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
+    override func prepareForReuse() {
+        super.prepareForReuse()
+    }
+    
     //MARK: - Configure
     private func configureUI(){
         self.backgroundColor = .backgroundGray
@@ -118,15 +122,15 @@ final class PublicQuestionsCell: UICollectionViewCell {
     }
 
     private func configure(){
-
+        
+        self.containerView.alpha = question.expired ? 0.5 : 1.0
         self.questionTextView.text = question.question
         self.categoryLabel.text = question.categoryName
 
         guard let url = URL(string: question.profileImage) else { return }
         self.profileImageView.kf.setImage(with: url)
-
         self.expiredLabel.text = question.expired ? "답변 종료" : "\(question.remainedTime) 남음"
-//        self.alpha = question.expired ? 0.3 : 1.0
+        
     }
 }
 

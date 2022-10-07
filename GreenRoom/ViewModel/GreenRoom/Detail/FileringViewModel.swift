@@ -10,27 +10,31 @@ import RxSwift
 
 final class FilteringViewModel: ViewModelType {
     
-    let publicQuestionService: PublicQuestionService
     var disposeBag = DisposeBag()
     
+    let publicQuestionService: PublicQuestionService
+    
     struct Input {
-        let categoryObservable: Observable<Int>
+        let trigger: Observable<Bool>
     }
     
     struct Output {
         let publicQuestions: Observable<[FilteringSectionModel]>
     }
     
-    init(publicQuestionService: PublicQuestionService) {
+    let categoryId: Int
+    
+    init(categoryId: Int, publicQuestionService: PublicQuestionService) {
+        self.categoryId = categoryId
         self.publicQuestionService = publicQuestionService
     }
     
     func transform(input: Input) -> Output {
         
-        let models = input.categoryObservable.flatMap { categoryId in
-            self.publicQuestionService.fetchFilteredQuestion(categoryId: categoryId)
+        let models = input.trigger.flatMap { _ in
+            self.publicQuestionService.fetchFilteredQuestion(categoryId: self.categoryId)
                 .map { questions -> [FilteringSectionModel] in
-                    return [FilteringSectionModel(header: Info(title: Category(rawValue: categoryId)?.title ?? "공통", subTitle: "관련된 질문리스트를 보여드려요!\n질문에 참여 시 동료들의 모든 답변을 확인할 수 있어요 :)"), items: questions)]
+                    return [FilteringSectionModel(header: Info(title: Category(rawValue: self.categoryId)?.title ?? "공통", subTitle: "관련된 질문리스트를 보여드려요!\n질문에 참여 시 동료들의 모든 답변을 확인할 수 있어요 :)"), items: questions)]
                 }
         }
         

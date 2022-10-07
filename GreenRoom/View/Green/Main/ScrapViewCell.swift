@@ -151,8 +151,7 @@ class ScrapViewCell: UICollectionViewCell {
     }
     
     private func configure(){
-        self.questionTextView.initDefaultText(with: self.question.question, foregroundColor: .black)
-
+        self.questionTextView.attributedText = self.question.question.addLineSpacing(foregroundColor: .black)
         self.categoryLabel.text = self.question.categoryName
         
         

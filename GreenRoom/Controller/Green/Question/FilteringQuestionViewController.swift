@@ -14,8 +14,14 @@ final class FilteringQuestionViewController: BaseViewController {
     var collectionView: UICollectionView!
     var viewModel: FilteringViewModel!
     
-    private let notFoundImageView = UIImageView().then {
+    private lazy var notFoundImageView = UIImageView().then {
         $0.image = UIImage(named: "NotFound")?.withRenderingMode(.alwaysOriginal)
+    }
+    
+    private var defaultLabel = UILabel().then {
+        $0.text = "등록된 글이 없어요"
+        $0.font = .sfPro(size: 12, family: .Semibold)
+        $0.textColor = .init(red: 87/255.0, green: 193/255.0, blue: 193/255.0, alpha: 0.5)
     }
     
     init(viewModel: FilteringViewModel){
@@ -56,10 +62,16 @@ final class FilteringQuestionViewController: BaseViewController {
         }
         
         self.collectionView.addSubview(self.notFoundImageView)
-        self.collectionView.snp.makeConstraints { make in
+        self.notFoundImageView.snp.makeConstraints { make in
             make.centerY.equalToSuperview().offset(-80)
             make.centerX.equalToSuperview()
             make.width.height.equalTo(86)
+        }
+        
+        self.view.addSubview(defaultLabel)
+        defaultLabel.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.top.equalTo(notFoundImageView.snp.bottom).offset(20)
         }
     }
     
@@ -69,7 +81,7 @@ final class FilteringQuestionViewController: BaseViewController {
     
     override func setupBinding() {
         
-        let input = FilteringViewModel.Input(categoryObservable: Observable.just(2))
+        let input = FilteringViewModel.Input(trigger: self.rx.viewWillAppear.asObservable())
         
         viewModel.transform(input: input).publicQuestions.bind(to: self.collectionView.rx.items(dataSource: dataSource()))
             .disposed(by: disposeBag)
@@ -82,7 +94,7 @@ extension FilteringQuestionViewController {
     private func configureCollectionView(){
         let layout = UICollectionViewFlowLayout()
         layout.itemSize = CGSize(width: view.bounds.width * 0.9, height: view.bounds.height/4)
-        layout.headerReferenceSize = CGSize(width: view.frame.size.width , height: view.bounds.height * 0.18)
+        layout.headerReferenceSize = CGSize(width: view.frame.size.width , height: view.bounds.height * 0.15)
         layout.minimumLineSpacing = view.bounds.size.height * 0.03
         layout.sectionInset = UIEdgeInsets(top: 20, left: 0, bottom: 0, right: 0)
         
@@ -97,8 +109,11 @@ extension FilteringQuestionViewController {
             (dataSource, collectionView, indexPath, item) in
             
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: QuestionByCategoryCell.reuseIdentifier, for: indexPath) as? QuestionByCategoryCell else { return UICollectionViewCell() }
-            self.notFoundImageView.removeFromSuperview()
+            
+            self.notFoundImageView.isHidden = true
+             
             return cell
+            
         } configureSupplementaryView: { dataSource, collectionView, kind,
             indexPath in
             
@@ -107,9 +122,8 @@ extension FilteringQuestionViewController {
                     return UICollectionReusableView()
             }
             
-            let info = dataSource[indexPath.row].header
-            header.filterShowing = true
-            header.info = info
+            header.filterShowing = false
+            header.info = dataSource[indexPath.row].header
             return header
         }
     }

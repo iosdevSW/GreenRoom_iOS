@@ -49,7 +49,7 @@ extension SceneDelegate {
     private func createCustomTabbar() -> CustomTabbarController {
         let mainTabbarController = CustomTabbarController()
         
-        let greenRoomController = self.createNavigationController(viewController: GreenRoomViewController(),
+        let greenRoomController = self.createNavigationController(viewController: GreenRoomViewController(viewModel: MainGreenRoomViewModel()),
                                                                   title: "그린룸",
                                                                   image: UIImage(named: "greenroom"),
                                                                   tag: 1)

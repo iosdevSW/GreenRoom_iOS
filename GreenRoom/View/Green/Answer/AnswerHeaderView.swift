@@ -42,9 +42,7 @@ final class QuestionHeaderView: UIView {
     }
     
     private func configure() {
-        
-        self.questionTextView.initDefaultText(with: question.question, foregroundColor: .black, font: .sfPro(size: 20, family: .Regular))
-        
+        self.questionTextView.attributedText = self.question.question.addLineSpacing(foregroundColor: .black, font: .sfPro(size: 20, family: .Regular))
         self.categoryLabel.text = question.categoryName
         self.questionTextView.isEditable = question.groupCategoryName.isEmpty
     }

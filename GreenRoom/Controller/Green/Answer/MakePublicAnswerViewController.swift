@@ -30,8 +30,7 @@ final class MakePublicAnswerViewController: BaseViewController {
         $0.layer.cornerRadius = 15
         $0.layer.borderWidth = 2
         $0.isScrollEnabled = true
-        
-        $0.initDefaultText(with: viewModel.placeholder, foregroundColor: .lightGray)
+        $0.attributedText = viewModel.placeholder.addLineSpacing(foregroundColor: .lightGray)
     }
     
     //MARK: - Lifecycle
@@ -116,22 +115,26 @@ final class MakePublicAnswerViewController: BaseViewController {
             .subscribe(onNext: { [weak self] _ in
                 
                 guard let self = self else { return }
-                
                 if self.answerTextView.text.isEmpty || self.answerTextView.text == nil {
-                    self.answerTextView.initDefaultText(with: self.viewModel.placeholder,
-                                                        foregroundColor: .lightGray)
+                    self.answerTextView.attributedText = self.viewModel.placeholder.addLineSpacing(foregroundColor: .lightGray)
                 }
             }).disposed(by: disposeBag)
         
         let input = MakePublicAnswerViewModel.Input(text: answerTextView.rx.text.orEmpty.asObservable(),
+                                                    endEditingTrigger: self.answerTextView.rx.didEndEditing.asObservable(),
                                                     keywords: keywordView.output.registeredKeywords,
                                                     doneButtonTrigger: doneButton.rx.tap.asObservable())
+        
+        doneButton.rx.tap.subscribe(onNext: {
+            self.answerTextView.resignFirstResponder()
+        }).disposed(by: disposeBag)
         
         let output = viewModel.transform(input: input)
         
         output.question.subscribe(onNext: { question in
             self.headerView.question = Question(id: question.header.id, question: question.header.question, categoryName: question.header.categoryName, groupCategoryName: "")
         }).disposed(by: disposeBag)
+        
         output.successMessage.emit(onNext: { [weak self] message in
             guard let self = self else { return }
             let alert = self.comfirmAlert(title: "등록이 완료되었습니다.", subtitle: message) { _ in

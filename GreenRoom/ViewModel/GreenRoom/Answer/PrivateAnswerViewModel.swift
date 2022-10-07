@@ -25,6 +25,7 @@ final class PrivateAnswerViewModel: ViewModelType {
     
     struct Input {
         let text: Observable<String>
+        let endEditingTrigger: Observable<Void>
         let keywords: Observable<[String]>
         let deleteButtonTrigger: Observable<Bool>
         let doneButtonTrigger: Observable<Void>
@@ -48,13 +49,17 @@ final class PrivateAnswerViewModel: ViewModelType {
     }
     
     func transform(input: Input) -> Output {
-        input.text.bind(to: textFieldContentObservable).disposed(by: disposeBag)
+        
+        input.endEditingTrigger.withLatestFrom(input.text)
+            .bind(to: textFieldContentObservable)
+            .disposed(by: disposeBag)
 
-        input.doneButtonTrigger.withLatestFrom(Observable.zip(textFieldContentObservable.asObserver(),input.keywords.asObservable()))
+        input.doneButtonTrigger.withLatestFrom(Observable.zip(textFieldContentObservable.asObserver(), input.keywords.asObservable()))
             .flatMap { [weak self] answer, keywords -> Observable<Bool>  in
                 guard let self = self else {
                     return Observable.just(false)
                 }
+                print(answer,keywords)
                 return self.privateQuestionService.uploadAnswer(id: self.id, answer: answer, keywords: keywords)
             }
             .subscribe(onNext: { [weak self] isSuccess in

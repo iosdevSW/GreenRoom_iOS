@@ -28,10 +28,10 @@ final class PrivateAnswerViewController: BaseViewController {
     }
     
     private var viewModel: PrivateAnswerViewModel!
-    private var collectionView: UICollectionView!
     
     private var headerView = QuestionHeaderView(frame: .zero)
-    private var keywordView: KeywordRegisterView?
+    private var keywordView: KeywordRegisterView!
+    private var collectionView: UICollectionView!
     
     private lazy var defaultView = UIImageView().then {
         $0.image = UIImage(named: "NotFound")?.withRenderingMode(.alwaysOriginal)
@@ -74,14 +74,15 @@ final class PrivateAnswerViewController: BaseViewController {
         $0.layer.cornerRadius = 15
         $0.layer.borderWidth = 2
         $0.isScrollEnabled = true
-        
-        $0.initDefaultText(with: viewModel.placeholder, foregroundColor: .lightGray)
-        
+        $0.attributedText = viewModel.placeholder.addLineSpacing(foregroundColor: .lightGray)
     }
+    
     //MARK: - Lifecycle
     init(viewModel: PrivateAnswerViewModel){
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
+        
+        self.keywordView = KeywordRegisterView(viewModel: RegisterKeywordViewModel(id: viewModel.id))
     }
     
     required init?(coder: NSCoder) {
@@ -153,20 +154,6 @@ final class PrivateAnswerViewController: BaseViewController {
     
     override func setupBinding() {
         
-        let input = PrivateAnswerViewModel.Input(text: answerTextView.rx.text.orEmpty.asObservable(),
-                                                 keywords: keywordView?.output.registeredKeywords ?? .of([]),
-                                                 deleteButtonTrigger: deleteButton.rx.tap.flatMap { self.showAlert(title: "질문 삭제", message: "마이질문을 삭제하시겠습니까?\n한 번 삭제 후 되돌릴 수 없습니다.")},
-                                                 doneButtonTrigger: self.doneButton.rx.tap.asObservable())
-        
-        let output = viewModel.transform(input: input)
-        
-        keywordView = KeywordRegisterView(viewModel: RegisterKeywordViewModel(id: viewModel.id, keywords: output.keywords))
-        
-        answerPostButton.rx.tap
-            .subscribe(onNext: { [weak self] _ in
-                self?.mode = .edit
-            }).disposed(by: disposeBag)
-        
         answerTextView.rx.didBeginEditing
             .subscribe(onNext: { [weak self] _ in
                 guard let self = self else { return }
@@ -183,10 +170,29 @@ final class PrivateAnswerViewController: BaseViewController {
                 guard let self = self else { return }
                 
                 if self.answerTextView.text.isEmpty || self.answerTextView.text == nil {
-                    self.answerTextView.initDefaultText(with: self.viewModel.placeholder,
-                                                        foregroundColor: .lightGray)
+                    self.answerTextView.attributedText = self.viewModel.placeholder.addLineSpacing(foregroundColor: .lightGray)
                 }
+                
             }).disposed(by: disposeBag)
+        
+        let input = PrivateAnswerViewModel.Input(text: answerTextView.rx.text.orEmpty.asObservable(), endEditingTrigger: self.answerTextView.rx.didEndEditing.asObservable(),
+                                                 keywords: keywordView.output.registeredKeywords.asObservable(),
+                                                 deleteButtonTrigger: deleteButton.rx.tap.flatMap { self.showAlert(title: "질문 삭제", message: "마이질문을 삭제하시겠습니까?\n한 번 삭제 후 되돌릴 수 없습니다.")},
+                                                 doneButtonTrigger: self.doneButton.rx.tap.asObservable())
+        
+        
+        doneButton.rx.tap.subscribe(onNext: {
+            self.answerTextView.resignFirstResponder()
+        }).disposed(by: disposeBag)
+        
+        let output = viewModel.transform(input: input)
+        
+        answerPostButton.rx.tap
+            .subscribe(onNext: { [weak self] _ in
+                self?.mode = .edit
+            }).disposed(by: disposeBag)
+        
+        
         
         output.answer.subscribe(onNext: { [weak self] answer in
             
@@ -219,8 +225,6 @@ final class PrivateAnswerViewController: BaseViewController {
     }
     
     private func configureTextViewLayout() {
-        
-        guard let keywordView = keywordView else { return }
 
         self.view.addSubview(keywordView)
         keywordView.snp.makeConstraints { make in
@@ -252,7 +256,7 @@ extension PrivateAnswerViewController {
         self.defaultLabel.isHidden = true
         self.answerPostButton.isHidden = true
         
-        self.answerTextView.initDefaultText(with: answer, foregroundColor: .black)
+        self.answerTextView.attributedText = answer.addLineSpacing(foregroundColor: .lightGray)
         configureTextViewLayout()
     }
     

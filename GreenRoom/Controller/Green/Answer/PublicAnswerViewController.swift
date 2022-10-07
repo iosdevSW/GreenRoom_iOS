@@ -124,7 +124,8 @@ final class PublicAnswerViewController: BaseViewController {
                 self.scrapButton.setImage(UIImage(systemName: completable ? "star.fill" : "star"), for: .normal)
             }).disposed(by: disposeBag)
         
-        output.answer.subscribe(onNext: { [weak self] answer in
+        output.answer
+            .subscribe(onNext: { [weak self] answer in
             guard let self = self else { return }
             self.headerView.question = Question(id: answer.header.id, question: answer.header.question, categoryName: answer.header.categoryName, groupCategoryName: answer.header.categoryName)
             self.collectionView.alpha = answer.header.mode == .permission ? 1.0 : 0.5
