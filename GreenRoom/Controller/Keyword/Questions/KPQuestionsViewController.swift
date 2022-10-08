@@ -265,11 +265,23 @@ final class KPQuestionsViewController: BaseViewController {
                 self?.keywordOnButton.isHidden = true
                 self?.keywordOffButton.isHidden = true
                 self?.practiceInterviewButton.isHidden = true
-            })
+            }).disposed(by: disposeBag)
         
         self.moveGroupButton.rx.tap
             .bind(onNext: {
                 self.navigationController?.pushViewController(KPGroupsViewController(viewModel: self.viewmodel), animated: true)
+            }).disposed(by: disposeBag)
+        
+        self.deleteQuestionButton.rx.tap
+            .bind(onNext: { [weak self] in
+                guard let vm = self?.viewmodel else { return }
+                guard let groupId = vm.selectedGroupID.value else { return }
+                let questionIds = vm.selectedQuestions.value.map { $0.id }
+                
+                KeywordPracticeService().deleteGroupQuestions(groupId: groupId, questionIds: questionIds, completion: { _ in
+                    vm.updateGroupQuestions()
+                    vm.groupEditMode.accept(false)
+                })
             }).disposed(by: disposeBag)
     }
     
