@@ -124,6 +124,7 @@ final class KPFindQuestionViewController: BaseViewController{
                 cell.mainLabel.text = item.question
                 cell.categoryLabel.text = item.categoryName
                 cell.questionTypeLabel.text = item.questionType
+                cell.isFindMode = true
                 
             }.disposed(by: disposeBag)
         
