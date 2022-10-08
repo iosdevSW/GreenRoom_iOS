@@ -213,7 +213,9 @@ final class KPQuestionsViewController: BaseViewController {
             // init
                 if self.viewmodel.selectedQuestions.value.contains(where: { $0.id == item.id}) {
                     cell.isSelected = true
+                    self.questionListTableView.selectRow(at: IndexPath(row: index, section: 0), animated: true, scrollPosition: .none)
                 }else {
+                    self.questionListTableView.deselectRow(at: IndexPath(row: index, section: 0), animated: true)
                     cell.isSelected = false
                 }
                 cell.isEditMode = self.isEditingMode
@@ -237,6 +239,7 @@ final class KPQuestionsViewController: BaseViewController {
         questionListTableView.rx.itemSelected
             .bind(onNext: { indexPath in // 서비스 로직시엔 Id로 다룰 것 같음
                 let cell = self.questionListTableView.cellForRow(at: indexPath) as! QuestionListCell
+                print(cell.isSelected)
                 cell.isSelected = true
 
             }).disposed(by: disposeBag)
@@ -251,6 +254,8 @@ final class KPQuestionsViewController: BaseViewController {
         questionListTableView.rx.itemDeselected
             .bind(onNext: { indexPath in // 서비스 로직시엔 Id로 다룰 것 같음
                 let cell = self.questionListTableView.cellForRow(at: indexPath) as! QuestionListCell
+                print("deselected")
+                print(cell.isSelected)
                 cell.isSelected = false
             }).disposed(by: disposeBag)
         
@@ -271,15 +276,19 @@ final class KPQuestionsViewController: BaseViewController {
                     if questions.count == 0 {
                         self.moveGroupButton.isHidden = true
                         self.deleteQuestionButton.isHidden = true
+                        self.allSelectButton.setTitle("모두선택", for: .normal)
                     }else {
                         self.moveGroupButton.isHidden = false
                         self.deleteQuestionButton.isHidden = false
+                        self.allSelectButton.setTitle("모두해제", for: .normal)
                     }
                 } else {
                     if questions.count == 0 {
                         self.practiceInterviewButton.isHidden = true
+                        self.allSelectButton.setTitle("모두선택", for: .normal)
                     }else {
                         self.practiceInterviewButton.setTitle("\(questions.count)개의 면접 연습하기", for: .normal)
+                        self.allSelectButton.setTitle("모두해제", for: .normal)
                         self.practiceInterviewButton.isHidden = false
                     }
                     self.keywordOnButton.isHidden = true
