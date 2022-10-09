@@ -66,14 +66,14 @@ class KPFinishViewController: BaseViewController{
     
     //MARK: - Bind
     override func setupBinding() {
-        viewmodel.selectedQuestionObservable
-            .bind(to: resultTableView.rx.items(cellIdentifier: "PracticeResultCell", cellType: PracticeResultCell.self)) { index, title, cell in
-                cell.questionLabel.text = "Q\(index+1)\n\(title)"
+        viewmodel.selectedQuestions
+            .bind(to: resultTableView.rx.items(cellIdentifier: "PracticeResultCell", cellType: PracticeResultCell.self)) { index, item, cell in
+                cell.questionLabel.text = "Q\(index+1)\n\(item.question)"
                 cell.keywordPersent.text = "75%"
                 cell.keywordsLabel.text = "아무거나 일단넣기"
-                cell.categoryLabel.text = "공통"
+                cell.categoryLabel.text = item.categoryName
                 
-                cell.selectionStyle = .none
+                
             }.disposed(by: disposeBag)
         
         resultTableView.rx.itemSelected

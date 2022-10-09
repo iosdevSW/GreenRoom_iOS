@@ -7,11 +7,11 @@
 
 import UIKit
 import RxCocoa
+import Alamofire
 
 final class KPQuestionsViewController: BaseViewController {
     //MARK: - Properties
     private let viewmodel: KeywordViewModel
-    private var isEditingMode = false
     
     private let categoryLabel = PaddingLabel(padding: .init(top: 2, left: 10, bottom: 2, right: 10)).then {
         $0.text = "공통"
@@ -39,60 +39,26 @@ final class KPQuestionsViewController: BaseViewController {
     
     private let keywordOnButton = UIButton(type: .system).then{
         $0.setTitle("키워드 ON", for: .normal)
-        $0.setTitleColor(.white, for: .normal)
-        $0.titleLabel?.font = .sfPro(size: 16, family: .Semibold)
-        $0.backgroundColor = .mainColor
-        $0.isHidden = true
         $0.tag = 0
-        $0.layer.borderColor = UIColor.mainColor.cgColor
-        $0.layer.borderWidth = 2
-        $0.layer.cornerRadius = 8
-        $0.layer.shadowColor = UIColor(red: 0.769, green: 0.769, blue: 0.769, alpha: 1).cgColor
-        $0.layer.shadowOpacity = 1
-        $0.layer.shadowOffset = CGSize(width: 0, height: 5)
+        $0.setMainColorButtonConfigure()
     }
     
     private let keywordOffButton = UIButton(type: .system).then{
         $0.setTitle("키워드 OFF", for: .normal)
-        $0.setTitleColor(.white, for: .normal)
-        $0.titleLabel?.font = .sfPro(size: 16, family: .Semibold)
-        $0.backgroundColor = .mainColor
-        $0.isHidden = true
         $0.tag = 1
-        $0.layer.borderColor = UIColor.mainColor.cgColor
-        $0.layer.cornerRadius = 8
-        $0.layer.shadowColor = UIColor(red: 0.769, green: 0.769, blue: 0.769, alpha: 1).cgColor
-        $0.layer.shadowOpacity = 1
-        $0.layer.shadowOffset = CGSize(width: 0, height: 5)
+        $0.setMainColorButtonConfigure()
     }
     
     private let moveGroupButton = UIButton(type: .system).then{
         $0.setTitle("그룹이동", for: .normal)
-        $0.setTitleColor(.white, for: .normal)
-        $0.titleLabel?.font = .sfPro(size: 16, family: .Semibold)
-        $0.backgroundColor = .mainColor
-        $0.isHidden = true
         $0.tag = 3
-        $0.layer.borderColor = UIColor.mainColor.cgColor
-        $0.layer.borderWidth = 2
-        $0.layer.cornerRadius = 8
-        $0.layer.shadowColor = UIColor(red: 0.769, green: 0.769, blue: 0.769, alpha: 1).cgColor
-        $0.layer.shadowOpacity = 1
-        $0.layer.shadowOffset = CGSize(width: 0, height: 5)
+        $0.setMainColorButtonConfigure()
     }
     
     private let deleteQuestionButton = UIButton(type: .system).then{
-        $0.setTitle("키워드 OFF", for: .normal)
-        $0.setTitleColor(.white, for: .normal)
-        $0.titleLabel?.font = .sfPro(size: 16, family: .Semibold)
-        $0.backgroundColor = .mainColor
-        $0.isHidden = true
+        $0.setTitle("질문삭제", for: .normal)
         $0.tag = 4
-        $0.layer.borderColor = UIColor.mainColor.cgColor
-        $0.layer.cornerRadius = 8
-        $0.layer.shadowColor = UIColor(red: 0.769, green: 0.769, blue: 0.769, alpha: 1).cgColor
-        $0.layer.shadowOpacity = 1
-        $0.layer.shadowOffset = CGSize(width: 0, height: 5)
+        $0.setMainColorButtonConfigure()
     }
     
     private var questionListTableView = UITableView().then{
@@ -158,22 +124,23 @@ final class KPQuestionsViewController: BaseViewController {
         return attributedStr
     }
     
+    func deleteQuestion() {
+        guard let groupId = self.viewmodel.selectedGroupID.value else { return }
+        let questionIds = self.viewmodel.selectedQuestions.value.map { $0.id }
+        
+        KeywordPracticeService().deleteGroupQuestions(groupId: groupId, questionIds: questionIds, completion: { _ in
+            self.showGuideAlert(title: "질문이 삭제되었습니다."){ _ in
+                self.viewmodel.updateGroupQuestions()
+                self.viewmodel.groupEditMode.accept(false)
+            }
+        })
+    }
+    
     //MARK: - Selector
     @objc func didClickKeywordButton(_ sender: UIButton) {
         let isKeywordOn = sender.tag == 0 ? true : false
         self.viewmodel.keywordOnOff = isKeywordOn
         self.navigationController?.pushViewController(KPPrepareViewController(viewmodel: viewmodel), animated: true)
-    }
-    
-    @objc func didClickQuestionEditButton(_ sender: UIButton) {
-        switch sender.tag {
-        case 3:
-            let groupVC = KPGroupsViewController(viewModel: BaseQuestionsViewModel())
-            self.navigationController?.pushViewController(groupVC, animated: true)
-        default:
-            print("질문삭제클릭")
-            
-        }
     }
     
     @objc func didClickPracticeButton(_ sender: UIButton) {
@@ -183,16 +150,7 @@ final class KPQuestionsViewController: BaseViewController {
     }
     
     @objc func didClickEditButton(_ sender: UIButton) {
-        self.isEditingMode = !self.isEditingMode
-        self.questionListTableView.reloadData()
-        
-        viewmodel.selectedQuestions.accept([])
-        
-        self.moveGroupButton.isHidden = true
-        self.deleteQuestionButton.isHidden = true
-        self.keywordOnButton.isHidden = true
-        self.keywordOffButton.isHidden = true
-        self.practiceInterviewButton.isHidden = true
+        self.viewmodel.groupEditMode.accept(!self.viewmodel.groupEditMode.value) 
     }
     
     //MARK: - Bind
@@ -213,10 +171,12 @@ final class KPQuestionsViewController: BaseViewController {
             // init
                 if self.viewmodel.selectedQuestions.value.contains(where: { $0.id == item.id}) {
                     cell.isSelected = true
+                    self.questionListTableView.selectRow(at: IndexPath(row: index, section: 0), animated: true, scrollPosition: .none)
                 }else {
+                    self.questionListTableView.deselectRow(at: IndexPath(row: index, section: 0), animated: true)
                     cell.isSelected = false
                 }
-                cell.isEditMode = self.isEditingMode
+                cell.isEditMode = self.viewmodel.groupEditMode.value
                 cell.mainLabel.text = item.question
                 
                 let registerText = item.register == true ? "등록" : "미등록"
@@ -225,7 +185,7 @@ final class KPQuestionsViewController: BaseViewController {
                 cell.questionTypeLabel.textColor = registerTextColor
                 cell.categoryLabel.text = item.categoryName
                 
-                if self.isEditingMode {
+                if self.viewmodel.groupEditMode.value {
                     cell.chevronButton.isHidden = true
                     cell.checkBox.isHidden = false
                 } else {
@@ -238,7 +198,6 @@ final class KPQuestionsViewController: BaseViewController {
             .bind(onNext: { indexPath in // 서비스 로직시엔 Id로 다룰 것 같음
                 let cell = self.questionListTableView.cellForRow(at: indexPath) as! QuestionListCell
                 cell.isSelected = true
-
             }).disposed(by: disposeBag)
         
         questionListTableView.rx.modelSelected(GroupQuestion.self)
@@ -266,25 +225,26 @@ final class KPQuestionsViewController: BaseViewController {
             }).disposed(by: disposeBag)
             
         viewmodel.selectedQuestions
-            .bind(onNext: { questions in
-                if self.isEditingMode {
-                    if questions.count == 0 {
-                        self.moveGroupButton.isHidden = true
-                        self.deleteQuestionButton.isHidden = true
-                    }else {
-                        self.moveGroupButton.isHidden = false
-                        self.deleteQuestionButton.isHidden = false
-                    }
+            .bind(onNext: { [weak self]questions in
+                guard let self = self else { return }
+                let isHidden = questions.count == 0 ? true : false
+                
+                if self.viewmodel.groupEditMode.value {
+                    self.moveGroupButton.isHidden = isHidden
+                    self.deleteQuestionButton.isHidden = isHidden
                 } else {
-                    if questions.count == 0 {
-                        self.practiceInterviewButton.isHidden = true
-                    }else {
-                        self.practiceInterviewButton.setTitle("\(questions.count)개의 면접 연습하기", for: .normal)
-                        self.practiceInterviewButton.isHidden = false
-                    }
-                    self.keywordOnButton.isHidden = true
-                    self.keywordOffButton.isHidden = true
+                    self.practiceInterviewButton.isHidden = isHidden
+                    self.practiceInterviewButton.setTitle("\(questions.count)개의 면접 연습하기", for: .normal)
                 }
+                
+                if isHidden {
+                    self.allSelectButton.setTitle("모두선택", for: .normal)
+                } else {
+                    self.allSelectButton.setTitle("모두해제", for: .normal)
+                }
+                
+                self.keywordOnButton.isHidden = true
+                self.keywordOffButton.isHidden = true
             }).disposed(by: disposeBag)
         
         self.allSelectButton.rx.tap
@@ -298,6 +258,42 @@ final class KPQuestionsViewController: BaseViewController {
                     vm.selectedQuestions.accept(vm.groupQuestions.value)
                 }
                 self?.questionListTableView.reloadData()
+            }).disposed(by: disposeBag)
+        
+        self.viewmodel.groupEditMode
+            .bind(onNext: { [weak self]isEditMode in
+                if isEditMode {
+                    self?.navigationItem.rightBarButtonItem?.title = "취소"
+                } else {
+                    self?.navigationItem.rightBarButtonItem?.title = "편집"
+                }
+                
+                self?.questionListTableView.reloadData()
+                
+                self?.viewmodel.selectedQuestions.accept([])
+                
+                self?.moveGroupButton.isHidden = true
+                self?.deleteQuestionButton.isHidden = true
+                self?.keywordOnButton.isHidden = true
+                self?.keywordOffButton.isHidden = true
+                self?.practiceInterviewButton.isHidden = true
+            }).disposed(by: disposeBag)
+        
+        self.moveGroupButton.rx.tap
+            .bind(onNext: {
+                self.navigationController?.pushViewController(KPGroupsViewController(viewModel: self.viewmodel), animated: true)
+            }).disposed(by: disposeBag)
+        
+        self.deleteQuestionButton.rx.tap
+            .bind(onNext: { [weak self] in
+                guard let questionCount = self?.viewmodel.selectedQuestions.value.count else { return }
+                self?.showAlert(title: "\(questionCount)개의 질문을 삭제하시겠습니까?")
+                    .take(1)
+                    .subscribe(onNext: { isOk in
+                        if isOk {
+                            self?.deleteQuestion()
+                        }
+                    }).disposed(by: self!.disposeBag)
             }).disposed(by: disposeBag)
     }
     
@@ -363,7 +359,6 @@ final class KPQuestionsViewController: BaseViewController {
         }
         
         self.view.addSubview(moveGroupButton)
-        moveGroupButton.addTarget(self, action: #selector(didClickQuestionEditButton(_:)), for: .touchUpInside)
         moveGroupButton.snp.makeConstraints{ make in
             make.leading.equalToSuperview().offset(14)
             make.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.bottom).offset(-10)
@@ -371,7 +366,6 @@ final class KPQuestionsViewController: BaseViewController {
         }
 
         self.view.addSubview(deleteQuestionButton)
-        deleteQuestionButton.addTarget(self, action: #selector(didClickQuestionEditButton(_:)), for: .touchUpInside)
         deleteQuestionButton.snp.makeConstraints{ make in
             make.leading.equalTo(moveGroupButton.snp.trailing).offset(14)
             make.trailing.equalToSuperview().offset(-14)

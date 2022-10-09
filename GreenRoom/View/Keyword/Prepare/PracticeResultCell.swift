@@ -15,8 +15,8 @@ class PracticeResultCell: UITableViewCell {
         $0.numberOfLines = 0
     }
     
-    let categoryLabel = UILabel().then {
-        $0.backgroundColor = .customGray
+    let categoryLabel = PaddingLabel(padding: .init(top: 0, left: 8, bottom: 0, right: 8)).then {
+        $0.backgroundColor = .customGray.withAlphaComponent(0.8)
         $0.textColor = .darkGray
         $0.font = .sfPro(size: 12, family: .Semibold)
         $0.textAlignment = .center
@@ -38,6 +38,8 @@ class PracticeResultCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         self.backgroundColor = .white
+        self.selectionStyle = .none
+        
         configureUI()
     }
     
@@ -64,7 +66,7 @@ class PracticeResultCell: UITableViewCell {
         self.addSubview(categoryLabel)
         categoryLabel.snp.makeConstraints{ make in
             make.leading.equalToSuperview().offset(44)
-            make.width.equalTo(40)
+//            make.width.equalTo(40)
             make.height.equalTo(20)
             make.top.equalTo(questionLabel.snp.bottom).offset(10)
         }

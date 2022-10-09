@@ -12,7 +12,7 @@ import SwiftUI
 class KPPrepareViewController: BaseViewController{
     //MARK: - Properties
     let viewmodel: KeywordViewModel
-    var tempQuestionStorage: [String]?
+    var tempQuestionStorage: [GroupQuestion]?
     
     var goalFrameView = UIView().then {
         $0.backgroundColor = .customGray.withAlphaComponent(0.1)
@@ -77,22 +77,13 @@ class KPPrepareViewController: BaseViewController{
     
     //MARK: - Bind
     override func setupBinding() {
-        viewmodel.selectedQuestionObservable
+        viewmodel.selectedQuestions
             .bind(to: self.questionsTableView.rx.items(cellIdentifier: "PracticeQuestionCell",
-                                                       cellType: PracticeQuestionCell.self)) { index, title, cell in
+                                                       cellType: PracticeQuestionCell.self)) { index, item, cell in
                 cell.numberLabel.text = "질문\(index+1)"
-                cell.titleLabel.text = title
-                cell.selectionStyle = .none
+                cell.titleLabel.text = item.question
+                
                 cell.separatorInset = .init(top: 0, left: 0, bottom: 0, right: 0)
-                
-                let btn = UIButton()
-                btn.setImage(UIImage(named: "menu"), for: .normal)
-                btn.tintColor = .customGray
-                
-                let imageView = UIImageView(image: UIImage(named: "menu"))
-                imageView.tintColor = .customGray
-                btn.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
-                cell.accessoryView = btn
             }.disposed(by: disposeBag)
     }
 
@@ -244,7 +235,7 @@ extension KPPrepareViewController {
                 questionsTableView.addSubview(MyCell.cellSnapshot!)
                 
                 if tempQuestionStorage == nil {
-                    tempQuestionStorage = viewmodel.selectedQuestionObservable.value
+                    tempQuestionStorage = viewmodel.selectedQuestions.value
                 }
                 
                 UIView.animate(withDuration: 0.25, animations: { () -> Void in
@@ -302,7 +293,7 @@ extension KPPrepareViewController {
                     
                 }, completion: { (finished) -> Void in
                     if finished {
-                        self.viewmodel.selectedQuestionObservable.accept(self.tempQuestionStorage!) 
+                        self.viewmodel.selectedQuestions.accept(self.tempQuestionStorage!)
                         self.tempQuestionStorage = nil
                         Initial.initialIndexPath = nil
                         MyCell.cellSnapshot!.removeFromSuperview()

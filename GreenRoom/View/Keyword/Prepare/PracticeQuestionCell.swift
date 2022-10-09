@@ -25,6 +25,14 @@ class PracticeQuestionCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         self.backgroundColor = .white
         configureUI()
+        
+        self.selectionStyle = .none
+        
+        let btn = UIButton()
+        btn.setImage(UIImage(named: "menu"), for: .normal)
+        btn.tintColor = .customGray
+        btn.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
+        self.accessoryView = btn
     }
     
     required init?(coder: NSCoder) {

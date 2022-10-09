@@ -12,19 +12,21 @@ import RxSwift
 class KeywordViewModel {
     let disposeBag = DisposeBag()
     
-    let selectedGroupID = BehaviorRelay<Int?>(value: nil)
+    let selectedGroupID = BehaviorRelay<Int?>(value: nil) // 선택한 그룹 ID
     
-    let groupInfo = BehaviorRelay<GroupQuestionModel?>(value: nil)
+    let groupInfo = BehaviorRelay<GroupQuestionModel?>(value: nil) // 선택한 그룹 정보 모델
     
-    let groupQuestions = BehaviorRelay<[GroupQuestion]>(value: [])
+    let groupQuestions = BehaviorRelay<[GroupQuestion]>(value: []) // 선택한 그룹의 질문리스트
     
-    let selectedQuestions = BehaviorRelay<[GroupQuestion]>(value: [])
+    let selectedQuestions = BehaviorRelay<[GroupQuestion]>(value: []) // 선택한 질문들
     
-    let selectedQuestionObservable = BehaviorRelay<[String]>.init(value: []) // 선택된 연습 질문
+    let selectedQuestionObservable = BehaviorRelay<[String]>.init(value: []) // 선택된 연습 질문 (임시, 제거 예정)
 
-    var selectedQ = BehaviorSubject<[KPDetailModel]>.init(value:[
+    var selectedQ = BehaviorSubject<[KPDetailModel]>.init(value:[ // 임시 ( 제거 예정 )
         KPDetailModel.init(items: [])
     ])
+    
+    let groupEditMode = BehaviorRelay<Bool>(value: false) // 그룹 편집 모드 여부
     
     var keywordOnOff = true
     var recordingType: RecordingType = .camera

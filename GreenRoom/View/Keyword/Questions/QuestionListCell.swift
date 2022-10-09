@@ -9,6 +9,12 @@ import UIKit
 
 class QuestionListCell: UITableViewCell {
     var isEditMode = false
+    var isFindMode = false {
+        didSet{
+            chevronButton.setImage(UIImage(named: "box"), for: .normal)
+            chevronButton.tintColor = .customGray
+        }
+    }
     
     //MARK: - Properties
     override var isSelected: Bool {

@@ -9,7 +9,8 @@ import UIKit
 
 final class KPGroupsViewController: BaseViewController {
     //MARK: - Properties
-    private let viewModel: BaseQuestionsViewModel
+    private var baseQuestionViewModel: BaseQuestionsViewModel?
+    private var keywordViewModel: KeywordViewModel?
     
     let groupView = GroupView(viewModel: GroupViewModel()).then {
         $0.backgroundColor = .white
@@ -17,7 +18,12 @@ final class KPGroupsViewController: BaseViewController {
     
     //MARK: - Init
     init(viewModel: BaseQuestionsViewModel) {
-        self.viewModel = viewModel
+        self.baseQuestionViewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    init(viewModel: KeywordViewModel) {
+        self.keywordViewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -40,15 +46,36 @@ final class KPGroupsViewController: BaseViewController {
     
     //MARK: - Bind
     override func setupBinding() {
-        groupView.groupTableView.rx.modelSelected(GroupModel.self).asDriver()
-            .map { $0.id }
-            .drive(onNext: { [weak self] groupId in
-                guard let question = self?.viewModel.selectedQuestionObservable.value else { return }
-                KeywordPracticeService().addInterViewQuestion(groupId: groupId,
-                                                              questionId: question.id,
-                                                              questionTypeCode: question.questionTypeCode)
-                self?.navigationController?.popViewController(animated: true)
-            }).disposed(by: disposeBag)
+        if baseQuestionViewModel != nil {
+            groupView.groupTableView.rx.modelSelected(GroupModel.self).asDriver()
+                .drive(onNext: { [weak self] group in
+                    guard let question = self?.baseQuestionViewModel?.selectedQuestionObservable.value else { return }
+                    KeywordPracticeService().addInterViewQuestion(groupId: group.id,
+                                                                  questionId: question.id,
+                                                                  questionTypeCode: question.questionTypeCode)
+                    self?.showGuideAlert(title: "질문이 \(group.name)에 추가되었습니다.") { _ in
+                        self?.navigationController?.popViewController(animated: true)
+                    }
+                }).disposed(by: disposeBag)
+        }
+        
+        if keywordViewModel != nil {
+            groupView.groupTableView.rx.modelSelected(GroupModel.self).asDriver()
+                .drive(onNext: { [weak self] group in
+                    guard let questions = self?.keywordViewModel?.selectedQuestions.value else { return }
+                    let ids = questions.map { $0.id }
+                    KeywordPracticeService().moveGroup(groupId: group.id,
+                                                       questionIds: ids,
+                                                       completion: { _ in
+                        self?.showGuideAlert(title: "\(ids.count)개의 질문이 \(group.name)(으)로 이동되었습니다.") { _ in
+                            self?.keywordViewModel?.updateGroupQuestions()
+                            self?.keywordViewModel?.groupEditMode.accept(false)
+                            self?.navigationController?.popViewController(animated: true)
+                        }
+                    })
+                }).disposed(by: disposeBag)
+        }
+        
     }
     
     //MARK: - ConfigureUI

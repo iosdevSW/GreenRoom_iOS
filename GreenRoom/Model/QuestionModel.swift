@@ -29,3 +29,25 @@ struct GroupQuestion: Codable {
     let question: String
     let register: Bool
 }
+
+struct KPQuestion {
+    let id: Int
+    let categoryName: String
+    let question: String
+    let register: Bool
+    let keyword: String?
+    let sttAnswer: String?
+    let answer: String?
+    let persent: Int?
+}
+
+func parsingKPQuestion(_ groupQuestion: GroupQuestion) -> KPQuestion {
+    return KPQuestion(id: groupQuestion.id,
+                      categoryName: groupQuestion.categoryName,
+                      question: groupQuestion.question,
+                      register: groupQuestion.register,
+                      keyword: nil,
+                      sttAnswer: nil,
+                      answer: nil,
+                      persent: nil)
+}

@@ -77,8 +77,9 @@ final class GroupView: UIView {
     //MARK: - Selector
     @objc func didClickEditButton(_ sender: UIButton) {
         guard let group = viewModel.groupsObservable.value.filter({ $0.id == sender.tag}).first else { return }
-    
-        NotificationCenter.default.post(name: .editGroupObserver, object: nil, userInfo: ["groupEdit" : group ] )
+        NotificationCenter.default.post(name: .editGroupObserver, object: nil, userInfo: ["editGroup" : group,
+                                                                                          "groupVM" : self.viewModel
+                                                                                         ] )
     }
     
     //MARK: Bind

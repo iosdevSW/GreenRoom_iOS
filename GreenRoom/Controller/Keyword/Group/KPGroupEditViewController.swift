@@ -164,7 +164,10 @@ final class KPGroupEditViewController: BaseViewController {
         questionTextView.rx.text
             .bind(onNext: { text in
                 guard let text = text else { return }
-                self.questionTextView.text = String(text.prefix(10))
+                if text != self.placeHolder {
+                    self.questionTextView.text = String(text.prefix(10))
+                }
+                
             }).disposed(by: disposeBag)
     }
     
