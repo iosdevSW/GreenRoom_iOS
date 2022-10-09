@@ -76,6 +76,7 @@ final class CustomTabbarController: UITabBarController {
     //그룹 편집,추가 화면 전환 액션함수
     @objc func didTapEditGroupButton(_ notification: NSNotification) {
         guard let group = notification.userInfo?["editGroup"] as? GroupModel else { return }
+        guard let groupVM = notification.userInfo?["groupVM"] as? GroupViewModel else { return }
         
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         let editAction = UIAlertAction(title: "그룹 정보 변경", style: .default) { _ in
@@ -87,7 +88,10 @@ final class CustomTabbarController: UITabBarController {
             self.present(vc, animated: true)
         }
         let removeAction = UIAlertAction(title: "그룹 삭제", style: .destructive) { _ in
-            print("삭제")
+            KeywordPracticeService().deleteGroup(groupId: group.id){ _ in
+                _ = self.showAlert(title: "\(group.name)이 삭제되었습니다.")
+                groupVM.updateGroupList()
+            }
         }
         let cancelAction = UIAlertAction(title: "취소", style: .cancel)
         alert.addAction(editAction)

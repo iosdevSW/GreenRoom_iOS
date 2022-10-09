@@ -141,12 +141,29 @@ class KeywordPracticeService {
 
         let request = AF.request(url, method: .put, parameters: param, encoding: JSONEncoding.default, interceptor: AuthManager()).validate(statusCode: 200..<300)
         
-        request.responseString(){ response in
+        request.response { response in
             switch response.result {
             case .success(_):
                 completion(true)
             case .failure(let error):
                 completion(false)
+                print(error.localizedDescription)
+            }
+        }
+    }
+    
+    ///그룹 삭제
+    func deleteGroup(groupId: Int, completion: @escaping(Bool) -> Void) {
+        let urlString = Constants.baseURL + "/api/groups" + "/\(groupId)"
+        let url = URL(string: urlString)!
+
+        let request = AF.request(url, method: .delete, interceptor: AuthManager()).validate(statusCode: 200..<300)
+        
+        request.response { response in
+            switch response.result {
+            case .success(_):
+                completion(true)
+            case .failure(let error):
                 print(error.localizedDescription)
             }
         }
