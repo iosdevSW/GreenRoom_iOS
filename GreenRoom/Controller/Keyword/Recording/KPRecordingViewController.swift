@@ -83,11 +83,11 @@ class KPRecordingViewController: BaseViewController{
     }
     
     override func setupBinding() {
-        viewmodel.selectedQuestionObservable
+        viewmodel.selectedQuestions
             .take(1)
             .subscribe(onNext: { questions in
-                self.darkView.questionLabel.text = "Q1\n\n\(questions[0])"
-                self.questionLabel.text = "Q1\n\n\(questions[0])"
+                self.darkView.questionLabel.text = "Q1\n\n\(questions[0].question)"
+                self.questionLabel.text = "Q1\n\n\(questions[0].question)"
             }).disposed(by: disposeBag)
     }
     
@@ -148,7 +148,7 @@ class KPRecordingViewController: BaseViewController{
 //            }
 //        }
         
-        if urls.count >= viewmodel.selectedQuestionObservable.value.count {
+        if urls.count >= viewmodel.selectedQuestions.value.count {
             if viewmodel.keywordOnOff{
                 viewmodel.videoURLs = urls
                 self.navigationController?.pushViewController(KPFinishViewController(viewmodel: viewmodel), animated: true)
@@ -157,11 +157,11 @@ class KPRecordingViewController: BaseViewController{
                 self.navigationController?.pushViewController(KPDetailViewController(viewmodel: viewmodel), animated: true)
             }
         } else {
-            viewmodel.selectedQuestionObservable
+            viewmodel.selectedQuestions
                 .take(1)
                 .subscribe(onNext: { questions in
-                    self.darkView.questionLabel.text = "Q1\n\n\(questions[self.urls.count])"
-                    self.questionLabel.text = "Q1\n\n\(questions[self.urls.count])"
+                    self.darkView.questionLabel.text = "Q1\n\n\(questions[self.urls.count].question)"
+                    self.questionLabel.text = "Q1\n\n\(questions[self.urls.count].question)"
                 }).disposed(by: disposeBag)
         }
     }
