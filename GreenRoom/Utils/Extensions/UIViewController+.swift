@@ -49,4 +49,12 @@ extension UIViewController {
             }
         }
     }
+    
+    func showGuideAlert(title : String, message: String? = nil){
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alertController.overrideUserInterfaceStyle = .light
+        alertController.addAction(UIAlertAction(title: "확인", style: .default))
+        
+        self.present(alertController, animated: true, completion: nil)
+    }
 }

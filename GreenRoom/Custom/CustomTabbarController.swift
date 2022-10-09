@@ -89,7 +89,7 @@ final class CustomTabbarController: UITabBarController {
         }
         let removeAction = UIAlertAction(title: "그룹 삭제", style: .destructive) { _ in
             KeywordPracticeService().deleteGroup(groupId: group.id){ _ in
-                _ = self.showAlert(title: "\(group.name)이 삭제되었습니다.")
+                self.showGuideAlert(title: "\(group.name)이 삭제되었습니다.")
                 groupVM.updateGroupList()
             }
         }
@@ -98,6 +98,7 @@ final class CustomTabbarController: UITabBarController {
         alert.addAction(removeAction)
         alert.addAction(cancelAction)
         alert.overrideUserInterfaceStyle = .light
+        
         present(alert, animated: true)
     }
     
