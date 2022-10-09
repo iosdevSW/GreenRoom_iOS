@@ -36,7 +36,7 @@ extension UIViewController {
         
         return Observable.create { [weak self] observer in
             let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-            
+            alertController.overrideUserInterfaceStyle = .light
             alertController.addAction(UIAlertAction(title: "확인", style: .default) { _ in
                 observer.onNext(true)
             })
@@ -50,11 +50,11 @@ extension UIViewController {
         }
     }
     
-    func showGuideAlert(title : String, message: String? = nil){
+    func showGuideAlert(title : String, message: String? = nil, handler: ((UIAlertAction) -> Void)? = nil){
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alertController.overrideUserInterfaceStyle = .light
-        alertController.addAction(UIAlertAction(title: "확인", style: .default))
+        alertController.addAction(UIAlertAction(title: "확인", style: .default, handler: handler))
         
-        self.present(alertController, animated: true, completion: nil)
+        self.present(alertController, animated: true)
     }
 }
