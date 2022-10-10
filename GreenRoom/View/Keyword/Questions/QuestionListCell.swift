@@ -6,9 +6,23 @@
 //
 
 import UIKit
+import RxSwift
 
 class QuestionListCell: UITableViewCell {
-    var isEditMode = false
+    let disposeBag = DisposeBag()
+    
+    var isEditMode = false {
+        didSet {
+            if self.isEditMode {
+                self.chevronButton.isHidden = true
+                self.checkBox.isHidden = false
+            } else {
+                self.chevronButton.isHidden = false
+                self.checkBox.isHidden = true
+            }
+        }
+    }
+    
     var isFindMode = false {
         didSet{
             chevronButton.setImage(UIImage(named: "box"), for: .normal)
@@ -79,16 +93,25 @@ class QuestionListCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         configureUI()
+        bind()
         
         self.backgroundColor = .white
         self.selectionStyle = .none
-        
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    //MARK: - Bind
+    func bind() {
+        chevronButton.rx.tap
+            .bind(onNext: {
+                NotificationCenter.default.post(name: .editQuestionObserver, object: nil, userInfo: ["id" : self.tag])
+            }).disposed(by: disposeBag)
+    }
+    
+    //MARK: - ConfigureUI
     func configureUI(){
         self.contentView.addSubview(mainLabel)
         self.mainLabel.snp.makeConstraints{ make in

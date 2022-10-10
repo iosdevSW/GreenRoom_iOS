@@ -128,7 +128,7 @@ final class KPQuestionsViewController: BaseViewController {
         guard let groupId = self.viewmodel.selectedGroupID.value else { return }
         let questionIds = self.viewmodel.selectedQuestions.value.map { $0.id }
         
-        KeywordPracticeService().deleteGroupQuestions(groupId: groupId, questionIds: questionIds, completion: { _ in
+        KPQuestionService().deleteGroupQuestions(groupId: groupId, questionIds: questionIds, completion: { _ in
             self.showGuideAlert(title: "질문이 삭제되었습니다."){ _ in
                 self.viewmodel.updateGroupQuestions()
                 self.viewmodel.groupEditMode.accept(false)
@@ -178,6 +178,7 @@ final class KPQuestionsViewController: BaseViewController {
                 }
                 cell.isEditMode = self.viewmodel.groupEditMode.value
                 cell.mainLabel.text = item.question
+                cell.tag = item.id
                 
                 let registerText = item.register == true ? "등록" : "미등록"
                 let registerTextColor = item.register == true ? UIColor.point : UIColor.customDarkGray
@@ -185,13 +186,7 @@ final class KPQuestionsViewController: BaseViewController {
                 cell.questionTypeLabel.textColor = registerTextColor
                 cell.categoryLabel.text = item.categoryName
                 
-                if self.viewmodel.groupEditMode.value {
-                    cell.chevronButton.isHidden = true
-                    cell.checkBox.isHidden = false
-                } else {
-                    cell.chevronButton.isHidden = false
-                    cell.checkBox.isHidden = true
-                }
+               
             }.disposed(by: disposeBag)
         
         questionListTableView.rx.itemSelected

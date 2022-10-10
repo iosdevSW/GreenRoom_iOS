@@ -108,6 +108,13 @@ final class CustomTabbarController: UITabBarController {
         present(vc, animated: true)
     }
     
+    @objc func didTapEditQuestionButton(_ notification: NSNotification) {
+        guard let id = notification.userInfo?["id"] as? Int else { return }
+        let vc = UINavigationController(rootViewController: KPQuestionEditViewController(viewModel: QuestionEditViewModel(id: id)))
+        vc.modalPresentationStyle = .fullScreen
+        present(vc, animated: true)
+    }
+    
     
     
     //MARK: - AddObserver
@@ -115,7 +122,8 @@ final class CustomTabbarController: UITabBarController {
         NotificationCenter.default.addObserver(self, selector: #selector(didTapUpdateCategories(_:)), name: .categoryObserver, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(showLoginViewController), name: .authenticationObserver, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(didTapEditGroupButton(_:)), name: .editGroupObserver, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(didTapAddGroupButton(_:)), name: .AddGroupObserver, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(didTapAddGroupButton(_:)), name: .addGroupObserver, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(didTapEditQuestionButton(_:)), name: .editQuestionObserver, object: nil)
     }
 }
 extension CustomTabbarController: UIPopoverPresentationControllerDelegate {

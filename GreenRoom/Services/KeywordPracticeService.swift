@@ -192,26 +192,5 @@ class KeywordPracticeService {
         }
     }
     
-    ///그룹질문 삭제
-    func deleteGroupQuestions(groupId: Int, questionIds: [Int], completion: @escaping(Bool) -> Void) {
-        let urlString = Constants.baseURL + "/api/groups/delete-questions"
-        let url = URL(string: urlString)!
-        
-        let param: Parameters = [
-            "groupId" : groupId,
-            "ids" : questionIds
-        ]
-        
-        let request = AF.request(url, method: .post, parameters: param, encoding: JSONEncoding.default, interceptor: AuthManager()).validate(statusCode: 200..<300)
-        
-        request.response { res in
-            switch res.result {
-            case .success(_):
-                print("성공")
-                completion(true)
-            case .failure(let error):
-                print(error.localizedDescription)
-            }
-        }
-    }
+ 
 }
