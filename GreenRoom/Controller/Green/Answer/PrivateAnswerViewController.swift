@@ -174,8 +174,9 @@ final class PrivateAnswerViewController: BaseViewController {
                 }
                 
             }).disposed(by: disposeBag)
-        
-        let input = PrivateAnswerViewModel.Input(text: answerTextView.rx.text.orEmpty.asObservable(), endEditingTrigger: self.answerTextView.rx.didEndEditing.asObservable(),
+
+        let input = PrivateAnswerViewModel.Input(text: answerTextView.rx.text.orEmpty.asObservable(),
+                                                 endEditingTrigger: self.answerTextView.rx.didEndEditing.asObservable(),
                                                  keywords: keywordView.output.registeredKeywords.asObservable(),
                                                  deleteButtonTrigger: deleteButton.rx.tap.flatMap { self.showAlert(title: "질문 삭제", message: "마이질문을 삭제하시겠습니까?\n한 번 삭제 후 되돌릴 수 없습니다.")},
                                                  doneButtonTrigger: self.doneButton.rx.tap.asObservable())
@@ -256,7 +257,7 @@ extension PrivateAnswerViewController {
         self.defaultLabel.isHidden = true
         self.answerPostButton.isHidden = true
         
-        self.answerTextView.attributedText = answer.addLineSpacing(foregroundColor: .lightGray)
+        self.answerTextView.attributedText = answer.addLineSpacing(foregroundColor: .black)
         configureTextViewLayout()
     }
     
@@ -273,7 +274,5 @@ extension PrivateAnswerViewController {
         self.answerPostButton.isHidden = true
         
         configureTextViewLayout()
-        
     }
-
 }

@@ -53,7 +53,7 @@ final class PrivateAnswerViewModel: ViewModelType {
         input.endEditingTrigger.withLatestFrom(input.text)
             .bind(to: textFieldContentObservable)
             .disposed(by: disposeBag)
-
+        
         input.doneButtonTrigger.withLatestFrom(Observable.zip(textFieldContentObservable.asObserver(), input.keywords.asObservable()))
             .flatMap { [weak self] answer, keywords -> Observable<Bool>  in
                 guard let self = self else {
@@ -65,13 +65,19 @@ final class PrivateAnswerViewModel: ViewModelType {
             .subscribe(onNext: { [weak self] isSuccess in
                 isSuccess ? self?.successMessage.accept("답변 작성이 완료되었습니다.") : self?.failMessage.accept("글자수는 500자를 초과할 수 없습니다.")
             }).disposed(by: disposeBag)
-
+        
+        input.deleteButtonTrigger.asObservable().flatMap { _ in
+            self.privateQuestionService.removeAnswer(id: self.id)
+        }.subscribe { [weak self] competable in
+            competable ? self?.successMessage.accept("나의 질문이 삭제되었습니다.") : self?.failMessage.accept("에러욤")
+        }.disposed(by: disposeBag)
+        
         let output = self.privateQuestionService.fetchPrivateQuestion(id: self.id)
-
+        
         return Output(answer: output.asObservable(),
                       keywords: output.map { $0.keywords },
                       successMessage: successMessage.asSignal(),
                       failMessage: failMessage.asSignal())
     }
-
+    
 }

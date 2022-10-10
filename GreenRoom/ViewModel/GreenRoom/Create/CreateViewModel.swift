@@ -37,7 +37,6 @@ final class CreateViewModel: ViewModelType {
         let successMessage: Signal<String>
     }
     
-    private let tempQuestion = PublishSubject<String>()
     private let textFieldContentObservable = BehaviorSubject<String>(value: "")
     private let addQuestionObservable = PublishSubject<String>()
     
