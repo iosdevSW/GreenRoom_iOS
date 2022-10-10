@@ -56,7 +56,6 @@ final class CreateGreenRoomViewController: BaseViewController {
     }
     
     override func setupAttributes() {
-        self.hideKeyboardWhenTapped()
         self.submitButton.alpha = 0.5
         configureCollectionView()
     }
@@ -90,6 +89,7 @@ final class CreateGreenRoomViewController: BaseViewController {
                                                             dateApplyTrigger: self.datePickerController.applyButton.rx.tap.asObservable(),
                                                             question: header.questionTextView.rx.text.orEmpty.asObservable(),
                                                             category: self.collectionView.rx.itemSelected.map { $0.row + 1}.asObservable(),
+                                                            returnTrigger: header.questionTextView.rx.didEndEditing.asObservable(),
                                                             submit: self.submitButton.rx.tap.asObservable())
             header.dateContainer.rx
                 .tapGesture()

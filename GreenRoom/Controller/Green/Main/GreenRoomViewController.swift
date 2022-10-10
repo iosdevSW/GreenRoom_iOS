@@ -65,8 +65,17 @@ class GreenRoomViewController: BaseViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.tabBarController?.tabBar.isHidden = false
+        
+        guard let tabbarcontroller = tabBarController as? CustomTabbarController else { return }
+        tabbarcontroller.createButton.isHidden = false
         configureNavigationBar()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        guard let tabbarcontroller = tabBarController as? CustomTabbarController else { return }
+        tabbarcontroller.createButton.isHidden = true
     }
     
     override func viewWillLayoutSubviews() {

@@ -21,6 +21,7 @@ final class CreatePublicQuestionViewModel: ViewModelType {
         let dateApplyTrigger: Observable<Void>
         let question: Observable<String>
         let category: Observable<Int>
+        let returnTrigger: Observable<Void>
         let submit: Observable<Void>
     }
     
@@ -36,6 +37,7 @@ final class CreatePublicQuestionViewModel: ViewModelType {
     private let successMessage = PublishRelay<String>()
     
     private let textFieldContentObservable = BehaviorSubject<String>(value: "")
+    private let addQuestionObservable = PublishSubject<String>()
     
     private let date = BehaviorRelay<Int>(value: 60 * 24)
     private let confirmDate = BehaviorRelay<Int>(value: 60 * 24)
@@ -49,6 +51,10 @@ final class CreatePublicQuestionViewModel: ViewModelType {
             return !text.isEmpty && text != "면접자 분들은 나에게 어떤 질문을 줄까요?" && category != -1 }
         
         input.question.bind(to: textFieldContentObservable).disposed(by: disposeBag)
+        
+        input.returnTrigger.withLatestFrom(textFieldContentObservable)
+            .bind(to: addQuestionObservable)
+            .disposed(by: disposeBag)
         
         input.dateApplyTrigger.withLatestFrom(input.date.asObservable())
             .map { $0.getMinutes() }
