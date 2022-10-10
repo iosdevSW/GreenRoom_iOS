@@ -185,18 +185,20 @@ final class PrivateQuestionService {
     }
     
     /** 내가 작성한 질문(id)에 대한 답변 수정*/
-    func uploadAnswer(id: Int, answer: String, keywords: [String]) -> Observable<Bool> {
+    func uploadAnswer(id: Int, answer: String?, keywords: [String]?) -> Observable<Bool> {
         
-        let paramaters: Parameters = [
-            "answer": answer,
-            "keywords": keywords
-        ]
+        var parameters: Parameters?
+       
+        if answer != nil || keywords != nil { parameters = Parameters() }
+        if let answer = answer { parameters?["answer"] = answer }
+        if let keywords = keywords { parameters?["keywords"] = keywords }
+        
         let reuqestURL = baseURL + "/answer/\(id)"
         
         return Observable.create { emitter in
 
             
-            AF.request(reuqestURL, method: .put, parameters: paramaters, encoding: JSONEncoding.default, interceptor: AuthManager())
+            AF.request(reuqestURL, method: .put, parameters: parameters, encoding: JSONEncoding.default, interceptor: AuthManager())
                 .validate(statusCode: 200..<300)
                 .response { response in
                     switch response.result {

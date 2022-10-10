@@ -20,6 +20,7 @@ struct GroupQuestionModel: Codable {
     let name: String // 그룹 이름
     let categoryName: String // 카테고리 이름
     let questionCnt: Int // 면접질문 개수
+    let totalPages: Int
     let groupQuestions: [GroupQuestion]
 }
 
@@ -28,6 +29,8 @@ struct GroupQuestion: Codable {
     let categoryName: String
     let question: String
     let register: Bool
+    let answer: String
+    let keywords: [String]
 }
 
 struct KPQuestion {
@@ -35,9 +38,9 @@ struct KPQuestion {
     let categoryName: String
     let question: String
     let register: Bool
-    let keyword: String?
+    let keyword: [String]
     let sttAnswer: String?
-    let answer: String?
+    let answer: String
     let persent: Int?
 }
 
@@ -46,8 +49,8 @@ func parsingKPQuestion(_ groupQuestion: GroupQuestion) -> KPQuestion {
                       categoryName: groupQuestion.categoryName,
                       question: groupQuestion.question,
                       register: groupQuestion.register,
-                      keyword: nil,
+                      keyword: groupQuestion.keywords,
                       sttAnswer: nil,
-                      answer: nil,
+                      answer: groupQuestion.answer,
                       persent: nil)
 }
