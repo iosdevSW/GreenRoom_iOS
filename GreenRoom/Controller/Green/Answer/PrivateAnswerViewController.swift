@@ -82,7 +82,8 @@ final class PrivateAnswerViewController: BaseViewController {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
         
-        self.keywordView = KeywordRegisterView(viewModel: RegisterKeywordViewModel(id: viewModel.id))
+        self.keywordView = KeywordRegisterView(viewModel: RegisterKeywordViewModel(id: viewModel.id,
+                                                                                   answerType: .private))
     }
     
     required init?(coder: NSCoder) {

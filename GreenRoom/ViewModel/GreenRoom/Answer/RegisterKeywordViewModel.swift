@@ -11,6 +11,9 @@ import RxCocoa
 
 final class RegisterKeywordViewModel: ViewModelType {
     
+    let publicService = PublicQuestionService()
+    let privateService = PrivateQuestionService()
+    
     var disposeBag = DisposeBag()
       
     struct Input {
@@ -27,14 +30,29 @@ final class RegisterKeywordViewModel: ViewModelType {
     private let registeredKeywordObservable = BehaviorRelay<[String]>(value: [])
     
     private let id: Int
+    private let answerType: AnswerType
     
-    init(id: Int, keywords: Observable<[String]> = .of([])){
+    init(id: Int, answerType: AnswerType){
         self.id = id
-        
-        keywords.bind(to: registeredKeywordObservable).disposed(by: disposeBag)
+        self.answerType = answerType
     }
     
     func transform(input: Input) -> Output {
+        
+        
+        switch answerType {
+        case .public:
+            break
+        case .private:
+            self.privateService.fetchPrivateQuestion(id: id)
+                .map { $0.keywords }
+                .bind(to: registeredKeywordObservable)
+                .disposed(by: disposeBag)
+        }
+        
+        registeredKeywordObservable.subscribe(onNext: {
+            print($0)
+        }).disposed(by: disposeBag)
         input.inputKeyword.bind(to: textFieldContentObservable).disposed(by: disposeBag)
         
         input.trigger.withLatestFrom(textFieldContentObservable)

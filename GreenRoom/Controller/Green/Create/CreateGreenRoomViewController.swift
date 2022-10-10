@@ -82,9 +82,6 @@ final class CreateGreenRoomViewController: BaseViewController {
             
             guard let header = self.collectionView.supplementaryView(forElementKind: UICollectionView.elementKindSectionHeader, at: IndexPath(row: 0, section: 0)) as? CreateGRHeaderView else { return }
             
-            header.questionTextView.rx.text.orEmpty.subscribe(onNext: {
-                print($0)
-            }).disposed(by: self.disposeBag)
             let input = CreatePublicQuestionViewModel.Input(date: self.datePickerController.datePicker.rx.date.asObservable(),
                                                             dateApplyTrigger: self.datePickerController.applyButton.rx.tap.asObservable(),
                                                             question: header.questionTextView.rx.text.orEmpty.asObservable(),
