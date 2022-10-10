@@ -176,6 +176,7 @@
 		E4EF361628C4BED700746050 /* RecentHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4EF361528C4BED600746050 /* RecentHeader.swift */; };
 		E4EF361828C4BF0400746050 /* RecentQuestionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4EF361728C4BF0400746050 /* RecentQuestionCell.swift */; };
 		E4EF361A28C4EA3E00746050 /* RecentPageFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4EF361928C4EA3E00746050 /* RecentPageFooterView.swift */; };
+		E4EF915028F424E000052796 /* AnswerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4EF914F28F424E000052796 /* AnswerType.swift */; };
 		E4F8888B28E5E36300840101 /* PopularPublicQuestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4F8888A28E5E36300840101 /* PopularPublicQuestion.swift */; };
 /* End PBXBuildFile section */
 
@@ -359,6 +360,7 @@
 		E4EF361928C4EA3E00746050 /* RecentPageFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentPageFooterView.swift; sourceTree = "<group>"; };
 		E4EF362228C5ADA300746050 /* FAQ.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FAQ.swift; sourceTree = "<group>"; };
 		E4EF362328C5ADA300746050 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		E4EF914F28F424E000052796 /* AnswerType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnswerType.swift; sourceTree = "<group>"; };
 		E4F8888A28E5E36300840101 /* PopularPublicQuestion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopularPublicQuestion.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -978,6 +980,7 @@
 				E46E4BFD28E0AE9200D1691F /* PrivateAnswerMode.swift */,
 				E4A2E9F928EACBCC00E7F5C0 /* PrivateAnswer.swift */,
 				E4A2E9F328EAB8D000E7F5C0 /* DetailPublicAnswer.swift */,
+				E4EF914F28F424E000052796 /* AnswerType.swift */,
 			);
 			path = Answer;
 			sourceTree = "<group>";
@@ -1279,6 +1282,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DB9D9F3B28E6771A0061D7DB /* GroupModel.swift in Sources */,
+				E4EF915028F424E000052796 /* AnswerType.swift in Sources */,
 				E4EF361A28C4EA3E00746050 /* RecentPageFooterView.swift in Sources */,
 				DB006B9528C39D3C00867013 /* CustomSwitch.swift in Sources */,
 				DB006B8828C2430400867013 /* GroupView.swift in Sources */,
