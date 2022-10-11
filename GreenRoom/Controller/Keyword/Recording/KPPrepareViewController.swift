@@ -12,7 +12,7 @@ import SwiftUI
 class KPPrepareViewController: BaseViewController{
     //MARK: - Properties
     let viewmodel: KeywordViewModel
-    var tempQuestionStorage: [GroupQuestion]?
+    var tempQuestionStorage: [KPQuestion]?
     
     var goalFrameView = UIView().then {
         $0.backgroundColor = .customGray.withAlphaComponent(0.1)

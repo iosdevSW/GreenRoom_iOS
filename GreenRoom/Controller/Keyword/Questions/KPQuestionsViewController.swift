@@ -195,9 +195,10 @@ final class KPQuestionsViewController: BaseViewController {
                 cell.isSelected = true
             }).disposed(by: disposeBag)
         
-        questionListTableView.rx.modelSelected(GroupQuestion.self)
+        questionListTableView.rx.modelSelected(KPQuestion.self)
             .bind(onNext: { question in
                 var questions = self.viewmodel.selectedQuestions.value
+                
                 questions.append(question)
                 self.viewmodel.selectedQuestions.accept(questions)
             }).disposed(by: disposeBag)
@@ -208,7 +209,7 @@ final class KPQuestionsViewController: BaseViewController {
                 cell.isSelected = false
             }).disposed(by: disposeBag)
         
-        questionListTableView.rx.modelDeselected(GroupQuestion.self)
+        questionListTableView.rx.modelDeselected(KPQuestion.self)
             .bind(onNext: { question in
                 let findId = question.id
                 var questions = self.viewmodel.selectedQuestions.value

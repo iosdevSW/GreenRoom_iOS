@@ -10,15 +10,15 @@ import RxDataSources
 struct KPDetailModel {
     var items: [Item]
     
-    init(items: [String]) {
+    init(items: [KPQuestion]) {
         self.items = items
     }
 }
 
 extension KPDetailModel: SectionModelType {
-    typealias Item = String
+    typealias Item = KPQuestion
     
-    init(original: KPDetailModel, items: [String]) {
+    init(original: KPDetailModel, items: [KPQuestion]) {
         self = original
         self.items = items
     }

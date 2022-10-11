@@ -48,7 +48,6 @@ class KPRecordingViewController: BaseViewController{
         $0.numberOfLines = 0
         $0.textAlignment = .center
         $0.font = .sfPro(size: 22, family: .Semibold)
-        $0.text = "천진난만   현실적   적극적    성실함    긍정적"
     }
     
     private let recordingButton = CustomRecordingButton(type: .system).then {
@@ -88,6 +87,8 @@ class KPRecordingViewController: BaseViewController{
             .subscribe(onNext: { questions in
                 self.darkView.questionLabel.text = "Q1\n\n\(questions[0].question)"
                 self.questionLabel.text = "Q1\n\n\(questions[0].question)"
+                self.keywordLabel.text = questions[0].keyword.joined(separator: "  ")
+                self.darkView.keywordLabel.text  = questions[0].keyword.joined(separator: "  ")
             }).disposed(by: disposeBag)
     }
     
@@ -160,9 +161,12 @@ class KPRecordingViewController: BaseViewController{
             viewmodel.selectedQuestions
                 .take(1)
                 .subscribe(onNext: { questions in
-                    self.darkView.questionLabel.text = "Q1\n\n\(questions[self.urls.count].question)"
-                    self.questionLabel.text = "Q1\n\n\(questions[self.urls.count].question)"
+                    self.darkView.questionLabel.text = "Q\(self.urls.count+1)\n\n\(questions[self.urls.count].question)"
+                    self.questionLabel.text = "Q\(self.urls.count+1)\n\n\(questions[self.urls.count].question)"
+                    self.keywordLabel.text = questions[self.urls.count].keyword.joined(separator: "  ")
+                    self.darkView.keywordLabel.text  = questions[self.urls.count].keyword.joined(separator: "  ")
                 }).disposed(by: disposeBag)
+            
         }
     }
     

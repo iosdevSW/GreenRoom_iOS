@@ -39,8 +39,8 @@ struct KPQuestion {
     let question: String
     let register: Bool
     let keyword: [String]
-    let sttAnswer: String?
     let answer: String
+    let sttAnswer: String?
     let persent: Int?
 }
 
@@ -50,7 +50,7 @@ func parsingKPQuestion(_ groupQuestion: GroupQuestion) -> KPQuestion {
                       question: groupQuestion.question,
                       register: groupQuestion.register,
                       keyword: groupQuestion.keywords,
-                      sttAnswer: nil,
                       answer: groupQuestion.answer,
+                      sttAnswer: nil,
                       persent: nil)
 }

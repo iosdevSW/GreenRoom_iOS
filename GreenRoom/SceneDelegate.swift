@@ -39,9 +39,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
               .receiveAccessToken(url)
         }
     }
-
-    
-    
 }
 
 extension SceneDelegate {
@@ -60,13 +57,11 @@ extension SceneDelegate {
                                                                 image: UIImage(named: "keyword"),
                                                                 tag: 2)
       
-        
         let mypageController = self.createNavigationController(viewController:
                                                                 MyPageViewController(viewModel: MyPageViewModel()),
                                                                title: "마이페이지",
                                                                image: UIImage(named: "mypage"),
                                                                tag: 3)
-
         mainTabbarController.tabBar.tintColor = .darken
         mainTabbarController.tabBar.unselectedItemTintColor = .customGray
         mainTabbarController.viewControllers = [keywordController,greenRoomController,mypageController]

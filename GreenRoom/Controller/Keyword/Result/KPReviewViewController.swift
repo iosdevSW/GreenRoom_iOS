@@ -57,7 +57,7 @@ class KPReviewViewController: BaseViewController, UICollectionViewDelegate {
     }
     
     override func setupBinding() {
-        viewModel.selectedQ
+        viewModel.selectedQuestionDetailModel
             .bind(to: collectionView.rx.items(dataSource: configureDataSource()))
             .disposed(by: disposeBag)
     }
@@ -71,17 +71,17 @@ extension KPReviewViewController {
             //키워드 on일 경우
             if self.viewModel.keywordOnOff {
                 cell.keywordPersent.text = "75%"
-//                cell.keywordLabel.text = "천진난만 현실적 적극적 테스트적 끄적끄적"
+                
+//                cell.keywordLabel.text = item.keyword.joined(separator: "  ")
             }
-            let title = self.viewModel.selectedQuestionObservable.value[indexPath.row]
-            cell.questionLabel.text = "Q\(indexPath.row+1)\n\(title)"
-            cell.categoryLabel.text = "공통"
+            
+            cell.questionLabel.text = "Q\(indexPath.row+1)\n\(item.question)"
+            cell.categoryLabel.text = item.categoryName
     
             if let url = self.viewModel.videoURLs?[indexPath.row] {
                 cell.recordingType = self.viewModel.recordingType
                 cell.url = url
             }
-
         
             return cell
         }
@@ -93,10 +93,10 @@ extension KPReviewViewController {
     private func generateLayout() -> UICollectionViewLayout {
         let layout = UICollectionViewCompositionalLayout{(sectionIndex: Int,
                                                          layoutEnvironment: NSCollectionLayoutEnvironment)-> NSCollectionLayoutSection? in
-            let item = NSCollectionLayoutItem(layoutSize: .init(widthDimension: .absolute(self.view.frame.width),
-                                                                heightDimension: .absolute(self.view.frame.height)))
+            let item = NSCollectionLayoutItem(layoutSize: .init(widthDimension: .fractionalWidth(1.0),
+                                                                heightDimension: .estimated(self.view.frame.height)))
             
-            let groupSize = NSCollectionLayoutSize.init(widthDimension: .absolute(self.view.frame.width), heightDimension: .absolute(self.view.frame.height))
+            let groupSize = NSCollectionLayoutSize.init(widthDimension: .absolute(self.view.frame.width), heightDimension: .estimated(1))
             
             let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
             

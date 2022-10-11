@@ -38,7 +38,7 @@ class DetailCell: UICollectionViewCell {
         $0.removeGesture()
     }
     
-    let categoryLabel = UILabel().then {
+    let categoryLabel = PaddingLabel(padding: .init(top: 0, left: 6, bottom: 0, right: 6)).then {
         $0.backgroundColor = .customGray
         $0.textColor = .darkGray
         $0.font = .sfPro(size: 12, family: .Semibold)
@@ -77,6 +77,7 @@ class DetailCell: UICollectionViewCell {
         $0.font = .sfPro(size: 16, family: .Semibold)
         $0.textColor = .customGray
         $0.numberOfLines = 0
+        $0.textAlignment = .center
         $0.backgroundColor = .white
     }
     
@@ -123,7 +124,6 @@ class DetailCell: UICollectionViewCell {
         self.categoryLabel.snp.makeConstraints{ make in
             make.leading.equalToSuperview().offset(44)
             make.top.equalTo(questionLabel.snp.bottom).offset(8)
-            make.width.equalTo(40)
             make.height.equalTo(20)
         }
         
