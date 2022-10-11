@@ -78,7 +78,7 @@ class KPRecordingViewController: BaseViewController{
         self.keywordLabel.isHidden = true
         self.questionLabel.isHidden = true
         self.recordingButton.isHidden = true
-        self.darkView.keywordLabel.isHidden = self.viewmodel.keywordOnOff == true ? false : true
+        self.darkView.keywordLabel.isHidden = self.viewmodel.keywordOnOff.value == true ? false : true
     }
     
     override func setupBinding() {
@@ -110,13 +110,14 @@ class KPRecordingViewController: BaseViewController{
             self.recordingButton.isHidden = true
         } else {
             self.darkView.isHidden = true
-            self.keywordLabel.isHidden = self.viewmodel.keywordOnOff == true ? false : true
+            self.keywordLabel.isHidden = self.viewmodel.keywordOnOff.value == true ? false : true
             self.questionLabel.isHidden = false
             self.recordingButton.isHidden = false
             startRecording() //녹화 녹음시작
         }
     }
     
+    // 오디오 녹화시
     func audioRecording() {
         if let recorder: AVAudioRecorder = self.audioRecorder {
             if recorder.isRecording { // 현재 녹음 중이므로, 녹음 정지
@@ -128,7 +129,7 @@ class KPRecordingViewController: BaseViewController{
             } else { // 녹음 시작
                 recorder.record()
                 self.darkView.isHidden = true
-                self.keywordLabel.isHidden = self.viewmodel.keywordOnOff == true ? false : true
+                self.keywordLabel.isHidden = self.viewmodel.keywordOnOff.value == true ? false : true
                 self.questionLabel.isHidden = false
                 self.recordingButton.isHidden = false
             }
@@ -140,17 +141,28 @@ class KPRecordingViewController: BaseViewController{
         // 길게 녹화할경우 음성이 녹음 안되는 현상이 있음 (이유 찾아 고쳐야함) 2번의 오류도 1번이 해결되면 해결될 가능성 있음
         // 녹화일 경우 mp4 -> m4a로 변환이 필요함 ( 영상이 십몇초를 넘을경우 변환이 안되는 오류 )
         
-//        self.recognizerRequest = SFSpeechURLRecognitionRequest(url: url)
-//        self.speechRecognizer?.recognitionTask(with: recognizerRequest!) { (result,error) in
-//            guard let result = result else { return }
-//            // 번역본
-//            if result.isFinal {
-//                print("Speech in the file is \(result.bestTranscription.formattedString)")
-//            }
-//        }
+        self.recognizerRequest = SFSpeechURLRecognitionRequest(url: url)
+        self.speechRecognizer?.recognitionTask(with: recognizerRequest!) { (result,error) in
+            guard let result = result else { return }
+            // 번역본
+            if result.isFinal {
+                let stt = result.bestTranscription.formattedString
+                let persent = self.returnPersent(stt)
+                
+                self.viewmodel.selectedQuestions
+                    .take(1)
+                    .bind(onNext: { questions in
+                        var ques = questions
+                        ques[self.urls.count-1].sttAnswer = stt
+                        ques[self.urls.count-1].persent = persent
+                        self.viewmodel.selectedQuestions.accept(ques)
+                    }).disposed(by: self.disposeBag)
+                
+            }
+        }
         
         if urls.count >= viewmodel.selectedQuestions.value.count {
-            if viewmodel.keywordOnOff{
+            if viewmodel.keywordOnOff.value{
                 viewmodel.videoURLs = urls
                 self.navigationController?.pushViewController(KPFinishViewController(viewmodel: viewmodel), animated: true)
             }else {
@@ -168,6 +180,19 @@ class KPRecordingViewController: BaseViewController{
                 }).disposed(by: disposeBag)
             
         }
+    }
+    
+    private func returnPersent(_ stt: String)->CGFloat {
+        var count = 0
+        
+        let keywords = self.viewmodel.selectedQuestions.value[self.urls.count-1].keyword
+        for keyword in keywords {
+            if stt.contains(keyword) {
+                count += 1
+            }
+        }
+        
+        return CGFloat(count)/CGFloat(keywords.count)
     }
     
     //MARK: - ConfigureUI

@@ -69,8 +69,9 @@ extension KPReviewViewController {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ReviewCell", for: indexPath) as! ReviewCell
 //            cell.keywordIsOn = self.viewmodel.keywordOnOff
             //키워드 on일 경우
-            if self.viewModel.keywordOnOff {
-                cell.keywordPersent.text = "75%"
+            if self.viewModel.keywordOnOff.value {
+                let persent = item.persent ?? 0
+                cell.keywordPersent.text = String(format: "%2.f%%", persent * 100)
                 
 //                cell.keywordLabel.text = item.keyword.joined(separator: "  ")
             }

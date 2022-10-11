@@ -5,7 +5,7 @@
 //  Created by SangWoo's MacBook on 2022/09/20.
 //
 
-import Foundation
+import UIKit
 
 struct ReferenceQuestionModel: Codable {
     let categoryName: String
@@ -40,8 +40,13 @@ struct KPQuestion {
     let register: Bool
     let keyword: [String]
     let answer: String
-    let sttAnswer: String?
-    let persent: Int?
+    var sttAnswer: String?
+    var persent: CGFloat?
+}
+
+struct STTResult {
+    let sttAnswer: String
+    let persent: CGFloat
 }
 
 func parsingKPQuestion(_ groupQuestion: GroupQuestion) -> KPQuestion {

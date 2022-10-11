@@ -24,10 +24,14 @@ class KeywordViewModel {
     
     let selectedQuestionDetailModel = BehaviorSubject<[KPDetailModel]>.init(value:[ KPDetailModel.init(items: []) ])
     
+    var keywordOnOff = BehaviorRelay<Bool>(value: true)
     
-    var keywordOnOff = true
     var recordingType: RecordingType = .camera
-    var goalPersent: CGFloat?
+    
+    var goalPersent = BehaviorRelay<CGFloat>(value: 0)
+    
+    var sttResult = BehaviorRelay<[STTResult]>(value: [])
+    
     var videoURLs: [URL]?
     
     init(){

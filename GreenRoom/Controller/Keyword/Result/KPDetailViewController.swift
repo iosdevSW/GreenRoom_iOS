@@ -12,6 +12,7 @@ import RxSwift
 class KPDetailViewController: BaseViewController {
     //MARK: - Properties
     var collectionView: UICollectionView!
+    var indexPath: IndexPath?
     let viewmodel: KeywordViewModel
     
     //MARK: - Init
@@ -33,6 +34,14 @@ class KPDetailViewController: BaseViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setNavigationBarColor(.customGray.withAlphaComponent(0.1))
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        guard let indexPath = indexPath else {
+            return
+        }
+        collectionView.scrollToItem(at: indexPath, at: .centeredVertically, animated: true)
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -80,26 +89,27 @@ extension KPDetailViewController {
     private func configureDataSource() -> RxCollectionViewSectionedReloadDataSource<KPDetailModel> {
         return RxCollectionViewSectionedReloadDataSource<KPDetailModel> { dataSource, collectionView, indexPath, item  in
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DetailCell", for: indexPath) as! DetailCell
-            cell.keywordIsOn = self.viewmodel.keywordOnOff
+            cell.keywordIsOn = self.viewmodel.keywordOnOff.value
             
             cell.goalProgressBarView.buttonImage = self.viewmodel.recordingType
             //키워드 on일 경우
-            if self.viewmodel.keywordOnOff {
+            if self.viewmodel.keywordOnOff.value {
                 cell.goalProgressBarView.titleLabel.text = "Q\(indexPath.row+1) 키워드 매칭률"
-                cell.keywordPersent.text = "75%"
+                let persent = item.persent ?? 0
+                cell.keywordPersent.text = String(format: "%2.f%%", persent * 100)
                 cell.keywordLabel.text = item.keyword.joined(separator: "  ")
                 
-                if let per = self.viewmodel.goalPersent {
-                    let progressWidth = UIScreen.main.bounds.width - 60
-                    let newX =  progressWidth * per
-                    cell.goalProgressBarView.goalView.center.x = newX
-                }
+                let per = self.viewmodel.goalPersent.value
+                let progressWidth = UIScreen.main.bounds.width - 60
+                let newX =  progressWidth * per
+                cell.goalProgressBarView.goalView.center.x = newX
+                
             }
             
             cell.questionLabel.text = "Q\(indexPath.row+1)\n\(item.question)"
             cell.categoryLabel.text = item.categoryName
             cell.sttAnswer.text = item.answer
-            cell.answerLabel.text = item.sttAnswer ?? "stt변환 실패"
+            cell.answerLabel.text = item.sttAnswer ?? "stt 변환 실패"
             return cell
         }
     }
