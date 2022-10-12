@@ -29,7 +29,7 @@ final class QuestionEditViewModel: ViewModelType {
     }
     
     struct Output {
-        let answer: Observable<GroupQuestion>
+        let answer: Observable<GroupQuestionInfo>
         let keywords: Observable<[String]>
         let successMessage: Signal<String>
         let failMessage: Signal<String>

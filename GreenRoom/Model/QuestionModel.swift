@@ -6,7 +6,7 @@
 //
 
 import UIKit
-
+// 기본질문/ 그린룸 조회 모델
 struct ReferenceQuestionModel: Codable {
     let categoryName: String
     let id: Int
@@ -15,6 +15,7 @@ struct ReferenceQuestionModel: Codable {
     let questionTypeCode: Int
 }
 
+//그룹 조회 모델
 struct GroupQuestionModel: Codable {
     let id: Int // 그룹 ID
     let name: String // 그룹 이름
@@ -24,6 +25,18 @@ struct GroupQuestionModel: Codable {
     let groupQuestions: [GroupQuestion]
 }
 
+//그룹 질문 1개 조회 모델
+struct GroupQuestionInfo: Codable {
+    let id: Int
+    let groupName: String
+    let groupCategoryName: String
+    let categoryName: String
+    let question: String
+    let answer: String?
+    let keywords: [String]
+}
+
+//그룹 내 질문 ( 면접 연습용 질문)
 struct GroupQuestion: Codable {
     let id: Int
     let categoryName: String
@@ -33,6 +46,7 @@ struct GroupQuestion: Codable {
     let keywords: [String]
 }
 
+//키워드 연습용
 struct KPQuestion {
     let id: Int
     let categoryName: String
@@ -42,11 +56,6 @@ struct KPQuestion {
     let answer: String
     var sttAnswer: String?
     var persent: CGFloat?
-}
-
-struct STTResult {
-    let sttAnswer: String
-    let persent: CGFloat
 }
 
 func parsingKPQuestion(_ groupQuestion: GroupQuestion) -> KPQuestion {

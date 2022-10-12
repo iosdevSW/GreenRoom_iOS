@@ -30,7 +30,7 @@ class KeywordViewModel {
     
     var goalPersent = BehaviorRelay<CGFloat>(value: 0)
     
-    var sttResult = BehaviorRelay<[STTResult]>(value: [])
+    var totalPersent = BehaviorRelay<CGFloat>(value: 0)
     
     var videoURLs: [URL]?
     

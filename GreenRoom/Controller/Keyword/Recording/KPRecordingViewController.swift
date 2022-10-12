@@ -156,17 +156,24 @@ class KPRecordingViewController: BaseViewController{
                         ques[self.urls.count-1].sttAnswer = stt
                         ques[self.urls.count-1].persent = persent
                         self.viewmodel.selectedQuestions.accept(ques)
+                        let totalPersent = self.viewmodel.selectedQuestions.value.map{ $0.persent ?? 0.0 }.reduce(CGFloat(0),+) / CGFloat(self.viewmodel.selectedQuestions.value.count)
+                        self.viewmodel.totalPersent.accept(totalPersent)
                     }).disposed(by: self.disposeBag)
-                
             }
         }
         
+        nextQuestion()
+    }
+    
+    private func nextQuestion() {
         if urls.count >= viewmodel.selectedQuestions.value.count {
+            viewmodel.videoURLs = urls
+            
+            
             if viewmodel.keywordOnOff.value{
-                viewmodel.videoURLs = urls
                 self.navigationController?.pushViewController(KPFinishViewController(viewmodel: viewmodel), animated: true)
             }else {
-                viewmodel.videoURLs = urls
+                
                 self.navigationController?.pushViewController(KPDetailViewController(viewmodel: viewmodel), animated: true)
             }
         } else {
@@ -178,7 +185,6 @@ class KPRecordingViewController: BaseViewController{
                     self.keywordLabel.text = questions[self.urls.count].keyword.joined(separator: "  ")
                     self.darkView.keywordLabel.text  = questions[self.urls.count].keyword.joined(separator: "  ")
                 }).disposed(by: disposeBag)
-            
         }
     }
     

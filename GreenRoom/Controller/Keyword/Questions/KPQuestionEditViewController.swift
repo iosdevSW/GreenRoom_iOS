@@ -154,7 +154,6 @@ final class KPQuestionEditViewController: BaseViewController {
     }
     
     override func setupBinding() {
-        
         answerTextView.rx.didBeginEditing
             .subscribe(onNext: { [weak self] _ in
                 guard let self = self else { return }
@@ -182,7 +181,6 @@ final class KPQuestionEditViewController: BaseViewController {
                                                  deleteButtonTrigger: deleteButton.rx.tap.flatMap { self.showAlert(title: "질문 삭제", message: "질문을 삭제하시겠습니까?\n한 번 삭제 후 되돌릴 수 없습니다.")},
                                                  doneButtonTrigger: self.doneButton.rx.tap.asObservable())
         
-        
         doneButton.rx.tap.subscribe(onNext: {
             self.answerTextView.resignFirstResponder()
         }).disposed(by: disposeBag)
@@ -198,11 +196,11 @@ final class KPQuestionEditViewController: BaseViewController {
             
             guard let self = self else { return }
             self.headerView.question = Question(id: answer.id, question: answer.question, categoryName: answer.categoryName, groupCategoryName: "")
-
-            if answer.answer == "" {
-                self.mode = .written(answer: answer.answer)
-            } else {
+            
+            if answer.answer == "" || answer.answer == nil {
                 self.mode = .unWritten
+            } else {
+                self.mode = .written(answer: answer.answer ?? "")
             }
 
         }).disposed(by: disposeBag)
@@ -225,7 +223,6 @@ final class KPQuestionEditViewController: BaseViewController {
     }
     
     private func configureTextViewLayout() {
-
         self.view.addSubview(keywordView)
         keywordView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
@@ -250,7 +247,6 @@ final class KPQuestionEditViewController: BaseViewController {
 
 //MARK: - SetMode
 extension KPQuestionEditViewController {
-    
     private func setWrittenMode(answer: String) {
         self.defaultView.isHidden = true
         self.defaultLabel.isHidden = true
@@ -264,7 +260,6 @@ extension KPQuestionEditViewController {
         self.defaultView.isHidden = false
         self.defaultLabel.isHidden = false
         self.answerPostButton.isHidden = false
-        
     }
     
     private func setEditMode() {

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import RxSwift
 import AVKit
 
 class KPFinishViewController: BaseViewController{
@@ -53,10 +54,11 @@ class KPFinishViewController: BaseViewController{
         super.viewDidAppear(animated)
         let per = self.viewmodel.goalPersent.value
         let newX =  self.goalProgressBarView.progressBar.frame.width * per
+        
         UIView.animate(withDuration: 0.5){
             self.goalProgressBarView.goalView.center.x = newX
+            
         }
-        
     }
     
     //MARK: - Selector
@@ -75,7 +77,6 @@ class KPFinishViewController: BaseViewController{
                 cell.keywordsLabel.text = item.keyword.joined(separator: "  ")
                 cell.categoryLabel.text = item.categoryName
                 
-                
             }.disposed(by: disposeBag)
         
         resultTableView.rx.itemSelected
@@ -83,6 +84,12 @@ class KPFinishViewController: BaseViewController{
                 let vc = KPDetailViewController(viewmodel: self.viewmodel)
                 vc.indexPath = indexPath
                 self.navigationController?.pushViewController(vc, animated: true)
+            }).disposed(by: disposeBag)
+        
+        viewmodel.totalPersent
+            .bind(onNext: { per in
+                print(per)
+                self.goalProgressBarView.progressBar.progress = per
             }).disposed(by: disposeBag)
     }
     

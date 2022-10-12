@@ -94,14 +94,16 @@ extension KPDetailViewController {
             cell.goalProgressBarView.buttonImage = self.viewmodel.recordingType
             //키워드 on일 경우
             if self.viewmodel.keywordOnOff.value {
+                
                 cell.goalProgressBarView.titleLabel.text = "Q\(indexPath.row+1) 키워드 매칭률"
                 let persent = item.persent ?? 0
+                cell.goalProgressBarView.progressBar.progress = persent
                 cell.keywordPersent.text = String(format: "%2.f%%", persent * 100)
                 cell.keywordLabel.text = item.keyword.joined(separator: "  ")
                 
-                let per = self.viewmodel.goalPersent.value
+                let goalPersent = self.viewmodel.goalPersent.value
                 let progressWidth = UIScreen.main.bounds.width - 60
-                let newX =  progressWidth * per
+                let newX =  progressWidth * goalPersent
                 cell.goalProgressBarView.goalView.center.x = newX
                 
             }

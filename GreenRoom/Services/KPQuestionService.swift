@@ -63,20 +63,21 @@ class KPQuestionService {
     }
     
     /// 특정그룹질문 키워드,답변 조회
-    func fetchGroupQuestion(id: Int) -> Observable<GroupQuestion> {
-        let urlString = Constants.baseURL + "api/interview-questions/\(id)"
+    func fetchGroupQuestion(id: Int) -> Observable<GroupQuestionInfo> {
+        let urlString = Constants.baseURL + "/api/interview-questions/\(id)"
         let url = URL(string: urlString)!
 
         return Observable.create { emitter in
-            AF.request(url, encoding: JSONEncoding.default, interceptor: AuthManager())
+            AF.request(url, method: .get, interceptor: AuthManager())
                 .validate(statusCode: 200..<300)
-                .responseDecodable(of: GroupQuestion.self) { response in
+                .responseDecodable(of: GroupQuestionInfo.self) { response in
                     switch response.result {
                     case .success(let question):
-                        print("suc")
+                        
                         emitter.onNext(question)
                     case .failure(let error):
-                        print(error.errorDescription)
+                        print(response.response?.statusCode)
+                        print(error.localizedDescription)
                         emitter.onError(error)
                     }
                 }
