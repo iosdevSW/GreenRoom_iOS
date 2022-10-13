@@ -185,13 +185,13 @@ final class PrivateQuestionService {
     }
     
     /** 내가 작성한 질문(id)에 대한 답변 수정*/
-    func uploadAnswer(id: Int, answer: String?, keywords: [String]?) -> Observable<Bool> {
+    func uploadAnswer(id: Int, answer: String, keywords: [String]) -> Observable<Bool> {
         
         var parameters: Parameters?
        
-        if answer != nil || keywords != nil { parameters = Parameters() }
-        if let answer = answer { parameters?["answer"] = answer }
-        if let keywords = keywords { parameters?["keywords"] = keywords }
+        if answer != "" || keywords != [] { parameters = Parameters() }
+        if answer != "" { parameters?["answer"] = answer }
+        if keywords != [] { parameters?["keywords"] = keywords }
         
         let reuqestURL = baseURL + "/answer/\(id)"
         

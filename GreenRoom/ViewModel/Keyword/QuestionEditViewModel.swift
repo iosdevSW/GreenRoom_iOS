@@ -56,7 +56,7 @@ final class QuestionEditViewModel: ViewModelType {
                 guard let self = self else {
                     return Observable.just(false)
                 }
-                print(answer,keywords)
+                
                 return KPQuestionService().uploadAnswer(id: self.id, answer: answer, keywords: keywords)
             }
             .subscribe(onNext: { [weak self] isSuccess in

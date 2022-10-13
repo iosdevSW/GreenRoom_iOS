@@ -11,20 +11,17 @@ import Alamofire
 
 class KPQuestionService {
     /// 그룹질문 답변, 키워드 수정/등록
-    func uploadAnswer(id: Int, answer: String?, keywords: [String]?) -> Observable<Bool> {
-        let urlString = Constants.baseURL + "api/interview-questions/answer/\(id)"
+    func uploadAnswer(id: Int, answer: String, keywords: [String]) -> Observable<Bool> {
+        let urlString = Constants.baseURL + "/api/interview-questions/answer/\(id)"
         let url = URL(string: urlString)!
         
         var param: Parameters?
-       
-        if answer != nil || keywords != nil { param = Parameters() }
-        if let answer = answer { param?["answer"] = answer }
-        if let keywords = keywords { param?["keywords"] = keywords }
         
-        
+        if answer != "" || keywords != [] { param = Parameters() }
+        if answer == "" { param?["answer"] = answer }
+        if keywords == [] { param?["keywords"] = keywords }
         
         return Observable.create { emitter in
-
             
             AF.request(url, method: .put, parameters: param, encoding: JSONEncoding.default, interceptor: AuthManager())
                 .validate(statusCode: 200..<300)
@@ -32,7 +29,8 @@ class KPQuestionService {
                     switch response.result {
                     case .success(_):
                         emitter.onNext(true)
-                    case .failure(_):
+                    case .failure(let error):
+                        print(error.localizedDescription)
                         emitter.onNext(false)
                     }
                 }
@@ -73,10 +71,8 @@ class KPQuestionService {
                 .responseDecodable(of: GroupQuestionInfo.self) { response in
                     switch response.result {
                     case .success(let question):
-                        
                         emitter.onNext(question)
                     case .failure(let error):
-                        print(response.response?.statusCode)
                         print(error.localizedDescription)
                         emitter.onError(error)
                     }
