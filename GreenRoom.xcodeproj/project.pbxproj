@@ -422,8 +422,8 @@
 			children = (
 				DBD082432897E75A0092241F /* KPFindQuestionViewController.swift */,
 				DB006B9228C342E200867013 /* KPQuestionsViewController.swift */,
-				DBA9451C28CE0E0400B6E16A /* KPGreenRoomQuestionsViewController.swift */,
 				DB9D9F4E28F436130061D7DB /* KPQuestionEditViewController.swift */,
+				DBA9451C28CE0E0400B6E16A /* KPGreenRoomQuestionsViewController.swift */,
 			);
 			path = Questions;
 			sourceTree = "<group>";

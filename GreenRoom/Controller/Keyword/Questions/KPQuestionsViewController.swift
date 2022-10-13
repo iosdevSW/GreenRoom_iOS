@@ -38,13 +38,18 @@ final class KPQuestionsViewController: BaseViewController {
     }
     
     private let keywordOnButton = UIButton(type: .system).then{
-        $0.setTitle("키워드 ON", for: .normal)
+        $0.setTitle("  키워드 ON", for: .normal)
+        $0.setImage(UIImage(named: "keywordON")?.withRenderingMode(.alwaysOriginal), for: .normal)
+        $0.setImage(UIImage(named: "keywordON")?.withTintColor(.mainColor, renderingMode: .alwaysOriginal), for: .disabled)
+        $0.semanticContentAttribute = .forceLeftToRight
         $0.tag = 0
         $0.setMainColorButtonConfigure()
     }
     
     private let keywordOffButton = UIButton(type: .system).then{
-        $0.setTitle("키워드 OFF", for: .normal)
+        $0.setTitle("  키워드 OFF", for: .normal)
+        $0.setImage(UIImage(named: "keywordOFF"), for: .normal)
+        $0.semanticContentAttribute = .forceLeftToRight
         $0.tag = 1
         $0.setMainColorButtonConfigure()
     }
@@ -243,6 +248,22 @@ final class KPQuestionsViewController: BaseViewController {
                 self.keywordOffButton.isHidden = true
             }).disposed(by: disposeBag)
         
+        viewmodel.selectedQuestions
+            .map{ $0.map { $0.register }}
+            .bind(onNext: { [weak self] regist in
+                if regist.contains(false) {
+                    self?.keywordOnButton.isEnabled = false
+                    self?.keywordOnButton.setTitleColor(.mainColor, for: .normal)
+                    self?.keywordOnButton.backgroundColor = .white
+                    
+                }else {
+                    self?.keywordOnButton.isEnabled = true
+                    self?.keywordOnButton.setTitleColor(.white, for: .normal)
+                    self?.keywordOnButton.backgroundColor = .mainColor
+                    self?.keywordOnButton.tintColor = .white
+                }
+            }).disposed(by: disposeBag)
+        
         self.allSelectButton.rx.tap
             .bind(onNext: { [weak self] in
                 guard let vm = self?.viewmodel else { return }
@@ -291,6 +312,8 @@ final class KPQuestionsViewController: BaseViewController {
                         }
                     }).disposed(by: self!.disposeBag)
             }).disposed(by: disposeBag)
+        
+        
     }
     
     //MARK: - ConfigureUI
