@@ -12,7 +12,7 @@ import SwiftUI
 class KPPrepareViewController: BaseViewController{
     //MARK: - Properties
     let viewmodel: KeywordViewModel
-    var tempQuestionStorage: [GroupQuestion]?
+    var tempQuestionStorage: [KPQuestion]?
     
     var goalFrameView = UIView().then {
         $0.backgroundColor = .customGray.withAlphaComponent(0.1)
@@ -112,7 +112,7 @@ class KPPrepareViewController: BaseViewController{
     //MARK: - Selector
     @objc func didClickRecordButton(_ sender: UIButton){
         let per = goalProgressBarView.progressBar.progress
-        viewmodel.goalPersent = per
+        viewmodel.goalPersent.accept(per)
         self.navigationController?.pushViewController(KPRecordingViewController(viewmodel: viewmodel), animated: true)
     }
     
@@ -147,7 +147,7 @@ class KPPrepareViewController: BaseViewController{
         }
         
         self.view.addSubview(self.questionsTableView)
-        if viewmodel.keywordOnOff { // on
+        if viewmodel.keywordOnOff.value { // on
             self.questionsTableView.snp.makeConstraints{ make in
                 make.leading.equalToSuperview().offset(24)
                 make.trailing.equalToSuperview().offset(-24)

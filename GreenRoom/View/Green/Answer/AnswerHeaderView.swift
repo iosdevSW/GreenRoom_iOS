@@ -17,7 +17,7 @@ final class QuestionHeaderView: UIView {
         didSet { configure() }
     }
     
-    private var categoryLabel = UILabel().then {
+    private var categoryLabel = PaddingLabel(padding: .init(top: 0, left: 8, bottom: 0, right: 8)).then {
         $0.textColor = .mainColor
         $0.text = "디자인"
         $0.backgroundColor = .white

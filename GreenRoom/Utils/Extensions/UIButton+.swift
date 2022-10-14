@@ -19,8 +19,9 @@ extension UIButton{
         self.titleLabel?.font = .sfPro(size: 16, family: .Semibold)
         self.backgroundColor = .mainColor
         self.isHidden = true
-        
+        self.tintColor = .white
         self.layer.borderColor = UIColor.mainColor.cgColor
+        self.layer.borderWidth = 1
         self.layer.cornerRadius = 8
         self.layer.shadowColor = UIColor.customGray.cgColor
         self.layer.shadowOpacity = 1

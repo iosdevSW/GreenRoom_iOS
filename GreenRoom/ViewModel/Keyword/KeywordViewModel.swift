@@ -16,32 +16,34 @@ class KeywordViewModel {
     
     let groupInfo = BehaviorRelay<GroupQuestionModel?>(value: nil) // 선택한 그룹 정보 모델
     
-    let groupQuestions = BehaviorRelay<[GroupQuestion]>(value: []) // 선택한 그룹의 질문리스트
+    let groupQuestions = BehaviorRelay<[KPQuestion]>(value: []) // 선택한 그룹의 질문리스트
     
-    let selectedQuestions = BehaviorRelay<[GroupQuestion]>(value: []) // 선택한 질문들
-    
-    let selectedQuestionObservable = BehaviorRelay<[String]>.init(value: []) // 선택된 연습 질문 (임시, 제거 예정)
-
-    var selectedQ = BehaviorSubject<[KPDetailModel]>.init(value:[ // 임시 ( 제거 예정 )
-        KPDetailModel.init(items: [])
-    ])
+    let selectedQuestions = BehaviorRelay<[KPQuestion]>(value: []) // 선택한 질문들
     
     let groupEditMode = BehaviorRelay<Bool>(value: false) // 그룹 편집 모드 여부
     
-    var keywordOnOff = true
+    let selectedQuestionDetailModel = BehaviorSubject<[KPDetailModel]>.init(value:[ KPDetailModel.init(items: []) ])
+    
+    var keywordOnOff = BehaviorRelay<Bool>(value: true)
+    
     var recordingType: RecordingType = .camera
-    var goalPersent: CGFloat?
+    
+    var goalPersent = BehaviorRelay<CGFloat>(value: 0)
+    
+    var totalPersent = BehaviorRelay<CGFloat>(value: 0)
+    
     var videoURLs: [URL]?
     
     init(){
-        selectedQuestionObservable.subscribe(onNext: { str in
-            self.selectedQ.onNext([KPDetailModel(items: str)])
+        selectedQuestions.subscribe(onNext: { items in
+            self.selectedQuestionDetailModel.onNext([KPDetailModel(items: items)])
         }).disposed(by: disposeBag)
         
         groupInfo
-            .map { $0?.groupQuestions}
+            .map { $0?.groupQuestions.map { parsingKPQuestion($0)}}
             .subscribe(onNext: { [weak self] questions in
                 if let questions = questions {
+                    
                     self?.groupQuestions.accept(questions)
                 } else {
                     self?.groupQuestions.accept([])

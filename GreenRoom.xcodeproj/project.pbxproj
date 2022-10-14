@@ -35,6 +35,9 @@
 		DB9D9F4928E702740061D7DB /* PrivateAnswerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9D9F4728E702740061D7DB /* PrivateAnswerViewModel.swift */; };
 		DB9D9F4A28E702740061D7DB /* RegisterKeywordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9D9F4828E702740061D7DB /* RegisterKeywordViewModel.swift */; };
 		DB9D9F4D28E948BA0061D7DB /* GroupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9D9F4C28E948BA0061D7DB /* GroupViewModel.swift */; };
+		DB9D9F4F28F436130061D7DB /* KPQuestionEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9D9F4E28F436130061D7DB /* KPQuestionEditViewController.swift */; };
+		DB9D9F5128F444890061D7DB /* QuestionEditViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9D9F5028F444890061D7DB /* QuestionEditViewModel.swift */; };
+		DB9D9F5328F4498A0061D7DB /* KPQuestionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9D9F5228F4498A0061D7DB /* KPQuestionService.swift */; };
 		DBA8ED6428B9D336007526CF /* RecentSearchKeyword+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA8ED6328B9D336007526CF /* RecentSearchKeyword+CoreDataClass.swift */; };
 		DBA8ED6628B9D347007526CF /* RecentSearchKeyword+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA8ED6528B9D347007526CF /* RecentSearchKeyword+CoreDataProperties.swift */; };
 		DBA8ED6A28B9D621007526CF /* PracticeQuestionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA8ED6928B9D621007526CF /* PracticeQuestionCell.swift */; };
@@ -212,6 +215,9 @@
 		DB9D9F4728E702740061D7DB /* PrivateAnswerViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrivateAnswerViewModel.swift; sourceTree = "<group>"; };
 		DB9D9F4828E702740061D7DB /* RegisterKeywordViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterKeywordViewModel.swift; sourceTree = "<group>"; };
 		DB9D9F4C28E948BA0061D7DB /* GroupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupViewModel.swift; sourceTree = "<group>"; };
+		DB9D9F4E28F436130061D7DB /* KPQuestionEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KPQuestionEditViewController.swift; sourceTree = "<group>"; };
+		DB9D9F5028F444890061D7DB /* QuestionEditViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionEditViewModel.swift; sourceTree = "<group>"; };
+		DB9D9F5228F4498A0061D7DB /* KPQuestionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KPQuestionService.swift; sourceTree = "<group>"; };
 		DBA8ED6328B9D336007526CF /* RecentSearchKeyword+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "RecentSearchKeyword+CoreDataClass.swift"; path = "GreenRoom/Model/RecentSearchKeyword+CoreDataClass.swift"; sourceTree = SOURCE_ROOT; };
 		DBA8ED6528B9D347007526CF /* RecentSearchKeyword+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "RecentSearchKeyword+CoreDataProperties.swift"; path = "GreenRoom/Model/RecentSearchKeyword+CoreDataProperties.swift"; sourceTree = SOURCE_ROOT; };
 		DBA8ED6928B9D621007526CF /* PracticeQuestionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PracticeQuestionCell.swift; sourceTree = "<group>"; };
@@ -416,6 +422,7 @@
 			children = (
 				DBD082432897E75A0092241F /* KPFindQuestionViewController.swift */,
 				DB006B9228C342E200867013 /* KPQuestionsViewController.swift */,
+				DB9D9F4E28F436130061D7DB /* KPQuestionEditViewController.swift */,
 				DBA9451C28CE0E0400B6E16A /* KPGreenRoomQuestionsViewController.swift */,
 			);
 			path = Questions;
@@ -480,6 +487,7 @@
 				DB9D9F4B28E948AC0061D7DB /* Group */,
 				DB9D9F4228E702390061D7DB /* BaseQuestionsViewModel.swift */,
 				DB9D9F4328E702390061D7DB /* KeywordViewModel.swift */,
+				DB9D9F5028F444890061D7DB /* QuestionEditViewModel.swift */,
 			);
 			path = Keyword;
 			sourceTree = "<group>";
@@ -746,6 +754,7 @@
 				E4EC67AC28E1CE8500469D17 /* GreenRoom */,
 				E47D1D2D28EA03EC004EE4DE /* MyPage */,
 				DBB251E928D98C7000310820 /* KeywordPracticeService.swift */,
+				DB9D9F5228F4498A0061D7DB /* KPQuestionService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -1319,8 +1328,10 @@
 				E46E4BE628DC219600D1691F /* AnswerHeaderView.swift in Sources */,
 				E4C4C4BE28BD1ACD008826AB /* CreatePopOverViewController.swift in Sources */,
 				E40BC6E628B8834100FB557D /* SearchResultHeaderView.swift in Sources */,
+				DB9D9F5328F4498A0061D7DB /* KPQuestionService.swift in Sources */,
 				E4843CFC28EAD06700329DC4 /* PublicAnswerSectionModel.swift in Sources */,
 				DBA8ED7428BDDCA1007526CF /* DetailCell.swift in Sources */,
+				DB9D9F4F28F436130061D7DB /* KPQuestionEditViewController.swift in Sources */,
 				DBB251EA28D98C7000310820 /* KeywordPracticeService.swift in Sources */,
 				E4460DD328CA01D400AFA108 /* FilteringQuestionViewController.swift in Sources */,
 				E4EF361628C4BED700746050 /* RecentHeader.swift in Sources */,
@@ -1408,6 +1419,7 @@
 				E461E42228CB1445001EBF74 /* SearchViewModel.swift in Sources */,
 				DB05246928B5FE50003209D4 /* KPPrepareViewController.swift in Sources */,
 				E4A1761428C64B47009D1DFE /* RecentPublicQuestionsViewController.swift in Sources */,
+				DB9D9F5128F444890061D7DB /* QuestionEditViewModel.swift in Sources */,
 				E49F7D8928BC7D7E000AB49B /* CreateQuestionViewController.swift in Sources */,
 				E40BC69D28B5F35A00FB557D /* SearchWordCell.swift in Sources */,
 				E4A1760F28C64883009D1DFE /* DetailRecentHeaderView.swift in Sources */,

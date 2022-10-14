@@ -13,7 +13,7 @@ final class RegisterKeywordViewModel: ViewModelType {
     
     let publicService = PublicQuestionService()
     let privateService = PrivateQuestionService()
-    
+    let kpQuestionService = KPQuestionService()
     var disposeBag = DisposeBag()
       
     struct Input {
@@ -45,6 +45,11 @@ final class RegisterKeywordViewModel: ViewModelType {
             break
         case .private:
             self.privateService.fetchPrivateQuestion(id: id)
+                .map { $0.keywords }
+                .bind(to: registeredKeywordObservable)
+                .disposed(by: disposeBag)
+        case .kpQuestion:
+            self.kpQuestionService.fetchGroupQuestion(id: id)
                 .map { $0.keywords }
                 .bind(to: registeredKeywordObservable)
                 .disposed(by: disposeBag)

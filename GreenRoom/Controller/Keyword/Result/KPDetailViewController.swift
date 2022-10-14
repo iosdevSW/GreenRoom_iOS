@@ -9,11 +9,11 @@ import UIKit
 import RxDataSources
 import RxSwift
 
-class KPDetailViewController: UIViewController {
+class KPDetailViewController: BaseViewController {
     //MARK: - Properties
     var collectionView: UICollectionView!
+    var indexPath: IndexPath?
     let viewmodel: KeywordViewModel
-    let disposeBag = DisposeBag()
     
     //MARK: - Init
     init(viewmodel: KeywordViewModel) {
@@ -29,13 +29,19 @@ class KPDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
-        configureUI()
-        bind()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setNavigationBarColor(.customGray.withAlphaComponent(0.1))
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        guard let indexPath = indexPath else {
+            return
+        }
+        collectionView.scrollToItem(at: indexPath, at: .centeredVertically, animated: true)
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -57,16 +63,17 @@ class KPDetailViewController: UIViewController {
     }
     
     //MARK: - Bind
-    func bind() {
-        self.viewmodel.selectedQ
+    override func setupBinding() {
+        self.viewmodel.selectedQuestionDetailModel
             .bind(to: self.collectionView.rx.items(dataSource: self.configureDataSource()))
             .disposed(by: self.disposeBag)
     }
     
     //MARK: - ConfigureUI
-    func configureUI() {
+    override func configureUI() {
         self.collectionView = UICollectionView(frame: .zero, collectionViewLayout: self.generateLayout()).then {
             $0.backgroundColor = .white
+            $0.bounces = false
             $0.automaticallyAdjustsScrollIndicatorInsets = false
             $0.register(DetailCell.self, forCellWithReuseIdentifier: "DetailCell")
             
@@ -82,28 +89,29 @@ extension KPDetailViewController {
     private func configureDataSource() -> RxCollectionViewSectionedReloadDataSource<KPDetailModel> {
         return RxCollectionViewSectionedReloadDataSource<KPDetailModel> { dataSource, collectionView, indexPath, item  in
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DetailCell", for: indexPath) as! DetailCell
-            cell.keywordIsOn = self.viewmodel.keywordOnOff
+            cell.keywordIsOn = self.viewmodel.keywordOnOff.value
             
             cell.goalProgressBarView.buttonImage = self.viewmodel.recordingType
             //키워드 on일 경우
-            if self.viewmodel.keywordOnOff {
-                cell.goalProgressBarView.titleLabel.text = "Q\(indexPath.row+1) 키워드 매칭률"
-                cell.keywordPersent.text = "75%"
-                cell.keywordLabel.text = "천진난만 현실적 적극적 테스트적 끄적끄적"
+            if self.viewmodel.keywordOnOff.value {
                 
-                if let per = self.viewmodel.goalPersent {
-                    let progressWidth = UIScreen.main.bounds.width - 60
-                    let newX =  progressWidth * per
-                    cell.goalProgressBarView.goalView.center.x = newX
-                }
+                cell.goalProgressBarView.titleLabel.text = "Q\(indexPath.row+1) 키워드 매칭률"
+                let persent = item.persent ?? 0
+                cell.goalProgressBarView.progressBar.progress = persent
+                cell.keywordPersent.text = String(format: "%2.f%%", persent * 100)
+                cell.keywordLabel.text = item.keyword.joined(separator: "  ")
+                
+                let goalPersent = self.viewmodel.goalPersent.value
+                let progressWidth = UIScreen.main.bounds.width - 60
+                let newX =  progressWidth * goalPersent
+                cell.goalProgressBarView.goalView.center.x = newX
+                
             }
             
-            let title = self.viewmodel.selectedQuestionObservable.value[indexPath.row]
-            cell.questionLabel.text = "Q\(indexPath.row+1)\n\(title)"
-            cell.categoryLabel.text = "공통"
-            cell.sttAnswer.text = "다각적인 소통법으로 구성원의 적극적 참여를 끌어낸 경험이 있습니다. OO 기업 상품기획팀 인턴 당시, 팀 공동 과제로 브랜드 기획을 맡았습니다. 천진난만한 성격으로 자연스레 리더를 도맡았고 자료를 공유하며 동기부여하기 위해 노력한 결과 장군감이다라는 수식어를 얻었습니다."
-            cell.answerLabel.text = "다각적인 소통법으로 구성원의 적극적 참여를 끌어낸 경험이 있습니다. OO 기업 상품기획팀 인턴 당시, 팀 공동 과제로 브랜드 기획을 맡았습니다. 천진난만한 성격으로 자연스레 리더를 도맡았고 자료를 공유하며 동기부여하기 위해 노력한 결과 현실적이다라는 수식어를 얻었습니다."
-            
+            cell.questionLabel.text = "Q\(indexPath.row+1)\n\(item.question)"
+            cell.categoryLabel.text = item.categoryName
+            cell.sttAnswer.text = item.answer
+            cell.answerLabel.text = item.sttAnswer ?? "stt 변환 실패"
             return cell
         }
     }
@@ -120,7 +128,7 @@ extension KPDetailViewController {
             
             let groupSize = NSCollectionLayoutSize(
                 widthDimension: .fractionalWidth(1.0),
-                heightDimension: .fractionalHeight(1.0)
+                heightDimension: .estimated(1.0)
                         
             )
             

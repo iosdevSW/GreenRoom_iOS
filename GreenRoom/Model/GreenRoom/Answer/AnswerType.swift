@@ -10,4 +10,5 @@ import Foundation
 enum AnswerType {
     case `public`
     case `private`
+    case `kpQuestion`
 }

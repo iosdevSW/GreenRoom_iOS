@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import RxSwift
 import AVKit
 
 class KPFinishViewController: BaseViewController{
@@ -51,11 +52,12 @@ class KPFinishViewController: BaseViewController{
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        if let per = self.viewmodel.goalPersent {
-            let newX =  self.goalProgressBarView.progressBar.frame.width * per
-            UIView.animate(withDuration: 0.5){
-                self.goalProgressBarView.goalView.center.x = newX
-            }
+        let per = self.viewmodel.goalPersent.value
+        let newX =  self.goalProgressBarView.progressBar.frame.width * per
+        
+        UIView.animate(withDuration: 0.5){
+            self.goalProgressBarView.goalView.center.x = newX
+            
         }
     }
     
@@ -68,17 +70,26 @@ class KPFinishViewController: BaseViewController{
     override func setupBinding() {
         viewmodel.selectedQuestions
             .bind(to: resultTableView.rx.items(cellIdentifier: "PracticeResultCell", cellType: PracticeResultCell.self)) { index, item, cell in
-                cell.questionLabel.text = "Q\(index+1)\n\(item.question)"
-                cell.keywordPersent.text = "75%"
-                cell.keywordsLabel.text = "아무거나 일단넣기"
-                cell.categoryLabel.text = item.categoryName
                 
+                let persent = item.persent ?? 0
+                cell.questionLabel.text = "Q\(index+1)\n\(item.question)"
+                cell.keywordPersent.text = String(format: "%2.f%%", persent * 100)
+                cell.keywordsLabel.text = item.keyword.joined(separator: "  ")
+                cell.categoryLabel.text = item.categoryName
                 
             }.disposed(by: disposeBag)
         
         resultTableView.rx.itemSelected
             .bind(onNext: { indexPath in
-                self.navigationController?.pushViewController(KPDetailViewController(viewmodel: self.viewmodel), animated: true)
+                let vc = KPDetailViewController(viewmodel: self.viewmodel)
+                vc.indexPath = indexPath
+                self.navigationController?.pushViewController(vc, animated: true)
+            }).disposed(by: disposeBag)
+        
+        viewmodel.totalPersent
+            .bind(onNext: { per in
+                print(per)
+                self.goalProgressBarView.progressBar.progress = per
             }).disposed(by: disposeBag)
     }
     

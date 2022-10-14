@@ -114,7 +114,7 @@ final class GroupView: UIView {
     
         self.addGroupButton.rx.tap
             .bind(onNext: {
-                NotificationCenter.default.post(name: .AddGroupObserver, object: nil)
+                NotificationCenter.default.post(name: .addGroupObserver, object: nil)
             }).disposed(by: disposeBag)
         
     }
