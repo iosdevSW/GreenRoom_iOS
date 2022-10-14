@@ -208,6 +208,7 @@ final class KPQuestionEditViewController: BaseViewController {
         output.successMessage.emit(onNext: { [weak self] message in
             guard let self = self else { return }
             let alert = self.comfirmAlert(title: "등록 완료", subtitle: message) { _ in
+                NotificationCenter.default.post(name: .updateGroupQuestionObserver, object: nil)
                 self.dismiss(animated: true)
             }
             self.present(alert, animated: true)

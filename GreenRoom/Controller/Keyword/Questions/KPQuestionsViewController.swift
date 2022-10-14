@@ -103,6 +103,8 @@ final class KPQuestionsViewController: BaseViewController {
         hideKeyboardWhenTapped()
         setNavigationItem()
         self.viewmodel.updateGroupQuestions()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(self.updateGroupQuestionList), name: .updateGroupQuestionObserver, object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -120,13 +122,6 @@ final class KPQuestionsViewController: BaseViewController {
                                          target: self,
                                          action: #selector(didClickEditButton(_:)))
         self.navigationItem.rightBarButtonItem = editButton
-    }
-    
-    private func setColorHilightAttribute(text: String, hilightString: String, color: UIColor) -> NSMutableAttributedString {
-        let attributedStr = NSMutableAttributedString(string: text)
-        attributedStr.addAttribute(.foregroundColor, value: color, range: (text as NSString).range(of: hilightString))
-        
-        return attributedStr
     }
     
     func deleteQuestion() {
@@ -156,6 +151,10 @@ final class KPQuestionsViewController: BaseViewController {
     
     @objc func didClickEditButton(_ sender: UIButton) {
         self.viewmodel.groupEditMode.accept(!self.viewmodel.groupEditMode.value) 
+    }
+    
+    @objc func updateGroupQuestionList() {
+        self.viewmodel.updateGroupQuestions()
     }
     
     //MARK: - Bind

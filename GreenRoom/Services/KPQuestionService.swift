@@ -18,8 +18,8 @@ class KPQuestionService {
         var param: Parameters?
         
         if answer != "" || keywords != [] { param = Parameters() }
-        if answer == "" { param?["answer"] = answer }
-        if keywords == [] { param?["keywords"] = keywords }
+        if answer != "" { param?["answer"] = answer }
+        if keywords != [] { param?["keywords"] = keywords }
         
         return Observable.create { emitter in
             

@@ -57,4 +57,12 @@ extension UIViewController {
         
         self.present(alertController, animated: true)
     }
+    
+    /// 강조( 레이블 색다르게하기 )
+    func setColorHilightAttribute(text: String, hilightString: String, color: UIColor) -> NSMutableAttributedString {
+        let attributedStr = NSMutableAttributedString(string: text)
+        attributedStr.addAttribute(.foregroundColor, value: color, range: (text as NSString).range(of: hilightString))
+        
+        return attributedStr
+    }
 }

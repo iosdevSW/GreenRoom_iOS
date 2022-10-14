@@ -88,11 +88,12 @@ class KPFinishViewController: BaseViewController{
         
         viewmodel.totalPersent
             .bind(onNext: { per in
-                print(per)
                 self.goalProgressBarView.progressBar.progress = per
+                let persent = self.viewmodel.goalPersent.value - per * 100
+                let hilight = String(format: "%2.f%%", persent > 0 ? persent : 0)
+                self.goalProgressBarView.guideLabel.attributedText = self.setColorHilightAttribute(text: "목표까지 \(hilight) 남았어요", hilightString: hilight, color: .point)
             }).disposed(by: disposeBag)
     }
-    
     
     //MARK: - CofigureUI
     override func configureUI() {
@@ -110,7 +111,6 @@ class KPFinishViewController: BaseViewController{
             make.top.equalTo(self.goalFrameView.safeAreaLayoutGuide.snp.top).offset(10)
             make.bottom.equalToSuperview().offset(-20)
         }
-        
         
         self.view.addSubview(resultTableView)
         resultTableView.snp.makeConstraints{ make in

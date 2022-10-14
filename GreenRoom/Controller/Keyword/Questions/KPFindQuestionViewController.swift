@@ -121,6 +121,7 @@ final class KPFindQuestionViewController: BaseViewController{
     override func setupBinding() {
         viewModel.baseQuestionsObservable
             .bind(to: questionListTableView.rx.items(cellIdentifier: "QuestionListCell", cellType: QuestionListCell.self)) { index, item, cell in
+                
                 cell.mainLabel.text = item.question
                 cell.categoryLabel.text = item.categoryName
                 cell.questionTypeLabel.text = item.questionType
