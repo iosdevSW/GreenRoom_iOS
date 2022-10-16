@@ -18,6 +18,9 @@ class GreenRoomViewController: BaseViewController {
     let viewModel: MainGreenRoomViewModel
     private var collectionView: UICollectionView!
     
+    private let nextButtonTrigger = PublishRelay<Void>()
+    private let prevButtonTrigger = PublishRelay<Void>()
+    
     private let greenRoomButton = UIButton().then {
         $0.setTitle("그린룸", for: .normal)
         $0.setTitleColor(.mainColor, for: .normal)
@@ -95,10 +98,13 @@ class GreenRoomViewController: BaseViewController {
 
         let dataSource = self.dataSource()
         
-        let input = MainGreenRoomViewModel.Input(greenroomTap: self.greenRoomButton.rx.tap.asObservable(),
-                                             myListTap: self.questionListButton.rx.tap.asObservable(),
-                                             trigger: self.rx.viewWillAppear.asObservable())
-        
+        let input = MainGreenRoomViewModel.Input(
+            viewWillAppear: self.rx.viewWillAppear.asObservable(),
+            mainStatus: Observable.merge(greenRoomButton.rx.tap.map { 0 }, questionListButton.rx.tap.map { 1 }),
+            nextButtonTrigger: self.nextButtonTrigger.asObservable(),
+            prevButtonTrigger: self.prevButtonTrigger.asObservable()
+        )
+
         let output = self.viewModel.transform(input: input)
         
         output.greenroom.bind(to: collectionView.rx.items(dataSource: dataSource)).disposed(by: disposeBag)
@@ -134,6 +140,8 @@ class GreenRoomViewController: BaseViewController {
             }
         }).disposed(by: disposeBag)
         
+                                  
+                                  
         Observable.merge(greenRoomButton.rx.tap.map { 0 }, questionListButton.rx.tap.map { 1 })
             .subscribe(onNext: { tag in
                 
@@ -245,7 +253,6 @@ extension GreenRoomViewController {
             switch item {
             case .filtering(interest: let category):
                 guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: GRFilteringCell.reuseIdentifier, for: indexPath) as? GRFilteringCell else { return UICollectionViewCell() }
-                print(category.title)
                 cell.category = category
                 return cell
                 
@@ -262,6 +269,7 @@ extension GreenRoomViewController {
                 guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MyGreenRoomCell.reuseIdentifer, for: indexPath) as? MyGreenRoomCell else { return UICollectionViewCell() }
                 cell.question = question
                 cell.delegate = self
+
                 return cell
             case .MyQuestionList(question: let question):
                 guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MyQuestionListCell.reuseIedentifier, for: indexPath) as? MyQuestionListCell else { return UICollectionViewCell() }
@@ -288,7 +296,7 @@ extension GreenRoomViewController {
                 
             case RecentPageFooterView.reuseIdentifier:
                 guard let footerView = collectionView.dequeueReusableSupplementaryView(ofKind: RecentPageFooterView.reuseIdentifier, withReuseIdentifier: RecentPageFooterView.reuseIdentifier, for: indexPath) as? RecentPageFooterView else { return UICollectionReusableView() }
-                footerView.bind(input: self.viewModel.currentBannerPage,pageNumber: 3)
+                footerView.bind(input: self.viewModel.currentBannerPage, pageNumber: 3)
                 return footerView
                 
             case MyGreenRoomHeader.reuseIdentifier:
@@ -300,7 +308,7 @@ extension GreenRoomViewController {
                 return footerView
             case GreenRoomCommonHeaderView.reuseIdentifier:
                 guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: GreenRoomCommonHeaderView.reuseIdentifier, withReuseIdentifier: GreenRoomCommonHeaderView.reuseIdentifier, for: indexPath) as? GreenRoomCommonHeaderView else { return UICollectionReusableView()}
-                header.title = "마이 질문 리스트"
+                header.configure(title: "마이 질문 리스트")
                 return header
             default:
                 return UICollectionReusableView()
@@ -508,9 +516,11 @@ extension GreenRoomViewController: RecentHeaderDelegate {
 extension GreenRoomViewController: MyGreenRoomCellDelegate {
     
     func didTapNext() {
+        self.nextButtonTrigger.accept(())
     }
     
     func didTapPrev() {
+        self.prevButtonTrigger.accept(())
     }
     
 }

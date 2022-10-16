@@ -59,8 +59,13 @@ final class PublicQuestionService {
     /** 내가 생성한 그린룸 질문 */
     func fetchPublicQuestions(page: Int = 0) -> Observable<MyPublicQuestion>{
         
-        let requestURL = baseURL + "/create-questions"
+        var requestURL = baseURL + "/create-questions"
         
+        if page > 0 {
+            requestURL += "?page=\(page)"
+        }
+        
+        print(requestURL)
         return Observable.create { emitter in
             AF.request(requestURL, method: .get, encoding: URLEncoding.default, interceptor: AuthManager())
                 .validate(statusCode: 200..<300)
