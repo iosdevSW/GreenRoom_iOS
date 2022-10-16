@@ -7,14 +7,14 @@
 
 import UIKit
 
-protocol CreatePopOverDeleagte {
+protocol CreatePopOverDeleagte: AnyObject {
     func didTapGreenRoomCreate()
     func didTapQuestionListCreate()
 }
 
 final class CreatePopOverViewController: BaseViewController {
     
-    var delegate: CreatePopOverDeleagte?
+    weak var delegate: CreatePopOverDeleagte?
     
     private lazy var greenroomButton = UIButton().then {
         $0.backgroundColor = .white

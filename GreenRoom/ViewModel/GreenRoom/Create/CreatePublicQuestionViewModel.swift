@@ -42,13 +42,10 @@ final class CreatePublicQuestionViewModel: ViewModelType {
     private let date = BehaviorRelay<Int>(value: 60 * 24)
     private let confirmDate = BehaviorRelay<Int>(value: 60 * 24)
     
-    let categories = Observable<[CreateSection]>.of([CreateSection(items: ["공통","인턴","대외활동","디자인","경영기획","회계","생산/품질관리","인사","마케팅","영업","IT/개발","연구개발(R&D)"])])
+    let categories = Observable<[CreateSection]>.of([CreateSection(items: Constants.categories)])
     
     
     func transform(input: Input) -> Output {
-        
-        let isValid = Observable.combineLatest(input.question, input.category).map { text, category in
-            return !text.isEmpty && text != "면접자 분들은 나에게 어떤 질문을 줄까요?" && category != -1 }
         
         input.question.bind(to: textFieldContentObservable).disposed(by: disposeBag)
         
@@ -62,9 +59,11 @@ final class CreatePublicQuestionViewModel: ViewModelType {
             .disposed(by: disposeBag)
 
         input.submit.withLatestFrom(
-            Observable.zip(input.category.asObservable(),
-                           textFieldContentObservable.asObservable(),
-                           confirmDate.asObservable())
+            Observable.combineLatest(
+                input.category.asObservable(),
+                addQuestionObservable.asObservable(),
+                confirmDate.asObservable()
+            )
         ).flatMap { (categoryId, question, minutes) -> Observable<Bool> in
             self.publicQuestionService.uploadQuestionList(categoryId: categoryId,
                                                            question: question,
@@ -74,7 +73,10 @@ final class CreatePublicQuestionViewModel: ViewModelType {
         } onError: { error in
             self.failMessage.accept(error.localizedDescription)
         }.disposed(by: disposeBag)
-
+        
+        let isValid = Observable.combineLatest(input.question, input.category).map { text, category in
+            return !text.isEmpty && text != "면접자 분들은 나에게 어떤 질문을 줄까요?" && category != -1 }
+        
         return Output(date: date.asObservable(),
                       isValid: isValid,
                        failMessage: failMessage.asSignal(),

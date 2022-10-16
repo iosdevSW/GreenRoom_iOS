@@ -13,7 +13,7 @@ final class CreateQuestionViewController: BaseViewController {
     
     //MARK: - Properteis
     private var collectionView: UICollectionView!
-    private let viewModel = CreateViewModel()
+    private let viewModel: CreateViewModel
     
     private let subtitleLabel = UILabel().then {
         $0.attributedText = Utilities.shared.textWithIcon(text: " 나만 볼 수 있는 질문입니다.", image: UIImage(named:"createQuestionList"), font: .sfPro(size: 12, family: .Regular), textColor: .gray, imageColor: .customGray, iconPosition: .left)
@@ -53,6 +53,15 @@ final class CreateQuestionViewController: BaseViewController {
     }
     
     //MARK: - LifeCycle
+    init(viewModel: CreateViewModel){
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
     }
@@ -134,7 +143,7 @@ final class CreateQuestionViewController: BaseViewController {
         
         self.collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         
-        collectionView.register(CategoryCell.self, forCellWithReuseIdentifier: "categoryCell")
+        collectionView.register(CategoryCell.self, forCellWithReuseIdentifier: String(describing: CategoryCell.self))
         collectionView.backgroundColor = .white
         
     }
@@ -164,28 +173,13 @@ final class CreateQuestionViewController: BaseViewController {
                 }
             }.disposed(by: disposeBag)
         
-        collectionView.rx.itemSelected
-            .bind(onNext: { [weak self] indexPath in
-                let cell = self?.collectionView.cellForItem(at: indexPath) as! CategoryCell
-                cell.isSelected = true
-            }).disposed(by: disposeBag)
-        
-        collectionView.rx.itemDeselected
-            .bind(onNext: { [weak self] indexPath in
-                let cell = self?.collectionView.cellForItem(at: indexPath) as! CategoryCell
-                cell.isSelected = false
-                
-            }).disposed(by: disposeBag)
-        
-        
-        viewModel.categories.bind(to: self.collectionView.rx.items(cellIdentifier: "categoryCell", cellType: CategoryCell.self)) { index, title, cell in
+        viewModel.categories.bind(to: self.collectionView.rx.items(cellIdentifier: String(describing: CategoryCell.self), cellType: CategoryCell.self)) { index, title, cell in
             guard let category = Category(rawValue: index + 1) else { return }
             cell.category = category
         }.disposed(by: disposeBag)
         
         let output = viewModel.transform(input: input)
-  
-        
+
         output.isValid
             .bind(to: self.doneButton.rx.isEnabled)
             .disposed(by: disposeBag)

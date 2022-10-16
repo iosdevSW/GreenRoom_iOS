@@ -11,12 +11,6 @@ final class GreenRoomCommonHeaderView: UICollectionReusableView {
     
     static let reuseIdentifier = "GreenRoomCommonHeaderView"
     
-    var title: String! {
-        didSet {
-            headerLabel.text = title
-        }
-    }
-    
     //MARK: - Properties
     private let headerLabel = UILabel().then {
         $0.text = "마이 그린룸"
@@ -35,6 +29,10 @@ final class GreenRoomCommonHeaderView: UICollectionReusableView {
     }
     
     //MARK: - Configure
+    func configure(title: String) {
+        headerLabel.text = title
+    }
+    
     private func configureUI(){
         self.backgroundColor = .backgroundGray
         self.addSubview(headerLabel)
