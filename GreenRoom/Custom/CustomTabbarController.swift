@@ -135,13 +135,13 @@ extension CustomTabbarController: UIPopoverPresentationControllerDelegate {
 extension CustomTabbarController: CreatePopOverDeleagte {
     
     func didTapGreenRoomCreate() {
-        let vc = UINavigationController(rootViewController: CreateGreenRoomViewController())
+        let vc = UINavigationController(rootViewController: CreateGreenRoomViewController(viewModel: CreatePublicQuestionViewModel()))
         vc.modalPresentationStyle = .fullScreen
         present(vc, animated: true)
     }
     
     func didTapQuestionListCreate() {
-        let vc = UINavigationController(rootViewController: CreateQuestionViewController())
+        let vc = UINavigationController(rootViewController: CreateQuestionViewController(viewModel: CreateViewModel()))
         vc.modalPresentationStyle = .fullScreen
         present(vc, animated: true)
     }
