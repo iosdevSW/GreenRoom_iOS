@@ -27,7 +27,6 @@ final class QuestionHeaderView: UIView {
     
     private lazy var questionTextView = UITextView().then {
         $0.textContainerInset = UIEdgeInsets(top: 30, left: 30, bottom: 0, right:30)
-        $0.translatesAutoresizingMaskIntoConstraints = true
         $0.sizeToFit()
         $0.backgroundColor = .clear
     }

@@ -13,18 +13,8 @@ final class PublicQuestionsCell: UICollectionViewCell {
 
     static let reuseIdentifier = "PublicQuestionsCell"
     //MARK: - Properties
-    var question: PublicQuestion! {
-        didSet { self.configure() }
-    }
 
-    private lazy var containerView = UIView().then {
-        $0.backgroundColor = .backgroundGray
-        $0.layer.cornerRadius = 15
-        $0.layer.maskedCorners = [.layerMaxXMaxYCorner,.layerMaxXMinYCorner,.layerMinXMaxYCorner]
-        $0.layer.borderWidth = 2
-        $0.layer.borderColor = UIColor.mainColor.cgColor
-    }
-
+    private lazy var containerView = UIView()
     private lazy var profileImageView = UIImageView(frame: .zero).then {
         $0.contentMode = .scaleAspectFill
         $0.layer.cornerRadius = bounds.width * 0.06 / 2
@@ -75,7 +65,8 @@ final class PublicQuestionsCell: UICollectionViewCell {
     //MARK: - Configure
     private func configureUI(){
         self.backgroundColor = .backgroundGray
-
+        containerView.backgroundColor = .backgroundGray
+        containerView.setMainLayer()
         self.addSubview(containerView)
         containerView.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(6)
@@ -121,7 +112,7 @@ final class PublicQuestionsCell: UICollectionViewCell {
         }
     }
 
-    private func configure(){
+    func configure(question: PublicQuestion){
         
         self.containerView.alpha = question.expired ? 0.5 : 1.0
         self.questionTextView.text = question.question
@@ -130,7 +121,6 @@ final class PublicQuestionsCell: UICollectionViewCell {
         guard let url = URL(string: question.profileImage) else { return }
         self.profileImageView.kf.setImage(with: url)
         self.expiredLabel.text = question.expired ? "답변 종료" : "\(question.remainedTime) 남음"
-        
     }
 }
 

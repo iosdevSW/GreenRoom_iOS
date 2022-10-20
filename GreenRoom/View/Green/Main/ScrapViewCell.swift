@@ -40,16 +40,9 @@ class ScrapViewCell: UICollectionViewCell {
         $0.layer.borderColor = UIColor.customGray.cgColor
         $0.layer.borderWidth = 1
         $0.tintColor = .white
-        
     }
     
-    private lazy var containerView = UIView().then {
-        $0.layer.cornerRadius = 15
-        $0.layer.maskedCorners = [.layerMaxXMaxYCorner,.layerMaxXMinYCorner,.layerMinXMaxYCorner]
-        $0.layer.borderWidth = 2
-        $0.layer.borderColor = UIColor.mainColor.cgColor
-    }
-    
+    private lazy var containerView = UIView()
     private lazy var profileImageView = UIImageView(frame: .zero).then {
         $0.contentMode = .scaleAspectFill
         $0.layer.cornerRadius = bounds.width * 0.2 / 2
@@ -105,6 +98,7 @@ class ScrapViewCell: UICollectionViewCell {
         let bottomMargin = bounds.height * 0.1
         let sideMargin = bounds.width * 0.07
         
+        self.containerView.setMainLayer()
         self.backgroundColor = .clear
         self.contentView.addSubview(containerView)
         containerView.snp.makeConstraints { make in

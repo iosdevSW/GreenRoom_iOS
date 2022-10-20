@@ -134,9 +134,9 @@ extension GRSearchViewController {
             
             switch dataSource[indexPath.section] {
             case .popular(header: let title, items: _):
-                headerView.titleText = title
+                headerView.configure(with: title)
             case .recent(header: let title, items: _):
-                headerView.titleText = title
+                headerView.configure(with: title)
             }
             
             return headerView

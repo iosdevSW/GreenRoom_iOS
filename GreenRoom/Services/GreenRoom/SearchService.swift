@@ -12,7 +12,7 @@ import RxSwift
 final class SearchService {
     
     func fetchPopularKeywords() -> Observable<[String]>{
-        let url = Constants.baseURL + "/api/public-questions/popular-search-words"
+        let url = Constants.baseURL + "/api/green-questions/popular-search-words"
         
         return Observable.create { emitter in
             AF.request(url, method: .get, encoding: URLEncoding.default, interceptor: AuthManager())

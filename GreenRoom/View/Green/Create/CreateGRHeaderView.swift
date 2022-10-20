@@ -27,10 +27,7 @@ final class CreateGRHeaderView: UICollectionReusableView {
         $0.text = "면접자 분들은 나에게 어떤 질문을 줄까요?"
         $0.textColor = .customGray
         $0.textContainerInset = UIEdgeInsets(top: 16.0, left: 16.0, bottom: 16.0, right: 16.0)
-        $0.layer.maskedCorners = [.layerMaxXMaxYCorner,.layerMaxXMinYCorner,.layerMinXMaxYCorner]
-        $0.layer.cornerRadius = 15
-        $0.layer.borderColor = UIColor.mainColor.cgColor
-        $0.layer.borderWidth = 2
+        $0.setMainLayer()
     }
     
     private var setTimeLabel = UILabel()

@@ -9,11 +9,8 @@ import UIKit
 final class RecentQuestionCell: UICollectionViewCell {
     
     static let reuseIdentifer = "RecentQuestionCell"
-    //MARK: - Properties
-    var question: PublicQuestion! {
-        didSet { configure() }
-    }
     
+    //MARK: - Properties
     private lazy var profileImageView = UIImageView(frame: .zero).then {
         $0.contentMode = .scaleAspectFit
         $0.layer.cornerRadius = frame.size.width * 0.08 / 2
@@ -40,11 +37,7 @@ final class RecentQuestionCell: UICollectionViewCell {
     
     //MARK: - Configure
     private func configureUI(){
-        self.contentView.layer.cornerRadius = 15
-        self.contentView.layer.maskedCorners = [.layerMaxXMaxYCorner,.layerMaxXMinYCorner,.layerMinXMaxYCorner]
-        self.contentView.layer.borderWidth = 2
-        self.contentView.layer.borderColor = UIColor.mainColor.cgColor
-        
+        self.contentView.setMainLayer()
         self.backgroundColor = .white
         self.contentView.addSubview(questionLabel)
         self.questionLabel.snp.makeConstraints { make in
@@ -67,7 +60,7 @@ final class RecentQuestionCell: UICollectionViewCell {
         }
     }
     
-    private func configure(){
+    func configure(question: PublicQuestion){
         
         self.questionLabel.attributedText = question.question.addLineSpacing(foregroundColor: .black)
         

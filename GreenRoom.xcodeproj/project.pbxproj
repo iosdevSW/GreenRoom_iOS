@@ -95,6 +95,7 @@
 		E4206CD628D5E53C0011E117 /* CreatePublicQuestionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4206CD528D5E53C0011E117 /* CreatePublicQuestionViewModel.swift */; };
 		E4206CD828D5EE810011E117 /* CreateGRModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4206CD728D5EE810011E117 /* CreateGRModel.swift */; };
 		E4206CDA28D623930011E117 /* CustomPopUpDatePickerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4206CD928D623930011E117 /* CustomPopUpDatePickerController.swift */; };
+		E4213BD129019539007F0297 /* UITextField+.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4213BD029019539007F0297 /* UITextField+.swift */; };
 		E427EC0328C791150046B4AA /* InfoHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E427EC0228C791150046B4AA /* InfoHeaderView.swift */; };
 		E427EC0628C791850046B4AA /* Info.swift in Sources */ = {isa = PBXBuildFile; fileRef = E427EC0528C791850046B4AA /* Info.swift */; };
 		E427EC0828C7937B0046B4AA /* SFProText-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = E427EC0728C7937B0046B4AA /* SFProText-Bold.otf */; };
@@ -138,7 +139,7 @@
 		E47D1D2028E9B4FA004EE4DE /* FileringSectionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E47D1D1F28E9B4FA004EE4DE /* FileringSectionModel.swift */; };
 		E47D1D2328E9BC21004EE4DE /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = E47D1D2228E9BC21004EE4DE /* Category.swift */; };
 		E47D1D2528E9C5BA004EE4DE /* MyPublicQuestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = E47D1D2428E9C5BA004EE4DE /* MyPublicQuestion.swift */; };
-		E47D1D2828E9FF43004EE4DE /* PublicAnswerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E47D1D2728E9FF43004EE4DE /* PublicAnswerViewController.swift */; };
+		E47D1D2828E9FF43004EE4DE /* PublicAnswerListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E47D1D2728E9FF43004EE4DE /* PublicAnswerListViewController.swift */; };
 		E47D1D2A28EA012A004EE4DE /* PublicAnswerMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = E47D1D2928EA012A004EE4DE /* PublicAnswerMode.swift */; };
 		E47D1D2C28EA0330004EE4DE /* PublicAnswerHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E47D1D2B28EA0330004EE4DE /* PublicAnswerHeaderView.swift */; };
 		E47EE51628C48B7800618CA6 /* SFProText-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = E49CC16B28C331E4009216E1 /* SFProText-Semibold.otf */; };
@@ -180,6 +181,8 @@
 		E4EF361828C4BF0400746050 /* RecentQuestionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4EF361728C4BF0400746050 /* RecentQuestionCell.swift */; };
 		E4EF361A28C4EA3E00746050 /* RecentPageFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4EF361928C4EA3E00746050 /* RecentPageFooterView.swift */; };
 		E4EF915028F424E000052796 /* AnswerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4EF914F28F424E000052796 /* AnswerType.swift */; };
+		E4F7D32928FDAAAB003C0A13 /* DetailPublicAnswerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4F7D32828FDAAAB003C0A13 /* DetailPublicAnswerViewController.swift */; };
+		E4F7D32B28FDACAB003C0A13 /* DetailPublicAnswerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4F7D32A28FDACAB003C0A13 /* DetailPublicAnswerViewModel.swift */; };
 		E4F8888B28E5E36300840101 /* PopularPublicQuestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4F8888A28E5E36300840101 /* PopularPublicQuestion.swift */; };
 /* End PBXBuildFile section */
 
@@ -278,6 +281,7 @@
 		E4206CD528D5E53C0011E117 /* CreatePublicQuestionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePublicQuestionViewModel.swift; sourceTree = "<group>"; };
 		E4206CD728D5EE810011E117 /* CreateGRModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateGRModel.swift; sourceTree = "<group>"; };
 		E4206CD928D623930011E117 /* CustomPopUpDatePickerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPopUpDatePickerController.swift; sourceTree = "<group>"; };
+		E4213BD029019539007F0297 /* UITextField+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+.swift"; sourceTree = "<group>"; };
 		E427EC0228C791150046B4AA /* InfoHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoHeaderView.swift; sourceTree = "<group>"; };
 		E427EC0528C791850046B4AA /* Info.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Info.swift; sourceTree = "<group>"; };
 		E427EC0728C7937B0046B4AA /* SFProText-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFProText-Bold.otf"; sourceTree = "<group>"; };
@@ -323,7 +327,7 @@
 		E47D1D1F28E9B4FA004EE4DE /* FileringSectionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileringSectionModel.swift; sourceTree = "<group>"; };
 		E47D1D2228E9BC21004EE4DE /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
 		E47D1D2428E9C5BA004EE4DE /* MyPublicQuestion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPublicQuestion.swift; sourceTree = "<group>"; };
-		E47D1D2728E9FF43004EE4DE /* PublicAnswerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicAnswerViewController.swift; sourceTree = "<group>"; };
+		E47D1D2728E9FF43004EE4DE /* PublicAnswerListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicAnswerListViewController.swift; sourceTree = "<group>"; };
 		E47D1D2928EA012A004EE4DE /* PublicAnswerMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicAnswerMode.swift; sourceTree = "<group>"; };
 		E47D1D2B28EA0330004EE4DE /* PublicAnswerHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicAnswerHeaderView.swift; sourceTree = "<group>"; };
 		E4843CFB28EAD06700329DC4 /* PublicAnswerSectionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicAnswerSectionModel.swift; sourceTree = "<group>"; };
@@ -367,6 +371,8 @@
 		E4EF362228C5ADA300746050 /* FAQ.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FAQ.swift; sourceTree = "<group>"; };
 		E4EF362328C5ADA300746050 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		E4EF914F28F424E000052796 /* AnswerType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnswerType.swift; sourceTree = "<group>"; };
+		E4F7D32828FDAAAB003C0A13 /* DetailPublicAnswerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailPublicAnswerViewController.swift; sourceTree = "<group>"; };
+		E4F7D32A28FDACAB003C0A13 /* DetailPublicAnswerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailPublicAnswerViewModel.swift; sourceTree = "<group>"; };
 		E4F8888A28E5E36300840101 /* PopularPublicQuestion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopularPublicQuestion.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -499,6 +505,7 @@
 				E4A2E9F128EAB7D700E7F5C0 /* PublicAnswerViewModel.swift */,
 				DB9D9F4828E702740061D7DB /* RegisterKeywordViewModel.swift */,
 				E4843D4D28EC657B00329DC4 /* MakePublicAnswerViewModel.swift */,
+				E4F7D32A28FDACAB003C0A13 /* DetailPublicAnswerViewModel.swift */,
 			);
 			path = Answer;
 			sourceTree = "<group>";
@@ -614,8 +621,8 @@
 				DBD0825E2897E7740092241F /* Services */,
 				DBD0824F2897E75B0092241F /* Model */,
 				DBD082462897E75A0092241F /* View */,
-				DBD082382897E75A0092241F /* ViewModel */,
 				DBD0823D2897E75A0092241F /* Controller */,
+				DBD082382897E75A0092241F /* ViewModel */,
 				DB6AABB9289FEEEA0061D716 /* GreenRoom.entitlements */,
 				DBD0821C2897E6EE0092241F /* AppDelegate.swift */,
 				DBD0821E2897E6EE0092241F /* SceneDelegate.swift */,
@@ -869,9 +876,10 @@
 		E44456FB28E735580034A207 /* Answer */ = {
 			isa = PBXGroup;
 			children = (
-				E46E4BE328DC213800D1691F /* PrivateAnswerViewController.swift */,
-				E47D1D2728E9FF43004EE4DE /* PublicAnswerViewController.swift */,
 				E4843D4B28EC60E200329DC4 /* MakePublicAnswerViewController.swift */,
+				E46E4BE328DC213800D1691F /* PrivateAnswerViewController.swift */,
+				E47D1D2728E9FF43004EE4DE /* PublicAnswerListViewController.swift */,
+				E4F7D32828FDAAAB003C0A13 /* DetailPublicAnswerViewController.swift */,
 			);
 			path = Answer;
 			sourceTree = "<group>";
@@ -953,6 +961,7 @@
 				E46E4C0728E14FD400D1691F /* Date+.swift */,
 				E44456ED28E6E89B0034A207 /* NotificationName+.swift */,
 				E4D49AEB28EF287300CF69B1 /* String+.swift */,
+				E4213BD029019539007F0297 /* UITextField+.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1324,7 +1333,7 @@
 				DB9D9F4528E702390061D7DB /* KeywordViewModel.swift in Sources */,
 				DBFB296A28B2267A00B1DAC9 /* FilterItemsCell.swift in Sources */,
 				E46E4BF628DD76B200D1691F /* UIView+.swift in Sources */,
-				E47D1D2828E9FF43004EE4DE /* PublicAnswerViewController.swift in Sources */,
+				E47D1D2828E9FF43004EE4DE /* PublicAnswerListViewController.swift in Sources */,
 				E46E4BE628DC219600D1691F /* AnswerHeaderView.swift in Sources */,
 				E4C4C4BE28BD1ACD008826AB /* CreatePopOverViewController.swift in Sources */,
 				E40BC6E628B8834100FB557D /* SearchResultHeaderView.swift in Sources */,
@@ -1412,6 +1421,7 @@
 				E4F8888B28E5E36300840101 /* PopularPublicQuestion.swift in Sources */,
 				E46539E428AD33C700F17A6C /* EditProfileInfoViewController.swift in Sources */,
 				E47D1D2328E9BC21004EE4DE /* Category.swift in Sources */,
+				E4F7D32B28FDACAB003C0A13 /* DetailPublicAnswerViewModel.swift in Sources */,
 				E427EC0628C791850046B4AA /* Info.swift in Sources */,
 				E4141AB328AF4499004D74B3 /* Constants.swift in Sources */,
 				E427EC0328C791150046B4AA /* InfoHeaderView.swift in Sources */,
@@ -1440,6 +1450,7 @@
 				E4C4C4C028BDE8AB008826AB /* CreateGreenRoomViewController.swift in Sources */,
 				E44456EE28E6E89B0034A207 /* NotificationName+.swift in Sources */,
 				DB797A9B289BC0D800ADF65F /* RegisterCategoryViewController.swift in Sources */,
+				E4213BD129019539007F0297 /* UITextField+.swift in Sources */,
 				E40BC6F928B88FB600FB557D /* RecentSearchModel.xcdatamodeld in Sources */,
 				DBA9451328C653F200B6E16A /* FAQ.swift in Sources */,
 				E4A2E9FC28EACCBA00E7F5C0 /* Question.swift in Sources */,
@@ -1452,6 +1463,7 @@
 				DBD082552897E75B0092241F /* GreenRoomViewController.swift in Sources */,
 				DB9D9F4428E702390061D7DB /* BaseQuestionsViewModel.swift in Sources */,
 				DB563F9A28ABADDF00E7193D /* RxNaverThirdPartyLoginProxy.swift in Sources */,
+				E4F7D32928FDAAAB003C0A13 /* DetailPublicAnswerViewController.swift in Sources */,
 				E46E4BE428DC213800D1691F /* PrivateAnswerViewController.swift in Sources */,
 				DB07821228C49BED0091EEFE /* CustomRecordingButton.swift in Sources */,
 				E427EC1628C830F60046B4AA /* CategorySelectViewController.swift in Sources */,

@@ -21,11 +21,7 @@ final class MyGreenRoomCell: UICollectionViewCell {
     private var disposeBag = DisposeBag()
     
     weak var delegate: MyGreenRoomCellDelegate?
-    
-    var question: MyPublicQuestion! {
-        didSet { configure() }
-    }
-    
+
     lazy var leftButton = UIButton().then {
         $0.setImage(UIImage(systemName: "chevron.left"), for: .normal)
         $0.imageView?.tintColor = .gray
@@ -100,7 +96,7 @@ final class MyGreenRoomCell: UICollectionViewCell {
         }
     }
     
-    private func configure(){
+    func configure(question: MyPublicQuestion){
         
         self.questionLabel.attributedText = question.question?.addLineSpacing(foregroundColor: .black, font: .sfPro(size: 20, family: .Regular))
         leftButton.isHidden = !question.hasPrev
