@@ -61,5 +61,12 @@ extension UIView {
         UIGraphicsEndImageContext()
         self.backgroundColor = UIColor(patternImage: patternImage)
     }
+    
+    func setMainLayer() {
+        self.layer.cornerRadius = 15
+        self.layer.maskedCorners = [.layerMaxXMaxYCorner,.layerMaxXMinYCorner,.layerMinXMaxYCorner]
+        self.layer.borderWidth = 2
+        self.layer.borderColor = UIColor.mainColor.cgColor
+    }
 }
 
