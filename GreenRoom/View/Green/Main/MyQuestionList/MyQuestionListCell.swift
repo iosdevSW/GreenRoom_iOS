@@ -11,10 +11,7 @@ class MyQuestionListCell: UICollectionViewCell {
     
     static let reuseIedentifier = "MyQuestionListCell"
     
-    var question: PrivateQuestion! {
-        didSet { configure() }
-    }
-    
+    //MARK: - Properties
     private lazy var iconImageView = UIImageView().then {
         $0.image = UIImage(named: "scrap")
         $0.tintColor = .customGray
@@ -32,13 +29,7 @@ class MyQuestionListCell: UICollectionViewCell {
         $0.backgroundColor = .mainColor
     }
     
-    private lazy var containerView = UIView().then {
-        $0.backgroundColor = .white
-        $0.layer.cornerRadius = 15
-        $0.layer.maskedCorners = [.layerMaxXMaxYCorner,.layerMaxXMinYCorner,.layerMinXMaxYCorner]
-        $0.layer.borderWidth = 2
-        $0.layer.borderColor = UIColor.mainColor.cgColor
-    }
+    private lazy var containerView = UIView()
     
     private let categoryLabel = Utilities.shared.generateLabel(text: "디자인", color: .black, font: .sfPro(size: 12, family: .Semibold))
     
@@ -61,7 +52,8 @@ class MyQuestionListCell: UICollectionViewCell {
     private func configureUI(){
         
         self.backgroundColor = .clear
-    
+        self.containerView.backgroundColor = .white
+        self.containerView.setMainLayer()
         self.containerView.addSubview(categoryLabel)
         self.containerView.addSubview(questionLabel)
         self.contentView.addSubview(groupCategoryNameLabel)
@@ -99,7 +91,7 @@ class MyQuestionListCell: UICollectionViewCell {
         }
     }
     
-    private func configure(){
+    func configure(question: PrivateQuestion){
         self.questionLabel.attributedText = question.question.addLineSpacing(foregroundColor: .black)
         self.categoryLabel.text = question.categoryName
         self.groupNameLabel.text = question.groupName

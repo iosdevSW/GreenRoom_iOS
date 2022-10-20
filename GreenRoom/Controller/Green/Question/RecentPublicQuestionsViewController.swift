@@ -69,7 +69,7 @@ final class RecentPublicQuestionsViewController: BaseViewController {
             .subscribe(onNext: { question in
                 switch question {
                 case .recent(question: let question):
-                    let vc = PublicAnswerViewController(viewModel: PublicAnswerViewModel(id: question.id, scrapService: ScrapService(), publicQuestionService: PublicQuestionService()))
+                    let vc = PublicAnswerListViewController(viewModel: PublicAnswerViewModel(id: question.id, scrapService: ScrapService(), publicQuestionService: PublicQuestionService()))
                     self.navigationController?.pushViewController(vc, animated: false)
                 default: return
                 }
@@ -98,7 +98,7 @@ extension RecentPublicQuestionsViewController {
             
             switch item {
             case .recent(question: let question):
-                cell.question = question
+                cell.configure(question: question)
                 return cell
             default: return UICollectionViewCell()
             }

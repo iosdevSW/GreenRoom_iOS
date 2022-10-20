@@ -33,10 +33,7 @@ final class QuestionByCategoryCell: UICollectionViewCell {
         $0.isScrollEnabled = false
         $0.isUserInteractionEnabled = false
         $0.textContainerInset = UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15)
-        $0.layer.cornerRadius = 15
-        $0.layer.maskedCorners = [.layerMaxXMaxYCorner,.layerMaxXMinYCorner,.layerMinXMaxYCorner]
-        $0.layer.borderWidth = 2
-        $0.layer.borderColor = UIColor.mainColor.cgColor
+        $0.setMainLayer()
         let style = NSMutableParagraphStyle()
         style.lineSpacing = 6
         $0.attributedText = NSAttributedString(

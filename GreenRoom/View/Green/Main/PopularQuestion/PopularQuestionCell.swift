@@ -11,9 +11,6 @@ final class PopularQuestionCell: UICollectionViewCell {
     
     static let reuseIdentifer = "PopularQuestionCell"
     //MARK: - Properties
-    var question: PopularPublicQuestion! {
-        didSet { configure() }
-    }
 
     private lazy var profileImageView = UIImageView(frame: .zero).then {
         $0.contentMode = .scaleAspectFill
@@ -32,11 +29,7 @@ final class PopularQuestionCell: UICollectionViewCell {
     private lazy var questionLabel = PaddingLabel(padding: UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15)).then {
         $0.backgroundColor = .white
         $0.numberOfLines = 0
-        
-        $0.layer.cornerRadius = 15
-        $0.layer.maskedCorners = [.layerMaxXMaxYCorner,.layerMaxXMinYCorner,.layerMinXMaxYCorner]
-        $0.layer.borderWidth = 2
-        $0.layer.borderColor = UIColor.mainColor.cgColor
+        $0.setMainLayer()
     }
     
    //MARK: - LifeCycle
@@ -98,7 +91,7 @@ final class PopularQuestionCell: UICollectionViewCell {
   
     }
     
-    private func configure(){
+    func configure(question: PopularPublicQuestion){
         self.nameLabel.text = question.name
         self.questionLabel.attributedText = question.question.addLineSpacing(foregroundColor: .black)
         self.categoryLabel.text = question.categoryName

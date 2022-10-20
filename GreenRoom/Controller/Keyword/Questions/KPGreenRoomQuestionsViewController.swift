@@ -10,8 +10,7 @@ import UIKit
 final class KPGreenRoomQuestionsViewController: BaseViewController {
     //MARK: - Properties
     private var headerView = InfoHeaderView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 220)).then {
-        $0.info = Info(title: "참여한 질문",
-                       subTitle: "참여한 질문을 모두 보여드려요!\n기간 종료 시 참여한 모든 동료의 답변을 확인할 수 있어요 :)")
+        $0.info = Info(title: "참여한 질문", subTitle: "참여한 질문을 모두 보여드려요!\n기간 종료 시 참여한 모든 동료의 답변을 확인할 수 있어요 :)")
         $0.filterShowing = true
     }
     
