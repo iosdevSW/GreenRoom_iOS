@@ -33,7 +33,14 @@ struct PublicAnswer: Codable {
 }
 
 /** 그린룸 질문과 답변을 다루는 구조체*/
-struct DetailPublicAnswer: Codable {
+struct PublicAnswerList: Codable {
     let question: DetailPublicQuestionDTO
     var answers: [PublicAnswer]
+}
+
+/** 그린룸 질문 리스트에서 상세 답변 */
+struct SpecificPublicAnswer: Codable {
+    let id: Int
+    let profileImage, name, answer: String
+    let keywords: [String]
 }

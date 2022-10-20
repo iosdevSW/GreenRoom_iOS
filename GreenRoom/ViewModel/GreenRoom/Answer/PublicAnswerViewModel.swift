@@ -29,7 +29,7 @@ final class PublicAnswerViewModel: ViewModelType {
     
     private let textFieldContentObservable = BehaviorSubject<String>(value: "")
     private let scrapStateObservable = BehaviorSubject<Bool>(value: false)
-    private let detailPublicAnswer = PublishSubject<DetailPublicAnswer>()
+    private let detailPublicAnswer = PublishSubject<PublicAnswerList>()
     
     private let failMessage = PublishRelay<String>()
     private let successMessage = PublishRelay<String>()
