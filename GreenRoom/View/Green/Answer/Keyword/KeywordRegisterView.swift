@@ -32,12 +32,7 @@ final class KeywordRegisterView: UIView {
         $0.font = .sfPro(size: 12, family: .Semibold)
         $0.textColor = .black
         $0.leftViewMode = .always
-        
-        let imageView = UIImageView(frame: CGRect(x: 10, y: 0, width: 30, height: 30))
-        imageView.image = UIImage(systemName: "checkmark.circle.fill")
-        imageView.tintColor = .point
-        
-        $0.leftView = imageView
+        $0.setLeftIcon(UIImage(systemName: "checkmark.circle.fill"), tintColor: .point)
     }
     
     private let keywordLabel = UILabel().then {
