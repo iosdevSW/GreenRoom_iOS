@@ -12,9 +12,13 @@ import UIKit
 struct FAQ {
     let question: String
     let answer: String
-    
+    var expanded: Bool
     
     var height: Int {
         return Int(Utilities.shared.heightForView(text: answer, font: .sfPro(size: 16, family: .Bold), width: UIScreen.main.bounds.width - 102))
+    }
+    
+    mutating func updateExpanded() {
+        self.expanded.toggle()
     }
 }
