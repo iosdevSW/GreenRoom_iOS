@@ -12,12 +12,6 @@ final class GRFilteringCell: UICollectionViewCell {
     static let reuseIdentifier = "GRFilteringCell"
     
     //MARK: - Properties
-    var category: Category! {
-        didSet {
-            self.filteringLabel.text = category.title
-        }
-    }
-    
     private var filteringLabel = UILabel().then {
         $0.font = .sfPro(size: 16, family: .Regular)
         $0.textColor = .black
@@ -46,11 +40,10 @@ final class GRFilteringCell: UICollectionViewCell {
         }
         
         contentView.backgroundColor = UIColor(red: 248/255.0, green: 254/255.0, blue: 251/255.0, alpha: 1.0)
-        
-        contentView.layer.borderColor = UIColor.mainColor.cgColor
-        contentView.layer.borderWidth = 1.5
-        contentView.layer.masksToBounds = true
-        contentView.layer.cornerRadius = 15
+        contentView.setMainLayer()
     }
-
+    
+    func configure(title: String) {
+        self.filteringLabel.text = title
+    }
 }

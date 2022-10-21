@@ -13,13 +13,6 @@ final class SettingHeader: UICollectionReusableView {
     //MARK: - Properties
     static let reuseIdentifier = "SettingHeader"
     
-    var text: String? {
-        didSet{
-            guard let text = text else { return }
-            self.headerLabel.text = text
-        }
-    }
-    
     private var headerLabel = UILabel().then {
         $0.font = .sfPro(size: 12, family: .Bold)
         $0.textColor = .customGray

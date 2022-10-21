@@ -59,8 +59,13 @@ final class PublicQuestionService {
     /** 내가 생성한 그린룸 질문 */
     func fetchPublicQuestions(page: Int = 0) -> Observable<MyPublicQuestion>{
         
-        let requestURL = baseURL + "/create-questions"
+        var requestURL = baseURL + "/create-questions"
         
+        if page > 0 {
+            requestURL += "?page=\(page)"
+        }
+        
+        print(requestURL)
         return Observable.create { emitter in
             AF.request(requestURL, method: .get, encoding: URLEncoding.default, interceptor: AuthManager())
                 .validate(statusCode: 200..<300)
@@ -77,7 +82,7 @@ final class PublicQuestionService {
     }
     
     /** 그린룸질문 상세정보 조회 */
-    func fetchDetailPublicQuestion(id: Int) -> Observable<DetailPublicAnswer> {
+    func fetchDetailPublicQuestion(id: Int) -> Observable<PublicAnswerList> {
         let requestURL = baseURL + "/\(id)"
         
         return Observable.create { emitter in
@@ -87,12 +92,20 @@ final class PublicQuestionService {
                     switch response.result {
                     case .success(let question):
 
-                        var output = DetailPublicAnswer(question: question, answers: [PublicAnswer(id: 0, profileImage: "", answer: ""),PublicAnswer(id: 0, profileImage: "", answer: ""),PublicAnswer(id: 0, profileImage: "", answer: ""),PublicAnswer(id: 0, profileImage: "", answer: "")])
-                        
+                        var output = PublicAnswerList(
+                            question: question, answers: [PublicAnswer(id: 0, profileImage: "", answer: ""),
+                                                          PublicAnswer(id: 0, profileImage: "", answer: ""),
+                                                          PublicAnswer(id: 0, profileImage: "", answer: ""),
+                                                          PublicAnswer(id: 0, profileImage: "", answer: "")]
+                        )
+                        print(question.participated)
+                        print(question.expired)
                         if question.participated && question.expired {
-                            self.fetchDetailAnswer(id: question.id) { result in
+                            self.fetchDetailAnswers(id: question.id) { result in
+                                print(result)
                                 switch result {
                                 case .success(let answers):
+                                    print(answers)
                                     output.answers = answers
                                 case .failure(_):
                                     break
@@ -108,8 +121,28 @@ final class PublicQuestionService {
         }
     }
     
-    func fetchDetailAnswer(id: Int, completion: @escaping(Result<[PublicAnswer], Error>) -> Void){
+    func fetchDetailAnswer(id: Int) -> Observable<SpecificPublicAnswer> {
+        let requestURL = baseURL + "/api/green-questions/answer/\(id)"
+        
+        return Observable.create { emitter in
+            AF.request(requestURL, method: .get, encoding: URLEncoding.default, interceptor: AuthManager())
+                .validate(statusCode: 200..<300)
+                .responseDecodable(of: SpecificPublicAnswer.self) { response in
+                    
+                    switch response.result {
+                    case .success(let answer):
+                        emitter.onNext(answer)
+                    case .failure(let error):
+                        emitter.onError(error)
+                    }
+                }
+            return Disposables.create()
+        }
+    }
+    
+    func fetchDetailAnswers(id: Int, completion: @escaping(Result<[PublicAnswer], Error>) -> Void){
         let requestURL = baseURL + "/\(id)/answers"
+        
         
         AF.request(requestURL, method: .get, encoding: URLEncoding.default, interceptor: AuthManager())
             .validate(statusCode: 200..<300)

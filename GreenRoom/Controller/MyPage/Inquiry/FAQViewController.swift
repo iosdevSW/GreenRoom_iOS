@@ -13,7 +13,7 @@ final class FAQViewController: BaseViewController {
     
     private var viewModel: MyPageViewModel!
     private var searchBar = UISearchBar()
-    private var tableView: UITableView!
+    private lazy var tableView = UITableView()
     
     //MARK: - Lifecycle
     override func viewDidLoad() {
@@ -71,16 +71,15 @@ final class FAQViewController: BaseViewController {
             }).disposed(by: disposeBag)
         
         viewModel.shownFAQ.bind(to: tableView.rx.items(cellIdentifier: FAQCell.reuseIdentifier, cellType: FAQCell.self)) { (index: Int, element: FAQ, cell: FAQCell) in
+        
             cell.data = element
         }.disposed(by: disposeBag)
         
-        tableView.rx.itemSelected.subscribe(onNext: { [weak self] indexPath in
-            guard let cell = self?.tableView.cellForRow(at: indexPath) as? FAQCell else { return }
-            self?.tableView.beginUpdates()
-            cell.isShowing.toggle()
-            self?.tableView.endUpdates()
-            
-        }).disposed(by: disposeBag)
+//        tableView.rx.itemSelected.subscribe(onNext: { [weak self] indexPath in
+//            guard let cell = self?.tableView.cellForRow(at: indexPath) as? FAQCell else { return }
+//            cell.setExpaned()
+//            self?.tableView.reloadRows(at: [indexPath], with: .none)
+//        }).disposed(by: disposeBag)
     }
 }
 
@@ -111,21 +110,31 @@ extension FAQViewController {
     }
     
     private func configureTableView(){
-        
-        tableView = UITableView()
-        tableView.rx.setDelegate(self).disposed(by: disposeBag)
         tableView.backgroundColor = .white
         tableView.separatorStyle = .none
         tableView.rowHeight = UITableView.automaticDimension
-        tableView.allowsMultipleSelection = true
+        tableView.allowsSelection = true
+        tableView.allowsMultipleSelection = false
         tableView.register(FAQCell.self, forCellReuseIdentifier: FAQCell.reuseIdentifier)
+        tableView.rx.setDelegate(self).disposed(by: disposeBag)
     }
 }
 //MARK: - UITableViewDelegate
 extension FAQViewController: UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let cell = self.tableView.cellForRow(at: indexPath) as? FAQCell else { return }
+        tableView.beginUpdates()
+        cell.data.updateExpanded()
+//        cell.expanded = !cell.expanded
+
+        tableView.endUpdates()
+    }
+
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        guard let cell = tableView.cellForRow(at: indexPath) as? FAQCell else { return 52 }
-        return CGFloat(cell.isShowing ? 68 + cell.data.height : 52)
+        guard let cell = tableView.cellForRow(at: indexPath) as? FAQCell else { return 60 }
+
+        return cell.data.expanded ? CGFloat(cell.data.height + 80) : 60
     }
 }
 

@@ -18,6 +18,9 @@ class GreenRoomViewController: BaseViewController {
     let viewModel: MainGreenRoomViewModel
     private var collectionView: UICollectionView!
     
+    private let nextButtonTrigger = PublishRelay<Void>()
+    private let prevButtonTrigger = PublishRelay<Void>()
+    
     private let greenRoomButton = UIButton().then {
         $0.setTitle("그린룸", for: .normal)
         $0.setTitleColor(.mainColor, for: .normal)
@@ -95,9 +98,12 @@ class GreenRoomViewController: BaseViewController {
 
         let dataSource = self.dataSource()
         
-        let input = MainGreenRoomViewModel.Input(greenroomTap: self.greenRoomButton.rx.tap.asObservable(),
-                                             myListTap: self.questionListButton.rx.tap.asObservable(),
-                                             trigger: self.rx.viewWillAppear.asObservable())
+        let input = MainGreenRoomViewModel.Input(
+            viewWillAppear: self.rx.viewWillAppear.asObservable(),
+            mainStatus: Observable.merge(greenRoomButton.rx.tap.map { 0 }, questionListButton.rx.tap.map { 1 }),
+            nextButtonTrigger: self.nextButtonTrigger.asObservable(),
+            prevButtonTrigger: self.prevButtonTrigger.asObservable()
+        )
         
         let output = self.viewModel.transform(input: input)
         
@@ -112,20 +118,20 @@ class GreenRoomViewController: BaseViewController {
                 let vc = FilteringQuestionViewController(viewModel: FilteringViewModel(categoryId: category.rawValue, publicQuestionService: PublicQuestionService()))
                 self.navigationController?.pushViewController(vc, animated: true)
             case .popular(question: let question):
-                let vc = PublicAnswerViewController(viewModel: PublicAnswerViewModel(id: question.id,
-                                                                                     scrapService: ScrapService(),
-                                                                                     publicQuestionService: PublicQuestionService()))
+                let vc = PublicAnswerListViewController(viewModel: PublicAnswerViewModel(id: question.id,
+                                                                                         scrapService: ScrapService(),
+                                                                                         publicQuestionService: PublicQuestionService()))
                 self.navigationController?.pushViewController(vc, animated: true)
             case .recent(question: let question):
-                let vc = PublicAnswerViewController(viewModel: PublicAnswerViewModel(id: question.id,
-                                                                                     scrapService: ScrapService(),
-                                                                                     publicQuestionService: PublicQuestionService()))
+                let vc = PublicAnswerListViewController(viewModel: PublicAnswerViewModel(id: question.id,
+                                                                                         scrapService: ScrapService(),
+                                                                                         publicQuestionService: PublicQuestionService()))
                 self.navigationController?.pushViewController(vc, animated: true)
             case .MyGreenRoom(question: let question):
                 guard let id = question.id else { return }
-                let vc = PublicAnswerViewController(viewModel: PublicAnswerViewModel(id: id,
-                                                                                     scrapService: ScrapService(),
-                                                                                     publicQuestionService: PublicQuestionService()))
+                let vc = PublicAnswerListViewController(viewModel: PublicAnswerViewModel(id: id,
+                                                                                         scrapService: ScrapService(),
+                                                                                         publicQuestionService: PublicQuestionService()))
                 self.navigationController?.pushViewController(vc, animated: true)
             case .MyQuestionList(question: let question):
                 let vc = UINavigationController(rootViewController: PrivateAnswerViewController(viewModel: PrivateAnswerViewModel(id: question.id)))
@@ -133,6 +139,8 @@ class GreenRoomViewController: BaseViewController {
                 self.present(vc, animated: true)
             }
         }).disposed(by: disposeBag)
+        
+        
         
         Observable.merge(greenRoomButton.rx.tap.map { 0 }, questionListButton.rx.tap.map { 1 })
             .subscribe(onNext: { tag in
@@ -245,27 +253,26 @@ extension GreenRoomViewController {
             switch item {
             case .filtering(interest: let category):
                 guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: GRFilteringCell.reuseIdentifier, for: indexPath) as? GRFilteringCell else { return UICollectionViewCell() }
-                print(category.title)
-                cell.category = category
+                cell.configure(title: category.title)
                 return cell
                 
             case .popular(question: let question):
                 guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PopularQuestionCell.reuseIdentifer, for: indexPath) as? PopularQuestionCell else { return UICollectionViewCell() }
-                cell.question = question
+                cell.configure(question: question)
                 return cell
                 
             case .recent(question: let question):
                 guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RecentQuestionCell.reuseIdentifer, for: indexPath) as? RecentQuestionCell else { return UICollectionViewCell() }
-                cell.question = question
+                cell.configure(question: question)
                 return cell
             case .MyGreenRoom(question: let question):
                 guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MyGreenRoomCell.reuseIdentifer, for: indexPath) as? MyGreenRoomCell else { return UICollectionViewCell() }
-                cell.question = question
+                cell.configure(question: question)
                 cell.delegate = self
                 return cell
             case .MyQuestionList(question: let question):
                 guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MyQuestionListCell.reuseIedentifier, for: indexPath) as? MyQuestionListCell else { return UICollectionViewCell() }
-                cell.question = question
+                cell.configure(question: question)
                 return cell
             }
         } configureSupplementaryView: { [weak self] dataSource, collectionView, kind, indexPath in
@@ -288,7 +295,7 @@ extension GreenRoomViewController {
                 
             case RecentPageFooterView.reuseIdentifier:
                 guard let footerView = collectionView.dequeueReusableSupplementaryView(ofKind: RecentPageFooterView.reuseIdentifier, withReuseIdentifier: RecentPageFooterView.reuseIdentifier, for: indexPath) as? RecentPageFooterView else { return UICollectionReusableView() }
-                footerView.bind(input: self.viewModel.currentBannerPage,pageNumber: 3)
+                footerView.bind(input: self.viewModel.currentBannerPage, pageNumber: 3)
                 return footerView
                 
             case MyGreenRoomHeader.reuseIdentifier:
@@ -300,7 +307,8 @@ extension GreenRoomViewController {
                 return footerView
             case GreenRoomCommonHeaderView.reuseIdentifier:
                 guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: GreenRoomCommonHeaderView.reuseIdentifier, withReuseIdentifier: GreenRoomCommonHeaderView.reuseIdentifier, for: indexPath) as? GreenRoomCommonHeaderView else { return UICollectionReusableView()}
-                header.title = "마이 질문 리스트"
+                header.configure(title: "마이 질문 리스트")
+                header.delegate = self
                 return header
             default:
                 return UICollectionReusableView()
@@ -323,8 +331,8 @@ extension GreenRoomViewController {
         
         let item = NSCollectionLayoutItem(
             layoutSize: NSCollectionLayoutSize(
-            widthDimension: .fractionalWidth(1.0),
-            heightDimension: .fractionalHeight(1.0))
+                widthDimension: .fractionalWidth(1.0),
+                heightDimension: .fractionalHeight(1.0))
         )
         
         let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.2))
@@ -420,7 +428,7 @@ extension GreenRoomViewController {
         section.visibleItemsInvalidationHandler = { [weak self] _, contentOffset, environment in
             
             let bannerIndex = Int(max(0, round(contentOffset.x / environment.container.contentSize.width)))
-
+            
             self?.viewModel.currentBannerPage.onNext(bannerIndex)
         }
         
@@ -508,9 +516,18 @@ extension GreenRoomViewController: RecentHeaderDelegate {
 extension GreenRoomViewController: MyGreenRoomCellDelegate {
     
     func didTapNext() {
+        self.nextButtonTrigger.accept(())
     }
     
     func didTapPrev() {
+        self.prevButtonTrigger.accept(())
     }
     
+}
+
+extension GreenRoomViewController: GreenRoomCommonHeaderViewDelegate {
+    func didTapViewAllMyQeustions() {
+        let vc = RecentPublicQuestionsViewController(viewModel: RecentPublicQuestionsViewModel())
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
 }

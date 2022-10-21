@@ -11,10 +11,7 @@ class MyQuestionListCell: UICollectionViewCell {
     
     static let reuseIedentifier = "MyQuestionListCell"
     
-    var question: PrivateQuestion! {
-        didSet { configure() }
-    }
-    
+    //MARK: - Properties
     private lazy var iconImageView = UIImageView().then {
         $0.image = UIImage(named: "scrap")
         $0.tintColor = .customGray
@@ -32,25 +29,13 @@ class MyQuestionListCell: UICollectionViewCell {
         $0.backgroundColor = .mainColor
     }
     
-    private lazy var containerView = UIView().then {
-        $0.backgroundColor = .white
-        $0.layer.cornerRadius = 15
-        $0.layer.maskedCorners = [.layerMaxXMaxYCorner,.layerMaxXMinYCorner,.layerMinXMaxYCorner]
-        $0.layer.borderWidth = 2
-        $0.layer.borderColor = UIColor.mainColor.cgColor
-    }
-    
-    private lazy var profileImageView = UIImageView(frame: .zero).then {
-        $0.contentMode = .scaleAspectFill
-        $0.tintColor = .mainColor
-        $0.layer.masksToBounds = false
-        $0.backgroundColor = .customGray
-    }
+    private lazy var containerView = UIView()
     
     private let categoryLabel = Utilities.shared.generateLabel(text: "디자인", color: .black, font: .sfPro(size: 12, family: .Semibold))
     
     private lazy var questionLabel = PaddingLabel(padding: UIEdgeInsets(top: 6, left: 0, bottom: 6, right: 6)).then {
         $0.numberOfLines = 0
+        $0.backgroundColor = .red
     }
     
     //MARK: - LifeCycle
@@ -67,8 +52,8 @@ class MyQuestionListCell: UICollectionViewCell {
     private func configureUI(){
         
         self.backgroundColor = .clear
-        
-        self.containerView.addSubview(profileImageView)
+        self.containerView.backgroundColor = .white
+        self.containerView.setMainLayer()
         self.containerView.addSubview(categoryLabel)
         self.containerView.addSubview(questionLabel)
         self.contentView.addSubview(groupCategoryNameLabel)
@@ -80,27 +65,17 @@ class MyQuestionListCell: UICollectionViewCell {
             make.trailing.equalToSuperview().offset(-bounds.size.width * 0.06)
             make.bottom.equalToSuperview().offset(-10)
         }
-        
-        let size = frame.size.width / 15
-        
-        profileImageView.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(12)
-            make.leading.equalToSuperview().offset(20)
-            make.width.height.equalTo(size)
-        }
-        
-        profileImageView.layer.cornerRadius = size / 2
 
         self.categoryLabel.snp.makeConstraints { make in
-            make.centerY.equalTo(profileImageView)
-            make.leading.equalTo(profileImageView.snp.trailing).offset(20)
+            make.leading.equalToSuperview().offset(30)
+            make.top.equalToSuperview().offset(10)
+            make.height.equalTo(20)
         }
 
         self.questionLabel.snp.makeConstraints { make in
             make.leading.equalTo(categoryLabel.snp.leading)
             make.top.equalTo(categoryLabel.snp.bottom)
             make.trailing.equalToSuperview()
-            make.bottom.equalToSuperview()
         }
         
         self.contentView.addSubview(iconImageView)
@@ -110,14 +85,13 @@ class MyQuestionListCell: UICollectionViewCell {
             make.width.height.equalTo(16)
         }
         
-        
         groupCategoryNameLabel.snp.makeConstraints { make in
             make.leading.equalTo(iconImageView.snp.trailing).offset(15)
             make.centerY.equalTo(iconImageView.snp.centerY)
         }
     }
     
-    private func configure(){
+    func configure(question: PrivateQuestion){
         self.questionLabel.attributedText = question.question.addLineSpacing(foregroundColor: .black)
         self.categoryLabel.text = question.categoryName
         self.groupNameLabel.text = question.groupName

@@ -21,18 +21,14 @@ final class MyGreenRoomCell: UICollectionViewCell {
     private var disposeBag = DisposeBag()
     
     weak var delegate: MyGreenRoomCellDelegate?
-    
-    var question: MyPublicQuestion! {
-        didSet { configure() }
-    }
-    
-    private lazy var leftButton = UIButton().then {
+
+    lazy var leftButton = UIButton().then {
         $0.setImage(UIImage(systemName: "chevron.left"), for: .normal)
         $0.imageView?.tintColor = .gray
         $0.contentMode = .scaleAspectFill
     }
     
-    private lazy var rightButton = UIButton().then {
+    lazy var rightButton = UIButton().then {
         $0.setImage(UIImage(systemName: "chevron.right"), for: .normal)
         $0.imageView?.tintColor = .gray
         $0.contentMode = .scaleAspectFill
@@ -100,7 +96,7 @@ final class MyGreenRoomCell: UICollectionViewCell {
         }
     }
     
-    private func configure(){
+    func configure(question: MyPublicQuestion){
         
         self.questionLabel.attributedText = question.question?.addLineSpacing(foregroundColor: .black, font: .sfPro(size: 20, family: .Regular))
         leftButton.isHidden = !question.hasPrev
@@ -110,12 +106,12 @@ final class MyGreenRoomCell: UICollectionViewCell {
     func bind() {
         leftButton.rx.tap.subscribe(onNext: {
             print("prev")
-            self.delegate?.didTapNext()
+            self.delegate?.didTapPrev()
         }).disposed(by: disposeBag)
         
         rightButton.rx.tap.subscribe(onNext: {
             print("next")
-            self.delegate?.didTapPrev()
+            self.delegate?.didTapNext()
         }).disposed(by: disposeBag)
     }
 }

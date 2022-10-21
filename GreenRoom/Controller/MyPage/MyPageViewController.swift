@@ -133,7 +133,7 @@ extension MyPageViewController {
             switch dataSource[indexPath.section] {
             case .setting(header: let header, items: _):
                 guard let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: SettingHeader.reuseIdentifier, withReuseIdentifier: SettingHeader.reuseIdentifier, for: indexPath) as? SettingHeader else { return UICollectionReusableView() }
-                headerView.text = header
+                headerView.configure(title: header)
                 return headerView
             default: return UICollectionReusableView()
             }

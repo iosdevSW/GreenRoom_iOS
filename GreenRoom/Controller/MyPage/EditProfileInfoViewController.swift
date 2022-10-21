@@ -11,7 +11,8 @@ import RxCocoa
 protocol EditProfileInfoDelegate {
     func editNickName(textField: Observable<String>)
 }
-class EditProfileInfoViewController: BaseViewController {
+
+final class EditProfileInfoViewController: BaseViewController {
     
     //MARK: - properties
     private let viewModel: EditProfileViewModel
@@ -40,7 +41,6 @@ class EditProfileInfoViewController: BaseViewController {
         configuration.baseForegroundColor = .black
         configuration.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 30, bottom: 0, trailing: 63)
         $0.titleLabel?.font = .sfPro(size: 16, family: .Regular)
-        $0.addTarget(self, action: #selector(didTapLogout), for: .touchUpInside)
         $0.imageView?.tintColor = .black
         $0.backgroundColor = .white
         
@@ -56,8 +56,6 @@ class EditProfileInfoViewController: BaseViewController {
         
         $0.titleLabel?.textColor = .black
         $0.titleLabel?.font = .sfPro(size: 16, family: .Regular)
-        
-        $0.addTarget(self, action: #selector(didTapWithdrawal), for: .touchUpInside)
         $0.configuration = configuration
     }
     
@@ -127,17 +125,16 @@ class EditProfileInfoViewController: BaseViewController {
                 guard let nickname = self?.nameTextField.text else { return }
                 self?.viewModel.updateUserInfo(nickName: nickname)
             }).disposed(by: disposeBag)
-    }
-    @objc func handleDismissal(){
-        navigationController?.popViewController(animated: true)
-    }
-    
-    @objc func didTapLogout(){
-        //        nameTextField.rx.bind()
-    }
-    
-    @objc func didTapWithdrawal(){
         
+        withdrawalButton.rx.tap
+            .subscribe(onNext: {
+                
+            }).disposed(by: disposeBag)
+        
+        logoutButton.rx.tap
+            .subscribe(onNext: {
+                
+            }).disposed(by: disposeBag)
     }
 }
 

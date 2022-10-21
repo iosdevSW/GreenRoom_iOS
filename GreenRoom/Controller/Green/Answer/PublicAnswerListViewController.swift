@@ -10,7 +10,7 @@ import RxSwift
 import RxCocoa
 import RxDataSources
 
-final class PublicAnswerViewController: BaseViewController {
+final class PublicAnswerListViewController: BaseViewController {
     
     //MARK: - Properties
     private var mode: PublicAnswerMode = .notPermission {
@@ -19,8 +19,10 @@ final class PublicAnswerViewController: BaseViewController {
     
     private let viewModel: PublicAnswerViewModel
     
-    private lazy var input = PublicAnswerViewModel.Input(scrapButtonTrigger: scrapButton.rx.tap.asObservable(),
-                                            registerGreenRoomTrigger: boxButton.rx.tap.asObservable())
+    private lazy var input = PublicAnswerViewModel.Input(
+        scrapButtonTrigger: scrapButton.rx.tap.asObservable(),
+        registerGreenRoomTrigger: boxButton.rx.tap.asObservable()
+    )
     
     private lazy var output = viewModel.transform(input: input)
     
@@ -152,12 +154,11 @@ final class PublicAnswerViewController: BaseViewController {
 }
 
 //MARK: - CollectionView
-extension PublicAnswerViewController {
+extension PublicAnswerListViewController {
     private func configureCollectionView() {
         let layout = UICollectionViewFlowLayout()
         layout.itemSize = CGSize(width: self.view.frame.width, height: 70)
         layout.minimumLineSpacing = 15
-        layout.headerReferenceSize = CGSize(width: self.view.frame.width, height: 100)
         
         self.collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.register(PublicAnswerCell.self, forCellWithReuseIdentifier: PublicAnswerCell.reuseIdentifier)
@@ -184,10 +185,19 @@ extension PublicAnswerViewController {
             return header
         }
     }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        
+        if self.mode == .permission {
+            return .zero
+        } else {
+            return CGSize(width: self.view.frame.width, height: 100)
+        }
+    }
 }
 
 //MARK: - Mode
-extension PublicAnswerViewController {
+extension PublicAnswerListViewController {
     
     private func setButtonAttribute() {
         switch mode {
