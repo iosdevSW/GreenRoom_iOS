@@ -49,7 +49,7 @@ final class MyGreenRoomFooterView: UICollectionReusableView {
         }
     }
     
-    func configure(with question: MyPublicQuestion) {
+    func configure(with question: MyGreenRoomQuestion) {
         self.participantLabel.text = "\(question.participants)명이 참여하고 있습니다."
         
         guard let images = question.profileImages else { return }

@@ -90,7 +90,7 @@ final class PopularQuestionCell: UICollectionViewCell {
   
     }
     
-    func configure(question: PopularPublicQuestion){
+    func configure(question: PopularGreenRoomQuestion){
         self.nameLabel.text = question.name
         self.questionLabel.attributedText = question.question.addLineSpacing(foregroundColor: .black)
         self.categoryLabel.text = question.categoryName

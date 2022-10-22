@@ -24,6 +24,13 @@ struct DetailPublicQuestionDTO: Codable {
             return .notPermission
         }
     }
+    
+    func getAnswerHeaderQuestion() -> QuestionHeader {
+        return QuestionHeader(id: id,
+                              question: question,
+                              categoryName: categoryName,
+                              groupCategoryName: "")
+    }
 }
 
 /** 그린룸 질문에 대한 답변*/

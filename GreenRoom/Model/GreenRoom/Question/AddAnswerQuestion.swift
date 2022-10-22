@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Question {
+struct QuestionHeader {
     let id: Int
     let question: String
     let categoryName: String

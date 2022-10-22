@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct MyPublicQuestion: Codable {
+struct MyGreenRoomQuestion: Codable {
     let id: Int?
     let participants: Int
     let question: String?

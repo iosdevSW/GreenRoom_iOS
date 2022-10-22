@@ -9,7 +9,7 @@ import UIKit
 import RxSwift
 
 protocol ScrapViewCellDelegate: AnyObject {
-    func didSelectScrapCell(isSelected: Bool, question: PublicQuestion)
+    func didSelectScrapCell(isSelected: Bool, question: GreenRoomQuestion)
 }
 
 class ScrapViewCell: UICollectionViewCell {
@@ -19,7 +19,7 @@ class ScrapViewCell: UICollectionViewCell {
     //MARK: - Properties
     var disposeBag = DisposeBag()
     
-    var question: PublicQuestion! {
+    var question: GreenRoomQuestion! {
         didSet { configure() }
     }
     

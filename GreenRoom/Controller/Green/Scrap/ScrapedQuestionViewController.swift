@@ -169,7 +169,7 @@ extension ScrapedQuestionViewController {
 //MARK: - ScrapViewCellDelegate
 extension ScrapedQuestionViewController: ScrapViewCellDelegate {
     
-    func didSelectScrapCell(isSelected: Bool, question: PublicQuestion) {
+    func didSelectScrapCell(isSelected: Bool, question: GreenRoomQuestion) {
         
         if isSelected {
             self.viewModel.selectedIndexesObservable

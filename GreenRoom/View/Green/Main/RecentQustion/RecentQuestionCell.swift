@@ -60,7 +60,7 @@ final class RecentQuestionCell: UICollectionViewCell {
         }
     }
     
-    func configure(question: PublicQuestion){
+    func configure(question: GreenRoomQuestion){
         
         self.questionLabel.attributedText = question.question.addLineSpacing(foregroundColor: .black)
         
