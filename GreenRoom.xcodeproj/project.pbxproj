@@ -96,6 +96,8 @@
 		E4206CD828D5EE810011E117 /* CreateGRModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4206CD728D5EE810011E117 /* CreateGRModel.swift */; };
 		E4206CDA28D623930011E117 /* CustomPopUpDatePickerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4206CD928D623930011E117 /* CustomPopUpDatePickerController.swift */; };
 		E4213BD129019539007F0297 /* UITextField+.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4213BD029019539007F0297 /* UITextField+.swift */; };
+		E4213BDE2902FB8D007F0297 /* UIImageView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4213BDD2902FB8D007F0297 /* UIImageView+.swift */; };
+		E4213BE02903A0C2007F0297 /* ProfileImageType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4213BDF2903A0C2007F0297 /* ProfileImageType.swift */; };
 		E427EC0328C791150046B4AA /* InfoHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E427EC0228C791150046B4AA /* InfoHeaderView.swift */; };
 		E427EC0628C791850046B4AA /* Info.swift in Sources */ = {isa = PBXBuildFile; fileRef = E427EC0528C791850046B4AA /* Info.swift */; };
 		E427EC0828C7937B0046B4AA /* SFProText-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = E427EC0728C7937B0046B4AA /* SFProText-Bold.otf */; };
@@ -282,6 +284,8 @@
 		E4206CD728D5EE810011E117 /* CreateGRModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateGRModel.swift; sourceTree = "<group>"; };
 		E4206CD928D623930011E117 /* CustomPopUpDatePickerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPopUpDatePickerController.swift; sourceTree = "<group>"; };
 		E4213BD029019539007F0297 /* UITextField+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+.swift"; sourceTree = "<group>"; };
+		E4213BDD2902FB8D007F0297 /* UIImageView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+.swift"; sourceTree = "<group>"; };
+		E4213BDF2903A0C2007F0297 /* ProfileImageType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImageType.swift; sourceTree = "<group>"; };
 		E427EC0228C791150046B4AA /* InfoHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoHeaderView.swift; sourceTree = "<group>"; };
 		E427EC0528C791850046B4AA /* Info.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Info.swift; sourceTree = "<group>"; };
 		E427EC0728C7937B0046B4AA /* SFProText-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFProText-Bold.otf"; sourceTree = "<group>"; };
@@ -457,6 +461,7 @@
 			children = (
 				DBA9451128C653F200B6E16A /* FAQ.swift */,
 				DBA9451028C653F200B6E16A /* User.swift */,
+				E4213BDF2903A0C2007F0297 /* ProfileImageType.swift */,
 			);
 			path = MyPage;
 			sourceTree = "<group>";
@@ -958,10 +963,11 @@
 				E46E4BF028DD734C00D1691F /* UIFont+.swift */,
 				E46E4BF328DD769A00D1691F /* UIButton+.swift */,
 				E46E4C0528E14FC500D1691F /* UILabel+.swift */,
+				E4213BD029019539007F0297 /* UITextField+.swift */,
+				E4213BDD2902FB8D007F0297 /* UIImageView+.swift */,
 				E46E4C0728E14FD400D1691F /* Date+.swift */,
 				E44456ED28E6E89B0034A207 /* NotificationName+.swift */,
 				E4D49AEB28EF287300CF69B1 /* String+.swift */,
-				E4213BD029019539007F0297 /* UITextField+.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1342,6 +1348,7 @@
 				DBA8ED7428BDDCA1007526CF /* DetailCell.swift in Sources */,
 				DB9D9F4F28F436130061D7DB /* KPQuestionEditViewController.swift in Sources */,
 				DBB251EA28D98C7000310820 /* KeywordPracticeService.swift in Sources */,
+				E4213BE02903A0C2007F0297 /* ProfileImageType.swift in Sources */,
 				E4460DD328CA01D400AFA108 /* FilteringQuestionViewController.swift in Sources */,
 				E4EF361628C4BED700746050 /* RecentHeader.swift in Sources */,
 				DB006B9328C342E200867013 /* KPQuestionsViewController.swift in Sources */,
@@ -1370,6 +1377,7 @@
 				DBE7A54F28996C2000E9A4E9 /* CheckLabel.swift in Sources */,
 				DBB251EC28D9B7B400310820 /* LodingIndicator.swift in Sources */,
 				DB8D163A28B8D79900E3F237 /* ProgressBarView.swift in Sources */,
+				E4213BDE2902FB8D007F0297 /* UIImageView+.swift in Sources */,
 				DBD082572897E75B0092241F /* KPFindQuestionViewController.swift in Sources */,
 				DBA8ED6428B9D336007526CF /* RecentSearchKeyword+CoreDataClass.swift in Sources */,
 				DBA9451D28CE0E0400B6E16A /* KPGreenRoomQuestionsViewController.swift in Sources */,
