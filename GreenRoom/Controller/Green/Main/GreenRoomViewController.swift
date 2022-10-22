@@ -34,6 +34,7 @@ class GreenRoomViewController: BaseViewController {
         $0.titleLabel?.font = .sfPro(size: 20, family: .Bold)
         $0.backgroundColor = .clear
     }
+    
     private let searchButton = UIButton().then {
         $0.setImage(UIImage(named: "magnifyingglass"), for: .normal)
         $0.titleLabel?.font = .sfPro(size: 20, family: .Bold)
@@ -139,9 +140,7 @@ class GreenRoomViewController: BaseViewController {
                 self.present(vc, animated: true)
             }
         }).disposed(by: disposeBag)
-        
-        
-        
+
         Observable.merge(greenRoomButton.rx.tap.map { 0 }, questionListButton.rx.tap.map { 1 })
             .subscribe(onNext: { tag in
                 
@@ -186,7 +185,6 @@ class GreenRoomViewController: BaseViewController {
         ]
         
         navigationController?.navigationBar.tintColor = .mainColor
-        
     }
     
     override func configureUI(){
