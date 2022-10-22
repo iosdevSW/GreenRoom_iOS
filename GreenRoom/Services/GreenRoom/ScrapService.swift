@@ -12,13 +12,13 @@ import Alamofire
 final class ScrapService {
     
     private let baseURL = "\(Constants.baseURL)/api/green-questions/"
-    func fetchScrapQuestions() -> Observable<[PublicQuestion]> {
+    func fetchScrapQuestions() -> Observable<[GreenRoomQuestion]> {
         let url = baseURL + "scrap"
         
         return Observable.create { emitter in
             AF.request(url, method: .get, encoding: URLEncoding.default, interceptor: AuthManager())
                 .validate(statusCode: 200..<300)
-                .responseDecodable(of: [PublicQuestion].self) { response in
+                .responseDecodable(of: [GreenRoomQuestion].self) { response in
                     switch response.result {
                     case .success(let scrapQuestions):
                         emitter.onNext(scrapQuestions)

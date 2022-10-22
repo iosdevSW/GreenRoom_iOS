@@ -86,7 +86,7 @@ class RegisterNameViewController: UIViewController {
                 if text == "" {
                     self.nextButton.setEnableButton(false)
                 }else {
-                    LoginService.checkName(name: text!)
+                    AuthService.shared.checkName(name: text!)
                         .subscribe(onNext:{ isDuplicated in
                             self.checkDuplicateName(isDuplicated: isDuplicated)
                         }).disposed(by: self.disposeBag)
@@ -110,11 +110,11 @@ class RegisterNameViewController: UIViewController {
     }
     
     @objc func didClickRandomNameButton(_: UIButton){
-        LoginService.generateRandomName()
+        AuthService.shared.generateRandomName()
             .subscribe(on: MainScheduler.instance)
             .subscribe(onNext: { name in
                 self.nameTextfield.rx.text.onNext(name)
-                LoginService.checkName(name: name)
+                AuthService.shared.checkName(name: name)
                     .subscribe(onNext:{ isDuplicated in
                         self.checkDuplicateName(isDuplicated: isDuplicated)
                     }).disposed(by: self.disposeBag)

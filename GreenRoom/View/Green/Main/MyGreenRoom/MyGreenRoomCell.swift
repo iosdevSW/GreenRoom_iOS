@@ -96,7 +96,7 @@ final class MyGreenRoomCell: UICollectionViewCell {
         }
     }
     
-    func configure(question: MyPublicQuestion){
+    func configure(question: MyGreenRoomQuestion){
         
         self.questionLabel.attributedText = question.question?.addLineSpacing(foregroundColor: .black, font: .sfPro(size: 20, family: .Regular))
         leftButton.isHidden = !question.hasPrev
@@ -105,12 +105,10 @@ final class MyGreenRoomCell: UICollectionViewCell {
     
     func bind() {
         leftButton.rx.tap.subscribe(onNext: {
-            print("prev")
             self.delegate?.didTapPrev()
         }).disposed(by: disposeBag)
         
         rightButton.rx.tap.subscribe(onNext: {
-            print("next")
             self.delegate?.didTapNext()
         }).disposed(by: disposeBag)
     }

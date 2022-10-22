@@ -49,12 +49,19 @@ final class GreenRoomCommonHeaderView: UICollectionReusableView {
     
     private func configureUI(){
         self.backgroundColor = .backgroundGray
-        self.addSubview(headerLabel)
         
+        self.addSubview(headerLabel)
         headerLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(25)
             make.top.equalToSuperview().offset(22)
         }
+        
+        self.addSubview(viewAllQeustionsButton)
+        viewAllQeustionsButton.snp.makeConstraints { make in
+            make.centerY.equalTo(headerLabel.snp.centerY)
+            make.trailing.equalToSuperview().offset(-20)
+        }
+        
     }
     
     private func binding() {

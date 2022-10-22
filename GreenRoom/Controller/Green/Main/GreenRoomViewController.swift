@@ -34,14 +34,15 @@ class GreenRoomViewController: BaseViewController {
         $0.titleLabel?.font = .sfPro(size: 20, family: .Bold)
         $0.backgroundColor = .clear
     }
+    
     private let searchButton = UIButton().then {
-        $0.setImage(UIImage(systemName: "magnifyingglass"), for: .normal)
+        $0.setImage(UIImage(named: "magnifyingglass"), for: .normal)
         $0.titleLabel?.font = .sfPro(size: 20, family: .Bold)
         $0.backgroundColor = .clear
     }
     
     private let bookmarkButton = UIButton().then {
-        $0.setImage(UIImage(systemName: "bookmark"), for: .normal)
+        $0.setImage(UIImage(named: "bookmark"), for: .normal)
         $0.imageView?.contentMode = .scaleAspectFill
         $0.titleLabel?.font = .sfPro(size: 20, family: .Bold)
         $0.backgroundColor = .clear
@@ -139,9 +140,7 @@ class GreenRoomViewController: BaseViewController {
                 self.present(vc, animated: true)
             }
         }).disposed(by: disposeBag)
-        
-        
-        
+
         Observable.merge(greenRoomButton.rx.tap.map { 0 }, questionListButton.rx.tap.map { 1 })
             .subscribe(onNext: { tag in
                 
@@ -186,7 +185,6 @@ class GreenRoomViewController: BaseViewController {
         ]
         
         navigationController?.navigationBar.tintColor = .mainColor
-        
     }
     
     override func configureUI(){
@@ -304,7 +302,13 @@ extension GreenRoomViewController {
                 
             case MyGreenRoomFooterView.reuseIdentifier:
                 guard let footerView = collectionView.dequeueReusableSupplementaryView(ofKind: MyGreenRoomFooterView.reuseIdentifier, withReuseIdentifier: MyGreenRoomFooterView.reuseIdentifier, for: indexPath) as? MyGreenRoomFooterView else { return UICollectionReusableView() }
+                switch dataSource[indexPath.section].items[indexPath.row] {
+                case .MyGreenRoom(question: let question):
+                    footerView.configure(with: question)
+                default: break
+                }
                 return footerView
+                
             case GreenRoomCommonHeaderView.reuseIdentifier:
                 guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: GreenRoomCommonHeaderView.reuseIdentifier, withReuseIdentifier: GreenRoomCommonHeaderView.reuseIdentifier, for: indexPath) as? GreenRoomCommonHeaderView else { return UICollectionReusableView()}
                 header.configure(title: "마이 질문 리스트")

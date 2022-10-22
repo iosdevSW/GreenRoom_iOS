@@ -37,13 +37,13 @@ final class PublicQuestionService {
     }
     
     /** 최근 그린룸 질문 조회*/
-    func fetchRecentPublicQuestions() -> Observable<[PublicQuestion]>{
+    func fetchRecentPublicQuestions() -> Observable<[GreenRoomQuestion]>{
         let requestURL = baseURL + "/recent-questions"
         
         return Observable.create { emmiter in
             AF.request(requestURL, method: .get, encoding: URLEncoding.default, interceptor: AuthManager())
                 .validate(statusCode: 200..<300)
-                .responseDecodable(of: [PublicQuestion].self) { response in
+                .responseDecodable(of: [GreenRoomQuestion].self) { response in
                     
                     switch response.result {
                     case .success(let questions):
@@ -57,7 +57,7 @@ final class PublicQuestionService {
     }
     
     /** 내가 생성한 그린룸 질문 */
-    func fetchPublicQuestions(page: Int = 0) -> Observable<MyPublicQuestion>{
+    func fetchPublicQuestions(page: Int = 0) -> Observable<MyGreenRoomQuestion>{
         
         var requestURL = baseURL + "/create-questions"
         
@@ -65,11 +65,10 @@ final class PublicQuestionService {
             requestURL += "?page=\(page)"
         }
         
-        print(requestURL)
         return Observable.create { emitter in
             AF.request(requestURL, method: .get, encoding: URLEncoding.default, interceptor: AuthManager())
                 .validate(statusCode: 200..<300)
-                .responseDecodable(of: MyPublicQuestion.self) { response in
+                .responseDecodable(of: MyGreenRoomQuestion.self) { response in
                     switch response.result {
                     case .success(let question):
                         emitter.onNext(question)
@@ -159,14 +158,14 @@ final class PublicQuestionService {
     
     //MARK: - 생성
     /** 인기있는 그린룸 질문 조회*/
-    func fetchPopularPublicQuestions() -> Observable<[PopularPublicQuestion]>{
+    func fetchPopularPublicQuestions() -> Observable<[PopularGreenRoomQuestion]>{
         
         let requestURL = baseURL + "/popular-questions"
         
         return Observable.create { emmiter in
             AF.request(requestURL, method: .get, encoding: URLEncoding.default, interceptor: AuthManager())
                 .validate(statusCode: 200..<300)
-                .responseDecodable(of: [PopularPublicQuestion].self) { response in
+                .responseDecodable(of: [PopularGreenRoomQuestion].self) { response in
                     
                     switch response.result {
                     case .success(let questions):

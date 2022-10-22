@@ -8,12 +8,12 @@
 import UIKit
 import RxSwift
 
-final class QuestionHeaderView: UIView {
+final class AnswerHeaderView: UIView {
     
-    static let reuseIdentifier = "QuestionHeaderView"
+    static let reuseIdentifier = "AnswerHeaderView"
     
     //MARK: - Properties
-    var question: Question! {
+    var question: QuestionHeader! {
         didSet { configure() }
     }
     

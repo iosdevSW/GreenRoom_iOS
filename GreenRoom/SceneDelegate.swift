@@ -74,7 +74,7 @@ extension SceneDelegate {
         
         let navigationController = UINavigationController(rootViewController: viewController)
         navigationController.title = title
-        navigationController.tabBarItem.image = UIImage(named: "keyword")
+        navigationController.tabBarItem.image = image
         navigationController.tabBarItem.tag = 2
         
         return navigationController

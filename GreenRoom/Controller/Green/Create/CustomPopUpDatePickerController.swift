@@ -7,7 +7,7 @@
 
 import UIKit
 import RxSwift
- 
+
 final class CustomPopUpDatePickerController: BaseViewController {
     
     //MARK: - Properties
@@ -16,6 +16,7 @@ final class CustomPopUpDatePickerController: BaseViewController {
     private var blurView = UIVisualEffectView().then {
         $0.effect = UIBlurEffect(style: .dark)
         $0.alpha = 0.3
+        $0.isHidden = true
     }
     
     private let titleLabel = UILabel().then {
@@ -84,14 +85,26 @@ final class CustomPopUpDatePickerController: BaseViewController {
         super.viewDidLoad()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        UIView.transition(with: self.view, duration: 0.5, options: [.transitionCrossDissolve], animations: {
+            self.blurView.isHidden = false
+        }, completion: nil)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.blurView.isHidden = true
+    }
+    
     //MARK: - Configure
     override func configureUI(){
         
         self.view.addSubview(blurView)
         self.blurView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
-            make.top.equalToSuperview()
-            make.height.equalToSuperview()
+            make.height.leading.trailing.equalToSuperview()
+            make.top.equalToSuperview().offset(-200)
         }
         
         self.view.addSubview(containerView)
@@ -150,9 +163,9 @@ final class CustomPopUpDatePickerController: BaseViewController {
     override func setupBinding() {
         datePicker.rx.controlEvent(.valueChanged)
             .map { self.datePicker.date.getMinutes() }
-            .subscribe(onNext: { [weak self] date in
-                self?.setTimeLabel.attributedText = self?.getDateAttributeText(minutes: date)
-            }).disposed(by: disposeBag)
+            .map { self.getDateAttributeText(minutes: $0) }
+            .bind(to: self.setTimeLabel.rx.attributedText)
+            .disposed(by: disposeBag)
         
         cancelButton.rx.tap.subscribe(onNext: { [weak self] _ in
             self?.dismiss(animated: true)
@@ -162,7 +175,7 @@ final class CustomPopUpDatePickerController: BaseViewController {
             self?.dismiss(animated: true)
         }).disposed(by: disposeBag)
     }
-
+    
     //MARK: - Selector
     private func getDateAttributeText(minutes: Int) -> NSMutableAttributedString {
         let hour = String(format: "%02d", minutes/60)

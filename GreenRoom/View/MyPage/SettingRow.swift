@@ -80,10 +80,11 @@ final class SettingRow: UICollectionViewCell {
         case .language:
             self.infoLabel.attributedText = Utilities.shared.textWithIcon(text: "한국어", image: UIImage(systemName: "globe"),imageColor: .mainColor,iconPosition: .right)
         case .interest:
-            let cateogryId = UserDefaults.standard.integer(forKey: "CategoryID")
-            guard let category = Category(rawValue: cateogryId) else { return }
-            
-            self.infoLabel.attributedText = Utilities.shared.textWithIcon(text: category.title, image: UIImage(named: category.selectedImageName), imageColor: nil, iconPosition: .right)
+            DispatchQueue.main.async {
+                let categoryId = UserDefaults.standard.integer(forKey: "CategoryID")
+                guard let category = Category(rawValue: categoryId) else { return }
+                self.infoLabel.attributedText = Utilities.shared.textWithIcon(text: category.title, image: UIImage(named: category.selectedImageName), imageColor: nil, iconPosition: .right)
+            }
         case .version:
             return
         default:

@@ -12,13 +12,15 @@ class MyQuestionListCell: UICollectionViewCell {
     static let reuseIedentifier = "MyQuestionListCell"
     
     //MARK: - Properties
+    private lazy var containerView = UIView()
+    
     private lazy var iconImageView = UIImageView().then {
         $0.image = UIImage(named: "scrap")
         $0.tintColor = .customGray
         $0.contentMode = .scaleAspectFill
     }
     
-    private var groupCategoryNameLabel = UILabel().then {
+    private var groupCategoryNameLabel = PaddingLabel(padding: UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)).then {
         $0.backgroundColor = .mainColor
         $0.textColor = .white
         $0.font = .sfPro(size: 12, family: .Semibold)
@@ -28,14 +30,11 @@ class MyQuestionListCell: UICollectionViewCell {
     private let groupNameLabel = Utilities.shared.generateLabel(text: "디자인", color: .black, font: .sfPro(size: 12, family: .Semibold)).then {
         $0.backgroundColor = .mainColor
     }
-    
-    private lazy var containerView = UIView()
-    
+
     private let categoryLabel = Utilities.shared.generateLabel(text: "디자인", color: .black, font: .sfPro(size: 12, family: .Semibold))
     
     private lazy var questionLabel = PaddingLabel(padding: UIEdgeInsets(top: 6, left: 0, bottom: 6, right: 6)).then {
         $0.numberOfLines = 0
-        $0.backgroundColor = .red
     }
     
     //MARK: - LifeCycle
@@ -95,7 +94,7 @@ class MyQuestionListCell: UICollectionViewCell {
         self.questionLabel.attributedText = question.question.addLineSpacing(foregroundColor: .black)
         self.categoryLabel.text = question.categoryName
         self.groupNameLabel.text = question.groupName
-        self.groupCategoryNameLabel.text = question.groupCategoryName
+        self.groupCategoryNameLabel.text = question.groupCategoryName.isEmpty ? "-" : question.groupCategoryName
     }
     
 }

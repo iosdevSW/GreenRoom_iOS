@@ -32,7 +32,7 @@ final class ScrapViewModel: ViewModelType {
 
     func transform(input: Input) -> Output {
         
-        input.trigger.flatMap { _ -> Observable<[PublicQuestion]> in
+        input.trigger.flatMap { _ -> Observable<[GreenRoomQuestion]> in
             return self.scrapService.fetchScrapQuestions()
         }.map { [ScrapSectionModel(items: $0)] }
             .bind(to: scrapObesrvable)
@@ -48,7 +48,7 @@ final class ScrapViewModel: ViewModelType {
         input.buttonTab.withLatestFrom(selectedIndexesObservable.asObservable())
             .flatMap { ids in
                 return self.scrapService.deleteScrapQuestion(ids: ids)
-            }.flatMap { _ -> Observable<[PublicQuestion]> in
+            }.flatMap { _ -> Observable<[GreenRoomQuestion]> in
                 return self.scrapService.fetchScrapQuestions()
             }.map { [ScrapSectionModel(items: $0)] }
                 .bind(to: scrapObesrvable)

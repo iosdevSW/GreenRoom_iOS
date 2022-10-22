@@ -10,38 +10,16 @@ import SwiftKeychainWrapper
 import Alamofire
 import RxSwift
 
-enum ImageType {
-    case JPEG(image: Data)
-    case PNG(image: Data)
-    
-    var description: String {
-        switch self {
-        case .JPEG(image: _):
-            return "jpeg"
-        case .PNG(image: _):
-            return "png"
-        }
-    }
-    
-    var data: Data {
-        switch self {
-        case .PNG(image: let data):
-            return data
-        case .JPEG(image: let data):
-            return data
-
-        }
-    }
-}
-
-class UserService {
+final class UserService {
     
     //MARK: - 회원정보 조회
     func fetchUserInfo() -> Observable<User> {
-        let url = URL(string: Constants.baseURL + "/api/users")!
         
         return Observable.create { emitter in
-            AF.request(url,interceptor: AuthManager()).validate().responseDecodable(of: User.self) { response in
+            AF.request(Constants.baseURL + "/api/users",
+                       interceptor: AuthManager())
+            .validate()
+            .responseDecodable(of: User.self) { response in
                 switch response.result {
                 case .success(let user):
                     UserDefaults.standard.set(user.categoryID, forKey: "CategoryID")
@@ -53,74 +31,69 @@ class UserService {
             return Disposables.create()
         }
     }
-    
-    
 }
 
 //MARK: - /api/users/profile-image
 extension UserService {
     
-    func updateProfileImage(image: UIImage?,completion:@escaping(Bool) -> Void){
-        
-        guard let imageData = convertImage(image: image) else { return }
+    func updateProfileImage(image: UIImage?) -> Single<Bool> {
+        guard let imageData = convertImage(image: image) else { return Single.just(false) }
         
         let param = ["profileImage": "user-profile-image.\(imageData.description)"]
         
-        self.fetchPresignedURL(parameters: param) { url in
-            guard let presignedURL = URL(string: url) else { return }
-            self.uploadImage(imageData: imageData.data, url: presignedURL, type: imageData.description) { completed in
-                completion(completed)
-            }
-        }
+        return self.fetchPresignedURL(parameters: param)
+            .flatMap { self.uploadImage(url: $0, imageData: imageData.data) }
     }
     
-    private func uploadImage(imageData: Data, url: URL, type: String,completion: @escaping(Bool) -> Void){
+    private func uploadImage(url: String, imageData: Data) -> Single<Bool> {
         
-        let headers: HTTPHeaders = [
-            "Content-Type": "image/\(type)"
-        ]
-        
-        AF.upload(imageData, to: url, method: .put, headers: headers, interceptor: AuthManager()).response { response in
-            switch response.result {
-            case .success(_):
-                print("DEBUG: image upload success with AWS S3")
-                completion(true)
-                break
-            case .failure(let error):
-                print("DEBUG: \(error.localizedDescription)")
-                completion(false)
-                break
+        return Single.create { emitter in
+            AF.upload(imageData, to: url, method: .put).response { response in
+                switch response.result {
+                case .success(_):
+                    print("DEBUG: image upload success with AWS S3")
+                    emitter(.success(true))
+                case .failure(let error):
+                    emitter(.failure(error))
+                }
             }
+            return Disposables.create()
         }
     }
     
-    private func fetchPresignedURL(parameters: [String: String], completion:@escaping(String) -> Void) {
-        guard let url = URL(string: Constants.baseURL + "/api/users/profile-image") else {
-            return
-            
-        }
-
-        AF.request(url, method: .put, parameters: parameters, encoder: .json, interceptor: AuthManager()).validate(statusCode: 200..<300).responseDecodable(of: PresignedURL.self) { response in
-            switch response.result {
-            case .success(let url):
-                completion(url.profileImage)
-            case .failure(_):
-                print("DEBUG : failure")
-                break
+    private func fetchPresignedURL(parameters: [String: String]) -> Single<String> {
+        return Single.create { emitter in
+            AF.request(Constants.baseURL + "/api/users/profile-image",
+                       method: .put,
+                       parameters: parameters,
+                       encoder: .json,
+                       interceptor: AuthManager())
+            .validate(statusCode: 200..<300)
+            .responseDecodable(of: PresignedURL.self) { response in
+                switch response.result {
+                case .success(let url):
+                    emitter(.success(url.profileImage))
+                case .failure(let error):
+                    emitter(.failure(error))
+                }
             }
+            return Disposables.create()
         }
     }
     
-    func convertImage(image: UIImage?) -> ImageType? {
+    private func convertImage(image: UIImage?) -> ProfileImageType? {
         if let jpegData = image?.jpegData(compressionQuality: 1.0) {
-            print("DEBUG: convent error to PNG")
+            print("jpegData")
             return .JPEG(image: jpegData)
             
         } else if let pngData = image?.pngData() {
             print("DEBUG: convent error to JPEG")
             return .PNG(image: pngData)
+        } else {
+            print("nil")
+            return nil
         }
-        return nil
+        
     }
 }
 

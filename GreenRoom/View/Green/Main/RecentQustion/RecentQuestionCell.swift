@@ -12,10 +12,10 @@ final class RecentQuestionCell: UICollectionViewCell {
     
     //MARK: - Properties
     private lazy var profileImageView = UIImageView(frame: .zero).then {
-        $0.contentMode = .scaleAspectFit
-        $0.layer.cornerRadius = frame.size.width * 0.08 / 2
+        $0.contentMode = .scaleAspectFill
+        $0.layer.cornerRadius = frame.size.width / 12
         $0.layer.masksToBounds = true
-        $0.backgroundColor = .blue
+        $0.image = UIImage(named: "CharacterProfile1")
     }
     
     private let categoryLabel = Utilities.shared.generateLabel(text: "디자인", color: .black, font: .sfPro(size: 12, family: .Semibold))
@@ -56,18 +56,18 @@ final class RecentQuestionCell: UICollectionViewCell {
         profileImageView.snp.makeConstraints { make in
             make.top.equalTo(questionLabel.snp.bottom).offset(10)
             make.trailing.equalToSuperview().offset(-13)
-            make.width.height.equalTo(frame.size.width * 0.15)
+            make.width.height.equalTo(frame.size.width / 6)
         }
     }
     
-    func configure(question: PublicQuestion){
+    func configure(question: GreenRoomQuestion){
         
         self.questionLabel.attributedText = question.question.addLineSpacing(foregroundColor: .black)
         
         self.categoryLabel.text = question.categoryName
         guard let url = URL(string: question.profileImage) else { return }
         
-        self.profileImageView.kf.setImage(with: url)
+        self.profileImageView.kf.setImage(with: url, placeholder: UIImage(named:"CharacterProfile1"))
         
     }
 }

@@ -31,6 +31,11 @@ final class RecentPublicQuestionsViewController: BaseViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.left"),
+                                                                style: .plain,
+                                                                target: self,
+                                                                action: #selector(handleDismissal))
+        self.navigationController?.navigationBar.tintColor = .mainColor
         guard let tabbarcontroller = tabBarController as? CustomTabbarController else { return }
         tabbarcontroller.createButton.isHidden = true
         self.tabBarController?.tabBar.isHidden = true
@@ -75,6 +80,10 @@ final class RecentPublicQuestionsViewController: BaseViewController {
                 }
                 
             }).disposed(by: disposeBag)
+    }
+    
+    @objc func handleDismissal() {
+        self.navigationController?.popViewController(animated: true)
     }
 }
 
