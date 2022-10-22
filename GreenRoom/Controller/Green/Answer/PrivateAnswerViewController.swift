@@ -30,7 +30,7 @@ final class PrivateAnswerViewController: BaseViewController {
     
     private var viewModel: PrivateAnswerViewModel!
     
-    private var headerView = QuestionHeaderView(frame: .zero)
+    private var headerView = AnswerHeaderView(frame: .zero)
     private var keywordView: KeywordRegisterView!
     private var collectionView: UICollectionView!
     
@@ -200,7 +200,7 @@ final class PrivateAnswerViewController: BaseViewController {
         output.answer.subscribe(onNext: { [weak self] answer in
             
             guard let self = self else { return }
-            self.headerView.question = Question(id: answer.id, question: answer.question, categoryName: answer.categoryName, groupCategoryName: answer.groupCategoryName)
+            self.headerView.question = QuestionHeader(id: answer.id, question: answer.question, categoryName: answer.categoryName, groupCategoryName: answer.groupCategoryName)
 
             if let answer = answer.answer {
                 self.mode = .written(answer: answer)

@@ -16,7 +16,7 @@ final class DetailPublicAnswerViewController: BaseViewController {
     private lazy var output = viewModel.transform(input: DetailPublicAnswerViewModel.Input())
     
     private lazy var scrollView = UIScrollView()
-    private lazy var headerView = QuestionHeaderView(frame: .zero)
+    private lazy var headerView = AnswerHeaderView(frame: .zero)
     
     private lazy var profileImageView = UIImageView().then {
         $0.contentMode = .scaleAspectFit

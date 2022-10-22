@@ -8,11 +8,11 @@
 import UIKit
 import RxSwift
 
-final class MakePublicAnswerViewController: BaseViewController {
+final class AddPublicAnswerViewController: BaseViewController {
     
     //MARK: - Properties
     private let viewModel: MakePublicAnswerViewModel
-    private var headerView = QuestionHeaderView(frame: .zero)
+    private var headerView = AnswerHeaderView(frame: .zero)
     private var keywordView: KeywordRegisterView!
     
     private let doneButton = UIButton().then {
@@ -132,7 +132,7 @@ final class MakePublicAnswerViewController: BaseViewController {
         let output = viewModel.transform(input: input)
         
         output.question.subscribe(onNext: { question in
-            self.headerView.question = Question(id: question.header.id, question: question.header.question, categoryName: question.header.categoryName, groupCategoryName: "")
+            self.headerView.question = question.header.getAnswerHeaderQuestion()
         }).disposed(by: disposeBag)
         
         output.successMessage.emit(onNext: { [weak self] message in
