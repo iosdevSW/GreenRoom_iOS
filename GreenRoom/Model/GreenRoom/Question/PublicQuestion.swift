@@ -8,7 +8,7 @@
 import Foundation
 
 /** 스크랩, 최근*/
-struct PublicQuestion: Codable {
+struct GreenRoomQuestion: Codable {
     let id: Int
     let categoryName, profileImage, question, expiredAt: String
     let participated, expired: Bool

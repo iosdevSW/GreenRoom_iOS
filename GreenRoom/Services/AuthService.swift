@@ -12,7 +12,11 @@ import RxSwift
 import KakaoSDKUser
 import SwiftKeychainWrapper
 
-class LoginService{
+class AuthService {
+    
+    static let shared = AuthService()
+    
+    private init() { }
     
     func loginAPI(_ accessToken: String, authType: Int)->Observable<LoginModel> {
         let urlString = Constants.baseURL + "/api/auth/login"
@@ -40,7 +44,7 @@ class LoginService{
         }
     }
     
-    static func registUser(accessToken: String, oauthType: Int, category: Int, name: String){
+    func registUser(accessToken: String, oauthType: Int, category: Int, name: String){
         let urlString = Constants.baseURL + "/api/users/join"
         let url = URL(string: urlString)!
         
@@ -65,17 +69,28 @@ class LoginService{
         }
     }
     
-    static func logout()->Observable<Bool>{
-        let urlString = Constants.baseURL + "/api/auth/logout"
-        let url = URL(string: urlString)!
+    func logout()->Observable<Bool>{
         
         return Observable.create{ emitter in
-            AF.request(url, method: .post, interceptor: AuthManager()).validate().response { response in
+            AF.request(Constants.baseURL + "/api/auth/logout",
+                       method: .post,
+                       interceptor: AuthManager())
+            .validate()
+            .response { response in
                 switch response.result {
                 case .success(_):
-                    print("성공")
+                    
+                    let oauthType = KeychainWrapper.standard.integer(forKey: "oauthType")!
+                    switch oauthType {
+                    case 0:
+                        UserApi.shared.logout(){_ in () }
+                    case 1:
+                        NaverThirdPartyLoginConnection.getSharedInstance().requestDeleteToken()
+                    default:
+                        print("애플로그아웃")
+                    }
+                    KeychainWrapper.standard.removeAllKeys()
                     emitter.onNext(true)
-                    emitter.onCompleted()
                 case .failure(let error):
                     print(error.localizedDescription)
                     emitter.onError(error)
@@ -85,7 +100,7 @@ class LoginService{
         }
     }
     
-    static func checkName(name: String) -> Observable<Bool> {
+    func checkName(name: String) -> Observable<Bool> {
         let urlString = Constants.baseURL + "/api/users/name"
         let url = URL(string: urlString)!
         
@@ -147,7 +162,7 @@ class LoginService{
     //        }
     //    }
     
-    static func generateRandomName()-> Observable<String> {
+    func generateRandomName()-> Observable<String> {
         struct Name: Codable {
             let words: [String]
             let seed: String

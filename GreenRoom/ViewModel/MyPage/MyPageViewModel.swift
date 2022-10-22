@@ -53,10 +53,12 @@ class MyPageViewModel: ViewModelType {
             ])]
         }.bind(to: self.userObservable).disposed(by: disposeBag)
 
-        input.profileImage.subscribe(onNext: { [weak self] image in
-            self?.updateProfileImage(image: image)
-        }).disposed(by: disposeBag)
-        
+        input.profileImage
+            .flatMap { self.userService.updateProfileImage(image: $0) }
+            .flatMap { _ in self.fetchUserInfo() }
+            .bind(to: self.userObservable)
+            .disposed(by: disposeBag)
+
         return Output(MyPageDataSource: Observable.combineLatest(userObservable, settingsObservable).map{ $0.0 + $0.1})
     }
     //MARK: - QNAViewController
@@ -112,13 +114,6 @@ class MyPageViewModel: ViewModelType {
             return [MyPageSectionModel.profile(items: [
                 MyPageSectionModel.Item.profile(profileInfo: $0)
             ])]
-        }
-    }
-    //MARK: - update user info
-    private func updateProfileImage(image: UIImage?){
-        self.userService.updateProfileImage(image: image) { [weak self] _ in
-            guard let self = self else { return }
-            self.fetchUserInfo().bind(to: self.userObservable).disposed(by: self.disposeBag)
         }
     }
 }

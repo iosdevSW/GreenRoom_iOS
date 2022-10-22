@@ -91,7 +91,7 @@ final class KPFindQuestionViewController: BaseViewController{
         KeychainWrapper.standard.removeObject(forKey: "accessToken")
         KeychainWrapper.standard.removeObject(forKey: "refreshToken")
         KeychainWrapper.standard.removeObject(forKey: "oauthType")
-        LoginService.logout()
+        AuthService.shared.logout()
             .subscribe(onNext: { isSuccess in
                 let oauthType = KeychainWrapper.standard.integer(forKey: "oauthType")!
                 switch oauthType {

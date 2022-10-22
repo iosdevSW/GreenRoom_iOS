@@ -14,4 +14,3 @@ struct FilteringQuestion: Codable {
     let question, answer, expiredAt: String
     let participated: Bool
 }
-

@@ -66,14 +66,13 @@ final class MyPageViewController: BaseViewController {
         output.MyPageDataSource.bind(to: collectionView.rx.items(dataSource: dataSource))
             .disposed(by: disposeBag)
         
-        Observable.zip(collectionView.rx.itemSelected, collectionView.rx.modelSelected(MyPageSectionModel.Item.self))
-            .subscribe(onNext: { [weak self] indexPath, item in
+        collectionView.rx.modelSelected(MyPageSectionModel.Item.self)
+            .subscribe(onNext: { [weak self] item in
                 guard let self = self else { return }
                 
                 switch item {
                 case .setting(settingInfo: let info):
                     switch info.setting {
-                        
                     case .QNA:
                         let vc = QNAViewController(viewModel: self.viewModel)
                         self.navigationController?.pushViewController(vc, animated: true)

@@ -8,6 +8,7 @@
 import UIKit
 import RxSwift
 
+/// 그린룸 질문에 대한 답변을 클릭했을 때 나오는 전체화면
 final class DetailPublicAnswerViewController: BaseViewController {
     
     private let viewModel: DetailPublicAnswerViewModel
@@ -15,7 +16,7 @@ final class DetailPublicAnswerViewController: BaseViewController {
     private lazy var output = viewModel.transform(input: DetailPublicAnswerViewModel.Input())
     
     private lazy var scrollView = UIScrollView()
-    private lazy var headerView = QuestionHeaderView(frame: .zero)
+    private lazy var headerView = AnswerHeaderView(frame: .zero)
     
     private lazy var profileImageView = UIImageView().then {
         $0.contentMode = .scaleAspectFit

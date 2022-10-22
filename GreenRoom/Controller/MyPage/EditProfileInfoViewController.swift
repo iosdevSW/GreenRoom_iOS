@@ -6,11 +6,7 @@
 //
 import UIKit
 import RxSwift
-import RxCocoa
-
-protocol EditProfileInfoDelegate {
-    func editNickName(textField: Observable<String>)
-}
+import SwiftKeychainWrapper
 
 final class EditProfileInfoViewController: BaseViewController {
     
@@ -36,13 +32,13 @@ final class EditProfileInfoViewController: BaseViewController {
         var configuration = UIButton.Configuration.plain()
         configuration.title = "로그아웃"
         configuration.image = UIImage(systemName: "chevron.right")
-        configuration.imagePadding = 230
+        configuration.imagePadding = 210
         configuration.imagePlacement = .trailing
         configuration.baseForegroundColor = .black
         configuration.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 30, bottom: 0, trailing: 63)
         $0.titleLabel?.font = .sfPro(size: 16, family: .Regular)
         $0.imageView?.tintColor = .black
-        $0.backgroundColor = .white
+        $0.backgroundColor = .red
         
         $0.configuration = configuration
     }
@@ -52,7 +48,7 @@ final class EditProfileInfoViewController: BaseViewController {
         var configuration = UIButton.Configuration.plain()
         configuration.title = "회원 탈퇴"
         configuration.baseForegroundColor = .black
-        configuration.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 15, bottom: 0, trailing: 280)
+        configuration.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 25, bottom: 0, trailing: 280)
         
         $0.titleLabel?.textColor = .black
         $0.titleLabel?.font = .sfPro(size: 16, family: .Regular)
@@ -126,15 +122,14 @@ final class EditProfileInfoViewController: BaseViewController {
                 self?.viewModel.updateUserInfo(nickName: nickname)
             }).disposed(by: disposeBag)
         
-        withdrawalButton.rx.tap
-            .subscribe(onNext: {
-                
-            }).disposed(by: disposeBag)
-        
-        logoutButton.rx.tap
-            .subscribe(onNext: {
-                
-            }).disposed(by: disposeBag)
+//        logoutButton.rx.tap
+//            .flatMap { _ in
+//                return self.showAlert(title: "로그아웃", message: "로그아웃 하시겠습니까?")
+//            }.flatMap { _ in AuthService.shared.logout() }
+//            .subscribe(onNext : {
+//                let vc = LoginViewController(loginViewModel: LoginViewModel())
+//                self.present(vc, animated: true)
+//            }).disposed(by: disposeBag)
     }
 }
 

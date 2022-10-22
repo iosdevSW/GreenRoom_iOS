@@ -16,9 +16,9 @@ enum GreenRoomSectionModel: SectionModelType {
     
     enum SectionItem {
         case filtering(interest: Category)
-        case popular(question: PopularPublicQuestion)
-        case recent(question: PublicQuestion)
-        case MyGreenRoom(question: MyPublicQuestion)
+        case popular(question: PopularGreenRoomQuestion)
+        case recent(question: GreenRoomQuestion)
+        case MyGreenRoom(question: MyGreenRoomQuestion)
         case MyQuestionList(question: PrivateQuestion)
     }
     

@@ -112,7 +112,7 @@ final class PublicQuestionsCell: UICollectionViewCell {
         }
     }
 
-    func configure(question: PublicQuestion){
+    func configure(question: GreenRoomQuestion){
         
         self.containerView.alpha = question.expired ? 0.5 : 1.0
         self.questionTextView.text = question.question

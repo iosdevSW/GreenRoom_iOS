@@ -10,6 +10,7 @@ import RxSwift
 import RxCocoa
 import RxDataSources
 
+/// 그린룸 질문을 클릭했을 때 나오는 리스트뷰
 final class PublicAnswerListViewController: BaseViewController {
     
     //MARK: - Properties
@@ -27,7 +28,7 @@ final class PublicAnswerListViewController: BaseViewController {
     private lazy var output = viewModel.transform(input: input)
     
     private var collectionView: UICollectionView!
-    private var headerView = QuestionHeaderView(frame: .zero)
+    private var headerView = AnswerHeaderView(frame: .zero)
     
     private var answerPostButton = UIButton().then {
         $0.backgroundColor = .point
@@ -129,7 +130,7 @@ final class PublicAnswerListViewController: BaseViewController {
         output.answer
             .subscribe(onNext: { [weak self] answer in
             guard let self = self else { return }
-            self.headerView.question = Question(id: answer.header.id, question: answer.header.question, categoryName: answer.header.categoryName, groupCategoryName: answer.header.categoryName)
+            self.headerView.question = QuestionHeader(id: answer.header.id, question: answer.header.question, categoryName: answer.header.categoryName, groupCategoryName: answer.header.categoryName)
             self.collectionView.alpha = answer.header.mode == .permission ? 1.0 : 0.5
             self.mode = answer.header.mode
             self.scrapButton.setImage(UIImage(systemName: answer.header.scrap ? "star.fill" : "star"), for: .normal)
@@ -141,7 +142,7 @@ final class PublicAnswerListViewController: BaseViewController {
         answerPostButton.rx.tap
             .withLatestFrom(output.answer)
             .subscribe(onNext: { [weak self] answer in
-                let vc = MakePublicAnswerViewController(viewModel: MakePublicAnswerViewModel(answer: answer, publicQuestionService: PublicQuestionService()))
+                let vc = AddPublicAnswerViewController(viewModel: MakePublicAnswerViewModel(answer: answer, publicQuestionService: PublicQuestionService()))
                 self?.navigationController?.pushViewController(vc, animated: false)
         }).disposed(by: disposeBag)
         

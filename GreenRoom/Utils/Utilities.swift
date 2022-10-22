@@ -49,13 +49,9 @@ final class Utilities {
         
         let attributedString = NSMutableAttributedString(string: text)
 
-        // *** Create instance of `NSMutableParagraphStyle`
         let paragraphStyle = NSMutableParagraphStyle()
 
-        // *** set LineSpacing property in points ***
-        paragraphStyle.lineSpacing = 6 // Whatever line spacing you want in points
-
-        // *** Apply attribute to string ***
+        paragraphStyle.lineSpacing = 6 //
         attributedString.addAttribute(NSAttributedString.Key.paragraphStyle, value:paragraphStyle, range:NSMakeRange(0, attributedString.length))
         
         let label:UILabel = UILabel(frame: CGRect(x: 0, y: 0, width: width, height: CGFloat.greatestFiniteMagnitude))
@@ -66,18 +62,6 @@ final class Utilities {
 
         label.sizeToFit()
         return label.frame.height
-    }
-    
-    func generateProfileImage(frame: CGRect) -> UIImageView {
-        let imageView = UIImageView()
-        imageView.tintColor = .customGray
-        imageView.contentMode = .scaleAspectFill
-        imageView.frame = frame
-        imageView.layer.cornerRadius = frame.width / 2
-        imageView.backgroundColor = .clear
-        imageView.layer.masksToBounds = true
-        
-        return imageView
     }
     
     func generateLabel(text: String, color: UIColor?,font: UIFont?) -> UILabel {
