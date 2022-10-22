@@ -36,7 +36,7 @@ class RegisterCompleteViewControlller: UIViewController{
     
     @objc func didClickCompleteButton(_: UIButton){
         guard let oauthAccessToken = KeychainWrapper.standard.string(forKey: "accessToken") else { return }
-        loginViewModel.loginService.loginAPI(oauthAccessToken,
+        AuthService.shared.loginAPI(oauthAccessToken,
                                              authType: oauthTokenInfo.oauthType!)
             .subscribe(on: MainScheduler.instance)
             .subscribe(onNext: { res in

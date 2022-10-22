@@ -32,16 +32,11 @@ enum QuestionError: Error, LocalizedError {
     }
 }
 
-//protocol QuestionService {
-//    var baseURL: String { get }
-//    
-//    func updateQuestion(categoryId: Int, question: String)
-//}
 
 final class PrivateQuestionService {
     
     private var baseURL = "\(Constants.baseURL)/api/my-questions"
-    
+
     /** 나의 질문 생성 API */
     func uploadQuestion(categoryId: Int, question: String) -> Observable<Bool> {
         
@@ -140,28 +135,6 @@ final class PrivateQuestionService {
             return Disposables.create()
         }
     }
-    
-    /**
-     내가 작성한 질문(id)에 대한 키워드 수정
-     하나의 API로 수정 및 삭제, 추가 가능
-     */
-//    func updateKeywords(id: Int, keywords: [String], completion:@escaping((Bool) -> Void)) {
-//        
-//        let paramaters: Parameters = ["keywords": keywords]
-//        
-//        let requestURL = baseURL + "/answer/\(id)"
-//        
-//        AF.request(requestURL, method: .put, parameters: paramaters, encoding: JSONEncoding.default, interceptor: AuthManager())
-//            .validate(statusCode: 200..<300)
-//            .response { response in
-//                switch response.result {
-//                case .success(_):
-//                    completion(true)
-//                case .failure(_):
-//                    completion(false)
-//                }
-//            }
-//    }
     
     func uploadKeywords(id: Int, keywords: [String]) -> Observable<Bool> {
         

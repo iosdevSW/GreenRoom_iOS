@@ -29,7 +29,7 @@ final class KPQuestionEditViewController: BaseViewController {
     
     private var viewModel: QuestionEditViewModel!
     
-    private var headerView = QuestionHeaderView(frame: .zero)
+    private var headerView = AnswerHeaderView(frame: .zero)
     private var keywordView: KeywordRegisterView!
     private var collectionView: UICollectionView!
     
@@ -195,7 +195,7 @@ final class KPQuestionEditViewController: BaseViewController {
         output.answer.subscribe(onNext: { [weak self] answer in
             
             guard let self = self else { return }
-            self.headerView.question = Question(id: answer.id, question: answer.question, categoryName: answer.categoryName, groupCategoryName: "")
+            self.headerView.question = QuestionHeader(id: answer.id, question: answer.question, categoryName: answer.categoryName, groupCategoryName: "")
             
             if answer.answer == "" || answer.answer == nil {
                 self.mode = .unWritten

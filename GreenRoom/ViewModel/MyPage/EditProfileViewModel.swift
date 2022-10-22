@@ -26,12 +26,10 @@ final class EditProfileViewModel: ViewModelType {
     }
     
     func transform(input: Input) -> Output {
-        return Output(userName: input.trigger.flatMap { _ in
-            return self.userService.fetchUserInfo()
-        }.map {
-            print($0.name)
-            return $0.name
-        })
+        return Output(userName: input.trigger
+            .flatMap { _ in
+                self.userService.fetchUserInfo()
+            }.map { $0.name })
     }
     
     func updateUserInfo(nickName: String) {

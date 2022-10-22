@@ -6,11 +6,7 @@
 //
 import UIKit
 import RxSwift
-import RxCocoa
-
-protocol EditProfileInfoDelegate {
-    func editNickName(textField: Observable<String>)
-}
+import SwiftKeychainWrapper
 
 final class EditProfileInfoViewController: BaseViewController {
     
@@ -126,15 +122,14 @@ final class EditProfileInfoViewController: BaseViewController {
                 self?.viewModel.updateUserInfo(nickName: nickname)
             }).disposed(by: disposeBag)
         
-        withdrawalButton.rx.tap
-            .subscribe(onNext: {
-                
-            }).disposed(by: disposeBag)
-        
-        logoutButton.rx.tap
-            .subscribe(onNext: {
-                
-            }).disposed(by: disposeBag)
+//        logoutButton.rx.tap
+//            .flatMap { _ in
+//                return self.showAlert(title: "로그아웃", message: "로그아웃 하시겠습니까?")
+//            }.flatMap { _ in AuthService.shared.logout() }
+//            .subscribe(onNext : {
+//                let vc = LoginViewController(loginViewModel: LoginViewModel())
+//                self.present(vc, animated: true)
+//            }).disposed(by: disposeBag)
     }
 }
 

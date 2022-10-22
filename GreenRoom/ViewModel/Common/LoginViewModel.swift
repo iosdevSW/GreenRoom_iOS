@@ -18,7 +18,6 @@ import SwiftKeychainWrapper
 
 class LoginViewModel {
     let disposeBag = DisposeBag()
-    let loginService = LoginService()
     
     let naverLoginInstance = NaverThirdPartyLoginConnection.getSharedInstance()
     var oauthToken = PublishSubject<OAuthTokenModel>()
@@ -28,7 +27,7 @@ class LoginViewModel {
         oauthToken.asObserver() // oauth 토큰 발급 옵저버
             .take(1)
             .subscribe(onNext: { [self]token in
-                _ = self.loginService.loginAPI(token.accessToken!, authType: token.oauthType!)
+                _ = AuthService.shared.loginAPI(token.accessToken!, authType: token.oauthType!)
                     .take(1)
                     .bind(to: loginObservable)
             }).disposed(by: disposeBag)
