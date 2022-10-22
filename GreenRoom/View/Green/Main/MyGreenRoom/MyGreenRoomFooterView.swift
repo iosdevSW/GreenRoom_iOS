@@ -17,13 +17,8 @@ final class MyGreenRoomFooterView: UICollectionReusableView {
         $0.font = .sfPro(size: 12, family: .Bold)
     }
     
-    private lazy var profileImageView = UIImageView(frame: .zero).then {
-        $0.contentMode = .scaleAspectFill
-        $0.layer.cornerRadius = bounds.width * 0.08 / 2
-        $0.layer.masksToBounds = true
-        $0.image = UIImage(named: "GreenRoomIcon")
-        $0.tintColor = .mainColor
-        $0.layer.masksToBounds = false
+    private lazy var profileImageView = UIImageView().then {
+        $0.contentMode = .scaleAspectFit
     }
     
     // MARK: - Initializers
@@ -36,20 +31,50 @@ final class MyGreenRoomFooterView: UICollectionReusableView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
     private func configureUI() {
         self.backgroundColor = .backgroundGray
         self.addSubview(profileImageView)
         profileImageView.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.top.equalToSuperview().offset(30)
-            make.width.height.equalTo(bounds.width * 0.08)
+            make.width.equalTo(80)
+            make.height.equalTo(frame.width * 0.08)
         }
         
         self.addSubview(participantLabel)
         participantLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.bottom.equalTo(profileImageView.snp.top).offset(-5)
+        }
+    }
+    
+    func configure(with question: MyPublicQuestion) {
+        self.participantLabel.text = "\(question.participants)명이 참여하고 있습니다."
+        
+        guard let images = question.profileImages else { return }
+        configureImageStack(urls: images)
+    }
+    
+    func configureImageStack(urls: [String]) {
+        
+        
+        
+        DispatchQueue.global().async {
+            
+            var images: [UIImage] = []
+            
+            urls.map { URL(string: $0) }
+                .forEach { url in
+                    guard let url = url,
+                          let data = try? Data(contentsOf: url),
+                          let image = UIImage(data: data)else { return }
+                    images.append(image)
+                }
+            
+            DispatchQueue.main.async {
+                self.profileImageView.setImageStack(images: images)
+            }
         }
     }
 }
