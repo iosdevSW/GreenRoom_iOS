@@ -14,11 +14,10 @@ final class PopularQuestionCell: UICollectionViewCell {
 
     private lazy var profileImageView = UIImageView(frame: .zero).then {
         $0.contentMode = .scaleAspectFill
-        $0.layer.cornerRadius = bounds.width * 0.08 / 2
+        $0.layer.cornerRadius = self.frame.width / 20
         $0.layer.masksToBounds = true
-        $0.image = UIImage(named: "GreenRoomIcon")
+        $0.image = UIImage(named: "CharacterProfile1")
         $0.tintColor = .mainColor
-        $0.layer.masksToBounds = false
     }
     
     private let nameLabel = Utilities.shared.generateLabel(text: "박면접", color: .gray, font: .sfPro(size: 12, family: .Regular))
@@ -51,9 +50,9 @@ final class PopularQuestionCell: UICollectionViewCell {
    
         self.contentView.addSubview(profileImageView)
         profileImageView.snp.makeConstraints { make in
-            make.width.height.equalTo(bounds.width * 0.08)
+            make.width.height.equalTo(frame.width/10)
             make.top.equalToSuperview().offset(10)
-            make.leading.equalToSuperview().offset(bounds.width * 0.08)
+            make.leading.equalToSuperview().offset(frame.width / 20)
         }
         
         self.contentView.addSubview(nameLabel)
