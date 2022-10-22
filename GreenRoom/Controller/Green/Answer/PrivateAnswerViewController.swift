@@ -8,6 +8,7 @@
 import UIKit
 import RxSwift
 
+///개인 질문에 대한 답변을 설정하는
 final class PrivateAnswerViewController: BaseViewController {
     
     //MARK: - Properties

@@ -8,6 +8,7 @@
 import UIKit
 import RxSwift
 
+/// 그린룸 질문에 대한 답변을 클릭했을 때 나오는 전체화면
 final class DetailPublicAnswerViewController: BaseViewController {
     
     private let viewModel: DetailPublicAnswerViewModel

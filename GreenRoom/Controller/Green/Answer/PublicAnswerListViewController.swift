@@ -10,6 +10,7 @@ import RxSwift
 import RxCocoa
 import RxDataSources
 
+/// 그린룸 질문을 클릭했을 때 나오는 리스트뷰
 final class PublicAnswerListViewController: BaseViewController {
     
     //MARK: - Properties
