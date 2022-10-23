@@ -101,6 +101,11 @@ extension KPDetailViewController {
                 cell.keywordPersent.text = String(format: "%2.f%%", persent * 100)
                 cell.keywordLabel.text = item.keyword.joined(separator: "  ")
                 
+                let per = (self.viewmodel.goalPersent.value - persent) * 100
+                let hilight = String(format: "%2.f%%", per > 0 ? per : 0)
+                cell.goalProgressBarView.guideLabel.attributedText = self.setColorHilightAttribute(text: "목표까지 \(hilight) 남았어요", hilightString: hilight, color: .point)
+                cell.goalProgressBarView.persentLabel.text =  String(format: "%2.f", persent*100) + "/100"
+                
                 let goalPersent = self.viewmodel.goalPersent.value
                 let progressWidth = UIScreen.main.bounds.width - 60
                 let newX =  progressWidth * goalPersent

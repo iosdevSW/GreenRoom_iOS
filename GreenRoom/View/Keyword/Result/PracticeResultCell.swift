@@ -32,6 +32,7 @@ class PracticeResultCell: UITableViewCell {
     let keywordPersent = UILabel().then {
         $0.textColor = .mainColor
         $0.font = .sfPro(size: 16, family: .Semibold)
+        $0.textAlignment = .right
     }
     
     //MARK: - Init
@@ -53,7 +54,6 @@ class PracticeResultCell: UITableViewCell {
         keywordPersent.snp.makeConstraints{ make in
             make.top.equalToSuperview().offset(40)
             make.trailing.equalToSuperview().offset(-40)
-            make.width.equalTo(40)
         }
         
         self.addSubview(questionLabel)

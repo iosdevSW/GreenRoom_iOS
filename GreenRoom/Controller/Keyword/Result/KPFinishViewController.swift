@@ -89,9 +89,10 @@ class KPFinishViewController: BaseViewController{
         viewmodel.totalPersent
             .bind(onNext: { per in
                 self.goalProgressBarView.progressBar.progress = per
-                let persent = self.viewmodel.goalPersent.value - per * 100
+                let persent = (self.viewmodel.goalPersent.value - per) * 100
                 let hilight = String(format: "%2.f%%", persent > 0 ? persent : 0)
                 self.goalProgressBarView.guideLabel.attributedText = self.setColorHilightAttribute(text: "목표까지 \(hilight) 남았어요", hilightString: hilight, color: .point)
+                self.goalProgressBarView.persentLabel.text =  String(format: "%2.f", per*100) + "/100"
             }).disposed(by: disposeBag)
     }
     

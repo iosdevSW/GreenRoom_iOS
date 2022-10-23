@@ -14,7 +14,6 @@ enum RecordingType: String {
     case mike = "mike"
 }
 
-
 class ProgressBarView: UIView {
     //MARK: - Properties
     let progressBar = CustomProgressBar()

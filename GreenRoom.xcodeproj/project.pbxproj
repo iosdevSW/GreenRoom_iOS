@@ -463,6 +463,7 @@
 		DB21028B28CF739500365362 /* Result */ = {
 			isa = PBXGroup;
 			children = (
+				DBA8ED6F28BD103F007526CF /* PracticeResultCell.swift */,
 				DBA8ED7328BDDCA1007526CF /* DetailCell.swift */,
 				DBA8ED7B28BF931F007526CF /* ReviewCell.swift */,
 			);
@@ -531,7 +532,6 @@
 				DB8D163728B8ABC700E3F237 /* CustomGoalProgressBar.swift */,
 				DB8D163928B8D79900E3F237 /* ProgressBarView.swift */,
 				DBA8ED6928B9D621007526CF /* PracticeQuestionCell.swift */,
-				DBA8ED6F28BD103F007526CF /* PracticeResultCell.swift */,
 			);
 			path = Prepare;
 			sourceTree = "<group>";
