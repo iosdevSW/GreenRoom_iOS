@@ -70,7 +70,6 @@ class KPFinishViewController: BaseViewController{
     override func setupBinding() {
         viewmodel.selectedQuestions
             .bind(to: resultTableView.rx.items(cellIdentifier: "PracticeResultCell", cellType: PracticeResultCell.self)) { index, item, cell in
-                
                 let persent = item.persent ?? 0
                 cell.questionLabel.text = "Q\(index+1)\n\(item.question)"
                 cell.keywordPersent.text = String(format: "%2.f%%", persent * 100)
