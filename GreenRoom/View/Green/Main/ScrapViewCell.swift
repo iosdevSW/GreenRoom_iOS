@@ -49,7 +49,6 @@ class ScrapViewCell: UICollectionViewCell {
         $0.layer.masksToBounds = true
         $0.backgroundColor = .customGray
         $0.tintColor = .mainColor
-        $0.layer.masksToBounds = false
     }
     
     private let categoryLabel = Utilities.shared.generateLabel(text: "디자인", color: .black, font: .sfPro(size: 12, family: .Semibold))
