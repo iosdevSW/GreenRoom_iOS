@@ -60,15 +60,15 @@ extension AppDelegate {
     
     func setAttributes() {
         if #available(iOS 15.0, *) {
-            let tabbarAppearance = UITabBarAppearance()
-            tabbarAppearance.configureWithOpaqueBackground()
-            
-            tabbarAppearance.backgroundColor = .white
-            UITabBar.appearance().standardAppearance = tabbarAppearance
-            UITabBar.appearance().scrollEdgeAppearance = tabbarAppearance
-            
-            //tabbar upper line remove
-            UITabBar.appearance().clipsToBounds = true
+//            let tabbarAppearance = UITabBarAppearance()
+//            tabbarAppearance.configureWithOpaqueBackground()
+//            
+//            tabbarAppearance.backgroundColor = .white
+//            UITabBar.appearance().standardAppearance = tabbarAppearance
+//            UITabBar.appearance().scrollEdgeAppearance = tabbarAppearance
+//            
+//            //tabbar upper line remove
+//            UITabBar.appearance().clipsToBounds = true
             
             let navAppearance = UINavigationBarAppearance()
             navAppearance.configureWithOpaqueBackground()

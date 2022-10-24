@@ -40,7 +40,7 @@ final class FilteringQuestionViewController: BaseViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.navigationBar.backgroundColor = .clear
-        guard let tabbarcontroller = tabBarController as? CustomTabbarController else { return }
+        guard let tabbarcontroller = tabBarController as? MainTabbarController else { return }
         tabbarcontroller.createButton.isHidden = true
         self.tabBarController?.tabBar.isHidden = true
     }
@@ -48,7 +48,7 @@ final class FilteringQuestionViewController: BaseViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
-        guard let tabbarcontroller = tabBarController as? CustomTabbarController else { return }
+        guard let tabbarcontroller = tabBarController as? MainTabbarController else { return }
         tabbarcontroller.createButton.isHidden = false
         self.tabBarController?.tabBar.isHidden = false
     }

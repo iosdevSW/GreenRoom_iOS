@@ -97,21 +97,21 @@ final class PublicQuestionService {
                                                           PublicAnswer(id: 0, profileImage: "", answer: ""),
                                                           PublicAnswer(id: 0, profileImage: "", answer: "")]
                         )
-                        print(question.participated)
-                        print(question.expired)
+                       
                         if question.participated && question.expired {
                             self.fetchDetailAnswers(id: question.id) { result in
-                                print(result)
                                 switch result {
                                 case .success(let answers):
-                                    print(answers)
                                     output.answers = answers
+                                    emitter.onNext(output)
                                 case .failure(_):
                                     break
                                 }
                             }
+                        } else {
+                            emitter.onNext(output)
                         }
-                        emitter.onNext(output)
+                        
                     case .failure(let error):
                         emitter.onError(error)
                     }

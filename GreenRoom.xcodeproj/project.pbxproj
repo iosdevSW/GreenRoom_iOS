@@ -77,6 +77,7 @@
 		DBFB296A28B2267A00B1DAC9 /* FilterItemsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBFB296928B2267A00B1DAC9 /* FilterItemsCell.swift */; };
 		DBFB297028B351F400B1DAC9 /* QuestionListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBFB296F28B351F400B1DAC9 /* QuestionListCell.swift */; };
 		E4036A3428ED989600C0F707 /* FilteringQuestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4036A3328ED989600C0F707 /* FilteringQuestion.swift */; };
+		E40AB4572906966800381942 /* CALayer+.swift in Sources */ = {isa = PBXBuildFile; fileRef = E40AB4562906966800381942 /* CALayer+.swift */; };
 		E40BC69D28B5F35A00FB557D /* SearchWordCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E40BC69C28B5F35A00FB557D /* SearchWordCell.swift */; };
 		E40BC6B328B7548E00FB557D /* SearchWordHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E40BC6B228B7548E00FB557D /* SearchWordHeaderView.swift */; };
 		E40BC6B528B756EE00FB557D /* SearchSectionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E40BC6B428B756EE00FB557D /* SearchSectionModel.swift */; };
@@ -166,7 +167,7 @@
 		E4A2E9FA28EACBCC00E7F5C0 /* PrivateAnswer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A2E9F928EACBCC00E7F5C0 /* PrivateAnswer.swift */; };
 		E4A2E9FC28EACCBA00E7F5C0 /* AddAnswerQuestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A2E9FB28EACCBA00E7F5C0 /* AddAnswerQuestion.swift */; };
 		E4C4C4AE28BCA53D008826AB /* SearchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4C4C4AD28BCA53D008826AB /* SearchService.swift */; };
-		E4C4C4BC28BD1172008826AB /* CustomTabbarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4C4C4BB28BD1172008826AB /* CustomTabbarController.swift */; };
+		E4C4C4BC28BD1172008826AB /* MainTabbarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4C4C4BB28BD1172008826AB /* MainTabbarController.swift */; };
 		E4C4C4BE28BD1ACD008826AB /* CreatePopOverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4C4C4BD28BD1ACD008826AB /* CreatePopOverViewController.swift */; };
 		E4C4C4C028BDE8AB008826AB /* CreateGreenRoomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4C4C4BF28BDE8AB008826AB /* CreateGreenRoomViewController.swift */; };
 		E4C8AE6928B35519007E010D /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4C8AE6828B35519007E010D /* UserService.swift */; };
@@ -262,6 +263,7 @@
 		DBFB296928B2267A00B1DAC9 /* FilterItemsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterItemsCell.swift; sourceTree = "<group>"; };
 		DBFB296F28B351F400B1DAC9 /* QuestionListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionListCell.swift; sourceTree = "<group>"; };
 		E4036A3328ED989600C0F707 /* FilteringQuestion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilteringQuestion.swift; sourceTree = "<group>"; };
+		E40AB4562906966800381942 /* CALayer+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CALayer+.swift"; sourceTree = "<group>"; };
 		E40BC69C28B5F35A00FB557D /* SearchWordCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchWordCell.swift; sourceTree = "<group>"; };
 		E40BC6B228B7548E00FB557D /* SearchWordHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchWordHeaderView.swift; sourceTree = "<group>"; };
 		E40BC6B428B756EE00FB557D /* SearchSectionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchSectionModel.swift; sourceTree = "<group>"; };
@@ -353,7 +355,7 @@
 		E4A2E9F928EACBCC00E7F5C0 /* PrivateAnswer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivateAnswer.swift; sourceTree = "<group>"; };
 		E4A2E9FB28EACCBA00E7F5C0 /* AddAnswerQuestion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddAnswerQuestion.swift; sourceTree = "<group>"; };
 		E4C4C4AD28BCA53D008826AB /* SearchService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchService.swift; sourceTree = "<group>"; };
-		E4C4C4BB28BD1172008826AB /* CustomTabbarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabbarController.swift; sourceTree = "<group>"; };
+		E4C4C4BB28BD1172008826AB /* MainTabbarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabbarController.swift; sourceTree = "<group>"; };
 		E4C4C4BD28BD1ACD008826AB /* CreatePopOverViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePopOverViewController.swift; sourceTree = "<group>"; };
 		E4C4C4BF28BDE8AB008826AB /* CreateGreenRoomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateGreenRoomViewController.swift; sourceTree = "<group>"; };
 		E4C8AE6828B35519007E010D /* UserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
@@ -583,7 +585,6 @@
 				DBBA9480289968CD00264405 /* PaddingLabel.swift */,
 				E40BC6E728B8868C00FB557D /* BaseViewController.swift */,
 				DB006B8528C23A4300867013 /* ChevronButton.swift */,
-				E4C4C4BB28BD1172008826AB /* CustomTabbarController.swift */,
 				DB006B9428C39D3C00867013 /* CustomSwitch.swift */,
 				DB9989DF28D5DA280056D40B /* CustomSlider.swift */,
 				DBB251EB28D9B7B400310820 /* LodingIndicator.swift */,
@@ -911,6 +912,7 @@
 		E461E42828CE1463001EBF74 /* Main */ = {
 			isa = PBXGroup;
 			children = (
+				E4C4C4BB28BD1172008826AB /* MainTabbarController.swift */,
 				DBD0823F2897E75A0092241F /* GreenRoomViewController.swift */,
 			);
 			path = Main;
@@ -960,6 +962,7 @@
 				E46E4C0728E14FD400D1691F /* Date+.swift */,
 				E44456ED28E6E89B0034A207 /* NotificationName+.swift */,
 				E4D49AEB28EF287300CF69B1 /* String+.swift */,
+				E40AB4562906966800381942 /* CALayer+.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1379,7 +1382,7 @@
 				E49EF3DC28B5E9AC00358340 /* GRSearchViewController.swift in Sources */,
 				E4141ABC28AF528E004D74B3 /* FAQCell.swift in Sources */,
 				DBA8ED7228BDC945007526CF /* KPDetailViewController.swift in Sources */,
-				E4C4C4BC28BD1172008826AB /* CustomTabbarController.swift in Sources */,
+				E4C4C4BC28BD1172008826AB /* MainTabbarController.swift in Sources */,
 				DBBA9481289968CD00264405 /* PaddingLabel.swift in Sources */,
 				DBA8ED7E28C0A4D7007526CF /* KPMainViewController.swift in Sources */,
 				DBD082542897E75B0092241F /* MyPageViewModel.swift in Sources */,
@@ -1459,6 +1462,7 @@
 				DBD082552897E75B0092241F /* GreenRoomViewController.swift in Sources */,
 				DB9D9F4428E702390061D7DB /* BaseQuestionsViewModel.swift in Sources */,
 				DB563F9A28ABADDF00E7193D /* RxNaverThirdPartyLoginProxy.swift in Sources */,
+				E40AB4572906966800381942 /* CALayer+.swift in Sources */,
 				E4F7D32928FDAAAB003C0A13 /* DetailPublicAnswerViewController.swift in Sources */,
 				E46E4BE428DC213800D1691F /* PrivateAnswerViewController.swift in Sources */,
 				DB07821228C49BED0091EEFE /* CustomRecordingButton.swift in Sources */,

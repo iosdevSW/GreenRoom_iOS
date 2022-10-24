@@ -43,8 +43,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 extension SceneDelegate {
     
-    private func createCustomTabbar() -> CustomTabbarController {
-        let mainTabbarController = CustomTabbarController()
+    private func createCustomTabbar() -> MainTabbarController {
+        let mainTabbarController = MainTabbarController()
         
         let greenRoomController = self.createNavigationController(viewController: GreenRoomViewController(viewModel: MainGreenRoomViewModel()),
                                                                   title: "그린룸",

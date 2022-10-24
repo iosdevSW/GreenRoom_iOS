@@ -78,7 +78,7 @@ final class ScrapedQuestionViewController: BaseViewController {
         super.viewWillAppear(animated)
         
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: editButton)
-        guard let tabbarcontroller = tabBarController as? CustomTabbarController else { return }
+        guard let tabbarcontroller = tabBarController as? MainTabbarController else { return }
         tabbarcontroller.createButton.isHidden = true
         self.tabBarController?.tabBar.isHidden = true
         
@@ -88,7 +88,7 @@ final class ScrapedQuestionViewController: BaseViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
-        guard let tabbarcontroller = tabBarController as? CustomTabbarController else { return }
+        guard let tabbarcontroller = tabBarController as? MainTabbarController else { return }
         tabbarcontroller.createButton.isHidden = false
         self.tabBarController?.tabBar.isHidden = false
     }

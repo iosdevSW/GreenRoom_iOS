@@ -72,7 +72,7 @@ final class PublicAnswerListViewController: BaseViewController {
             UIBarButtonItem(customView: scrapButton)
         ]
         
-        guard let tabbarcontroller = tabBarController as? CustomTabbarController else { return }
+        guard let tabbarcontroller = tabBarController as? MainTabbarController else { return }
         tabbarcontroller.createButton.isHidden = true
         self.tabBarController?.tabBar.isHidden = true
     }
@@ -80,7 +80,7 @@ final class PublicAnswerListViewController: BaseViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
-        guard let tabbarcontroller = tabBarController as? CustomTabbarController else { return }
+        guard let tabbarcontroller = tabBarController as? MainTabbarController else { return }
         tabbarcontroller.createButton.isHidden = false
         self.tabBarController?.tabBar.isHidden = false
     }

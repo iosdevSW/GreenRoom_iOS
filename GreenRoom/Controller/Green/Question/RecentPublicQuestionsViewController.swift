@@ -36,7 +36,7 @@ final class RecentPublicQuestionsViewController: BaseViewController {
                                                                 target: self,
                                                                 action: #selector(handleDismissal))
         self.navigationController?.navigationBar.tintColor = .mainColor
-        guard let tabbarcontroller = tabBarController as? CustomTabbarController else { return }
+        guard let tabbarcontroller = tabBarController as? MainTabbarController else { return }
         tabbarcontroller.createButton.isHidden = true
         self.tabBarController?.tabBar.isHidden = true
     }
@@ -44,7 +44,7 @@ final class RecentPublicQuestionsViewController: BaseViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
-        guard let tabbarcontroller = tabBarController as? CustomTabbarController else { return }
+        guard let tabbarcontroller = tabBarController as? MainTabbarController else { return }
         tabbarcontroller.createButton.isHidden = false
         self.tabBarController?.tabBar.isHidden = false
     }
@@ -52,7 +52,6 @@ final class RecentPublicQuestionsViewController: BaseViewController {
     override func configureUI() {
         super.configureUI()
         
-        self.view.backgroundColor = .white
         view.addSubview(collectionView)
         collectionView.snp.makeConstraints { make in
             make.leading.trailing.bottom.equalToSuperview()
