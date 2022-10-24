@@ -12,7 +12,6 @@ import AVKit
 class KPFinishViewController: BaseViewController{
     //MARK: - Properties
     let viewmodel: KeywordViewModel
-    let urls: [URL]?
     
     let goalFrameView = UIView().then {
         $0.backgroundColor = .customGray.withAlphaComponent(0.1)
@@ -36,7 +35,6 @@ class KPFinishViewController: BaseViewController{
     //MARK: - Init
     init(viewmodel: KeywordViewModel) {
         self.viewmodel = viewmodel
-        self.urls = self.viewmodel.videoURLs
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -48,6 +46,10 @@ class KPFinishViewController: BaseViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
+        self.configureNavigationBackButtonItem()
+        self.setNavigationItem()
+        self.navigationItem.hidesBackButton = true
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -57,13 +59,16 @@ class KPFinishViewController: BaseViewController{
         
         UIView.animate(withDuration: 0.5){
             self.goalProgressBarView.goalView.center.x = newX
-            
         }
     }
     
     //MARK: - Selector
     @objc func didClickReviewButton(_ sender: UIButton) {
         self.navigationController?.pushViewController(KPReviewViewController(viewModel: viewmodel), animated: true)
+    }
+    
+    @objc func didClickCompleteButton(_ sender: UIButton) {
+        self.navigationController?.popToRootViewController(animated: true)
     }
     
     //MARK: - Bind
@@ -79,14 +84,16 @@ class KPFinishViewController: BaseViewController{
             }.disposed(by: disposeBag)
         
         resultTableView.rx.itemSelected
-            .bind(onNext: { indexPath in
+            .bind(onNext: { [weak self] indexPath in
+                guard let self = self else { return }
                 let vc = KPDetailViewController(viewmodel: self.viewmodel)
                 vc.indexPath = indexPath
                 self.navigationController?.pushViewController(vc, animated: true)
             }).disposed(by: disposeBag)
         
         viewmodel.totalPersent
-            .bind(onNext: { per in
+            .bind(onNext: { [weak self] per in
+                guard let self = self else { return }
                 self.goalProgressBarView.progressBar.progress = per
                 let persent = (self.viewmodel.goalPersent.value - per) * 100
                 let hilight = String(format: "%2.f%%", persent > 0 ? persent : 0)
@@ -141,5 +148,16 @@ class KPFinishViewController: BaseViewController{
         }else {
             self.navigationController?.navigationBar.barTintColor = color
         }
+    }
+    
+    func setNavigationItem() {
+        let questionButtonItem = UIBarButtonItem(title: "완료",
+                                                 style: .plain,
+                                                 target: self,
+                                                 action: #selector(self.didClickCompleteButton(_:)))
+        questionButtonItem.setTitleTextAttributes([.foregroundColor : UIColor.mainColor!,
+                                                   .font : UIFont.sfPro(size: 16, family: .Bold)],
+                                                  for: .normal)
+        self.navigationItem.rightBarButtonItem = questionButtonItem
     }
 }

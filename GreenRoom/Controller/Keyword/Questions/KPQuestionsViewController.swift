@@ -101,7 +101,8 @@ final class KPQuestionsViewController: BaseViewController {
         super.viewDidLoad()
         self.view.backgroundColor = .white
         hideKeyboardWhenTapped()
-        setNavigationItem()
+        setNavigationBarButtonItem()
+        configureNavigationBackButtonItem()
         self.viewmodel.updateGroupQuestions()
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.updateGroupQuestionList), name: .updateGroupQuestionObserver, object: nil)
@@ -113,10 +114,7 @@ final class KPQuestionsViewController: BaseViewController {
     }
     
     //MARK: - Method
-    override func setNavigationItem() {
-        self.navigationItem.backButtonTitle = ""
-        self.navigationController?.navigationBar.tintColor = .mainColor
-        
+    func setNavigationBarButtonItem() {
         let editButton = UIBarButtonItem(title: "편집",
                                          style: .plain,
                                          target: self,
@@ -171,7 +169,8 @@ final class KPQuestionsViewController: BaseViewController {
             }).disposed(by: disposeBag)
         
         viewmodel.groupQuestions
-            .bind(to: questionListTableView.rx.items(cellIdentifier: "QuestionListCell", cellType: QuestionListCell.self)) { index, item, cell in
+            .bind(to: questionListTableView.rx.items(cellIdentifier: "QuestionListCell", cellType: QuestionListCell.self)) { [weak self] index, item, cell in
+                guard let self = self else { return }
             // init
                 if self.viewmodel.selectedQuestions.value.contains(where: { $0.id == item.id}) {
                     cell.isSelected = true
@@ -194,13 +193,15 @@ final class KPQuestionsViewController: BaseViewController {
             }.disposed(by: disposeBag)
         
         questionListTableView.rx.itemSelected
-            .bind(onNext: { indexPath in // 서비스 로직시엔 Id로 다룰 것 같음
+            .bind(onNext: { [weak self] indexPath in // 서비스 로직시엔 Id로 다룰 것 같음
+                guard let self = self else { return }
                 let cell = self.questionListTableView.cellForRow(at: indexPath) as! QuestionListCell
                 cell.isSelected = true
             }).disposed(by: disposeBag)
         
         questionListTableView.rx.modelSelected(KPQuestion.self)
-            .bind(onNext: { question in
+            .bind(onNext: { [weak self] question in
+                guard let self = self else { return }
                 var questions = self.viewmodel.selectedQuestions.value
                 
                 questions.append(question)
@@ -208,13 +209,15 @@ final class KPQuestionsViewController: BaseViewController {
             }).disposed(by: disposeBag)
         
         questionListTableView.rx.itemDeselected
-            .bind(onNext: { indexPath in // 서비스 로직시엔 Id로 다룰 것 같음
+            .bind(onNext: { [weak self] indexPath in // 서비스 로직시엔 Id로 다룰 것 같음
+                guard let self = self else { return }
                 let cell = self.questionListTableView.cellForRow(at: indexPath) as! QuestionListCell
                 cell.isSelected = false
             }).disposed(by: disposeBag)
         
         questionListTableView.rx.modelDeselected(KPQuestion.self)
-            .bind(onNext: { question in
+            .bind(onNext: { [weak self]question in
+                guard let self = self else { return }
                 let findId = question.id
                 var questions = self.viewmodel.selectedQuestions.value
                 let ids = questions.map { $0.id }
@@ -296,7 +299,8 @@ final class KPQuestionsViewController: BaseViewController {
             }).disposed(by: disposeBag)
         
         self.moveGroupButton.rx.tap
-            .bind(onNext: {
+            .bind(onNext: { [weak self] in
+                guard let self = self else { return }
                 self.navigationController?.pushViewController(KPGroupsViewController(viewModel: self.viewmodel), animated: true)
             }).disposed(by: disposeBag)
         

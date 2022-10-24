@@ -4,16 +4,16 @@
 //
 //  Created by SangWoo's MacBook on 2022/08/28.
 //
-
+// 메모리 누수 발생.. 어딜까..
 import UIKit
 import AVFoundation
 import Speech
 
-class KPRecordingViewController: BaseViewController{
+final class KPRecordingViewController: BaseViewController{
     //MARK: - Properties
-    let viewmodel: KeywordViewModel!
+    private let viewmodel: KeywordViewModel!
     
-    var player: AVAudioPlayer?
+    private var player: AVAudioPlayer?
     
     private let fileManager = FileManager.default
     
@@ -68,6 +68,8 @@ class KPRecordingViewController: BaseViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .black
+        self.setNavigationFAQItem()
+        self.configureNavigationBackButtonItem()
         
         switch self.viewmodel.recordingType {
         case .camera: setupCaptureSession()
@@ -80,19 +82,20 @@ class KPRecordingViewController: BaseViewController{
         self.darkView.keywordLabel.isHidden = self.viewmodel.keywordOnOff.value == true ? false : true
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.navigationBar.isHidden = true
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.navigationController?.navigationBar.isHidden = false
+    }
+    
     //MARK: - Bind
     override func setupBinding() {
-//        viewmodel.selectedQuestions
-//            .take(1)
-//            .subscribe(onNext: { questions in
-//                self.darkView.questionLabel.text = "Q1\n\n\(questions[0].question)"
-//                self.questionLabel.text = "Q1\n\n\(questions[0].question)"
-//                self.keywordLabel.text = questions[0].keyword.joined(separator: "  ")
-//                self.darkView.keywordLabel.text  = questions[0].keyword.joined(separator: "  ")
-//            }).disposed(by: disposeBag)
-//
         viewmodel.URLs
-            .filter{ $0.count < self.viewmodel.selectedQuestions.value.count}
+            .filter{ [weak self] in $0.count < self!.viewmodel.selectedQuestions.value.count}
             .bind(onNext: { [weak self] urls in
                 guard let self = self else { return }
                 let question = self.viewmodel.selectedQuestions.value[urls.count]
@@ -104,21 +107,29 @@ class KPRecordingViewController: BaseViewController{
             }).disposed(by: disposeBag)
         
         viewmodel.URLs
-            .filter{ $0.count <= self.viewmodel.selectedQuestions.value.count && $0.count >= 1}
+            .filter{ [weak self] in $0.count <= self!.viewmodel.selectedQuestions.value.count && $0.count >= 1}
             .bind(onNext: { [weak self] urls in
                 guard let self = self else { return }
                 guard let url = urls.last else { return }
                 
+                if urls.count == self.viewmodel.selectedQuestions.value.count {
+                    let indicatorView = LodingIndicator(frame: self.view.frame)
+                    indicatorView.backgroundColor = .white
+                    indicatorView.startAnimating()
+                    self.view.addSubview(indicatorView)
+                }
                 self.speechToText(url)
             }).disposed(by: disposeBag)
         
         viewmodel.STTResult
             .filter{ !$0.isEmpty }
-            .bind(onNext: { result in
+            .bind(onNext: { [weak self] result in
                 guard let stt = result.last else { return }
-
+                guard let self = self else { return }
+                
                 let persent = self.returnPersent(stt)
                 var questions = self.viewmodel.selectedQuestions.value
+    
                 questions[result.count-1].sttAnswer = stt
                 questions[result.count-1].persent = persent
                 
@@ -159,7 +170,7 @@ class KPRecordingViewController: BaseViewController{
     }
     
     // 오디오 녹화시
-    func audioRecording() {
+    private func audioRecording() {
         if let recorder: AVAudioRecorder = self.audioRecorder {
             if recorder.isRecording { // 현재 녹음 중이므로, 녹음 정지
                 recorder.stop()
@@ -185,7 +196,8 @@ class KPRecordingViewController: BaseViewController{
     private func speechToText(_ url: URL) {
         self.recognizerRequest = SFSpeechURLRecognitionRequest(url: url)
         
-        self.speechRecognizer?.recognitionTask(with: recognizerRequest!) { ( result, error) in
+        _ = self.speechRecognizer?.recognitionTask(with: recognizerRequest!) { [weak self]( result, error) in
+            guard let self = self else { return }
             guard let result = result else {
                 var sttResults = self.viewmodel.STTResult.value
                 sttResults.append("변환된 내용 없음")
@@ -203,6 +215,7 @@ class KPRecordingViewController: BaseViewController{
                         results.append(stt)
                         self.viewmodel.STTResult.accept(results)
                     }).disposed(by: self.disposeBag)
+                self.recognizerRequest = nil
             }
         }
     }
@@ -213,10 +226,10 @@ class KPRecordingViewController: BaseViewController{
         self.viewmodel.URLs
             .filter{ $0.count < self.viewmodel.selectedQuestions.value.count }
             .take(1)
-            .bind(onNext: { urls in
+            .bind(onNext: { [weak self] urls in
                 var urls = urls
                 urls.append(url)
-                self.viewmodel.URLs.accept(urls)
+                self?.viewmodel.URLs.accept(urls)
             }).disposed(by: disposeBag)
     }
     
@@ -317,7 +330,8 @@ extension KPRecordingViewController: AVCaptureFileOutputRecordingDelegate {
         
         // UIView객체인 preView 위 객체 입힘
         preView.layer.insertSublayer(videoPreviewLayer!, at: 0)  // 맨 앞(0번쨰로)으로 가져와서 보이게끔 설정
-        DispatchQueue.main.async {
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
             self.videoPreviewLayer?.frame = self.preView.bounds
         }
         
@@ -326,8 +340,8 @@ extension KPRecordingViewController: AVCaptureFileOutputRecordingDelegate {
     }
     
     private func startCaptureSession() {
-        DispatchQueue.global(qos: .userInitiated).async {
-            self.captureSession?.startRunning()
+        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+            self?.captureSession?.startRunning()
         }
     }
     

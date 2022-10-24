@@ -36,8 +36,6 @@ class KeywordViewModel {
     
     var STTResult = BehaviorRelay<[String]>(value: [])
     
-    var videoURLs: [URL]?
-    
     init(){
         selectedQuestions.subscribe(onNext: { items in
             self.selectedQuestionDetailModel.onNext([KPDetailModel(items: items)])
@@ -70,6 +68,8 @@ class KeywordViewModel {
     func resetData() {
         self.goalPersent.accept(0)
         self.totalPersent.accept(0)
+        self.URLs.accept([])
+        self.STTResult.accept([])
         self.selectedQuestions.accept([])
     }
 }
