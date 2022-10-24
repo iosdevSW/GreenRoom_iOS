@@ -10,13 +10,18 @@ import RxSwift
 
 extension UIViewController {
     // 회원가입 네비게이션바 아이템 설정
-    @objc func setNavigationItem() {
+    @objc func setNavigationFAQItem() {
         let questionButtonItem = UIBarButtonItem(title: "문의사항",
                                                  style: .plain,
                                                  target: self,
                                                  action: nil)
         questionButtonItem.tintColor = .customGray
         self.navigationItem.rightBarButtonItem = questionButtonItem
+    }
+    
+    func configureNavigationBackButtonItem() {
+        self.navigationItem.backButtonTitle = ""
+        self.navigationController?.navigationBar.tintColor = .mainColor
     }
     
     func hideKeyboardWhenTapped(){
@@ -56,5 +61,13 @@ extension UIViewController {
         alertController.addAction(UIAlertAction(title: "확인", style: .default, handler: handler))
         
         self.present(alertController, animated: true)
+    }
+    
+    /// 강조( 레이블 색다르게하기 )
+    func setColorHilightAttribute(text: String, hilightString: String, color: UIColor) -> NSMutableAttributedString {
+        let attributedStr = NSMutableAttributedString(string: text)
+        attributedStr.addAttribute(.foregroundColor, value: color, range: (text as NSString).range(of: hilightString))
+        
+        return attributedStr
     }
 }

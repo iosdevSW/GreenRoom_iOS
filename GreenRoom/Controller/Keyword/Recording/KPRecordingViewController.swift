@@ -4,18 +4,16 @@
 //
 //  Created by SangWoo's MacBook on 2022/08/28.
 //
-
+// 메모리 누수 발생.. 어딜까..
 import UIKit
 import AVFoundation
 import Speech
 
-class KPRecordingViewController: BaseViewController{
+final class KPRecordingViewController: BaseViewController{
     //MARK: - Properties
-    let viewmodel: KeywordViewModel!
-    var questions: [String]!
-    var urls = [URL]()
+    private let viewmodel: KeywordViewModel!
     
-    var player: AVAudioPlayer?
+    private var player: AVAudioPlayer?
     
     private let fileManager = FileManager.default
     
@@ -29,6 +27,7 @@ class KPRecordingViewController: BaseViewController{
     private var audioRecorder: AVAudioRecorder?
     
     private let speechRecognizer = SFSpeechRecognizer(locale: .init(identifier: "ko-KR")) // 한국말 Recognizer 생성
+    
     //음성인식요청을 처리하는 객체
     private var recognizerRequest: SFSpeechURLRecognitionRequest?
     
@@ -69,6 +68,8 @@ class KPRecordingViewController: BaseViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .black
+        self.setNavigationFAQItem()
+        self.configureNavigationBackButtonItem()
         
         switch self.viewmodel.recordingType {
         case .camera: setupCaptureSession()
@@ -81,14 +82,70 @@ class KPRecordingViewController: BaseViewController{
         self.darkView.keywordLabel.isHidden = self.viewmodel.keywordOnOff.value == true ? false : true
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.navigationBar.isHidden = true
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.navigationController?.navigationBar.isHidden = false
+    }
+    
+    //MARK: - Bind
     override func setupBinding() {
-        viewmodel.selectedQuestions
-            .take(1)
-            .subscribe(onNext: { questions in
-                self.darkView.questionLabel.text = "Q1\n\n\(questions[0].question)"
-                self.questionLabel.text = "Q1\n\n\(questions[0].question)"
-                self.keywordLabel.text = questions[0].keyword.joined(separator: "  ")
-                self.darkView.keywordLabel.text  = questions[0].keyword.joined(separator: "  ")
+        viewmodel.URLs
+            .filter{ [weak self] in $0.count < self!.viewmodel.selectedQuestions.value.count}
+            .bind(onNext: { [weak self] urls in
+                guard let self = self else { return }
+                let question = self.viewmodel.selectedQuestions.value[urls.count]
+                
+                self.darkView.questionLabel.text = "Q\(urls.count+1)\n\n\(question.question)"
+                self.darkView.keywordLabel.text  = question.keyword.joined(separator: "  ")
+                self.questionLabel.text = "Q\(urls.count+1)\n\n\(question.question)"
+                self.keywordLabel.text = question.keyword.joined(separator: "  ")
+            }).disposed(by: disposeBag)
+        
+        viewmodel.URLs
+            .filter{ [weak self] in $0.count <= self!.viewmodel.selectedQuestions.value.count && $0.count >= 1}
+            .bind(onNext: { [weak self] urls in
+                guard let self = self else { return }
+                guard let url = urls.last else { return }
+                
+                if urls.count == self.viewmodel.selectedQuestions.value.count {
+                    let indicatorView = LodingIndicator(frame: self.view.frame)
+                    indicatorView.backgroundColor = .white
+                    indicatorView.startAnimating()
+                    self.view.addSubview(indicatorView)
+                }
+                self.speechToText(url)
+            }).disposed(by: disposeBag)
+        
+        viewmodel.STTResult
+            .filter{ !$0.isEmpty }
+            .bind(onNext: { [weak self] result in
+                guard let stt = result.last else { return }
+                guard let self = self else { return }
+                
+                let persent = self.returnPersent(stt)
+                var questions = self.viewmodel.selectedQuestions.value
+    
+                questions[result.count-1].sttAnswer = stt
+                questions[result.count-1].persent = persent
+                
+                self.viewmodel.selectedQuestions.accept(questions)
+        
+                let totalPersent = self.viewmodel.selectedQuestions.value.map{ $0.persent ?? 0.0 }.reduce(CGFloat(0),+) / CGFloat(self.viewmodel.selectedQuestions.value.count)
+                
+                self.viewmodel.totalPersent.accept(totalPersent)
+                
+                if self.viewmodel.selectedQuestions.value.count == result.count {
+                    if self.viewmodel.keywordOnOff.value{
+                        self.navigationController?.pushViewController(KPFinishViewController(viewmodel: self.viewmodel), animated: true)
+                    }else {
+                        self.navigationController?.pushViewController(KPDetailViewController(viewmodel: self.viewmodel), animated: true)
+                    }
+                }
             }).disposed(by: disposeBag)
     }
     
@@ -100,98 +157,86 @@ class KPRecordingViewController: BaseViewController{
         }
     }
     
+    //MARK: - Method
     // 비디오 녹화시
     func videoRecording() {
         if moviFileOutput.isRecording {
             moviFileOutput.stopRecording() //녹화 중단
-            self.darkView.isHidden = false
-            self.keywordLabel.isHidden = true
-            self.questionLabel.isHidden = true
-            self.recordingButton.isHidden = true
+            recordingTrriger(isRecording: true)
         } else {
-            self.darkView.isHidden = true
-            self.keywordLabel.isHidden = self.viewmodel.keywordOnOff.value == true ? false : true
-            self.questionLabel.isHidden = false
-            self.recordingButton.isHidden = false
+            recordingTrriger(isRecording: false)
             startRecording() //녹화 녹음시작
         }
     }
     
     // 오디오 녹화시
-    func audioRecording() {
+    private func audioRecording() {
         if let recorder: AVAudioRecorder = self.audioRecorder {
             if recorder.isRecording { // 현재 녹음 중이므로, 녹음 정지
                 recorder.stop()
-                self.darkView.isHidden = false
-                self.keywordLabel.isHidden = true
-                self.questionLabel.isHidden = true
-                self.recordingButton.isHidden = true
+                recordingTrriger(isRecording: true)
             } else { // 녹음 시작
                 recorder.record()
-                self.darkView.isHidden = true
-                self.keywordLabel.isHidden = self.viewmodel.keywordOnOff.value == true ? false : true
-                self.questionLabel.isHidden = false
-                self.recordingButton.isHidden = false
+                recordingTrriger(isRecording: false)
+            }
+        }
+    }
+    
+    private func recordingTrriger(isRecording: Bool){
+        self.darkView.isHidden = !isRecording
+        self.keywordLabel.isHidden = isRecording
+        self.questionLabel.isHidden = isRecording
+        self.recordingButton.isHidden = isRecording
+        if !isRecording {
+            self.keywordLabel.isHidden = self.viewmodel.keywordOnOff.value == true ? false : true
+        }
+    }
+    
+    // STT 실행
+    private func speechToText(_ url: URL) {
+        self.recognizerRequest = SFSpeechURLRecognitionRequest(url: url)
+        
+        _ = self.speechRecognizer?.recognitionTask(with: recognizerRequest!) { [weak self]( result, error) in
+            guard let self = self else { return }
+            guard let result = result else {
+                var sttResults = self.viewmodel.STTResult.value
+                sttResults.append("변환된 내용 없음")
+                self.viewmodel.STTResult.accept(sttResults)
+                
+                return
+            }
+            
+            let stt = result.bestTranscription.formattedString
+            if result.isFinal {
+                self.viewmodel.STTResult
+                    .take(1)
+                    .bind(onNext: { sttResults in
+                        var results = sttResults
+                        results.append(stt)
+                        self.viewmodel.STTResult.accept(results)
+                    }).disposed(by: self.disposeBag)
+                self.recognizerRequest = nil
             }
         }
     }
     
     private func saveURL(_ url: URL) {
-        urls.append(url)
         // 길게 녹화할경우 음성이 녹음 안되는 현상이 있음 (이유 찾아 고쳐야함) 2번의 오류도 1번이 해결되면 해결될 가능성 있음
         // 녹화일 경우 mp4 -> m4a로 변환이 필요함 ( 영상이 십몇초를 넘을경우 변환이 안되는 오류 )
-        
-        self.recognizerRequest = SFSpeechURLRecognitionRequest(url: url)
-        self.speechRecognizer?.recognitionTask(with: recognizerRequest!) { (result,error) in
-            guard let result = result else { return }
-            // 번역본
-            if result.isFinal {
-                let stt = result.bestTranscription.formattedString
-                let persent = self.returnPersent(stt)
-                
-                self.viewmodel.selectedQuestions
-                    .take(1)
-                    .bind(onNext: { questions in
-                        var ques = questions
-                        ques[self.urls.count-1].sttAnswer = stt
-                        ques[self.urls.count-1].persent = persent
-                        self.viewmodel.selectedQuestions.accept(ques)
-                        let totalPersent = self.viewmodel.selectedQuestions.value.map{ $0.persent ?? 0.0 }.reduce(CGFloat(0),+) / CGFloat(self.viewmodel.selectedQuestions.value.count)
-                        self.viewmodel.totalPersent.accept(totalPersent)
-                    }).disposed(by: self.disposeBag)
-            }
-        }
-        
-        nextQuestion()
-    }
-    
-    private func nextQuestion() {
-        if urls.count >= viewmodel.selectedQuestions.value.count {
-            viewmodel.videoURLs = urls
-            
-            
-            if viewmodel.keywordOnOff.value{
-                self.navigationController?.pushViewController(KPFinishViewController(viewmodel: viewmodel), animated: true)
-            }else {
-                
-                self.navigationController?.pushViewController(KPDetailViewController(viewmodel: viewmodel), animated: true)
-            }
-        } else {
-            viewmodel.selectedQuestions
-                .take(1)
-                .subscribe(onNext: { questions in
-                    self.darkView.questionLabel.text = "Q\(self.urls.count+1)\n\n\(questions[self.urls.count].question)"
-                    self.questionLabel.text = "Q\(self.urls.count+1)\n\n\(questions[self.urls.count].question)"
-                    self.keywordLabel.text = questions[self.urls.count].keyword.joined(separator: "  ")
-                    self.darkView.keywordLabel.text  = questions[self.urls.count].keyword.joined(separator: "  ")
-                }).disposed(by: disposeBag)
-        }
+        self.viewmodel.URLs
+            .filter{ $0.count < self.viewmodel.selectedQuestions.value.count }
+            .take(1)
+            .bind(onNext: { [weak self] urls in
+                var urls = urls
+                urls.append(url)
+                self?.viewmodel.URLs.accept(urls)
+            }).disposed(by: disposeBag)
     }
     
     private func returnPersent(_ stt: String)->CGFloat {
         var count = 0
         
-        let keywords = self.viewmodel.selectedQuestions.value[self.urls.count-1].keyword
+        let keywords = self.viewmodel.selectedQuestions.value[self.viewmodel.URLs.value.count-1].keyword
         for keyword in keywords {
             if stt.contains(keyword) {
                 count += 1
@@ -285,7 +330,8 @@ extension KPRecordingViewController: AVCaptureFileOutputRecordingDelegate {
         
         // UIView객체인 preView 위 객체 입힘
         preView.layer.insertSublayer(videoPreviewLayer!, at: 0)  // 맨 앞(0번쨰로)으로 가져와서 보이게끔 설정
-        DispatchQueue.main.async {
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
             self.videoPreviewLayer?.frame = self.preView.bounds
         }
         
@@ -294,8 +340,8 @@ extension KPRecordingViewController: AVCaptureFileOutputRecordingDelegate {
     }
     
     private func startCaptureSession() {
-        DispatchQueue.global(qos: .userInitiated).async {
-            self.captureSession?.startRunning()
+        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+            self?.captureSession?.startRunning()
         }
     }
     
@@ -317,7 +363,7 @@ extension KPRecordingViewController: AVCaptureFileOutputRecordingDelegate {
             }
         }
         
-        return directoryURL.appendingPathComponent("test\(urls.count+1).\(extn)")    // 파일이 저장될 경로
+        return directoryURL.appendingPathComponent("recordingFile\(self.viewmodel.URLs.value.count+1).\(extn)")    // 파일이 저장될 경로
     }
     
     //레코딩 시작시 호출
@@ -328,6 +374,7 @@ extension KPRecordingViewController: AVCaptureFileOutputRecordingDelegate {
     //레코딩 끝날시 호출 시작할때 파라미터로 입력한 url 기반으로 저장 작업 수행
     func fileOutput(_ output: AVCaptureFileOutput, didFinishRecordingTo outputFileURL: URL, from connections: [AVCaptureConnection], error: Error?) {
         self.saveURL(outputFileURL)
+        print("녹화종료")
     }
 }
 

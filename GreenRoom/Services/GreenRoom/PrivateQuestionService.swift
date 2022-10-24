@@ -129,7 +129,6 @@ final class PrivateQuestionService {
                     case .failure(let error):
                         emitter.onError(error)
                     }
-                    
                 }
             
             return Disposables.create()

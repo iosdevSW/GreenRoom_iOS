@@ -32,7 +32,7 @@ class RegisterCategoryViewController: UIViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        self.setNavigationItem()
+        self.setNavigationFAQItem()
         self.configureUI()
         self.bind()
     }
@@ -145,9 +145,4 @@ extension RegisterCategoryViewController {
         let vc = RegisterCompleteViewControlller(oauthTokenInfo: self.oauthTokenInfo)
         self.navigationController?.pushViewController(vc, animated: true)
     }
-    
-    override func setNavigationItem() {
-        super.setNavigationItem()
-    }
-    
 }

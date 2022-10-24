@@ -70,7 +70,7 @@ final class KPFindQuestionViewController: BaseViewController{
         self.view.backgroundColor = .white
         
         hideKeyboardWhenTapped()
-        setNavigationItem()
+        configureNavigationBackButtonItem()
 
         btn.addTarget(self, action: #selector(logout(_:)), for: .touchUpInside)
     }
@@ -81,10 +81,6 @@ final class KPFindQuestionViewController: BaseViewController{
     }
     
     //MARK: - Method
-    override func setNavigationItem() {
-        self.navigationItem.backButtonTitle = ""
-        self.navigationController?.navigationBar.tintColor = .mainColor
-    }
     
     //MARK: - Selector
     @objc func logout(_ sender: UIButton){
@@ -121,6 +117,7 @@ final class KPFindQuestionViewController: BaseViewController{
     override func setupBinding() {
         viewModel.baseQuestionsObservable
             .bind(to: questionListTableView.rx.items(cellIdentifier: "QuestionListCell", cellType: QuestionListCell.self)) { index, item, cell in
+                
                 cell.mainLabel.text = item.question
                 cell.categoryLabel.text = item.categoryName
                 cell.questionTypeLabel.text = item.questionType

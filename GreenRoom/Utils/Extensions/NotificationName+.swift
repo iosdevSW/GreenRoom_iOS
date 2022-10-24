@@ -14,6 +14,7 @@ extension Notification.Name {
     static let editGroupObserver = Notification.Name("editGroupObserver")
     static let addGroupObserver = Notification.Name("addGroupObserver")
     static let editQuestionObserver = Notification.Name("editQuestionObserver")
+    static let updateGroupQuestionObserver = Notification.Name("updateGroupQuestionObserver")
 }
 
 

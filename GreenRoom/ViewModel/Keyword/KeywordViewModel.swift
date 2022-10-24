@@ -24,15 +24,17 @@ class KeywordViewModel {
     
     let selectedQuestionDetailModel = BehaviorSubject<[KPDetailModel]>.init(value:[ KPDetailModel.init(items: []) ])
     
-    var keywordOnOff = BehaviorRelay<Bool>(value: true)
+    var keywordOnOff = BehaviorRelay<Bool>(value: true) // 키워드 On / Off 여부
     
-    var recordingType: RecordingType = .camera
+    var recordingType: RecordingType = .camera // 카메라 on / off 여부
     
-    var goalPersent = BehaviorRelay<CGFloat>(value: 0)
+    var goalPersent = BehaviorRelay<CGFloat>(value: 0) // 전체 질문 키워드 매칭률 목표 퍼센트
     
-    var totalPersent = BehaviorRelay<CGFloat>(value: 0)
+    var totalPersent = BehaviorRelay<CGFloat>(value: 0) // 전체 질문 키워드 매칭률 퍼센트
     
-    var videoURLs: [URL]?
+    var URLs = BehaviorRelay<[URL]>(value: []) // 녹음/녹화 URL 저장
+    
+    var STTResult = BehaviorRelay<[String]>(value: [])
     
     init(){
         selectedQuestions.subscribe(onNext: { items in
@@ -61,5 +63,13 @@ class KeywordViewModel {
         KeywordPracticeService().fetchGroupQuestions(groupId: groupID)
             .bind(to: self.groupInfo)
             .disposed(by: disposeBag)
+    }
+    
+    func resetData() {
+        self.goalPersent.accept(0)
+        self.totalPersent.accept(0)
+        self.URLs.accept([])
+        self.STTResult.accept([])
+        self.selectedQuestions.accept([])
     }
 }

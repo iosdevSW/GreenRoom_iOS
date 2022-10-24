@@ -79,10 +79,9 @@ extension KPReviewViewController {
             cell.questionLabel.text = "Q\(indexPath.row+1)\n\(item.question)"
             cell.categoryLabel.text = item.categoryName
     
-            if let url = self.viewModel.videoURLs?[indexPath.row] {
-                cell.recordingType = self.viewModel.recordingType
-                cell.url = url
-            }
+            let url = self.viewModel.URLs.value[indexPath.row]
+            cell.recordingType = self.viewModel.recordingType
+            cell.url = url
         
             return cell
         }

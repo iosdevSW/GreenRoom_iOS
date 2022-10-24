@@ -25,6 +25,7 @@ class QuestionListCell: UITableViewCell {
     
     var isFindMode = false {
         didSet{
+            self.chevronButton.isEnabled = false
             chevronButton.setImage(UIImage(named: "box"), for: .normal)
             chevronButton.tintColor = .customGray
         }
@@ -49,8 +50,8 @@ class QuestionListCell: UITableViewCell {
                 }
             }
         }
-    
     }
+    
     let mainLabel = UILabel().then {
         $0.text = "여기는 면접질문 항목란입니다."
         $0.numberOfLines = 0

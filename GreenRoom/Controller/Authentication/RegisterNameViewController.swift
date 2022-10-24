@@ -77,7 +77,8 @@ class RegisterNameViewController: UIViewController {
         layout()
         configureUI()
         
-        self.setNavigationItem()
+        self.setNavigationFAQItem()
+        self.configureNavigationBackButtonItem()
         self.hideKeyboardWhenTapped()
         
         nameTextfield.rx.text
@@ -189,11 +190,5 @@ extension RegisterNameViewController {
         self.autoInputNameButton.addTarget(self, action: #selector(self.didClickRandomNameButton(_:)), for: .touchUpInside)
 
         self.nextButton.addTarget(self, action: #selector(didClickNextButton(_:)), for: .touchUpInside)
-    }
-    
-    override func setNavigationItem() {
-        super.setNavigationItem()
-        self.navigationItem.backButtonTitle = ""
-        self.navigationController?.navigationBar.tintColor = .mainColor
     }
 }
