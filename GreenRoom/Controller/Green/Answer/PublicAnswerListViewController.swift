@@ -146,6 +146,14 @@ final class PublicAnswerListViewController: BaseViewController {
                 self?.navigationController?.pushViewController(vc, animated: false)
         }).disposed(by: disposeBag)
         
+        collectionView.rx.modelSelected(PublicAnswerSectionModel.Item.self)
+            .subscribe(onNext: { item in
+                let vm = DetailPublicAnswerViewModel(question: self.headerView.question,
+                                                     answerID: item.id
+                                                        ,publicQuestionService: PublicQuestionService())
+                let vc = DetailPublicAnswerViewController(viewModel: vm)
+                self.navigationController?.pushViewController(vc, animated: true)
+            }).disposed(by: disposeBag)
     }
     
     //MARK: - Selector

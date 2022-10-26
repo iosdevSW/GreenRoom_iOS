@@ -26,6 +26,7 @@ final class RecentPublicQuestionsViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.view.backgroundColor = .white
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -51,6 +52,7 @@ final class RecentPublicQuestionsViewController: BaseViewController {
     
     override func configureUI() {
         super.configureUI()
+        
         
         view.addSubview(collectionView)
         collectionView.snp.makeConstraints { make in
@@ -93,6 +95,7 @@ extension RecentPublicQuestionsViewController {
         layout.itemSize = CGSize(width: view.bounds.width, height: view.bounds.height/8)
         layout.headerReferenceSize = CGSize(width: view.bounds.width , height: view.bounds.height * 0.25)
         layout.minimumLineSpacing = 0
+        layout.minimumInteritemSpacing = 0
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.register(InfoHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: InfoHeaderView.reuseIdentifier)
         collectionView.register(PublicQuestionsCell.self, forCellWithReuseIdentifier: PublicQuestionsCell.reuseIdentifier)

@@ -18,26 +18,33 @@ final class DetailPublicAnswerViewModel: ViewModelType {
     struct Input { }
     
     struct Output {
+        let header: Observable<QuestionHeader>
         let answer: Observable<SpecificPublicAnswer>
     }
     
     private let detailPublicAnswer = PublishSubject<SpecificPublicAnswer>()
     
-    let questionID: Int
+    let question: QuestionHeader
+    let id: Int
     
-    init(questionID: Int,
+    init(question: QuestionHeader,
+         answerID: Int,
          publicQuestionService: PublicQuestionService
     ){
-        self.questionID = questionID
+        self.question = question
+        self.id = answerID
         self.publicQuestionService = publicQuestionService
     }
     
     func transform(input: Input) -> Output {
         
-        publicQuestionService.fetchDetailAnswer(id: self.questionID)
+        publicQuestionService.fetchDetailAnswer(id: self.id)
             .bind(to: detailPublicAnswer)
             .disposed(by: disposeBag)
         
-        return Output(answer: self.detailPublicAnswer.asObservable())
+        return Output(
+            header: Observable.just(question),
+            answer: self.detailPublicAnswer.asObservable()
+        )
     }
 }
