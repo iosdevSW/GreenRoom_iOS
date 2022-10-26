@@ -38,16 +38,6 @@ final class DetailPublicAnswerViewController: BaseViewController {
         $0.font = .sfPro(size: 16, family: .Regular)
     }
     
-    private let scrapButton = UIButton().then {
-        $0.setImage(UIImage(systemName: "star"), for: .normal)
-        $0.imageView?.tintColor = .white
-    }
-     
-    private let boxButton = UIButton().then {
-        $0.setImage(UIImage(named: "box"), for: .normal)
-        $0.imageView?.tintColor = .white
-    }
-    
     init(viewModel: DetailPublicAnswerViewModel){
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -66,11 +56,6 @@ final class DetailPublicAnswerViewController: BaseViewController {
 
         self.navigationController?.navigationBar.tintColor = .white
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .done, target: self, action: #selector(handleDismissal))
-        
-        self.navigationItem.rightBarButtonItems = [
-            UIBarButtonItem(customView: boxButton),
-            UIBarButtonItem(customView: scrapButton)
-        ]
 
     }
     
@@ -136,6 +121,6 @@ final class DetailPublicAnswerViewController: BaseViewController {
     
     //MARK: - Selector
     @objc func handleDismissal(){
-        self.navigationController?.popViewController(animated: true)
+        self.navigationController?.popViewController(animated: false)
     }
 }

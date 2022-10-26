@@ -152,7 +152,7 @@ final class PublicAnswerListViewController: BaseViewController {
                                                      answerID: item.id
                                                         ,publicQuestionService: PublicQuestionService())
                 let vc = DetailPublicAnswerViewController(viewModel: vm)
-                self.navigationController?.pushViewController(vc, animated: true)
+                self.navigationController?.pushViewController(vc, animated: false)
             }).disposed(by: disposeBag)
     }
     
