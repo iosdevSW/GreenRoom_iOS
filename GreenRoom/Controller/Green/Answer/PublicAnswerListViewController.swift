@@ -72,7 +72,7 @@ final class PublicAnswerListViewController: BaseViewController {
             UIBarButtonItem(customView: scrapButton)
         ]
         
-        guard let tabbarcontroller = tabBarController as? CustomTabbarController else { return }
+        guard let tabbarcontroller = tabBarController as? MainTabbarController else { return }
         tabbarcontroller.createButton.isHidden = true
         self.tabBarController?.tabBar.isHidden = true
     }
@@ -80,7 +80,7 @@ final class PublicAnswerListViewController: BaseViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
-        guard let tabbarcontroller = tabBarController as? CustomTabbarController else { return }
+        guard let tabbarcontroller = tabBarController as? MainTabbarController else { return }
         tabbarcontroller.createButton.isHidden = false
         self.tabBarController?.tabBar.isHidden = false
     }
@@ -146,6 +146,14 @@ final class PublicAnswerListViewController: BaseViewController {
                 self?.navigationController?.pushViewController(vc, animated: false)
         }).disposed(by: disposeBag)
         
+        collectionView.rx.modelSelected(PublicAnswerSectionModel.Item.self)
+            .subscribe(onNext: { item in
+                let vm = DetailPublicAnswerViewModel(question: self.headerView.question,
+                                                     answerID: item.id
+                                                        ,publicQuestionService: PublicQuestionService())
+                let vc = DetailPublicAnswerViewController(viewModel: vm)
+                self.navigationController?.pushViewController(vc, animated: false)
+            }).disposed(by: disposeBag)
     }
     
     //MARK: - Selector

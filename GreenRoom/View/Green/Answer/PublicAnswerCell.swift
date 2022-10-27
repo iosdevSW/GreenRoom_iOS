@@ -88,9 +88,11 @@ final class PublicAnswerCell: UICollectionViewCell {
     
     private func configure() {
         guard let question = question else { return }
-
-        self.profileImageView.kf.setImage(with: URL(string: question.profileImage))    
+        
+        self.profileImageView.kf.setImage(with: URL(string: question.profileImage))
+        self.profileImageView.alpha = 1.0
         self.answerLabel.text = question.answer
+        self.answerLabel.textColor = .black
         
     }
 }

@@ -83,7 +83,7 @@ final class PublicQuestionService {
     /** 그린룸질문 상세정보 조회 */
     func fetchDetailPublicQuestion(id: Int) -> Observable<PublicAnswerList> {
         let requestURL = baseURL + "/\(id)"
-        
+    
         return Observable.create { emitter in
             AF.request(requestURL, method: .get, encoding: URLEncoding.default, interceptor: AuthManager())
                 .validate(statusCode: 200..<300)
@@ -97,21 +97,21 @@ final class PublicQuestionService {
                                                           PublicAnswer(id: 0, profileImage: "", answer: ""),
                                                           PublicAnswer(id: 0, profileImage: "", answer: "")]
                         )
-                        print(question.participated)
-                        print(question.expired)
+                       
                         if question.participated && question.expired {
                             self.fetchDetailAnswers(id: question.id) { result in
-                                print(result)
                                 switch result {
                                 case .success(let answers):
-                                    print(answers)
                                     output.answers = answers
+                                    emitter.onNext(output)
                                 case .failure(_):
                                     break
                                 }
                             }
+                        } else {
+                            emitter.onNext(output)
                         }
-                        emitter.onNext(output)
+                        
                     case .failure(let error):
                         emitter.onError(error)
                     }
@@ -121,13 +121,13 @@ final class PublicQuestionService {
     }
     
     func fetchDetailAnswer(id: Int) -> Observable<SpecificPublicAnswer> {
-        let requestURL = baseURL + "/api/green-questions/answer/\(id)"
+        let requestURL = baseURL + "/answer/\(id)"
         
         return Observable.create { emitter in
             AF.request(requestURL, method: .get, encoding: URLEncoding.default, interceptor: AuthManager())
                 .validate(statusCode: 200..<300)
                 .responseDecodable(of: SpecificPublicAnswer.self) { response in
-                    
+
                     switch response.result {
                     case .success(let answer):
                         emitter.onNext(answer)

@@ -115,7 +115,8 @@ final class PublicQuestionsCell: UICollectionViewCell {
     func configure(question: GreenRoomQuestion){
         
         self.containerView.alpha = question.expired ? 0.5 : 1.0
-        self.questionTextView.text = question.question
+        
+        self.questionTextView.attributedText = question.question.addLineSpacing(foregroundColor: .black)
         self.categoryLabel.text = question.categoryName
 
         guard let url = URL(string: question.profileImage) else { return }

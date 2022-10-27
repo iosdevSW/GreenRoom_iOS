@@ -28,6 +28,7 @@ final class CreateGRHeaderView: UICollectionReusableView {
         $0.textColor = .customGray
         $0.textContainerInset = UIEdgeInsets(top: 16.0, left: 16.0, bottom: 16.0, right: 16.0)
         $0.setMainLayer()
+        $0.backgroundColor = .white
     }
     
     private var setTimeLabel = UILabel()

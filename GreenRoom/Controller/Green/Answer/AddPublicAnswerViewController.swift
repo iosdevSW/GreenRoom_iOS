@@ -56,7 +56,7 @@ final class AddPublicAnswerViewController: BaseViewController {
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .done, target: self, action: #selector(handleDismissal))
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: doneButton)
         
-        guard let tabbarcontroller = tabBarController as? CustomTabbarController else { return }
+        guard let tabbarcontroller = tabBarController as? MainTabbarController else { return }
         tabbarcontroller.createButton.isHidden = true
         self.tabBarController?.tabBar.isHidden = true
     }
@@ -64,7 +64,7 @@ final class AddPublicAnswerViewController: BaseViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
-        guard let tabbarcontroller = tabBarController as? CustomTabbarController else { return }
+        guard let tabbarcontroller = tabBarController as? MainTabbarController else { return }
         tabbarcontroller.createButton.isHidden = false
         self.tabBarController?.tabBar.isHidden = false
     }

@@ -8,7 +8,7 @@
 import UIKit
 import RxSwift
 
-/// 그린룸 질문에 대한 답변을 클릭했을 때 나오는 전체화면
+/// 그린룸 질문에 대한 답변을 클릭했을 때 나오는 전체화면 B13
 final class DetailPublicAnswerViewController: BaseViewController {
     
     private let viewModel: DetailPublicAnswerViewModel
@@ -32,20 +32,10 @@ final class DetailPublicAnswerViewController: BaseViewController {
         $0.text = "박면접"
     }
     
-    private lazy var answerLabel = UILabel().then {
+    private lazy var answerLabel = PaddingLabel(padding: UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)).then {
         $0.numberOfLines = 0
         $0.textColor = .darkText
         $0.font = .sfPro(size: 16, family: .Regular)
-    }
-    
-    private let scrapButton = UIButton().then {
-        $0.setImage(UIImage(systemName: "star"), for: .normal)
-        $0.imageView?.tintColor = .white
-    }
-     
-    private let boxButton = UIButton().then {
-        $0.setImage(UIImage(named: "box"), for: .normal)
-        $0.imageView?.tintColor = .white
     }
     
     init(viewModel: DetailPublicAnswerViewModel){
@@ -66,11 +56,6 @@ final class DetailPublicAnswerViewController: BaseViewController {
 
         self.navigationController?.navigationBar.tintColor = .white
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .done, target: self, action: #selector(handleDismissal))
-        
-        self.navigationItem.rightBarButtonItems = [
-            UIBarButtonItem(customView: boxButton),
-            UIBarButtonItem(customView: scrapButton)
-        ]
 
     }
     
@@ -127,10 +112,15 @@ final class DetailPublicAnswerViewController: BaseViewController {
             guard let url = URL(string: answer.profileImage) else { return }
             self.profileImageView.kf.setImage(with: url)
         }).disposed(by: disposeBag)
+        
+        output.header
+            .subscribe(onNext: { header in
+                self.headerView.question = header
+            }).disposed(by: disposeBag)
     }
     
     //MARK: - Selector
     @objc func handleDismissal(){
-        self.navigationController?.popViewController(animated: true)
+        self.navigationController?.popViewController(animated: false)
     }
 }

@@ -6,9 +6,8 @@
 //
 
 import UIKit
-import Alamofire
 
-final class CustomTabbarController: UITabBarController {
+final class MainTabbarController: UITabBarController {
     
     var isHidden: Bool = false {
         didSet { self.createButton.isHidden = tabBar.isHidden }
@@ -19,7 +18,7 @@ final class CustomTabbarController: UITabBarController {
         $0.setImage(UIImage(systemName: "plus"), for: .normal)
         $0.contentMode = .scaleAspectFit
         $0.imageView?.tintColor = .white
-        $0.layer.cornerRadius = view.frame.width / 14
+        $0.layer.cornerRadius = view.frame.width / 12
         $0.addTarget(self, action: #selector(didTapCreateQuestion(_ :)), for: .touchUpInside)
     }
     
@@ -34,11 +33,15 @@ final class CustomTabbarController: UITabBarController {
     }
     
     private func initView() {
+        
+        UITabBar.clearShadow()
+        tabBar.layer.applyShadow()
+        
         self.view.addSubview(createButton)
         createButton.snp.makeConstraints { make in
-            make.top.equalTo(tabBar.snp.top).offset(-25)
+            make.centerY.equalTo(tabBar.snp.top)
             make.centerX.equalToSuperview()
-            make.height.width.equalTo(view.frame.width / 7)
+            make.height.width.equalTo(view.frame.width / 6)
         }
     }
     
@@ -115,8 +118,6 @@ final class CustomTabbarController: UITabBarController {
         present(vc, animated: true)
     }
     
-    
-    
     //MARK: - AddObserver
     func addObserver(){
         NotificationCenter.default.addObserver(self, selector: #selector(didTapUpdateCategories(_:)), name: .categoryObserver, object: nil)
@@ -126,13 +127,13 @@ final class CustomTabbarController: UITabBarController {
         NotificationCenter.default.addObserver(self, selector: #selector(didTapEditQuestionButton(_:)), name: .editQuestionObserver, object: nil)
     }
 }
-extension CustomTabbarController: UIPopoverPresentationControllerDelegate {
+extension MainTabbarController: UIPopoverPresentationControllerDelegate {
     public func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
         return .none
     }
 }
 
-extension CustomTabbarController: CreatePopOverDeleagte {
+extension MainTabbarController: CreatePopOverDeleagte {
     
     func didTapGreenRoomCreate() {
         let vc = UINavigationController(rootViewController: CreateGreenRoomViewController(viewModel: CreatePublicQuestionViewModel()))
@@ -147,7 +148,7 @@ extension CustomTabbarController: CreatePopOverDeleagte {
     }
 }
 // 로그인 화면 전환 액션 함수
-extension CustomTabbarController {
+extension MainTabbarController {
     
     @objc func showLoginViewController() {
         let loginVC = LoginViewController(loginViewModel: LoginViewModel())
