@@ -12,7 +12,7 @@ import RxCocoa
 final class CreateQuestionViewController: BaseViewController {
     
     //MARK: - Properteis
-    private var collectionView: UICollectionView!
+    private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: configureCollectionViewLayout())
     private let viewModel: CreateViewModel
     
     private let subtitleLabel = UILabel().then {
@@ -210,7 +210,7 @@ final class CreateQuestionViewController: BaseViewController {
 //MARK: - Configure
 extension CreateQuestionViewController {
     
-    private func configureCollectionView() {
+    private func configureCollectionViewLayout() -> UICollectionViewFlowLayout {
         let layout = UICollectionViewFlowLayout()
         
         layout.minimumLineSpacing = 20
@@ -219,8 +219,10 @@ extension CreateQuestionViewController {
         let cellWidth = (screenWidth - CGFloat(42 * 2) - (20 * 3)) / 4
         layout.itemSize = CGSize(width: cellWidth, height: 90)
         
-        self.collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        
+        return layout
+    }
+    
+    private func configureCollectionView() {
         self.collectionView.register(CategoryCell.self, forCellWithReuseIdentifier: String(describing: CategoryCell.self))
         self.collectionView.backgroundColor = .white
     }

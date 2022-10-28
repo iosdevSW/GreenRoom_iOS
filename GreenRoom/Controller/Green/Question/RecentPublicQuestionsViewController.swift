@@ -13,7 +13,7 @@ import RxDataSources
 final class RecentPublicQuestionsViewController: BaseViewController {
     
     private var collectionView: UICollectionView!
-    private let viewModel: RecentPublicQuestionsViewModel!
+    private let viewModel: RecentPublicQuestionsViewModel
     
     init(viewModel: RecentPublicQuestionsViewModel){
         self.viewModel = viewModel

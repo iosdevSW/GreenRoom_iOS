@@ -16,9 +16,9 @@ final class PublicAnswerStatusHeaderView: BaseCollectionReusableView {
     }
     
     //MARK: ProPerties
-    private var participantsLabel = Utilities.shared.generateLabel(text: "N명이 참여하고 있어요", color: .mainColor, font: .sfPro(size: 12, family: .Semibold))
+    private let participantsLabel = Utilities.shared.generateLabel(text: "N명이 참여하고 있어요", color: .mainColor, font: .sfPro(size: 12, family: .Semibold))
     
-    private var statusLabel = PaddingLabel(padding: UIEdgeInsets(top: 20, left: 29, bottom: 20, right: 29)).then {
+    private let statusLabel = PaddingLabel(padding: UIEdgeInsets(top: 20, left: 29, bottom: 20, right: 29)).then {
         $0.textColor = .customGray
         $0.font = .sfPro(size: 16, family: .Bold)
         $0.text = "작성 시 동료의 답변을 볼 수 있어요!"

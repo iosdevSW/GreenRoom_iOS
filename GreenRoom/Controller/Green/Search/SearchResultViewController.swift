@@ -12,11 +12,10 @@ import RxDataSources
 final class SearchResultViewController: BaseViewController {
 
     //MARK: - Properties
-    private var collectionView: UICollectionView!
+    private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: configureCollectionViewLayout())
 
     //MARK: - Configure
     override func configureUI() {
-        
         self.view.backgroundColor = .white
         
         self.view.addSubview(collectionView)
@@ -34,11 +33,14 @@ final class SearchResultViewController: BaseViewController {
 //MARK: - CollectionView
 extension SearchResultViewController {
     
-    //MARK: - SetAttribute
-    private func configureCollectionView(){
+    //MARK: - Configure
+    private func configureCollectionViewLayout() -> UICollectionViewFlowLayout {
         let layout = UICollectionViewFlowLayout()
         layout.estimatedItemSize = CGSize(width: view.frame.width-50, height: 300)
-        self.collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: layout)
+        
+        return layout
+    }
+    private func configureCollectionView(){
         self.collectionView.backgroundColor = .backgroundGray
         collectionView.register(SearchResultHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: SearchResultHeaderView.reuseIdentifier)
         collectionView.register(SearchResultNotFoundCell.self, forCellWithReuseIdentifier: SearchResultNotFoundCell.reuseIdentifier)

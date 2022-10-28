@@ -11,7 +11,7 @@ import RxDataSources
 
 final class CreateGreenRoomViewController: BaseViewController {
     
-    private var collectionView: UICollectionView!
+    private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: configureCollectionViewLayout())
     private let viewModel: CreatePublicQuestionViewModel
     private lazy var datePickerController = CustomPopUpDatePickerController()
     
@@ -134,7 +134,8 @@ final class CreateGreenRoomViewController: BaseViewController {
 
 //MARK: - CollectionView
 extension CreateGreenRoomViewController {
-    private func configureCollectionView(){
+    
+    private func configureCollectionViewLayout() -> UICollectionViewFlowLayout {
         let layout = UICollectionViewFlowLayout()
         
         layout.minimumLineSpacing = 20
@@ -146,8 +147,10 @@ extension CreateGreenRoomViewController {
         layout.sectionInset = UIEdgeInsets(top: 0, left: 42, bottom: 80, right: 42)
         layout.headerReferenceSize = CGSize(width: view.bounds.width, height: view.bounds.height * 0.59)
         
-        self.collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        
+        return layout
+    }
+    
+    private func configureCollectionView(){
         collectionView.register(CategoryCell.self, forCellWithReuseIdentifier: String(describing: CategoryCell.self))
         collectionView.register(CreateGRHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: CreateGRHeaderView.reuseIdentifier)
         collectionView.backgroundColor = .white

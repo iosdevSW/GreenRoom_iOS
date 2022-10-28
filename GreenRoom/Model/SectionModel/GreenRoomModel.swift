@@ -57,4 +57,14 @@ enum GreenRoomSectionModel: SectionModelType {
             return items
         }
     }
+    
+    var title: String {
+        switch self {
+        case .popular: return "인기 질문"
+        case .recent: return "최근 질문"
+        case .MyGreenRoom: return "나의 그린룸"
+        case .MyQuestionList: return "나의 질문 리스트"
+        default: return ""
+        }
+    }
 }

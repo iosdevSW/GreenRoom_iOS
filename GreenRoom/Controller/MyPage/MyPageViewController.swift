@@ -15,10 +15,9 @@ import RxViewController
 
 final class MyPageViewController: BaseViewController {
     
-    private var viewModel: MyPageViewModel
-    
-    private var collectionView: UICollectionView!
-    private let imagePickerView = UIImagePickerController()
+    private let viewModel: MyPageViewModel
+    private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: generateLayout())
+    private lazy var imagePickerView = UIImagePickerController()
     private let profile = PublishRelay<UIImage?>()
     
     //MARK: - Lifecycle
@@ -89,7 +88,6 @@ final class MyPageViewController: BaseViewController {
 extension MyPageViewController {
     
     private func configureCollectionView() {
-        self.collectionView = UICollectionView(frame: .zero, collectionViewLayout: generateLayout())
         self.collectionView.backgroundColor = .white
         collectionView.register(ProfileCell.self, forCellWithReuseIdentifier: ProfileCell.reuseIdentifier)
         collectionView.register(SettingHeader.self, forSupplementaryViewOfKind: SettingHeader.reuseIdentifier, withReuseIdentifier: SettingHeader.reuseIdentifier)

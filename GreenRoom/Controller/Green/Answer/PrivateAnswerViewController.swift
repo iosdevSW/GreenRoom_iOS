@@ -28,11 +28,9 @@ final class PrivateAnswerViewController: BaseViewController {
         }
     }
     
-    private var viewModel: PrivateAnswerViewModel!
-    
+    private var viewModel: PrivateAnswerViewModel
     private var headerView = AnswerHeaderView(frame: .zero)
     private var keywordView: KeywordRegisterView!
-    private var collectionView: UICollectionView!
     
     private lazy var defaultView = UIImageView().then {
         $0.image = UIImage(named: "NotFound")?.withRenderingMode(.alwaysOriginal)

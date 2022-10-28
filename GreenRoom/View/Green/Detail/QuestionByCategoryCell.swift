@@ -22,8 +22,8 @@ final class QuestionByCategoryCell: BaseCollectionViewCell {
         $0.layer.masksToBounds = false
     }
     
-    private var nameLabel = Utilities.shared.generateLabel(text: "박면접", color: .customGray, font: .sfPro(size: 12, family: .Regular))
-    private var categoryLabel = Utilities.shared.generateLabel(text: "디자인", color: .black, font: .sfPro(size: 12, family: .Semibold))
+    private let nameLabel = Utilities.shared.generateLabel(text: "박면접", color: .customGray, font: .sfPro(size: 12, family: .Regular))
+    private let categoryLabel = Utilities.shared.generateLabel(text: "디자인", color: .black, font: .sfPro(size: 12, family: .Semibold))
     private let participantLabel = Utilities.shared.generateLabel(text: "N명이 참여하고 있습니다.", color: .mainColor, font: .sfPro(size: 12, family: .Bold))
     
     private lazy var questionTextView = UITextView().then {
@@ -45,7 +45,7 @@ final class QuestionByCategoryCell: BaseCollectionViewCell {
         )
     }
     
-    private var answerLabel = UILabel().then {
+    private lazy var answerLabel = UILabel().then {
         $0.numberOfLines = 0
         $0.font = .sfPro(size: 12, family: .Regular)
         $0.text = "작성 시 동료의 답변을 볼 수 있어요!"
@@ -53,7 +53,7 @@ final class QuestionByCategoryCell: BaseCollectionViewCell {
         $0.textColor = .black
     }
     
-    private var activeLabel = UILabel().then {
+    private lazy var activeLabel = UILabel().then {
         $0.text = "참여 하기"
         $0.font = .sfPro(size: 14, family: .Regular)
         $0.textColor = .customGray
