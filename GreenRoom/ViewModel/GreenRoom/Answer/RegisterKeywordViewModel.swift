@@ -55,18 +55,20 @@ final class RegisterKeywordViewModel: ViewModelType {
                 .disposed(by: disposeBag)
         }
         
-        registeredKeywordObservable.subscribe(onNext: {
-            print($0)
-        }).disposed(by: disposeBag)
-        input.inputKeyword.bind(to: textFieldContentObservable).disposed(by: disposeBag)
+        input.inputKeyword
+            .bind(to: textFieldContentObservable)
+            .disposed(by: disposeBag)
         
-        input.trigger.withLatestFrom(textFieldContentObservable)
+        input.trigger
+            .withLatestFrom(textFieldContentObservable)
             .bind(to: addKeywordObservable)
             .disposed(by: disposeBag)
         
-        addKeywordObservable.subscribe(onNext: { [weak self] keyword in
-            guard let self = self else { return }
-            self.registeredKeywordObservable.accept(self.registeredKeywordObservable.value + [keyword])
+        addKeywordObservable
+            .withUnretained(self)
+            .subscribe(onNext: { onwer, keyword in
+                onwer.registeredKeywordObservable
+                    .accept(onwer.registeredKeywordObservable.value + [keyword])
         }).disposed(by: disposeBag)
         
         return Output(registeredKeywords: self.registeredKeywordObservable.asObservable())

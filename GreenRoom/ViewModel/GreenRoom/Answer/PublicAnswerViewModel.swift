@@ -44,15 +44,18 @@ final class PublicAnswerViewModel: ViewModelType {
     
     func transform(input: Input) -> Output {
         
-        publicQuestionService.fetchDetailPublicQuestion(id: id)
-            .subscribe(onNext: { [weak self] question in
-                self?.scrapStateObservable.onNext(question.question.scrap)
-                self?.detailPublicAnswer.onNext(question)
+        publicQuestionService
+            .fetchDetailPublicQuestion(id: id)
+            .withUnretained(self)
+            .subscribe(onNext: { onwer, question in
+                onwer.scrapStateObservable.onNext(question.question.scrap)
+                onwer.detailPublicAnswer.onNext(question)
             }).disposed(by: disposeBag)
         
         input.scrapButtonTrigger.withLatestFrom(scrapStateObservable)
-            .flatMap { state in
-                return state ? self.scrapService.deleteScrapQuestion(ids: [self.id]) : self.scrapService.updateScrapQuestion(id: self.id)
+            .withUnretained(self)
+            .flatMap { onwer, state in
+                return state ? onwer.scrapService.deleteScrapQuestion(ids: [onwer.id]) : onwer.scrapService.updateScrapQuestion(id: onwer.id)
             }.bind(to: scrapStateObservable)
             .disposed(by: disposeBag)
         

@@ -45,17 +45,27 @@ class MyPageViewModel: ViewModelType {
     }
     
     func transform(input: Input) -> Output {
-        input.viewTrigger.flatMap { _ in
-            return self.userService.fetchUserInfo()
-        }.map {
-            return [MyPageSectionModel.profile(items: [
-                MyPageSectionModel.Item.profile(profileInfo: $0)
-            ])]
-        }.bind(to: self.userObservable).disposed(by: disposeBag)
+        input.viewTrigger
+            .withUnretained(self)
+            .flatMap { onwer, _ in
+                onwer.userService.fetchUserInfo()
+            }
+            .map {
+                [MyPageSectionModel.profile(
+                    items: [MyPageSectionModel.Item.profile(profileInfo: $0)]
+                )]
+            }.bind(to: self.userObservable)
+            .disposed(by: disposeBag)
 
         input.profileImage
-            .flatMap { self.userService.updateProfileImage(image: $0) }
-            .flatMap { _ in self.fetchUserInfo() }
+            .withUnretained(self)
+            .flatMap { onwer, image in
+                onwer.userService.updateProfileImage(image: image)
+            }
+            .withUnretained(self)
+            .flatMap { onwer, _ in
+                onwer.fetchUserInfo()
+            }
             .bind(to: self.userObservable)
             .disposed(by: disposeBag)
 

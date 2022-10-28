@@ -11,28 +11,51 @@ import RxSwift
 final class SearchViewModel: ViewModelType {
     
     private let searchService = SearchService()
-    
     var disposeBag = DisposeBag()
     
     struct Input {
-        let trigger: Observable<Bool>
+        let trigger: Observable<Void>
+        let searchBar: Observable<String>
+        let buttonTrigger: Observable<Void>
+        let keywordTrigger: Observable<SearchTagItem>
     }
     
     struct Output {
-        let result: Observable<[SearchSectionModel]>
+        let searchedKeyword: Observable<[SearchSectionModel]>
+        let searchResult: Observable<[FilteringQuestion]>
     }
+    
+    private let searchResult = PublishSubject<[FilteringQuestion]>()
     
     func transform(input: Input) -> Output {
         
-        let output = input.trigger
-            .flatMap { _ in
-                return Observable.zip(self.searchService.fetchPopularKeywords().map { keywords in
+        let searchedKeyword = input.trigger
+            .withUnretained(self)
+            .flatMap { onwer, _ in
+                return Observable.zip(onwer.searchService.fetchPopularKeywords().map { keywords in
                     return [SearchSectionModel.popular(header: "인기 검색어",items: keywords.map { SearchSectionModel.Item(text: $0, type: .popular) })]
-                }, self.fetchRecentKeywords())
+                }, onwer.fetchRecentKeywords())
             }.map { $0.0 + $0.1 }
-            
         
-        return Output(result: output)
+        input.buttonTrigger
+            .withLatestFrom(input.searchBar)
+            .withUnretained(self)
+            .flatMap { onwer, keyword in
+                onwer.searchService.searchGreenRoomQuestion(keyword: keyword)
+            }
+            .bind(to: searchResult)
+            .disposed(by: disposeBag)
+        
+        input.keywordTrigger
+            .withUnretained(self)
+            .flatMap { onwer, keyword in
+                onwer.searchService.searchGreenRoomQuestion(keyword: keyword.text)
+            }
+            .bind(to: searchResult)
+            .disposed(by: disposeBag)
+        
+        return Output(searchedKeyword: searchedKeyword,
+                      searchResult: searchResult.asObservable())
     }
     
     private func fetchRecentKeywords() -> Observable<[SearchSectionModel]> {

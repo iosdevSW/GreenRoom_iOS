@@ -47,42 +47,52 @@ final class CreatePublicQuestionViewModel: ViewModelType {
     
     func transform(input: Input) -> Output {
         
-        input.question.bind(to: textFieldContentObservable).disposed(by: disposeBag)
+        input.question
+            .bind(to: textFieldContentObservable)
+            .disposed(by: disposeBag)
         
-        input.returnTrigger.withLatestFrom(textFieldContentObservable)
+        input.returnTrigger
+            .withLatestFrom(textFieldContentObservable)
             .bind(to: addQuestionObservable)
             .disposed(by: disposeBag)
         
-        input.dateApplyTrigger.withLatestFrom(input.date.asObservable())
+        input.dateApplyTrigger
+            .withLatestFrom(input.date.asObservable())
             .map { $0.getMinutes() }
             .bind(to: self.confirmDate)
             .disposed(by: disposeBag)
-
+        
         input.submit.withLatestFrom(
             Observable.combineLatest(
                 input.category.asObservable(),
                 addQuestionObservable.asObservable(),
                 confirmDate.asObservable()
             )
-        ).flatMap { (categoryId, question, minutes) -> Observable<Bool> in
-            self.publicQuestionService.uploadQuestionList(categoryId: categoryId,
-                                                           question: question,
-                                                          expiredAt: self.getExpiredDate(minutes: minutes))
-        }.subscribe { _ in
-            self.successMessage.accept("질문 작성이 완료되었어요!")
-        } onError: { error in
-            self.failMessage.accept(error.localizedDescription)
-        }.disposed(by: disposeBag)
+        )
+        .withUnretained(self)
+        .flatMap { (owner, element) in
+            let (categoryId, question, minutes) = element
+            return owner.publicQuestionService.uploadQuestionList(
+                categoryId: categoryId,
+                question: question,
+                expiredAt: owner.getExpiredDate(minutes: minutes)
+            )
+        }.withUnretained(self)
+            .subscribe { onwer, _ in
+                onwer.successMessage.accept("질문 작성이 완료되었어요!")
+            } onError: { error in
+                self.failMessage.accept(error.localizedDescription)
+            }.disposed(by: disposeBag)
         
         let isValid = Observable.combineLatest(input.question, input.category).map { text, category in
             return !text.isEmpty && text != "면접자 분들은 나에게 어떤 질문을 줄까요?" && category != -1 }
         
         return Output(date: date.asObservable(),
                       isValid: isValid,
-                       failMessage: failMessage.asSignal(),
-                       successMessage: successMessage.asSignal(),
-                       comfirmDate: confirmDate.asObservable())
-            
+                      failMessage: failMessage.asSignal(),
+                      successMessage: successMessage.asSignal(),
+                      comfirmDate: confirmDate.asObservable())
+        
     }
     
     private func getExpiredDate(minutes: Int) -> String {
