@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 /// 특정 질문에 대한 리스트를 보여주는 셀 B4, B10
-final class PublicQuestionsCell: UICollectionViewCell {
+final class PublicQuestionsCell: BaseCollectionViewCell {
 
     static let reuseIdentifier = "PublicQuestionsCell"
     //MARK: - Properties
@@ -48,22 +48,12 @@ final class PublicQuestionsCell: UICollectionViewCell {
 
     private lazy var showContentsButton = ChevronButton()
 
-   //MARK: - LifeCycle
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        configureUI()
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
     override func prepareForReuse() {
         super.prepareForReuse()
     }
     
     //MARK: - Configure
-    private func configureUI(){
+    override func configureUI(){
         self.backgroundColor = .backgroundGray
         containerView.backgroundColor = .backgroundGray
         containerView.setMainLayer()

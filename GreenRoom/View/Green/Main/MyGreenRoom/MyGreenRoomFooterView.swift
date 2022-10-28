@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class MyGreenRoomFooterView: UICollectionReusableView {
+final class MyGreenRoomFooterView: BaseCollectionReusableView {
     
     static let reuseIdentifier = "MyGreenRoomFooterView"
     
@@ -21,18 +21,7 @@ final class MyGreenRoomFooterView: UICollectionReusableView {
         $0.contentMode = .scaleAspectFit
     }
     
-    // MARK: - Initializers
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        configureUI()
-    }
-    
-    @available(*, unavailable)
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    private func configureUI() {
+    override func configureUI() {
         self.backgroundColor = .backgroundGray
         self.addSubview(profileImageView)
         profileImageView.snp.makeConstraints { make in
@@ -56,10 +45,8 @@ final class MyGreenRoomFooterView: UICollectionReusableView {
         configureImageStack(urls: images)
     }
     
-    func configureImageStack(urls: [String]) {
-        
-        
-        
+    private func configureImageStack(urls: [String]) {
+
         DispatchQueue.global().async {
             
             var images: [UIImage] = []

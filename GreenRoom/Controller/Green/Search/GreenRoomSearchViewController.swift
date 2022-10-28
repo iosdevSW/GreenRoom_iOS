@@ -11,12 +11,14 @@ import RxDataSources
 import RxCocoa
 import RxViewController
 
-final class GRSearchViewController: BaseViewController {
+final class GreenRoomSearchViewController: BaseViewController {
     
     private var searchBar: UISearchBar!
-    private var collectionView: UICollectionView!
+    private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: generateLayout())
     
-    var viewModel: SearchViewModel
+    private let updateTrigger = BehaviorSubject<Void>(value: ())
+    
+    private let viewModel: SearchViewModel
     
     //MARK: - LifeCycle
     init(viewModel: SearchViewModel){
@@ -28,10 +30,6 @@ final class GRSearchViewController: BaseViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.tabBarController?.tabBar.isHidden = true
@@ -39,43 +37,57 @@ final class GRSearchViewController: BaseViewController {
     
     override func configureUI(){
         self.view.backgroundColor = .white
+        
         self.view.addSubview(collectionView)
         collectionView.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(25)
-            make.trailing.equalToSuperview()
+            make.trailing.leading.equalToSuperview()
             make.top.bottom.equalTo(view.safeAreaLayoutGuide)
         }
     }
 
     override func setupAttributes() {
+        super.setupAttributes()
         configureCollectionView()
         configureSearchBar()
     }
     
     override func setupBinding() {
-        let input = SearchViewModel.Input(trigger: self.rx.viewWillAppear.asObservable())
+        
+        searchBar.searchTextField.rx.controlEvent(.editingDidEndOnExit)
+            .subscribe(onNext: {
+                
+            }).disposed(by: disposeBag)
+        let input = SearchViewModel.Input(
+            trigger: self.updateTrigger.asObservable(),
+            searchBar: self.searchBar.searchTextField.rx.text.orEmpty.asObservable(),
+            buttonTrigger: self.searchBar.searchTextField.rx.controlEvent(.editingDidEndOnExit).asObservable(),
+            keywordTrigger: self.collectionView.rx.modelSelected(SearchSectionModel.Item.self).asObservable()
+        )
         
         let output = self.viewModel.transform(input: input)
         
-        output.result
+        output.searchedKeyword
             .bind(to: collectionView.rx.items(dataSource: self.dataSource()))
             .disposed(by: disposeBag)
-            
+        
+        output.searchResult
+            .subscribe(onNext: { [weak self] result in
+                print("RESULT")
+                print(result)
+                let vc = SearchResultViewController()
+                self?.navigationController?.pushViewController(vc, animated: false)
+            }).disposed(by: disposeBag)
     }
-
 }
+
 //MARK: - SetAttributes
-extension GRSearchViewController {
+extension GreenRoomSearchViewController {
     
     private func configureCollectionView(){
-        
-        let layout = generateLayout()
-        self.collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.isScrollEnabled = false
+        self.collectionView.isScrollEnabled = false
         self.collectionView.backgroundColor = .white
         self.collectionView.register(SearchWordCell.self, forCellWithReuseIdentifier: SearchWordCell.reuseIdentifier)
         self.collectionView.register(SearchWordHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: SearchWordHeaderView.reuseIdentifier)
-        
     }
     
     private func configureSearchBar(){
@@ -95,7 +107,7 @@ extension GRSearchViewController {
             
             textfield.attributedPlaceholder = NSAttributedString(string: textfield.placeholder ?? "", attributes: [NSAttributedString.Key.foregroundColor : UIColor.customGray!])
             
-            textfield.textColor = UIColor.customGray
+            textfield.textColor = UIColor.black
             textfield.layer.borderColor = UIColor.white.cgColor
             textfield.tintColor = .customGray
             textfield.font = .sfPro(size: 17, family: .Regular)
@@ -111,18 +123,19 @@ extension GRSearchViewController {
 }
 
 //MARK: - UITextFieldDelegate
-extension GRSearchViewController: UITextFieldDelegate {
+extension GreenRoomSearchViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         guard let text = textField.text else { return true }
-        CoreDataManager.shared.saveRecentSearch(keyword: text, date: Date()) { completed in
-            print(completed)
+        CoreDataManager.shared.saveRecentSearch(keyword: text, date: Date()) { [weak self] completed in
+            self?.updateTrigger.onNext(())
         }
+        textField.resignFirstResponder()
         return true
     }
 }
 
 //MARK: - CollectionViewDataSource
-extension GRSearchViewController {
+extension GreenRoomSearchViewController {
     private func dataSource() -> RxCollectionViewSectionedReloadDataSource<SearchSectionModel> {
         return RxCollectionViewSectionedReloadDataSource<SearchSectionModel> {
             dataSource, collectionView, indexPath, item in
@@ -138,15 +151,13 @@ extension GRSearchViewController {
             case .recent(header: let title, items: _):
                 headerView.configure(with: title)
             }
-            
             return headerView
-            
         }
     }
 }
 
 //MARK: - CollectionViewLayout
-extension GRSearchViewController {
+extension GreenRoomSearchViewController {
     func generateLayout() -> UICollectionViewLayout {
         
         let layout = UICollectionViewCompositionalLayout { (sectionIndex: Int,
@@ -188,7 +199,7 @@ extension GRSearchViewController {
         let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .topLeading)
         
         section.boundarySupplementaryItems = [header]
-        
+        section.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 15, bottom: 5, trailing: 0)
         return section
     }
     
@@ -216,7 +227,7 @@ extension GRSearchViewController {
         let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .topLeading)
         section.interGroupSpacing = 14
         section.boundarySupplementaryItems = [header]
-        
+        section.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 15, bottom: 5, trailing: 0)
         return section
     }
 }

@@ -11,7 +11,7 @@ protocol RecentHeaderDelegate: AnyObject {
     func didTapViewAllQeustionsButton()
 }
 
-final class RecentHeader: UICollectionReusableView {
+final class RecentHeader: BaseCollectionReusableView {
     
     static let reuseIdentifier = "RecentHeader"
     
@@ -33,18 +33,9 @@ final class RecentHeader: UICollectionReusableView {
         }), for: .touchUpInside)
         
     }
-    //MARK: - Lifecycle
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        self.configureUI()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
     
     //MARK: - Configure
-    private func configureUI(){
+    override func configureUI(){
         self.backgroundColor = .white
         self.addSubview(headerLabel)
         self.addSubview(viewAllQeustionsButton)

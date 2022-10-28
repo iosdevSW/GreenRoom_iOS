@@ -9,13 +9,11 @@ import UIKit
 import RxSwift
 import RxGesture
 
-final class CreateGRHeaderView: UICollectionReusableView {
+final class CreateGRHeaderView: BaseCollectionReusableView {
     
     static let reuseIdentifier = "CreateGRHeaderView"
     
     //MARK: - Properties
-    private var disposeBag = DisposeBag()
-    
     private let subtitleLabel = UILabel().then {
         $0.attributedText = Utilities.shared.textWithIcon(text: "모두가 볼 수 있는 질문입니다.", image: UIImage(named:"createQuestionList"), font: .sfPro(size: 12, family: .Regular), textColor: .customGray, imageColor: .customGray, iconPosition: .left)
     }
@@ -84,16 +82,8 @@ final class CreateGRHeaderView: UICollectionReusableView {
         $0.attributedText = mutable
     }
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        configureUI()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    private func configureUI(){
+    // MARK: - configure
+    override func configureUI(){
         self.backgroundColor = .white
         self.addSubview(subtitleLabel)
         self.addSubview(titleLabel)
@@ -117,12 +107,6 @@ final class CreateGRHeaderView: UICollectionReusableView {
         self.dateContainer.addSubview(setTimeLabel)
         self.dateContainer.addSubview(startDateLabel)
         self.dateContainer.addSubview(endDateLabel)
-        
-        dateContainer.rx.tapGesture()
-            .when(.recognized)
-            .subscribe(onNext: { _ in
-                print("hello")
-        }).disposed(by: disposeBag)
         
         dateContainer.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview()

@@ -63,10 +63,6 @@ class GreenRoomViewController: BaseViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
@@ -96,7 +92,7 @@ class GreenRoomViewController: BaseViewController {
     }
     
     override func setupBinding() {
-
+        
         let dataSource = self.dataSource()
         
         let input = MainGreenRoomViewModel.Input(
@@ -140,7 +136,7 @@ class GreenRoomViewController: BaseViewController {
                 self.present(vc, animated: true)
             }
         }).disposed(by: disposeBag)
-
+        
         Observable.merge(greenRoomButton.rx.tap.map { 0 }, questionListButton.rx.tap.map { 1 })
             .subscribe(onNext: { tag in
                 
@@ -159,7 +155,7 @@ class GreenRoomViewController: BaseViewController {
             }).disposed(by: disposeBag)
         
         searchButton.rx.tap.subscribe(onNext: {
-            let vc = GRSearchViewController(viewModel: SearchViewModel())
+            let vc = GreenRoomSearchViewController(viewModel: SearchViewModel())
             self.navigationController?.pushViewController(vc, animated: true)
         }).disposed(by: disposeBag)
         

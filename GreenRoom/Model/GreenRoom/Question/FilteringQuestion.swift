@@ -7,6 +7,7 @@
 
 import Foundation
 
+/** 필터링, 검색 기능에 해당하는 질문*/
 struct FilteringQuestion: Codable {
     let id: Int
     let categoryName, profileImage, name: String

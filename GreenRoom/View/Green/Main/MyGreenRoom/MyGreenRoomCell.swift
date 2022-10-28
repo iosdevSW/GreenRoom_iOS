@@ -13,13 +13,11 @@ protocol MyGreenRoomCellDelegate: AnyObject {
     func didTapPrev()
 }
 
-final class MyGreenRoomCell: UICollectionViewCell {
+final class MyGreenRoomCell: BaseCollectionViewCell {
     
     static let reuseIdentifer = "MyGreenRoomCell"
     
     //MARK: - Properties
-    private var disposeBag = DisposeBag()
-    
     weak var delegate: MyGreenRoomCellDelegate?
 
     lazy var leftButton = UIButton().then {
@@ -39,20 +37,14 @@ final class MyGreenRoomCell: UICollectionViewCell {
         $0.numberOfLines = 0
     }
     
-    //MARK: - LifeCycle
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        
-        configureUI()
-        bind()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    private lazy var defaultImageView = UIImageView().then {
+        $0.image = UIImage(named: "defaultGreenRoom")
+        $0.contentMode = .scaleAspectFill
+        $0.layer.masksToBounds = true
     }
     
     //MARK: - Configure
-    private func configureUI(){
+    override func configureUI(){
         self.backgroundColor = .white
         
         let topLine = UIView()
@@ -94,16 +86,26 @@ final class MyGreenRoomCell: UICollectionViewCell {
             make.trailing.equalToSuperview().offset(-15)
             make.height.equalTo(60)
         }
+        
+        contentView.addSubview(defaultImageView)
+        defaultImageView.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+            make.width.equalTo(150)
+            make.height.equalTo(50)
+        }
     }
     
     func configure(question: MyGreenRoomQuestion){
-        
-        self.questionLabel.attributedText = question.question?.addLineSpacing(foregroundColor: .black, font: .sfPro(size: 20, family: .Regular))
+        guard let questionText = question.question else {
+            return
+        }
+        defaultImageView.removeFromSuperview()
+        self.questionLabel.attributedText = questionText.addLineSpacing(foregroundColor: .black, font: .sfPro(size: 20, family: .Regular))
         leftButton.isHidden = !question.hasPrev
         rightButton.isHidden = !question.hasNext
     }
     
-    func bind() {
+    override func bind() {
         leftButton.rx.tap.subscribe(onNext: {
             self.delegate?.didTapPrev()
         }).disposed(by: disposeBag)

@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class PublicAnswerCell: UICollectionViewCell {
+final class PublicAnswerCell: BaseCollectionViewCell {
     
     static let reuseIdentifier = "PublicAnswerCell"
     
@@ -36,17 +36,8 @@ final class PublicAnswerCell: UICollectionViewCell {
         $0.font = .sfPro(size: 16, family: .Regular)
     }
     
-    //MARK: - init
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
     //MARK: - Configure
-    private func configureUI() {
+    override func configureUI() {
         self.backgroundColor = .white
         
         let imageSize = frame.size.width * 0.1

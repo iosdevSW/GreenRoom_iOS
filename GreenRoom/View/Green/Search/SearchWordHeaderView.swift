@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-final class SearchWordHeaderView: UICollectionReusableView {
+final class SearchWordHeaderView: BaseCollectionReusableView {
     
     static let reuseIdentifier = "SearchWordHeaderView"
     
@@ -19,9 +19,7 @@ final class SearchWordHeaderView: UICollectionReusableView {
         $0.textColor = .black
     }
     
-    //MARK: - LifeCycle
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    override func configureUI() {
         backgroundColor = .white
         
         self.addSubview(titleLabel)
@@ -30,11 +28,6 @@ final class SearchWordHeaderView: UICollectionReusableView {
             $0.centerY.equalToSuperview()
         }
     }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
     func configure(with title: String) {
         self.titleLabel.text = title
     }

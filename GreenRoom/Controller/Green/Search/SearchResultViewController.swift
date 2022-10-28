@@ -14,12 +14,6 @@ final class SearchResultViewController: BaseViewController {
     //MARK: - Properties
     private var collectionView: UICollectionView!
 
-    //MARK: - Lifecycle
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-    }
-
     //MARK: - Configure
     override func configureUI() {
         self.view.addSubview(collectionView)

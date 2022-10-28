@@ -7,7 +7,7 @@
 
 import UIKit
 
-class MyQuestionListCell: UICollectionViewCell {
+class MyQuestionListCell: BaseCollectionViewCell {
     
     static let reuseIedentifier = "MyQuestionListCell"
     
@@ -37,18 +37,9 @@ class MyQuestionListCell: UICollectionViewCell {
         $0.numberOfLines = 0
     }
     
-    //MARK: - LifeCycle
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        configureUI()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
+
     //MARK: - Configure
-    private func configureUI(){
+    override func configureUI(){
         
         self.backgroundColor = .clear
         self.containerView.backgroundColor = .white
@@ -58,7 +49,7 @@ class MyQuestionListCell: UICollectionViewCell {
         self.contentView.addSubview(groupCategoryNameLabel)
         self.contentView.addSubview(containerView)
         
-        containerView.snp.makeConstraints { make in
+        self.containerView.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(bounds.size.height*0.18)
             make.leading.equalToSuperview().offset(bounds.size.width * 0.06)
             make.trailing.equalToSuperview().offset(-bounds.size.width * 0.06)
@@ -78,13 +69,13 @@ class MyQuestionListCell: UICollectionViewCell {
         }
         
         self.contentView.addSubview(iconImageView)
-        iconImageView.snp.makeConstraints { make in
+        self.iconImageView.snp.makeConstraints { make in
             make.leading.equalTo(containerView.snp.leading)
             make.top.equalToSuperview().offset(3)
             make.width.height.equalTo(16)
         }
         
-        groupCategoryNameLabel.snp.makeConstraints { make in
+        self.groupCategoryNameLabel.snp.makeConstraints { make in
             make.leading.equalTo(iconImageView.snp.trailing).offset(15)
             make.centerY.equalTo(iconImageView.snp.centerY)
         }

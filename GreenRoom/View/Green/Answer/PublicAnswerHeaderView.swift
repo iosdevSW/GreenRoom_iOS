@@ -8,7 +8,7 @@
 
 import UIKit
 
-final class PublicAnswerHeaderView: UICollectionReusableView {
+final class PublicAnswerHeaderView: BaseCollectionReusableView {
     
     static let reuseIdentifier = "PublicAnswerHeaderView"
     
@@ -19,17 +19,7 @@ final class PublicAnswerHeaderView: UICollectionReusableView {
         $0.font = .sfPro(size: 12, family: .Bold)
     }
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        
-        configureUI()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    private func configureUI(){
+    override func configureUI(){
         self.addSubview(participantLabel)
         participantLabel.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(10)

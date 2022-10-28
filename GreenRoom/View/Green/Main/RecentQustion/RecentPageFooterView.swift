@@ -9,7 +9,7 @@ import UIKit
 import RxCocoa
 import RxSwift
 
-final class RecentPageFooterView: UICollectionReusableView {
+final class RecentPageFooterView: BaseCollectionReusableView {
     
     static let reuseIdentifier = "RecentPageFooterView"
     
@@ -22,19 +22,6 @@ final class RecentPageFooterView: UICollectionReusableView {
         $0.backgroundColor = .backgroundGray
     }
     
-    private let disposeBag = DisposeBag()
-    
-    // MARK: - Initializers
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        configureUI()
-    }
-    
-    @available(*, unavailable)
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
     func bind(input: PublishSubject<Int>, pageNumber: Int) {
         self.bannerPageControl.numberOfPages = pageNumber
         
@@ -43,7 +30,7 @@ final class RecentPageFooterView: UICollectionReusableView {
         }).disposed(by: disposeBag)
     }
     
-    private func configureUI() {
+    override func configureUI() {
         self.addSubview(bannerPageControl)
         self.bannerPageControl.snp.makeConstraints { make in
             make.edges.equalToSuperview()

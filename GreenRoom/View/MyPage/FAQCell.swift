@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class FAQCell: UITableViewCell {
+final class FAQCell: UITableViewCell {
     
     //MARK: - Properties
     static let reuseIdentifier = "FAQCell"

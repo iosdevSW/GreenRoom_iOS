@@ -6,7 +6,7 @@
 //
 import UIKit
 
-final class MyGreenRoomHeader: UICollectionReusableView {
+final class MyGreenRoomHeader: BaseCollectionReusableView {
     
     static let reuseIdentifier = "MyGreenRoomHeader"
     
@@ -17,18 +17,8 @@ final class MyGreenRoomHeader: UICollectionReusableView {
         $0.font = .sfPro(size: 20, family: .Bold)
     }
     
-    //MARK: - Lifecycle
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        self.configureUI()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
     //MARK: - Configure
-    private func configureUI(){
+    override func configureUI(){
         self.backgroundColor = .backgroundGray
         self.addSubview(headerLabel)
         

@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-final class SetNotificationRow: UICollectionViewCell {
+final class SetNotificationRow: BaseCollectionViewCell {
     
     static let reuseIdentifier = "SetNotificationRow"
         
@@ -32,9 +32,7 @@ final class SetNotificationRow: UICollectionViewCell {
         $0.addTarget(self, action: #selector(onClickSwitch(sender:)), for: UIControl.Event.valueChanged)
     }
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        
+    override func configureUI() {
         backgroundColor = .white
         addSubview(iconImageView)
         
@@ -59,16 +57,13 @@ final class SetNotificationRow: UICollectionViewCell {
         notificationSwitch.isOn = UserDefaults.standard.bool(forKey: "isNotificationOn")
     }
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
     //MARK: - Configure
     private func configure() {
         guard let setting = setting else { return }
         iconImageView.image = setting.iconImage
         titleLabel.text = setting.title
     }
+    
     //MARK: - selector
     @objc func onClickSwitch(sender: UISwitch){
         UserDefaults.standard.set(sender.isOn, forKey: "isNotificationOn")

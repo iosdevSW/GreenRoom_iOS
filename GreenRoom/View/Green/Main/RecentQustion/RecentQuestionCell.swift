@@ -6,7 +6,7 @@
 //
 import UIKit
 
-final class RecentQuestionCell: UICollectionViewCell {
+final class RecentQuestionCell: BaseCollectionViewCell {
     
     static let reuseIdentifer = "RecentQuestionCell"
     
@@ -25,18 +25,8 @@ final class RecentQuestionCell: UICollectionViewCell {
         $0.numberOfLines = 0
     }
     
-   //MARK: - LifeCycle
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        configureUI()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
     //MARK: - Configure
-    private func configureUI(){
+    override func configureUI(){
         self.contentView.setMainLayer()
         self.backgroundColor = .white
         self.contentView.addSubview(questionLabel)

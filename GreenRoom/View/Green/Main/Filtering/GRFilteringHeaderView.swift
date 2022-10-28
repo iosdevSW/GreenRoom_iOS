@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class GRFilteringHeaderView: UICollectionReusableView {
+final class GRFilteringHeaderView: BaseCollectionReusableView {
     
     static let reuseIdentifier = "GRFilteringHeaderView"
     
@@ -25,18 +25,9 @@ final class GRFilteringHeaderView: UICollectionReusableView {
         ]))
         $0.attributedText = attributeString
     }
-    //MARK: - Lifecycle
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        self.configureUI()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
     
     //MARK: - Configure
-    private func configureUI(){
+    override func configureUI(){
         self.backgroundColor = .white
         self.addSubview(filterLabel)
         

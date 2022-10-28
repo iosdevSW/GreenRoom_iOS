@@ -15,7 +15,7 @@ protocol ProfileCellDelegate: AnyObject {
     func didTapEditProfileInfo()
 }
 
-final class ProfileCell: UICollectionViewCell {
+final class ProfileCell: BaseCollectionViewCell {
     
     //MARK: - Properties
     static let reuseIdentifier = "ProfileCell"
@@ -66,16 +66,6 @@ final class ProfileCell: UICollectionViewCell {
         $0.addTarget(self, action: #selector(didTapEditProfileInfo), for: .touchUpInside)
     }
     
-    //MARK: - LifeCycle
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        configureUI()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
     //MARK: - Configure
     private func configure() {
         guard let user = user, let category = Category(rawValue: user.categoryID) else {
@@ -93,7 +83,7 @@ final class ProfileCell: UICollectionViewCell {
         profileImageView.kf.setImage(with: url,placeholder: UIImage(named:"DefaultProfile"))
     }
     
-    private func configureUI(){
+    override func configureUI(){
         
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTapEditProfileImageButton(tapGestureRecognizer:)))
         profileImageView.isUserInteractionEnabled = true

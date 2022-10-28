@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class PublicAnswerStatusHeaderView: UICollectionReusableView {
+final class PublicAnswerStatusHeaderView: BaseCollectionReusableView {
     
     static let reuseIdentifier = "PublicAnswerStatusHeaderView"
     
@@ -28,19 +28,9 @@ final class PublicAnswerStatusHeaderView: UICollectionReusableView {
         $0.layer.cornerRadius = 15
         $0.textAlignment = .center
     }
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        
-        configureUI()
-    }
-        
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
+
     //MARK: - Configure
-    private func configureUI() {
+    override func configureUI() {
         self.backgroundColor = .white
         
         let margin = frame.size.width * 0.08

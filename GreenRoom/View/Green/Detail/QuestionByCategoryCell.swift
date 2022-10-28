@@ -8,7 +8,7 @@
 import UIKit
 
 /// 특정 카테고리나 검색에 대한 결과를 보여주는 셀 B2, B3-1
-final class QuestionByCategoryCell: UICollectionViewCell {
+final class QuestionByCategoryCell: BaseCollectionViewCell {
     
     static let reuseIdentifier = "QuestionByCategoryCell"
     
@@ -59,17 +59,7 @@ final class QuestionByCategoryCell: UICollectionViewCell {
         $0.textColor = .customGray
     }
     
-    //MARK: - init
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        configureUI()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    private func configureUI(){
+    override func configureUI(){
         contentView.layer.cornerRadius = 15
         contentView.backgroundColor = .white
         self.contentView.addSubview(profileImageView)
