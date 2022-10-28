@@ -33,10 +33,6 @@ final class FilteringQuestionViewController: BaseViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.navigationBar.backgroundColor = .clear
@@ -83,7 +79,10 @@ final class FilteringQuestionViewController: BaseViewController {
         
         let input = FilteringViewModel.Input(trigger: self.rx.viewWillAppear.asObservable())
         
-        viewModel.transform(input: input).publicQuestions.bind(to: self.collectionView.rx.items(dataSource: dataSource()))
+        viewModel.transform(input: input)
+            .publicQuestions.bind(
+                to: self.collectionView.rx.items(dataSource: dataSource())
+            )
             .disposed(by: disposeBag)
     }
 }

@@ -24,11 +24,6 @@ final class RecentPublicQuestionsViewController: BaseViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        self.view.backgroundColor = .white
-    }
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
@@ -53,7 +48,6 @@ final class RecentPublicQuestionsViewController: BaseViewController {
     override func configureUI() {
         super.configureUI()
         
-        
         view.addSubview(collectionView)
         collectionView.snp.makeConstraints { make in
             make.leading.trailing.bottom.equalToSuperview()
@@ -72,14 +66,14 @@ final class RecentPublicQuestionsViewController: BaseViewController {
         output.recent.bind(to: collectionView.rx.items(dataSource: dataSource())).disposed(by: disposeBag)
         
         collectionView.rx.modelSelected(GreenRoomSectionModel.Item.self)
-            .subscribe(onNext: { question in
+            .withUnretained(self)
+            .subscribe(onNext: { onwer, question in
                 switch question {
                 case .recent(question: let question):
                     let vc = PublicAnswerListViewController(viewModel: PublicAnswerViewModel(id: question.id, scrapService: ScrapService(), publicQuestionService: PublicQuestionService()))
-                    self.navigationController?.pushViewController(vc, animated: false)
+                    onwer.navigationController?.pushViewController(vc, animated: false)
                 default: return
-                }
-                
+                } 
             }).disposed(by: disposeBag)
     }
     
@@ -118,7 +112,7 @@ extension RecentPublicQuestionsViewController {
             indexPath in
             
             guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: InfoHeaderView.reuseIdentifier, for: indexPath) as? InfoHeaderView else {
-                    return UICollectionReusableView()
+                return UICollectionReusableView()
             }
             header.filterShowing = true
             header.info = Info(title: "최근 질문", subTitle: "방금 올라온 모든 질문리스트를 보여드려요!\n질문에 참여 시 동료들의 모든 답변을 확인할 수 있어요 :)")

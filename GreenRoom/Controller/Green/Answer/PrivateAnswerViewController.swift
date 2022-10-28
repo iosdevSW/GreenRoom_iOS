@@ -82,22 +82,15 @@ final class PrivateAnswerViewController: BaseViewController {
     init(viewModel: PrivateAnswerViewModel){
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
-        
-        self.keywordView = KeywordRegisterView(viewModel: RegisterKeywordViewModel(id: viewModel.id,
-                                                                                   answerType: .private))
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
+        
         self.navigationController?.navigationBar.tintColor = .white
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .done, target: self, action: #selector(handleDismissal))
         
@@ -118,6 +111,8 @@ final class PrivateAnswerViewController: BaseViewController {
     override func configureUI() {
         super.configureUI()
         
+        self.keywordView = KeywordRegisterView(viewModel: RegisterKeywordViewModel(id: viewModel.id, answerType: .private))
+        
         let headerHeight = UIScreen.main.bounds.height * 0.3
         
         self.view.addSubview(headerView)
@@ -126,7 +121,7 @@ final class PrivateAnswerViewController: BaseViewController {
             make.top.equalToSuperview()
             make.height.equalTo(headerHeight)
         }
-
+        
         self.view.addSubview(defaultView)
         defaultView.snp.makeConstraints { make in
             make.center.equalToSuperview()
@@ -157,78 +152,80 @@ final class PrivateAnswerViewController: BaseViewController {
     override func setupBinding() {
         
         answerTextView.rx.didBeginEditing
-            .subscribe(onNext: { [weak self] _ in
-                guard let self = self else { return }
-                
-                if self.answerTextView.text == self.viewModel.placeholder {
-                    self.answerTextView.text = nil
-                    self.answerTextView.textColor = .black
+            .withUnretained(self)
+            .subscribe(onNext: { onwer, _ in
+                if onwer.answerTextView.text == self.viewModel.placeholder {
+                    onwer.answerTextView.text = nil
+                    onwer.answerTextView.textColor = .black
                 }
             }).disposed(by: disposeBag)
         
         answerTextView.rx.didEndEditing
-            .subscribe(onNext: { [weak self] _ in
-                
-                guard let self = self else { return }
-                
-                if self.answerTextView.text.isEmpty || self.answerTextView.text == nil {
-                    self.answerTextView.attributedText = self.viewModel.placeholder.addLineSpacing(foregroundColor: .lightGray)
+            .withUnretained(self)
+            .subscribe(onNext: { onwer, _ in
+                if onwer.answerTextView.text.isEmpty || self.answerTextView.text == nil {
+                    onwer.answerTextView.attributedText = onwer.viewModel.placeholder.addLineSpacing(foregroundColor: .lightGray)
                 }
                 
             }).disposed(by: disposeBag)
-
-        let input = PrivateAnswerViewModel.Input(text: answerTextView.rx.text.orEmpty.asObservable(),
-                                                 endEditingTrigger: self.answerTextView.rx.didEndEditing.asObservable(),
-                                                 keywords: keywordView.output.registeredKeywords.asObservable(),
-                                                 deleteButtonTrigger: deleteButton.rx.tap.flatMap { self.showAlert(title: "질문 삭제", message: "마이질문을 삭제하시겠습니까?\n한 번 삭제 후 되돌릴 수 없습니다.")},
-                                                 doneButtonTrigger: self.doneButton.rx.tap.asObservable())
+        
+        let input = PrivateAnswerViewModel.Input(
+            text: answerTextView.rx.text.orEmpty.asObservable(),
+            endEditingTrigger: self.answerTextView.rx.didEndEditing.asObservable(),
+            keywords: keywordView.output.registeredKeywords.asObservable(),
+            deleteButtonTrigger: deleteButton.rx.tap.flatMap { self.showAlert(title: "질문 삭제", message: "마이질문을 삭제하시겠습니까?\n한 번 삭제 후 되돌릴 수 없습니다.")},
+            doneButtonTrigger: self.doneButton.rx.tap.asObservable())
         
         
-        doneButton.rx.tap.subscribe(onNext: {
-            self.answerTextView.resignFirstResponder()
-        }).disposed(by: disposeBag)
+        doneButton.rx.tap
+            .withUnretained(self)
+            .subscribe(onNext: { onwer, _ in
+                onwer.answerTextView.resignFirstResponder()
+            }).disposed(by: disposeBag)
         
         let output = viewModel.transform(input: input)
         
         answerPostButton.rx.tap
-            .subscribe(onNext: { [weak self] _ in
-                self?.mode = .edit
+            .withUnretained(self)
+            .subscribe(onNext: { onwer, _ in
+                onwer.mode = .edit
             }).disposed(by: disposeBag)
         
+        output.answer
+            .withUnretained(self)
+            .subscribe(onNext: { onwer, answer in
+                
+                onwer.headerView.question = QuestionHeader(id: answer.id, question: answer.question, categoryName: answer.categoryName, groupCategoryName: answer.groupCategoryName)
+                
+                if let answer = answer.answer {
+                    onwer.mode = .written(answer: answer)
+                } else {
+                    onwer.mode = .unWritten
+                }
+                
+            }).disposed(by: disposeBag)
         
+        output.successMessage
+            .withUnretained(self)
+            .emit(onNext: { onwer, message in
+                let alert = onwer.comfirmAlert(title: "등록 완료", subtitle: message) { _ in
+                    onwer.dismiss(animated: true)
+                }
+                onwer.present(alert, animated: true)
+            }).disposed(by: disposeBag)
         
-        output.answer.subscribe(onNext: { [weak self] answer in
-            
-            guard let self = self else { return }
-            self.headerView.question = QuestionHeader(id: answer.id, question: answer.question, categoryName: answer.categoryName, groupCategoryName: answer.groupCategoryName)
-
-            if let answer = answer.answer {
-                self.mode = .written(answer: answer)
-            } else {
-                self.mode = .unWritten
-            }
-
-        }).disposed(by: disposeBag)
-        
-        output.successMessage.emit(onNext: { [weak self] message in
-            guard let self = self else { return }
-            let alert = self.comfirmAlert(title: "등록 완료", subtitle: message) { _ in
-                self.dismiss(animated: true)
-            }
-            self.present(alert, animated: true)
-        }).disposed(by: disposeBag)
-        
-        output.failMessage.emit(onNext: { [weak self] message in
-            guard let self = self else { return }
+        output.failMessage
+            .withUnretained(self)
+            .emit(onNext: { onwer, message in
             let alert = self.comfirmAlert(title: "등록 실패", subtitle: message) { _ in
                 
             }
-            self.present(alert, animated: true)
+            onwer.present(alert, animated: true)
         }).disposed(by: disposeBag)
     }
     
     private func configureTextViewLayout() {
-
+        
         self.view.addSubview(keywordView)
         keywordView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
@@ -260,7 +257,7 @@ extension PrivateAnswerViewController {
         self.answerPostButton.isHidden = true
         
         self.answerTextView.attributedText = answer.addLineSpacing(foregroundColor: .black)
-        configureTextViewLayout()
+        self.configureTextViewLayout()
     }
     
     private func setUnwrittenMode() {
@@ -275,6 +272,6 @@ extension PrivateAnswerViewController {
         self.defaultLabel.isHidden = true
         self.answerPostButton.isHidden = true
         
-        configureTextViewLayout()
+        self.configureTextViewLayout()
     }
 }

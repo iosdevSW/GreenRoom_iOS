@@ -31,10 +31,6 @@ final class CreateGreenRoomViewController: BaseViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController?.navigationBar.shadowImage = UIImage()
@@ -66,8 +62,9 @@ final class CreateGreenRoomViewController: BaseViewController {
     
     override func setupAttributes() {
         super.setupAttributes()
+        
         self.submitButton.alpha = 0.5
-        configureCollectionView()
+        self.configureCollectionView()
     }
     
     override func setupBinding() {

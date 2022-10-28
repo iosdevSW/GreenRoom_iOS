@@ -60,20 +60,19 @@ final class CategorySelectViewController: BaseViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
-
     override func setupAttributes() {
-        self.configureCollectionView() 
+        super.setupAttributes()
+        
+        self.configureCollectionView()
     }
     
     //MARK: - Selector
     @objc func didClickCancelButton(_ sender: UIButton) {
         self.viewModel.selectedCategoriesObservable
             .take(1)
-            .subscribe(onNext:{ ids in
-                self.viewModel.tempSelectedCategoriesObservable
+            .withUnretained(self)
+            .subscribe(onNext:{ onwer, ids in
+                onwer.viewModel.tempSelectedCategoriesObservable
                     .accept(ids)
             }).disposed(by: disposeBag)
         
@@ -110,7 +109,7 @@ final class CategorySelectViewController: BaseViewController {
         }
         
         self.containerView.addSubview(selectedCategoriesCollectionView)
-        selectedCategoriesCollectionView.snp.makeConstraints{ make in
+        self.selectedCategoriesCollectionView.snp.makeConstraints{ make in
             make.leading.equalToSuperview().offset(43)
             make.top.equalTo(titleLabel.snp.bottom).offset(25)
             make.trailing.equalToSuperview().offset(-43)
@@ -118,7 +117,7 @@ final class CategorySelectViewController: BaseViewController {
         }
         
         self.containerView.addSubview(categoryCollectionView)
-        categoryCollectionView.snp.makeConstraints{ make in
+        self.categoryCollectionView.snp.makeConstraints{ make in
             make.top.equalTo(titleLabel.snp.bottom).offset(62)
             make.leading.trailing.equalToSuperview()
             make.height.equalToSuperview().multipliedBy(0.61)
@@ -146,32 +145,37 @@ final class CategorySelectViewController: BaseViewController {
     override func setupBinding() {
         categoryCollectionView.rx.itemSelected
             .bind(onNext: { [weak self] indexPath in
-                let cell = self?.categoryCollectionView.cellForItem(at: indexPath) as! CategoryCell
+                guard let self else { return }
+                let cell = self.categoryCollectionView.cellForItem(at: indexPath) as! CategoryCell
                 cell.isSelected = true
                 
-                if var ids = self?.viewModel.tempSelectedCategoriesObservable.value {
-                    ids.append(indexPath.row + 1)
-                    self?.viewModel.tempSelectedCategoriesObservable.accept(ids)
-                }
+                var ids = self.viewModel.tempSelectedCategoriesObservable.value
                 
+                ids.append(indexPath.row + 1)
+                self.viewModel.tempSelectedCategoriesObservable.accept(ids)
             }).disposed(by: disposeBag)
         
         categoryCollectionView.rx.itemDeselected
             .bind(onNext: { [weak self] indexPath in
-                let cell = self?.categoryCollectionView.cellForItem(at: indexPath) as! CategoryCell
+                guard let self else { return }
+                let cell = self.categoryCollectionView.cellForItem(at: indexPath) as! CategoryCell
                 cell.isSelected = false
                 
-                guard var ids = self?.viewModel.tempSelectedCategoriesObservable.value else { return }
+                var ids = self.viewModel.tempSelectedCategoriesObservable.value
                 
                 if let index = ids.firstIndex(of: indexPath.row + 1) {
                     ids.remove(at: index)
-                    self?.viewModel.tempSelectedCategoriesObservable.accept(ids)
+                    self.viewModel.tempSelectedCategoriesObservable.accept(ids)
                 }
                 
             }).disposed(by: disposeBag)
-
+        
         self.viewModel.categories
-            .bind(to: self.categoryCollectionView.rx.items(cellIdentifier: "categoryCell", cellType: CategoryCell.self)) {index, title ,cell in
+            .bind(to: self.categoryCollectionView.rx.items(
+                cellIdentifier: "categoryCell",
+                cellType: CategoryCell.self)
+            ) { [weak self] index, title ,cell in
+                guard let self else { return }
                 guard let category = Category(rawValue: index+1) else { return }
                 cell.category = category
                 
@@ -184,7 +188,10 @@ final class CategorySelectViewController: BaseViewController {
             }.disposed(by: disposeBag)
         
         self.viewModel.tempSelectedCategoriesObservable
-            .bind(to: self.selectedCategoriesCollectionView.rx.items(cellIdentifier: "ItemsCell", cellType: FilterItemsCell.self)) { index, id, cell in
+            .bind(to: self.selectedCategoriesCollectionView.rx.items(
+                cellIdentifier: "ItemsCell",
+                cellType: FilterItemsCell.self)
+            ) { index, id, cell in
                 cell.category = Category(rawValue: id)
             }.disposed(by: disposeBag)
     }
@@ -208,7 +215,7 @@ extension CategorySelectViewController {
             $0.allowsSelection = true
             $0.delegate = self
         }
-        selectedCategoriesCollectionView.showsVerticalScrollIndicator = false
+        self.selectedCategoriesCollectionView.showsVerticalScrollIndicator = false
         
         
         let layout = UICollectionViewFlowLayout().then{

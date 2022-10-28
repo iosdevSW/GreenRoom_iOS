@@ -16,10 +16,6 @@ final class FAQViewController: BaseViewController {
     private lazy var tableView = UITableView()
     
     //MARK: - Lifecycle
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController?.navigationBar.isHidden = false
@@ -74,12 +70,6 @@ final class FAQViewController: BaseViewController {
         
             cell.data = element
         }.disposed(by: disposeBag)
-        
-//        tableView.rx.itemSelected.subscribe(onNext: { [weak self] indexPath in
-//            guard let cell = self?.tableView.cellForRow(at: indexPath) as? FAQCell else { return }
-//            cell.setExpaned()
-//            self?.tableView.reloadRows(at: [indexPath], with: .none)
-//        }).disposed(by: disposeBag)
     }
 }
 
@@ -126,7 +116,6 @@ extension FAQViewController: UITableViewDelegate {
         guard let cell = self.tableView.cellForRow(at: indexPath) as? FAQCell else { return }
         tableView.beginUpdates()
         cell.data.updateExpanded()
-//        cell.expanded = !cell.expanded
 
         tableView.endUpdates()
     }

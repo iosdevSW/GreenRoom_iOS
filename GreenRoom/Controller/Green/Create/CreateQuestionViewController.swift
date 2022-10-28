@@ -62,10 +62,6 @@ final class CreateQuestionViewController: BaseViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController?.navigationBar.shadowImage = UIImage()
@@ -89,40 +85,41 @@ final class CreateQuestionViewController: BaseViewController {
         self.view.addSubview(collectionView)
         self.view.addSubview(doneButton)
         
-        subtitleLabel.snp.makeConstraints { make in
+        self.subtitleLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(34)
             make.top.equalTo(view.safeAreaLayoutGuide).offset(18)
         }
         
-        titleLabel.snp.makeConstraints { make in
+        self.titleLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(34)
             make.top.equalTo(subtitleLabel.snp.bottom).offset(6)
         }
         
-        questionLabel.snp.makeConstraints { make in
+        self.questionLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(34)
             make.top.equalTo(titleLabel.snp.bottom).offset(39)
         }
         
-        questionTextView.snp.makeConstraints { make in
+        self.questionTextView.snp.makeConstraints { make in
             make.top.equalTo(questionLabel.snp.bottom).offset(9)
             make.leading.equalToSuperview().offset(36)
             make.trailing.equalToSuperview().offset(-36)
             make.height.equalTo(100)
         }
         
-        selectedLabel.snp.makeConstraints { make in
+        self.selectedLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(34)
             make.top.equalTo(questionTextView.snp.bottom).offset(39)
         }
         
-        collectionView.snp.makeConstraints { make in
+        self.collectionView.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(42)
             make.trailing.equalToSuperview().offset(-42)
             make.top.equalTo(selectedLabel.snp.bottom).offset(12)
             make.bottom.equalTo(view.safeAreaLayoutGuide).offset(-40)
         }
-        doneButton.snp.makeConstraints { make in
+        
+        self.doneButton.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(13)
             make.trailing.equalToSuperview().offset(-13)
             make.bottom.equalToSuperview().offset(-35)
@@ -132,7 +129,88 @@ final class CreateQuestionViewController: BaseViewController {
     
     
     override func setupAttributes() {
-        self.hideKeyboardWhenTapped()
+        super.setupAttributes()
+        
+        configureCollectionView()
+    }
+    
+    //MARK: - Binding
+    override func setupBinding() {
+        
+        let input = CreateViewModel.Input(
+            question: questionTextView.rx.text.orEmpty.asObservable(),
+            category: collectionView.rx.itemSelected.map { $0.row + 1}.asObservable(),
+            returnTrigger: questionTextView.rx.didEndEditing.asObservable(),
+            submit: doneButton.rx.tap.asObservable())
+        
+        self.questionTextView.rx.didBeginEditing
+            .withUnretained(self)
+            .bind { onwer, _ in
+                if onwer.questionTextView.text == "면접자 분들은 나에게 어떤 질문을 줄까요?"{
+                    onwer.questionTextView.text = ""
+                    onwer.questionTextView.textColor = .black
+                }
+                
+            }.disposed(by: disposeBag)
+        
+        self.questionTextView.rx.didEndEditing
+            .withUnretained(self)
+            .bind { onwer, _ in
+                if onwer.questionTextView.text == nil || onwer.questionTextView.text == "" {
+                    onwer.questionTextView.text = "면접자 분들은 나에게 어떤 질문을 줄까요?"
+                    onwer.questionTextView.textColor = .customGray
+                }
+            }.disposed(by: disposeBag)
+        
+        self.viewModel.categories
+            .bind(to: self.collectionView.rx.items(
+                cellIdentifier: String(describing: CategoryCell.self),
+                cellType: CategoryCell.self)
+            ) { index, title, cell in
+                guard let category = Category(rawValue: index + 1) else { return }
+                cell.category = category
+            }.disposed(by: disposeBag)
+        
+        let output = viewModel.transform(input: input)
+        
+        output.isValid
+            .bind(to: self.doneButton.rx.isEnabled)
+            .disposed(by: disposeBag)
+        
+        output.isValid
+            .map { $0 ? 1.0 : 0.5}
+            .bind(to: doneButton.rx.alpha)
+            .disposed(by: disposeBag)
+        
+        output.successMessage
+            .withUnretained(self)
+            .emit(onNext: { onwer, message in
+                
+                let alert = onwer.comfirmAlert(title: "작성 완료", subtitle: message) { _ in
+                    onwer.dismiss(animated: true)
+                }
+                onwer.present(alert, animated: true)
+            }).disposed(by: disposeBag)
+        
+        output.failMessage
+            .withUnretained(self)
+            .emit(onNext: { onwer, message in
+                let alert = onwer.comfirmAlert(title: "작성 실패", subtitle: message) { _ in
+                    print("다시 작성")
+                }
+                onwer.present(alert, animated: true)
+            }).disposed(by: disposeBag)
+    }
+    
+    @objc func dismissal(){
+        self.dismiss(animated: false)
+    }
+}
+
+//MARK: - Configure
+extension CreateQuestionViewController {
+    
+    private func configureCollectionView() {
         let layout = UICollectionViewFlowLayout()
         
         layout.minimumLineSpacing = 20
@@ -143,72 +221,7 @@ final class CreateQuestionViewController: BaseViewController {
         
         self.collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         
-        collectionView.register(CategoryCell.self, forCellWithReuseIdentifier: String(describing: CategoryCell.self))
-        collectionView.backgroundColor = .white
-        
-    }
-    
-    //MARK: - Binding
-    override func setupBinding() {
-        
-        let input = CreateViewModel.Input(question: questionTextView.rx.text.orEmpty.asObservable(),
-                                          category: collectionView.rx.itemSelected.map { $0.row + 1}.asObservable(),
-                                          returnTrigger: questionTextView.rx.didEndEditing.asObservable(),
-                                          submit: doneButton.rx.tap.asObservable())
-        
-        questionTextView.rx.didBeginEditing
-            .bind { [weak self] _ in
-                if self?.questionTextView.text == "면접자 분들은 나에게 어떤 질문을 줄까요?"{
-                    self?.questionTextView.text = ""
-                    self?.questionTextView.textColor = .black
-                }
-                
-            }.disposed(by: disposeBag)
-        
-        questionTextView.rx.didEndEditing
-            .bind { [weak self] _ in
-                if self?.questionTextView.text == nil || self?.questionTextView.text == "" {
-                    self?.questionTextView.text = "면접자 분들은 나에게 어떤 질문을 줄까요?"
-                    self?.questionTextView.textColor = .customGray
-                }
-            }.disposed(by: disposeBag)
-        
-        viewModel.categories.bind(to: self.collectionView.rx.items(cellIdentifier: String(describing: CategoryCell.self), cellType: CategoryCell.self)) { index, title, cell in
-            guard let category = Category(rawValue: index + 1) else { return }
-            cell.category = category
-        }.disposed(by: disposeBag)
-        
-        let output = viewModel.transform(input: input)
-
-        output.isValid
-            .bind(to: self.doneButton.rx.isEnabled)
-            .disposed(by: disposeBag)
-        
-        output.isValid
-            .map { $0 ? 1.0 : 0.5}
-            .bind(to: doneButton.rx.alpha)
-            .disposed(by: disposeBag)
-        
-        output.successMessage.emit(onNext: { [weak self] message in
-            guard let self = self else { return }
-            
-            let alert = self.comfirmAlert(title: "작성 완료", subtitle: message) { _ in
-                self.dismiss(animated: true)
-            }
-            self.present(alert, animated: true)
-        }).disposed(by: disposeBag)
-        
-        output.failMessage.emit(onNext: { [weak self] message in
-            guard let self = self else { return }
-            
-            let alert = self.comfirmAlert(title: "작성 실패", subtitle: message) { _ in
-                print("다시 작성")
-            }
-            self.present(alert, animated: true)
-        }).disposed(by: disposeBag)
-    }
-    
-    @objc func dismissal(){
-        self.dismiss(animated: false)
+        self.collectionView.register(CategoryCell.self, forCellWithReuseIdentifier: String(describing: CategoryCell.self))
+        self.collectionView.backgroundColor = .white
     }
 }

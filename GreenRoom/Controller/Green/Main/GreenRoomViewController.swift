@@ -107,8 +107,7 @@ class GreenRoomViewController: BaseViewController {
         output.greenroom.bind(to: collectionView.rx.items(dataSource: dataSource)).disposed(by: disposeBag)
         
         collectionView.rx.modelSelected(GreenRoomSectionModel.Item.self).subscribe(onNext: { [weak self] item in
-            
-            guard let self = self else { return }
+            guard let self else { return }
             
             switch item {
             case .filtering(interest: let category):
@@ -137,22 +136,25 @@ class GreenRoomViewController: BaseViewController {
             }
         }).disposed(by: disposeBag)
         
-        Observable.merge(greenRoomButton.rx.tap.map { 0 }, questionListButton.rx.tap.map { 1 })
-            .subscribe(onNext: { tag in
-                
-                let questionColor: UIColor = tag == 0 ? .customGray : .mainColor
-                let greenRoomColor: UIColor = tag == 0 ? .mainColor : .customGray
-                
-                self.questionListButton.setTitleColor(questionColor, for: .normal)
-                self.greenRoomButton.setTitleColor(greenRoomColor, for: .normal)
-                self.disposeBag = DisposeBag()
-                self.setupBinding()
-                
-                let layout = tag == 0 ? self.greenRoomLayout() : self.myListLayout()
-                self.collectionView.setCollectionViewLayout(layout, animated: true)
-                self.collectionView.layoutSubviews()
-                
-            }).disposed(by: disposeBag)
+        Observable.merge(
+            greenRoomButton.rx.tap.map { 0 },
+            questionListButton.rx.tap.map { 1 }
+        )
+        .subscribe(onNext: { [weak self] tag in
+            guard let self else { return }
+            let questionColor: UIColor = tag == 0 ? .customGray : .mainColor
+            let greenRoomColor: UIColor = tag == 0 ? .mainColor : .customGray
+            
+            self.questionListButton.setTitleColor(questionColor, for: .normal)
+            self.greenRoomButton.setTitleColor(greenRoomColor, for: .normal)
+            self.disposeBag = DisposeBag()
+            self.setupBinding()
+            
+            let layout = tag == 0 ? self.greenRoomLayout() : self.myListLayout()
+            self.collectionView.setCollectionViewLayout(layout, animated: true)
+            self.collectionView.layoutSubviews()
+            
+        }).disposed(by: disposeBag)
         
         searchButton.rx.tap.subscribe(onNext: {
             let vc = GreenRoomSearchViewController(viewModel: SearchViewModel())
@@ -271,7 +273,7 @@ extension GreenRoomViewController {
             }
         } configureSupplementaryView: { [weak self] dataSource, collectionView, kind, indexPath in
             
-            guard let self = self else { return UICollectionReusableView() }
+            guard let self else { return UICollectionReusableView() }
             
             switch kind {
             case GRFilteringHeaderView.reuseIdentifier:

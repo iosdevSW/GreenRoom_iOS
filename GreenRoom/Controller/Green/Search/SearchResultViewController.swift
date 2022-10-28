@@ -16,6 +16,9 @@ final class SearchResultViewController: BaseViewController {
 
     //MARK: - Configure
     override func configureUI() {
+        
+        self.view.backgroundColor = .white
+        
         self.view.addSubview(collectionView)
         collectionView.snp.makeConstraints { make in
             make.top.bottom.equalTo(view.safeAreaLayoutGuide)
@@ -57,9 +60,7 @@ extension SearchResultViewController {
             case .recent(header: let title, items: _):
                 headerView.configure(with: title)
             }
-
             return headerView
-
         }
     }
     

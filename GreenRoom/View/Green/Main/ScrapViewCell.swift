@@ -147,7 +147,7 @@ class ScrapViewCell: BaseCollectionViewCell {
     override func bind() {
         selectIndicator.rx.tap
             .subscribe(onNext: { [weak self] _ in
-                guard let self = self else { return }
+                guard let self else { return }
                 self.willRemove.toggle()
                 self.delegate?.didSelectScrapCell(isSelected: self.willRemove, question: self.question)
             }).disposed(by: disposeBag)

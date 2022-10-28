@@ -31,10 +31,6 @@ final class MyPageViewController: BaseViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.navigationBar.topItem?.title = ""
@@ -44,10 +40,10 @@ final class MyPageViewController: BaseViewController {
     //MARK: - Configure
     override func configureUI(){
         view.backgroundColor = .backgroundGray
+        
         self.view.addSubview(self.collectionView)
         collectionView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
-            make.top.bottom.equalTo(view.safeAreaLayoutGuide)
+            make.edges.equalToSuperview()
         }
     }
     
@@ -68,7 +64,7 @@ final class MyPageViewController: BaseViewController {
         
         collectionView.rx.modelSelected(MyPageSectionModel.Item.self)
             .subscribe(onNext: { [weak self] item in
-                guard let self = self else { return }
+                guard let self else { return }
                 
                 switch item {
                 case .setting(settingInfo: let info):
@@ -193,7 +189,6 @@ extension MyPageViewController: ProfileCellDelegate, PHPickerViewControllerDeleg
         }
         
         self.profile.accept(newImage)// 받아온 이미지를 update
-//        viewModel.profileImageObservable.onNext(newImage)
         picker.dismiss(animated: true, completion: nil) // picker를 닫아줌
     }
     

@@ -24,15 +24,16 @@ final class MainTabbarController: UITabBarController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         addObserver()
-        initView()
+        configureUI()
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
     }
     
-    private func initView() {
+    private func configureUI() {
         
         UITabBar.clearShadow()
         tabBar.layer.applyShadow()
