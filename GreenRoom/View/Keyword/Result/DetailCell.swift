@@ -83,7 +83,7 @@ class DetailCell: UICollectionViewCell {
     
     let answerLabel = UILabel().then {
         $0.font = .sfPro(size: 16, family: .Regular)
-        $0.textColor = .darkGray
+        $0.textColor = .customGray
         $0.numberOfLines = 0
     }
     

@@ -67,9 +67,9 @@ final class GroupView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func setColorHilightAttribute(text: String, hilightString: String, color: UIColor) -> NSMutableAttributedString {
+    private func setColorHighlightAttribute(text: String, highlightString: String, color: UIColor) -> NSMutableAttributedString {
         let attributedStr = NSMutableAttributedString(string: text)
-        attributedStr.addAttribute(.foregroundColor, value: color, range: (text as NSString).range(of: hilightString))
+        attributedStr.addAttribute(.foregroundColor, value: color, range: (text as NSString).range(of: highlightString))
         
         return attributedStr
     }
@@ -88,8 +88,8 @@ final class GroupView: UIView {
             .bind(to: self.groupTableView.rx.items(cellIdentifier: "GroupCell", cellType: GroupCell.self)) { index, item, cell in
                 cell.groupNameLabel.text = item.name
                 cell.categoryLabel.text = Category(rawValue: item.categoryId)?.title
-                cell.questionCountingLabel.attributedText = self.setColorHilightAttribute(text: "질문 \(item.questionCnt)개",
-                                                                                     hilightString: "\(item.questionCnt)",
+                cell.questionCountingLabel.attributedText = self.setColorHighlightAttribute(text: "질문 \(item.questionCnt)개",
+                                                                                     highlightString: "\(item.questionCnt)",
                                                                                      color: .point)
                 cell.selectionStyle = .none
                 cell.editButton.tag = item.id
@@ -106,8 +106,8 @@ final class GroupView: UIView {
                 } else {
                     self?.notFoundImageView.isHidden = true
                     self?.guideLabel.isHidden = true
-                    self?.groupCountingLabel.attributedText = self?.setColorHilightAttribute(text: "총 \(count)개의 그룹",
-                                                                                       hilightString: "\(count)개",
+                    self?.groupCountingLabel.attributedText = self?.setColorHighlightAttribute(text: "총 \(count)개의 그룹",
+                                                                                       highlightString: "\(count)개",
                                                                                        color: .point)
                 }
             }).disposed(by: disposeBag)

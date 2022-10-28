@@ -163,8 +163,8 @@ final class KPQuestionsViewController: BaseViewController {
                 self?.categoryLabel.text = info.categoryName
                 self?.groupNameLabel.text = info.name
                 self?.questionCountingLabel
-                    .attributedText = self?.setColorHilightAttribute(text: "질문 \(info.questionCnt)개",
-                                                                     hilightString: "\(info.questionCnt)",
+                    .attributedText = self?.setColorHighlightAttribute(text: "질문 \(info.questionCnt)개",
+                                                                     highlightString: "\(info.questionCnt)",
                                                                      color: .point)
             }).disposed(by: disposeBag)
         

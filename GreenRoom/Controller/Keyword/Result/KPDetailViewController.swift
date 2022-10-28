@@ -89,34 +89,55 @@ extension KPDetailViewController {
     private func configureDataSource() -> RxCollectionViewSectionedReloadDataSource<KPDetailModel> {
         return RxCollectionViewSectionedReloadDataSource<KPDetailModel> { dataSource, collectionView, indexPath, item  in
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DetailCell", for: indexPath) as! DetailCell
+            
+            let sttAnswer = item.sttAnswer ?? "변환된 내용 없음"
+            
             cell.keywordIsOn = self.viewmodel.keywordOnOff.value
             
             cell.goalProgressBarView.buttonImage = self.viewmodel.recordingType
+            
+            cell.questionLabel.text = "Q\(indexPath.row+1)\n\(item.question)"
+            
+            cell.categoryLabel.text = item.categoryName
+            
+            cell.sttAnswer.text = sttAnswer
+            
+            cell.answerLabel.text = item.answer
+            
             //키워드 on일 경우
             if self.viewmodel.keywordOnOff.value {
-                
-                cell.goalProgressBarView.titleLabel.text = "Q\(indexPath.row+1) 키워드 매칭률"
-                let persent = item.persent ?? 0
-                cell.goalProgressBarView.progressBar.progress = persent
-                cell.keywordPersent.text = String(format: "%2.f%%", persent * 100)
-                cell.keywordLabel.text = item.keyword.joined(separator: "  ")
-                
-                let per = (self.viewmodel.goalPersent.value - persent) * 100
-                let hilight = String(format: "%2.f%%", per > 0 ? per : 0)
-                cell.goalProgressBarView.guideLabel.attributedText = self.setColorHilightAttribute(text: "목표까지 \(hilight) 남았어요", hilightString: hilight, color: .point)
-                cell.goalProgressBarView.persentLabel.text =  String(format: "%2.f", persent*100) + "/100"
+                let KPPersent = item.persent ?? 0
                 
                 let goalPersent = self.viewmodel.goalPersent.value
+                
+                let restPersent = (goalPersent - KPPersent) * 100
+                
+                let highlight = String(format: "%2.f%%", restPersent > 0 ? restPersent : 0)
+                
+                cell.goalProgressBarView.titleLabel.text = "Q\(indexPath.row+1) 키워드 매칭률"
+                
+                cell.goalProgressBarView.progressBar.progress = KPPersent
+                
+                cell.keywordPersent.text = String(format: "%2.f%%", KPPersent * 100)
+                
+                cell.keywordLabel.text = item.keyword.joined(separator: "  ")
+                
+                cell.sttAnswer.attributedText = self.setKeywordHighlightAttributes(sttAnswer, keyword: item.keyword)
+                
+                cell.keywordLabel.attributedText = self.setKeywordHighlightAttributes(cell.keywordLabel.text!, keyword: item.keyword.filter { sttAnswer.contains($0) })
+                
+                cell.answerLabel.attributedText = self.setKeywordHighlightAttributes(item.answer, keyword: item.keyword.filter { sttAnswer.contains($0) })
+                
+                cell.goalProgressBarView.guideLabel.attributedText = self.setColorHighlightAttribute(text: "목표까지 \(highlight) 남았어요",
+                                                                                                   highlightString: highlight,
+                                                                                                   color: .point)
+                cell.goalProgressBarView.persentLabel.text =  String(format: "%2.f", KPPersent*100) + "/100"
+                
                 let progressWidth = UIScreen.main.bounds.width - 60
                 let newX =  progressWidth * goalPersent
                 cell.goalProgressBarView.goalView.center.x = newX
                 
             }
-            
-            cell.questionLabel.text = "Q\(indexPath.row+1)\n\(item.question)"
-            cell.categoryLabel.text = item.categoryName
-            cell.sttAnswer.text = item.answer
-            cell.answerLabel.text = item.sttAnswer ?? "stt 변환 실패"
             return cell
         }
     }

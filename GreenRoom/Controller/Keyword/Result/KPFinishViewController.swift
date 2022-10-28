@@ -76,10 +76,12 @@ class KPFinishViewController: BaseViewController{
         viewmodel.selectedQuestions
             .bind(to: resultTableView.rx.items(cellIdentifier: "PracticeResultCell", cellType: PracticeResultCell.self)) { index, item, cell in
                 let persent = item.persent ?? 0
+                let sttAnswer = item.sttAnswer ?? "변환된 내용 없음"
                 cell.questionLabel.text = "Q\(index+1)\n\(item.question)"
                 cell.keywordPersent.text = String(format: "%2.f%%", persent * 100)
                 cell.keywordsLabel.text = item.keyword.joined(separator: "  ")
                 cell.categoryLabel.text = item.categoryName
+                cell.keywordsLabel.attributedText = self.setKeywordHighlightAttributes(cell.keywordsLabel.text!, keyword: item.keyword.filter { sttAnswer.contains($0) })
                 
             }.disposed(by: disposeBag)
         
@@ -96,8 +98,8 @@ class KPFinishViewController: BaseViewController{
                 guard let self = self else { return }
                 self.goalProgressBarView.progressBar.progress = per
                 let persent = (self.viewmodel.goalPersent.value - per) * 100
-                let hilight = String(format: "%2.f%%", persent > 0 ? persent : 0)
-                self.goalProgressBarView.guideLabel.attributedText = self.setColorHilightAttribute(text: "목표까지 \(hilight) 남았어요", hilightString: hilight, color: .point)
+                let highlight = String(format: "%2.f%%", persent > 0 ? persent : 0)
+                self.goalProgressBarView.guideLabel.attributedText = self.setColorHighlightAttribute(text: "목표까지 \(highlight) 남았어요", highlightString: highlight, color: .point)
                 self.goalProgressBarView.persentLabel.text =  String(format: "%2.f", per*100) + "/100"
             }).disposed(by: disposeBag)
     }
