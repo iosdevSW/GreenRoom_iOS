@@ -12,9 +12,10 @@ import RxSwift
 import RxCocoa
 import KakaoSDKUser
 
-final class KPFindQuestionViewController: BaseViewController{
+final class KPFindQuestionViewController: BaseViewController, UITableViewDelegate{
     //MARK: - Properties
     private let viewModel = BaseQuestionsViewModel()
+    private var isPaging = false // 현재 페이징진행중인지
     
     private let searchBarView = UISearchBar().then{
         $0.placeholder = "키워드로 검색해보세요!"
@@ -113,6 +114,27 @@ final class KPFindQuestionViewController: BaseViewController{
             }).disposed(by: disposeBag)
     }
     
+    func beginPaging(){
+        self.isPaging = true
+        
+        let page = self.viewModel.nextPage.value
+        let title = self.searchBarView.text
+        let idString = self.viewModel.filteringObservable.value
+        
+        KeywordPracticeService().fetchReferenceQuestions(categoryId: idString, title: title, page: page)
+            .bind(onNext: { questions in
+                self.viewModel.baseQuestionsObservable
+                    .take(1)
+                    .bind(onNext: { ques in
+                        var tempQuestions = ques
+                        tempQuestions.append(contentsOf: questions)
+                        self.viewModel.baseQuestionsObservable.onNext(tempQuestions)
+                        
+                        self.isPaging = false
+                    }).disposed(by: self.disposeBag)
+            }).disposed(by: disposeBag)
+    }
+    
     //MARK: - Bind
     override func setupBinding() {
         viewModel.baseQuestionsObservable
@@ -145,6 +167,18 @@ final class KPFindQuestionViewController: BaseViewController{
                 KeywordPracticeService().fetchReferenceQuestions(categoryId: idString, title: text, page: nil)
                     .bind(to: self.viewModel.baseQuestionsObservable)
                     .disposed(by: self.disposeBag)
+            }).disposed(by: disposeBag)
+        
+        questionListTableView.rx.didScroll
+            .bind(onNext: {
+                let contentHeight = self.questionListTableView.contentSize.height
+                let contentOffsetY = self.questionListTableView.contentOffset.y
+                let tableViewHeight = self.questionListTableView.frame.height
+                
+                if contentOffsetY > contentHeight - tableViewHeight {
+                    self.beginPaging()
+                }
+                
             }).disposed(by: disposeBag)
     }
     
