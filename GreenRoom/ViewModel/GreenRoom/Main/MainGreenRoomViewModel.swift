@@ -121,10 +121,7 @@ extension MainGreenRoomViewModel {
         
         let categoryId = Category(rawValue: UserDefaults.standard.integer(forKey: "CategoryID")) ?? .common
         
-        return Observable.create { emitter in
-            emitter.onNext([GreenRoomSectionModel.filtering(items:[.filtering(interest: categoryId) ])])
-            return Disposables.create()
-        }
+        return .just([.filtering(items:[.filtering(interest: categoryId)])])
     }
     
     /// 인기 질문

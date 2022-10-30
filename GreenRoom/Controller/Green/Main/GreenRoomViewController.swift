@@ -111,7 +111,8 @@ class GreenRoomViewController: BaseViewController {
             
             switch item {
             case .filtering(interest: let category):
-                let vc = FilteringQuestionViewController(viewModel: FilteringViewModel(categoryId: category.rawValue, publicQuestionService: PublicQuestionService()))
+                let viewModel = FilteringViewModel(mode: .filter(id: category.rawValue), publicQuestionService: PublicQuestionService())
+                let vc = FilteringQuestionViewController(viewModel: viewModel)
                 self.navigationController?.pushViewController(vc, animated: true)
             case .popular(question: let question):
                 let vc = PublicAnswerListViewController(viewModel: PublicAnswerViewModel(id: question.id,

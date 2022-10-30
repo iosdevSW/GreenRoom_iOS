@@ -234,6 +234,7 @@ final class PublicQuestionService {
         }
     }
     
+    /// 내가 참여한 그린룸 질문 조회
     func participateGreenRoom(groupId: Int, questionId: Int) -> Observable<Bool> {
         
         let requestURL = baseURL + "/group"
@@ -253,6 +254,27 @@ final class PublicQuestionService {
                         emitter.onNext(true)
                     case .failure(_):
                         emitter.onNext(false)
+                    }
+                }
+            return Disposables.create()
+        }
+    }
+    
+    /// 검색 기능
+    func searchGreenRoomQuestion(keyword: String) -> Observable<[FilteringQuestion]> {
+        let url = Constants.baseURL + "/api/green-questions/search?title=\(keyword)"
+        let encodedString = url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+        
+        return Observable.create { emitter in
+            AF.request(encodedString, method: .get, encoding: URLEncoding.default, interceptor: AuthManager())
+                .validate(statusCode: 200..<300)
+                .responseDecodable(of: [FilteringQuestion].self) {
+                    response in
+                    switch response.result {
+                    case .success(let keywords):
+                        emitter.onNext(keywords)
+                    case .failure(let error):
+                        emitter.onError(error)
                     }
                 }
             return Disposables.create()

@@ -28,6 +28,5 @@ final class SearchService {
                 }
             return Disposables.create()
         }
-        
     }
 }

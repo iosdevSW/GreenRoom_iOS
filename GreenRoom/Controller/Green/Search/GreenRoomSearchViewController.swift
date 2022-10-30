@@ -53,30 +53,46 @@ final class GreenRoomSearchViewController: BaseViewController {
     
     override func setupBinding() {
         
-        searchBar.searchTextField.rx.controlEvent(.editingDidEndOnExit)
-            .subscribe(onNext: {
-                
-            }).disposed(by: disposeBag)
         let input = SearchViewModel.Input(
-            trigger: self.updateTrigger.asObservable(),
-            searchBar: self.searchBar.searchTextField.rx.text.orEmpty.asObservable(),
-            buttonTrigger: self.searchBar.searchTextField.rx.controlEvent(.editingDidEndOnExit).asObservable(),
-            keywordTrigger: self.collectionView.rx.modelSelected(SearchSectionModel.Item.self).asObservable()
+            trigger: self.updateTrigger.asObservable()
         )
         
         let output = self.viewModel.transform(input: input)
         
+        self.searchBar.searchTextField.rx.controlEvent(.editingDidEndOnExit)
+            .withLatestFrom(self.searchBar.searchTextField.rx.text.orEmpty.asObservable())
+            .withUnretained(self)
+            .subscribe(onNext: { onwer, keyword in
+                let viewModel = FilteringViewModel(
+                    mode: .search(keyword: keyword),
+                    publicQuestionService: PublicQuestionService()
+                )
+                let vc = FilteringQuestionViewController(viewModel: viewModel)
+                onwer.navigationController?.pushViewController(vc, animated: false)
+                onwer.updateTrigger.onNext(())
+            }).disposed(by: disposeBag)
+        
+        self.collectionView.rx.modelSelected(SearchSectionModel.Item.self)
+            .asObservable()
+            .withUnretained(self)
+            .subscribe(onNext: { onwer, keyword in
+                let viewModel = FilteringViewModel(
+                    mode: .search(keyword: keyword.text),
+                    publicQuestionService: PublicQuestionService()
+                )
+                let vc = FilteringQuestionViewController(viewModel: viewModel)
+                onwer.navigationController?.pushViewController(vc, animated: false)
+            }).disposed(by: disposeBag)
+        
         output.searchedKeyword
             .bind(to: collectionView.rx.items(dataSource: self.dataSource()))
             .disposed(by: disposeBag)
-        
-        output.searchResult
-            .subscribe(onNext: { [weak self] result in
-                print("RESULT")
-                print(result)
-                let vc = SearchResultViewController()
-                self?.navigationController?.pushViewController(vc, animated: false)
-            }).disposed(by: disposeBag)
+//
+//        output.searchResult
+//            .subscribe(onNext: { [weak self] result in
+//                let vc = SearchResultViewController()
+//                self?.navigationController?.pushViewController(vc, animated: false)
+//            }).disposed(by: disposeBag)
     }
 }
 

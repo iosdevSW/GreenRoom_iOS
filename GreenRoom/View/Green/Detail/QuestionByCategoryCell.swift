@@ -22,9 +22,9 @@ final class QuestionByCategoryCell: BaseCollectionViewCell {
         $0.layer.masksToBounds = false
     }
     
-    private let nameLabel = Utilities.shared.generateLabel(text: "박면접", color: .customGray, font: .sfPro(size: 12, family: .Regular))
-    private let categoryLabel = Utilities.shared.generateLabel(text: "디자인", color: .black, font: .sfPro(size: 12, family: .Semibold))
-    private let participantLabel = Utilities.shared.generateLabel(text: "N명이 참여하고 있습니다.", color: .mainColor, font: .sfPro(size: 12, family: .Bold))
+    private lazy var nameLabel = Utilities.shared.generateLabel(text: "박면접", color: .customGray, font: .sfPro(size: 12, family: .Regular))
+    private lazy var categoryLabel = Utilities.shared.generateLabel(text: "디자인", color: .black, font: .sfPro(size: 12, family: .Semibold))
+    private lazy var participantLabel = Utilities.shared.generateLabel(text: "N명이 참여하고 있습니다.", color: .mainColor, font: .sfPro(size: 12, family: .Bold))
     
     private lazy var questionTextView = UITextView().then {
         $0.backgroundColor = .white

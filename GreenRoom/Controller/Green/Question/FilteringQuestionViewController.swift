@@ -75,11 +75,8 @@ final class FilteringQuestionViewController: BaseViewController {
         configureCollectionView()
     }
     
-    override func setupBinding() {
-        
-        let input = FilteringViewModel.Input(trigger: self.rx.viewWillAppear.asObservable())
-        
-        viewModel.transform(input: input)
+    override func setupBinding() {        
+        viewModel.transform(input: FilteringViewModel.Input())
             .publicQuestions.bind(
                 to: self.collectionView.rx.items(dataSource: dataSource())
             )

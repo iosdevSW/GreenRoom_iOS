@@ -15,14 +15,10 @@ final class SearchViewModel: ViewModelType {
     
     struct Input {
         let trigger: Observable<Void>
-        let searchBar: Observable<String>
-        let buttonTrigger: Observable<Void>
-        let keywordTrigger: Observable<SearchTagItem>
     }
     
     struct Output {
         let searchedKeyword: Observable<[SearchSectionModel]>
-        let searchResult: Observable<[FilteringQuestion]>
     }
     
     private let searchResult = PublishSubject<[FilteringQuestion]>()
@@ -37,25 +33,7 @@ final class SearchViewModel: ViewModelType {
                 }, onwer.fetchRecentKeywords())
             }.map { $0.0 + $0.1 }
         
-        input.buttonTrigger
-            .withLatestFrom(input.searchBar)
-            .withUnretained(self)
-            .flatMap { onwer, keyword in
-                onwer.searchService.searchGreenRoomQuestion(keyword: keyword)
-            }
-            .bind(to: searchResult)
-            .disposed(by: disposeBag)
-        
-        input.keywordTrigger
-            .withUnretained(self)
-            .flatMap { onwer, keyword in
-                onwer.searchService.searchGreenRoomQuestion(keyword: keyword.text)
-            }
-            .bind(to: searchResult)
-            .disposed(by: disposeBag)
-        
-        return Output(searchedKeyword: searchedKeyword,
-                      searchResult: searchResult.asObservable())
+        return Output(searchedKeyword: searchedKeyword)
     }
     
     private func fetchRecentKeywords() -> Observable<[SearchSectionModel]> {
