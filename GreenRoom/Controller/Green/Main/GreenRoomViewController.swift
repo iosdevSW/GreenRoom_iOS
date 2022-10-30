@@ -102,6 +102,11 @@ class GreenRoomViewController: BaseViewController {
             prevButtonTrigger: self.prevButtonTrigger.asObservable()
         )
         
+        self.nextButtonTrigger
+            .subscribe(onNext: {
+                print($0)
+            }).disposed(by: disposeBag)
+        
         let output = self.viewModel.transform(input: input)
         
         output.greenroom.bind(to: collectionView.rx.items(dataSource: dataSource)).disposed(by: disposeBag)
@@ -257,6 +262,7 @@ extension GreenRoomViewController {
             case .MyGreenRoom(question: let question):
                 guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MyGreenRoomCell.reuseIdentifer, for: indexPath) as? MyGreenRoomCell else { return UICollectionViewCell() }
                 cell.configure(question: question)
+                cell.delegate = self
                 return cell
             case .MyQuestionList(question: let question):
                 guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MyQuestionListCell.reuseIedentifier, for: indexPath) as? MyQuestionListCell else { return UICollectionViewCell() }

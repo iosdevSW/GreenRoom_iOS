@@ -66,9 +66,9 @@ class MainGreenRoomViewModel: ViewModelType {
         
         input.prevButtonTrigger
             .withUnretained(self)
-            .map { owner, _ in
+            .map({ owner, _ in
                 return owner.currentPage.value - 1
-            }
+            })
             .bind(to: currentPage)
             .disposed(by: disposeBag)
         

@@ -20,13 +20,13 @@ final class MyGreenRoomCell: BaseCollectionViewCell {
     //MARK: - Properties
     weak var delegate: MyGreenRoomCellDelegate?
 
-    lazy var leftButton = UIButton().then {
+    private lazy var leftButton = UIButton().then {
         $0.setImage(UIImage(systemName: "chevron.left"), for: .normal)
         $0.imageView?.tintColor = .gray
         $0.contentMode = .scaleAspectFill
     }
     
-    lazy var rightButton = UIButton().then {
+    private lazy var rightButton = UIButton().then {
         $0.setImage(UIImage(systemName: "chevron.right"), for: .normal)
         $0.imageView?.tintColor = .gray
         $0.contentMode = .scaleAspectFill

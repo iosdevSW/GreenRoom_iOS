@@ -39,8 +39,12 @@ final class MyGreenRoomFooterView: BaseCollectionReusableView {
     }
     
     func configure(with question: MyGreenRoomQuestion) {
-        self.participantLabel.text = "\(question.participants)명이 참여하고 있습니다."
+        guard question.question != nil else {
+            self.participantLabel.text = "그린룸을 개설해주세요!"
+            return
+        }
         
+        self.participantLabel.text = "\(question.participants)명이 참여하고 있습니다."
         guard let images = question.profileImages else { return }
         configureImageStack(urls: images)
     }
