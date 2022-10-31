@@ -11,8 +11,8 @@ import RxDataSources
 
 final class FilteringQuestionViewController: BaseViewController {
     
-    var collectionView: UICollectionView!
-    var viewModel: FilteringViewModel!
+    private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: self.configureCollectionViewLayout())
+    private let viewModel: FilteringViewModel
     
     private lazy var notFoundImageView = UIImageView().then {
         $0.image = UIImage(named: "NotFound")?.withRenderingMode(.alwaysOriginal)
@@ -31,10 +31,6 @@ final class FilteringQuestionViewController: BaseViewController {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -79,11 +75,11 @@ final class FilteringQuestionViewController: BaseViewController {
         configureCollectionView()
     }
     
-    override func setupBinding() {
-        
-        let input = FilteringViewModel.Input(trigger: self.rx.viewWillAppear.asObservable())
-        
-        viewModel.transform(input: input).publicQuestions.bind(to: self.collectionView.rx.items(dataSource: dataSource()))
+    override func setupBinding() {        
+        viewModel.transform(input: FilteringViewModel.Input())
+            .publicQuestions.bind(
+                to: self.collectionView.rx.items(dataSource: dataSource())
+            )
             .disposed(by: disposeBag)
     }
 }
@@ -91,14 +87,17 @@ final class FilteringQuestionViewController: BaseViewController {
 //MARK: - CollectionView
 extension FilteringQuestionViewController {
     
-    private func configureCollectionView(){
+    private func configureCollectionViewLayout() -> UICollectionViewFlowLayout {
         let layout = UICollectionViewFlowLayout()
         layout.itemSize = CGSize(width: view.bounds.width * 0.9, height: view.bounds.height/4)
         layout.headerReferenceSize = CGSize(width: view.frame.size.width , height: view.bounds.height * 0.15)
         layout.minimumLineSpacing = view.bounds.size.height * 0.03
         layout.sectionInset = UIEdgeInsets(top: 20, left: 0, bottom: 0, right: 0)
         
-        collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        return layout
+    }
+    
+    private func configureCollectionView(){
         collectionView.backgroundColor = .backgroundGray
         collectionView.register(InfoHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: InfoHeaderView.reuseIdentifier)
         collectionView.register(QuestionByCategoryCell.self, forCellWithReuseIdentifier: QuestionByCategoryCell.reuseIdentifier)
@@ -108,20 +107,18 @@ extension FilteringQuestionViewController {
         return RxCollectionViewSectionedReloadDataSource<FilteringSectionModel> {
             (dataSource, collectionView, indexPath, item) in
             
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: QuestionByCategoryCell.reuseIdentifier, for: indexPath) as? QuestionByCategoryCell else { return UICollectionViewCell() }
-            
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: QuestionByCategoryCell.reuseIdentifier, for: indexPath) as? QuestionByCategoryCell else {
+                return UICollectionViewCell()
+            }
             self.notFoundImageView.isHidden = true
-             
             return cell
             
         } configureSupplementaryView: { dataSource, collectionView, kind,
             indexPath in
             
             guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: InfoHeaderView.reuseIdentifier, for: indexPath) as? InfoHeaderView else {
-                
-                    return UICollectionReusableView()
+                return UICollectionReusableView()
             }
-            
             header.filterShowing = false
             header.info = dataSource[indexPath.row].header
             return header

@@ -65,10 +65,6 @@ final class EditProfileInfoViewController: BaseViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.view.inputViewController?.hidesBottomBarWhenPushed = true

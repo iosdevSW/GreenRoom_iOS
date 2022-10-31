@@ -26,16 +26,16 @@ final class EditProfileViewModel: ViewModelType {
     }
     
     func transform(input: Input) -> Output {
-        return Output(userName: input.trigger
-            .flatMap { _ in
-                self.userService.fetchUserInfo()
-            }.map { $0.name })
+        return Output(
+            userName: input.trigger
+                .withUnretained(self)
+                .flatMap { onwer, _ in
+                    onwer.userService.fetchUserInfo()
+                }.map { $0.name })
     }
     
     func updateUserInfo(nickName: String) {
-        let parameter = [
-            "name" : nickName
-        ]
+        let parameter = [ "name" : nickName ]
 
         self.userService.updateUserInfo(parameter: parameter) { _ in
             print("업데이트에 성공했습니다.")

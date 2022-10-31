@@ -11,28 +11,29 @@ import RxSwift
 final class SearchViewModel: ViewModelType {
     
     private let searchService = SearchService()
-    
     var disposeBag = DisposeBag()
     
     struct Input {
-        let trigger: Observable<Bool>
+        let trigger: Observable<Void>
     }
     
     struct Output {
-        let result: Observable<[SearchSectionModel]>
+        let searchedKeyword: Observable<[SearchSectionModel]>
     }
+    
+    private let searchResult = PublishSubject<[FilteringQuestion]>()
     
     func transform(input: Input) -> Output {
         
-        let output = input.trigger
-            .flatMap { _ in
-                return Observable.zip(self.searchService.fetchPopularKeywords().map { keywords in
+        let searchedKeyword = input.trigger
+            .withUnretained(self)
+            .flatMap { onwer, _ in
+                return Observable.zip(onwer.searchService.fetchPopularKeywords().map { keywords in
                     return [SearchSectionModel.popular(header: "인기 검색어",items: keywords.map { SearchSectionModel.Item(text: $0, type: .popular) })]
-                }, self.fetchRecentKeywords())
+                }, onwer.fetchRecentKeywords())
             }.map { $0.0 + $0.1 }
-            
         
-        return Output(result: output)
+        return Output(searchedKeyword: searchedKeyword)
     }
     
     private func fetchRecentKeywords() -> Observable<[SearchSectionModel]> {

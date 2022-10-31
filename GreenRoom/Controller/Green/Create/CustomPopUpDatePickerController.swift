@@ -11,7 +11,7 @@ import RxSwift
 final class CustomPopUpDatePickerController: BaseViewController {
     
     //MARK: - Properties
-    var datePicker = UIDatePicker()
+    let datePicker = UIDatePicker()
     
     private var blurView = UIVisualEffectView().then {
         $0.effect = UIBlurEffect(style: .dark)
@@ -81,10 +81,6 @@ final class CustomPopUpDatePickerController: BaseViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
@@ -108,7 +104,7 @@ final class CustomPopUpDatePickerController: BaseViewController {
         }
         
         self.view.addSubview(containerView)
-        containerView.snp.makeConstraints { make in
+        self.containerView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
             make.bottom.equalToSuperview()
             make.height.equalToSuperview().multipliedBy(0.6)
@@ -116,7 +112,7 @@ final class CustomPopUpDatePickerController: BaseViewController {
         
         
         self.containerView.addSubview(datePicker)
-        datePicker.snp.makeConstraints { make in
+        self.datePicker.snp.makeConstraints { make in
             make.center.equalToSuperview()
             make.leading.trailing.equalToSuperview()
             make.height.equalTo(150)
@@ -134,7 +130,7 @@ final class CustomPopUpDatePickerController: BaseViewController {
         }
         
         self.containerView.addSubview(setTimeLabel)
-        setTimeLabel.snp.makeConstraints { make in
+        self.setTimeLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.top.equalTo(subtitle.snp.bottom).offset(30)
         }
@@ -161,19 +157,29 @@ final class CustomPopUpDatePickerController: BaseViewController {
     }
     
     override func setupBinding() {
-        datePicker.rx.controlEvent(.valueChanged)
-            .map { self.datePicker.date.getMinutes() }
-            .map { self.getDateAttributeText(minutes: $0) }
+        self.datePicker.rx.controlEvent(.valueChanged)
+            .withUnretained(self)
+            .map { onwer, _ in
+                onwer.datePicker.date.getMinutes()
+            }
+            .withUnretained(self)
+            .map { onwer, date in
+                self.getDateAttributeText(minutes: date)
+            }
             .bind(to: self.setTimeLabel.rx.attributedText)
             .disposed(by: disposeBag)
         
-        cancelButton.rx.tap.subscribe(onNext: { [weak self] _ in
-            self?.dismiss(animated: true)
-        }).disposed(by: disposeBag)
+        self.cancelButton.rx.tap
+            .withUnretained(self)
+            .subscribe(onNext: { onwer, _ in
+                onwer.dismiss(animated: true)
+            }).disposed(by: disposeBag)
         
-        applyButton.rx.tap.subscribe(onNext: { [weak self] _ in
-            self?.dismiss(animated: true)
-        }).disposed(by: disposeBag)
+        self.applyButton.rx.tap
+            .withUnretained(self)
+            .subscribe(onNext: { onwer, _ in
+                onwer.dismiss(animated: true)
+            }).disposed(by: disposeBag)
     }
     
     //MARK: - Selector
@@ -205,7 +211,7 @@ extension CustomPopUpDatePickerController {
     func configureDatePicker() {
         self.datePicker.preferredDatePickerStyle = .wheels
         self.datePicker.datePickerMode = .countDownTimer
-        datePicker.locale = Locale(identifier: "ko-KR")
-        datePicker.timeZone = .autoupdatingCurrent
+        self.datePicker.locale = Locale(identifier: "ko-KR")
+        self.datePicker.timeZone = .autoupdatingCurrent
     }
 }

@@ -7,7 +7,7 @@
 
 import UIKit
 
-class CategoryCell: UICollectionViewCell {
+final class CategoryCell: BaseCollectionViewCell {
     
     //MARK: - Properties
     var category: Category! {
@@ -23,28 +23,32 @@ class CategoryCell: UICollectionViewCell {
         }
     }
     
-    let frameView = UIView().then{
+    private let frameView = UIView().then {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.layer.borderWidth = 2
         $0.layer.borderColor = UIColor.customGray.cgColor
         $0.layer.cornerRadius = 15
         $0.layer.maskedCorners = CACornerMask(arrayLiteral: .layerMaxXMaxYCorner, .layerMinXMaxYCorner, .layerMaxXMinYCorner)
     }
-    let imageView = UIImageView().then{
+    
+    private let imageView = UIImageView().then {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.contentMode = .scaleAspectFit
     }
     
-    let titleLabel = UILabel().then{
+    private let titleLabel = UILabel().then {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.font = .sfPro(size: 12, family: .Semibold)
         $0.textColor = .customDarkGray
     }
     
     //MARK: - Init
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        
+    func configure() {
+        self.imageView.image = UIImage(named: category.defaultImageName)
+        self.titleLabel.text = category.title
+    }
+    
+    override func configureUI() {
         self.layer.borderColor = UIColor.customGray.cgColor
         self.addSubview(self.frameView)
         frameView.snp.makeConstraints{ make in
@@ -63,15 +67,5 @@ class CategoryCell: UICollectionViewCell {
             make.top.equalTo(frameView.snp.bottom).offset(4)
             make.centerX.equalToSuperview()
         }
-    }
-    
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    func configure() {
-        self.imageView.image = UIImage(named: category.defaultImageName)
-        self.titleLabel.text = category.title
     }
 }

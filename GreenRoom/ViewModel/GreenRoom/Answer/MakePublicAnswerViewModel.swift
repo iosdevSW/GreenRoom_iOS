@@ -48,20 +48,24 @@ final class MakePublicAnswerViewModel: ViewModelType {
     }
     
     func transform(input: Input) -> Output {
-
+        
         input.endEditingTrigger.withLatestFrom(input.text)
             .bind(to: textFieldContentObservable).disposed(by: disposeBag)
         
-        input.doneButtonTrigger.withLatestFrom(Observable.zip(textFieldContentObservable.asObserver(), input.keywords.asObservable()))
-            .flatMap { [weak self] answer, keywords -> Observable<Bool>  in
-                guard let self = self else {
-                    return Observable.just(false)
-                }
-                return self.publicQuestionService.uploadAnswer(id: self.answer.header.id, answer: answer, keywords: keywords)
-            }
-            .subscribe(onNext: { [weak self] isSuccess in
-                isSuccess ? self?.successMessage.accept("답변 작성이 완료되었습니다.") : self?.failMessage.accept("글자수는 500자를 초과할 수 없습니다.")
-            }).disposed(by: disposeBag)
+        input.doneButtonTrigger.withLatestFrom(
+            Observable.combineLatest(
+                textFieldContentObservable.asObserver(),
+                input.keywords.asObservable())
+        )
+        .withUnretained(self)
+        .flatMap { onwer, element in
+            let (answer, keywords) = element
+            return onwer.publicQuestionService.uploadAnswer(id: onwer.answer.header.id, answer: answer, keywords: keywords)
+        }
+        .withUnretained(self)
+        .subscribe(onNext: { onwer, isSuccess in
+            isSuccess ? onwer.successMessage.accept("답변 작성이 완료되었습니다.") : onwer.failMessage.accept("글자수는 500자를 초과할 수 없습니다.")
+        }).disposed(by: disposeBag)
         
         return Output(question: Observable.just(answer),
                       successMessage: successMessage.asSignal(),

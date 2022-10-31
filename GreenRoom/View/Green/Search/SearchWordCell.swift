@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class SearchWordCell: UICollectionViewCell {
+final class SearchWordCell: BaseCollectionViewCell {
     
     static let reuseIdentifier = "SearchWordCell"
     
@@ -20,24 +20,13 @@ final class SearchWordCell: UICollectionViewCell {
         }
     }
     
-    private var tagLabel = UILabel().then {
-        
+    private let tagLabel = UILabel().then {
         $0.font = .sfPro(size: 16, family: .Regular)
         $0.textColor = .black
         $0.sizeToFit()
     }
     
-    //MARK: - Lifecycle
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        configureUI()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    private func configureUI() {
+    override func configureUI() {
         backgroundColor = .clear
         contentView.backgroundColor = .customGray
         

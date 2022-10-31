@@ -42,7 +42,7 @@ final class PublicAnswerListViewController: BaseViewController {
         $0.setImage(UIImage(systemName: "star"), for: .normal)
         $0.imageView?.tintColor = .white
     }
-     
+    
     private let boxButton = UIButton().then {
         $0.setImage(UIImage(named: "box"), for: .normal)
         $0.imageView?.tintColor = .white
@@ -57,13 +57,9 @@ final class PublicAnswerListViewController: BaseViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
+        
         self.navigationController?.navigationBar.tintColor = .white
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .done, target: self, action: #selector(handleDismissal))
         
@@ -92,7 +88,7 @@ final class PublicAnswerListViewController: BaseViewController {
     
     override func configureUI() {
         super.configureUI()
-
+        
         let headerHeight = UIScreen.main.bounds.height * 0.3
         
         self.view.addSubview(headerView)
@@ -110,7 +106,7 @@ final class PublicAnswerListViewController: BaseViewController {
             make.bottom.equalTo(view.safeAreaLayoutGuide)
         }
         
-
+        
         self.view.addSubview(answerPostButton)
         answerPostButton.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(15)
@@ -123,36 +119,42 @@ final class PublicAnswerListViewController: BaseViewController {
     override func setupBinding() {
         
         output.scrapUpdateState
-            .subscribe(onNext: { completable in
-                self.scrapButton.setImage(UIImage(systemName: completable ? "star.fill" : "star"), for: .normal)
+            .withUnretained(self)
+            .subscribe(onNext: { onwer, completable in
+                onwer.scrapButton.setImage(UIImage(systemName: completable ? "star.fill" : "star"), for: .normal)
             }).disposed(by: disposeBag)
         
         output.answer
-            .subscribe(onNext: { [weak self] answer in
-            guard let self = self else { return }
-            self.headerView.question = QuestionHeader(id: answer.header.id, question: answer.header.question, categoryName: answer.header.categoryName, groupCategoryName: answer.header.categoryName)
-            self.collectionView.alpha = answer.header.mode == .permission ? 1.0 : 0.5
-            self.mode = answer.header.mode
-            self.scrapButton.setImage(UIImage(systemName: answer.header.scrap ? "star.fill" : "star"), for: .normal)
-            
-        }).disposed(by: disposeBag)
+            .withUnretained(self)
+            .subscribe(onNext: { onwer, answer in
+                
+                onwer.headerView.question = QuestionHeader(id: answer.header.id, question: answer.header.question, categoryName: answer.header.categoryName, groupCategoryName: answer.header.categoryName)
+                onwer.collectionView.alpha = answer.header.mode == .permission ? 1.0 : 0.5
+                onwer.mode = answer.header.mode
+                onwer.scrapButton.setImage(UIImage(systemName: answer.header.scrap ? "star.fill" : "star"), for: .normal)
+            }).disposed(by: disposeBag)
         
-        output.answer.map{ [$0] }.bind(to: collectionView.rx.items(dataSource: dataSource())).disposed(by: disposeBag)
+        output.answer
+            .map{ [$0] }
+            .bind(to: collectionView.rx.items(dataSource: dataSource()))
+            .disposed(by: disposeBag)
         
         answerPostButton.rx.tap
             .withLatestFrom(output.answer)
-            .subscribe(onNext: { [weak self] answer in
+            .withUnretained(self)
+            .subscribe(onNext: { onwer, answer in
                 let vc = AddPublicAnswerViewController(viewModel: MakePublicAnswerViewModel(answer: answer, publicQuestionService: PublicQuestionService()))
-                self?.navigationController?.pushViewController(vc, animated: false)
-        }).disposed(by: disposeBag)
+                onwer.navigationController?.pushViewController(vc, animated: false)
+            }).disposed(by: disposeBag)
         
         collectionView.rx.modelSelected(PublicAnswerSectionModel.Item.self)
-            .subscribe(onNext: { item in
+            .withUnretained(self)
+            .subscribe(onNext: { onwer, item in
                 let vm = DetailPublicAnswerViewModel(question: self.headerView.question,
                                                      answerID: item.id
-                                                        ,publicQuestionService: PublicQuestionService())
+                                                     ,publicQuestionService: PublicQuestionService())
                 let vc = DetailPublicAnswerViewController(viewModel: vm)
-                self.navigationController?.pushViewController(vc, animated: false)
+                onwer.navigationController?.pushViewController(vc, animated: false)
             }).disposed(by: disposeBag)
     }
     
@@ -177,10 +179,10 @@ extension PublicAnswerListViewController {
     
     private func dataSource() -> RxCollectionViewSectionedReloadDataSource<PublicAnswerSectionModel> {
         return RxCollectionViewSectionedReloadDataSource<PublicAnswerSectionModel> { [weak self] (dataSource, collectionView, indexPath, item) in
-     
+            guard let self else { return UICollectionViewCell() }
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PublicAnswerCell.reuseIdentifier, for: indexPath) as? PublicAnswerCell else { return UICollectionViewCell() }
             cell.isReversed = indexPath.row % 2 != 0
-            cell.question = self?.mode == .permission ? item : nil
+            cell.question = self.mode == .permission ? item : nil
             
             return cell
             
@@ -188,7 +190,7 @@ extension PublicAnswerListViewController {
             indexPath in
             
             guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: PublicAnswerStatusHeaderView.reuseIdentifier, for: indexPath) as? PublicAnswerStatusHeaderView else {
-                    return UICollectionReusableView()
+                return UICollectionReusableView()
             }
             header.question = dataSource[0].header
             return header
@@ -197,11 +199,7 @@ extension PublicAnswerListViewController {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         
-        if self.mode == .permission {
-            return .zero
-        } else {
-            return CGSize(width: self.view.frame.width, height: 100)
-        }
+        return self.mode == .permission ? CGSize(width: self.view.frame.width, height: 100) : .zero    
     }
 }
 

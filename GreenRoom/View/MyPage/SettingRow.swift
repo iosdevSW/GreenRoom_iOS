@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-final class SettingRow: UICollectionViewCell {
+final class SettingRow: BaseCollectionViewCell {
     
     static let reuseIdentifier = "SettingRow"
     
@@ -39,13 +39,10 @@ final class SettingRow: UICollectionViewCell {
         $0.textColor = .customGray
     }
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        
+    override func configureUI() {
         backgroundColor = .white
         
         addSubview(iconImageView)
-        
         iconImageView.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(58)
             make.centerY.equalToSuperview()
@@ -63,10 +60,6 @@ final class SettingRow: UICollectionViewCell {
             make.centerY.equalToSuperview()
             make.trailing.equalToSuperview().offset(-48)
         }
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
     
     private func configureSettingOption(setting: InfoItem?){

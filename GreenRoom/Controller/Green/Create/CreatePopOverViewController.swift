@@ -61,16 +61,10 @@ final class CreatePopOverViewController: BaseViewController {
             $0.imageEdgeInsets = UIEdgeInsets(top: 0, left: -10, bottom: 0, right: 0)
         }
     }
-
-    //MARK: - Lifecycle
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-    }
-          
+    
     override func configureUI() {
         self.view.backgroundColor = .mainColor
-
+        
         self.preferredContentSize = CGSize(width: 160, height: 110)
         
         self.view.addSubview(greenroomButton)
@@ -90,17 +84,21 @@ final class CreatePopOverViewController: BaseViewController {
     }
     
     override func setupBinding() {
-        greenroomButton.rx.tap.subscribe(onNext: { [weak self] _ in
-            self?.dismiss(animated: false) {
-                self?.delegate?.didTapGreenRoomCreate()
-            }
-        }).disposed(by: disposeBag)
+        greenroomButton.rx.tap
+            .withUnretained(self)
+            .subscribe(onNext: { onwer, _ in
+                onwer.dismiss(animated: false) {
+                    onwer.delegate?.didTapGreenRoomCreate()
+                }
+            }).disposed(by: disposeBag)
         
-        questionListButton.rx.tap.subscribe(onNext: { [weak self] _ in
-            self?.dismiss(animated: false) {
-                self?.delegate?.didTapQuestionListCreate()
-            }
-        }).disposed(by: disposeBag)
+        questionListButton.rx.tap
+            .withUnretained(self)
+            .subscribe(onNext: { onwer, _ in
+                onwer.dismiss(animated: false) {
+                    onwer.delegate?.didTapQuestionListCreate()
+                }
+            }).disposed(by: disposeBag)
         
     }
 }

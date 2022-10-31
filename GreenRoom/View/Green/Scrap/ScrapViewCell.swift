@@ -12,13 +12,11 @@ protocol ScrapViewCellDelegate: AnyObject {
     func didSelectScrapCell(isSelected: Bool, question: GreenRoomQuestion)
 }
 
-class ScrapViewCell: UICollectionViewCell {
+class ScrapViewCell: BaseCollectionViewCell {
     
     static let reuseIdentifier = "ScrapViewCell"
     
     //MARK: - Properties
-    var disposeBag = DisposeBag()
-    
     var question: GreenRoomQuestion! {
         didSet { configure() }
     }
@@ -79,20 +77,8 @@ class ScrapViewCell: UICollectionViewCell {
         $0.text = "답변 완료"
     }
     
-   //MARK: - LifeCycle
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        
-        configureUI()
-        bind()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
     //MARK: - Configure
-    private func configureUI(){
+    override func configureUI() {
         
         let bottomMargin = bounds.height * 0.1
         let sideMargin = bounds.width * 0.07
@@ -143,7 +129,7 @@ class ScrapViewCell: UICollectionViewCell {
         selectIndicator.isHidden = true
     }
     
-    private func configure(){
+    private func configure() {
         self.questionTextView.attributedText = self.question.question.addLineSpacing(foregroundColor: .black)
         self.categoryLabel.text = self.question.categoryName
         
@@ -158,10 +144,10 @@ class ScrapViewCell: UICollectionViewCell {
         self.containerView.alpha = self.question.expired ? 0.3 : 1.0
     }
     
-    private func bind() {
+    override func bind() {
         selectIndicator.rx.tap
             .subscribe(onNext: { [weak self] _ in
-                guard let self = self else { return }
+                guard let self else { return }
                 self.willRemove.toggle()
                 self.delegate?.didSelectScrapCell(isSelected: self.willRemove, question: self.question)
             }).disposed(by: disposeBag)

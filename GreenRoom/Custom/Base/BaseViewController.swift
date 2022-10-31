@@ -11,14 +11,14 @@ import RxSwift
 class BaseViewController: UIViewController {
     
     // MARK:- Rx
-    
     var disposeBag = DisposeBag()
     
     // MARK:- Life Cycle
     override func viewDidLoad() {
+        super.viewDidLoad()
+        
         setupAttributes()
         configureUI()
-        setData()
         setupBinding()
     }
     
@@ -30,15 +30,10 @@ class BaseViewController: UIViewController {
         self.hideKeyboardWhenTapped()
     }
     
-    func setData() {
-        // Override Set Data
-    }
-    
     func setupBinding() {
-        // Override Binding
     }
     
-    func comfirmAlert(title: String, subtitle: String,completion:@escaping(UIAlertAction) -> Void) -> UIAlertController{
+    func comfirmAlert(title: String, subtitle: String,completion: @escaping(UIAlertAction) -> Void) -> UIAlertController{
         let alert = UIAlertController(title: title, message: subtitle, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "확인", style: .default, handler: completion))
         

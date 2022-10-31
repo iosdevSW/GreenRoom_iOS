@@ -38,7 +38,8 @@ final class DetailPublicAnswerViewModel: ViewModelType {
     
     func transform(input: Input) -> Output {
         
-        publicQuestionService.fetchDetailAnswer(id: self.id)
+        publicQuestionService
+            .fetchDetailAnswer(id: self.id)
             .bind(to: detailPublicAnswer)
             .disposed(by: disposeBag)
         

@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-final class SettingHeader: UICollectionReusableView {
+final class SettingHeader: BaseCollectionReusableView {
     
     //MARK: - Properties
     static let reuseIdentifier = "SettingHeader"
@@ -19,22 +19,12 @@ final class SettingHeader: UICollectionReusableView {
         $0.text = "SettingHeader"
     }
     
-    //MARK: - LifeCycle
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        configureUI()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
     //MARK: - Configure
     func configure(title: String) {
         self.headerLabel.text = title
     }
     
-    func configureUI(){
+    override func configureUI(){
         backgroundColor = .clear
         addSubview(headerLabel)
         headerLabel.snp.makeConstraints { make in

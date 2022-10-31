@@ -7,11 +7,11 @@
 
 import UIKit
 
-final class PopularQuestionCell: UICollectionViewCell {
+final class PopularQuestionCell: BaseCollectionViewCell {
     
     static let reuseIdentifer = "PopularQuestionCell"
     //MARK: - Properties
-
+    
     private lazy var profileImageView = UIImageView(frame: .zero).then {
         $0.contentMode = .scaleAspectFill
         $0.layer.cornerRadius = self.frame.width / 20
@@ -31,23 +31,15 @@ final class PopularQuestionCell: UICollectionViewCell {
         $0.setMainLayer()
     }
     
-   //MARK: - LifeCycle
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        configureUI()
+    //MARK: - LifeCycle
+    override func layoutSubviews() {
+        super.layoutSubviews()
     }
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    override func layoutSubviews() {
-            super.layoutSubviews()
-        }
     //MARK: - Configure
-    private func configureUI(){
+    override func configureUI(){
         self.backgroundColor = .backgroundGray
         
-   
         self.contentView.addSubview(profileImageView)
         profileImageView.snp.makeConstraints { make in
             make.width.height.equalTo(frame.width/10)
@@ -72,7 +64,7 @@ final class PopularQuestionCell: UICollectionViewCell {
             make.leading.equalTo(categoryLabel.snp.trailing).offset(10)
             make.top.equalToSuperview()
         }
-
+        
         self.contentView.addSubview(questionLabel)
         questionLabel.snp.makeConstraints { make in
             make.top.equalTo(categoryLabel.snp.bottom).offset(5)
@@ -87,7 +79,7 @@ final class PopularQuestionCell: UICollectionViewCell {
             make.top.equalTo(questionLabel.snp.bottom).offset(5)
             make.trailing.equalToSuperview().offset(-20)
         }
-  
+        
     }
     
     func configure(question: PopularGreenRoomQuestion){

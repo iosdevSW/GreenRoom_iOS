@@ -51,7 +51,7 @@ final class AddPublicAnswerViewController: BaseViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
+        
         self.navigationController?.navigationBar.tintColor = .white
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .done, target: self, action: #selector(handleDismissal))
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: doneButton)
@@ -103,7 +103,7 @@ final class AddPublicAnswerViewController: BaseViewController {
         
         answerTextView.rx.didBeginEditing
             .subscribe(onNext: { [weak self] _ in
-                guard let self = self else { return }
+                guard let self else { return }
                 
                 if self.answerTextView.text == self.viewModel.placeholder {
                     self.answerTextView.text = nil
@@ -113,43 +113,50 @@ final class AddPublicAnswerViewController: BaseViewController {
         
         answerTextView.rx.didEndEditing
             .subscribe(onNext: { [weak self] _ in
+                guard let self else { return }
                 
-                guard let self = self else { return }
                 if self.answerTextView.text.isEmpty || self.answerTextView.text == nil {
                     self.answerTextView.attributedText = self.viewModel.placeholder.addLineSpacing(foregroundColor: .lightGray)
                 }
             }).disposed(by: disposeBag)
         
-        let input = MakePublicAnswerViewModel.Input(text: answerTextView.rx.text.orEmpty.asObservable(),
-                                                    endEditingTrigger: self.answerTextView.rx.didEndEditing.asObservable(),
-                                                    keywords: keywordView.output.registeredKeywords,
-                                                    doneButtonTrigger: doneButton.rx.tap.asObservable())
+        let input = MakePublicAnswerViewModel.Input(
+            text: answerTextView.rx.text.orEmpty.asObservable(),
+            endEditingTrigger: self.answerTextView.rx.didEndEditing.asObservable(),
+            keywords: keywordView.output.registeredKeywords,
+            doneButtonTrigger: doneButton.rx.tap.asObservable())
         
-        doneButton.rx.tap.subscribe(onNext: {
-            self.answerTextView.resignFirstResponder()
-        }).disposed(by: disposeBag)
+        doneButton.rx.tap
+            .withUnretained(self)
+            .subscribe(onNext: { onwer, _ in
+                onwer.answerTextView.resignFirstResponder()
+            }).disposed(by: disposeBag)
         
         let output = viewModel.transform(input: input)
         
-        output.question.subscribe(onNext: { question in
-            self.headerView.question = question.header.getAnswerHeaderQuestion()
-        }).disposed(by: disposeBag)
+        output.question
+            .withUnretained(self)
+            .subscribe(onNext: { onwer, question in
+                onwer.headerView.question = question.header.getAnswerHeaderQuestion()
+            }).disposed(by: disposeBag)
         
-        output.successMessage.emit(onNext: { [weak self] message in
-            guard let self = self else { return }
-            let alert = self.comfirmAlert(title: "등록이 완료되었습니다.", subtitle: message) { _ in
-                self.navigationController?.popViewController(animated: false)
-            }
-            self.present(alert, animated: true)
-        }).disposed(by: disposeBag)
+        output.successMessage
+            .withUnretained(self)
+            .emit(onNext: { onwer, message in
+                let alert = onwer.comfirmAlert(title: "등록이 완료되었습니다.", subtitle: message) { _ in
+                    onwer.navigationController?.popViewController(animated: false)
+                }
+                onwer.present(alert, animated: true)
+            }).disposed(by: disposeBag)
         
-        output.failMessage.emit(onNext: { [weak self] message in
-            guard let self = self else { return }
-            let alert = self.comfirmAlert(title: "삭제 실패", subtitle: message) { _ in
-                
-            }
-            self.present(alert, animated: true)
-        }).disposed(by: disposeBag)
+        output.failMessage
+            .withUnretained(self)
+            .emit(onNext: { onwer, message in
+                let alert = onwer.comfirmAlert(title: "삭제 실패", subtitle: message) { _ in
+                    
+                }
+                onwer.present(alert, animated: true)
+            }).disposed(by: disposeBag)
         
     }
     //MARK: - Selector

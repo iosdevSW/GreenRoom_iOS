@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class DetailRecentHeaderView: UICollectionReusableView {
+final class DetailRecentHeaderView: BaseCollectionReusableView {
     
     static let reuseIdentifier = "DetailRecentHeaderView"
     
@@ -30,16 +30,6 @@ final class DetailRecentHeaderView: UICollectionReusableView {
         ]))
         $0.attributedText = attributeString
     }
-    //MARK: - Lifecycle
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        self.configureUI()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-        
-    }
     
     override func prepareForReuse() {
         super.prepareForReuse()
@@ -47,7 +37,7 @@ final class DetailRecentHeaderView: UICollectionReusableView {
     }
     
     //MARK: - Configure
-    private func configureUI(){
+    override func configureUI(){
         self.backgroundColor = .backgroundGray
         self.addSubview(containerView)
         containerView.snp.makeConstraints {

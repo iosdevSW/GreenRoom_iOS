@@ -15,10 +15,9 @@ import RxViewController
 
 final class MyPageViewController: BaseViewController {
     
-    private var viewModel: MyPageViewModel
-    
-    private var collectionView: UICollectionView!
-    private let imagePickerView = UIImagePickerController()
+    private let viewModel: MyPageViewModel
+    private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: generateLayout())
+    private lazy var imagePickerView = UIImagePickerController()
     private let profile = PublishRelay<UIImage?>()
     
     //MARK: - Lifecycle
@@ -31,10 +30,6 @@ final class MyPageViewController: BaseViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.navigationBar.topItem?.title = ""
@@ -44,10 +39,10 @@ final class MyPageViewController: BaseViewController {
     //MARK: - Configure
     override func configureUI(){
         view.backgroundColor = .backgroundGray
+        
         self.view.addSubview(self.collectionView)
         collectionView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
-            make.top.bottom.equalTo(view.safeAreaLayoutGuide)
+            make.edges.equalToSuperview()
         }
     }
     
@@ -68,7 +63,7 @@ final class MyPageViewController: BaseViewController {
         
         collectionView.rx.modelSelected(MyPageSectionModel.Item.self)
             .subscribe(onNext: { [weak self] item in
-                guard let self = self else { return }
+                guard let self else { return }
                 
                 switch item {
                 case .setting(settingInfo: let info):
@@ -93,7 +88,6 @@ final class MyPageViewController: BaseViewController {
 extension MyPageViewController {
     
     private func configureCollectionView() {
-        self.collectionView = UICollectionView(frame: .zero, collectionViewLayout: generateLayout())
         self.collectionView.backgroundColor = .white
         collectionView.register(ProfileCell.self, forCellWithReuseIdentifier: ProfileCell.reuseIdentifier)
         collectionView.register(SettingHeader.self, forSupplementaryViewOfKind: SettingHeader.reuseIdentifier, withReuseIdentifier: SettingHeader.reuseIdentifier)
@@ -193,7 +187,6 @@ extension MyPageViewController: ProfileCellDelegate, PHPickerViewControllerDeleg
         }
         
         self.profile.accept(newImage)// 받아온 이미지를 update
-//        viewModel.profileImageObservable.onNext(newImage)
         picker.dismiss(animated: true, completion: nil) // picker를 닫아줌
     }
     

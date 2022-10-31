@@ -51,22 +51,31 @@ final class QuestionEditViewModel: ViewModelType {
             .bind(to: textFieldContentObservable)
             .disposed(by: disposeBag)
         
-        input.doneButtonTrigger.withLatestFrom(Observable.combineLatest(textFieldContentObservable.asObserver(), input.keywords.asObservable()))
-            .flatMap { [weak self] answer, keywords -> Observable<Bool>  in
-                guard let self = self else {
-                    return Observable.just(false)
-                }
-                
-                return KPQuestionService().uploadAnswer(id: self.id, answer: answer, keywords: keywords)
+        input.doneButtonTrigger
+            .withLatestFrom(
+                Observable.combineLatest(
+                    textFieldContentObservable.asObserver(), input.keywords.asObservable()
+                )
+            )
+            .withUnretained(self)
+            .flatMap { onwer, element  in
+                let (answer, keywords) = element
+                return KPQuestionService().uploadAnswer(id: onwer.id, answer: answer, keywords: keywords)
             }
-            .subscribe(onNext: { [weak self] isSuccess in
-                isSuccess ? self?.successMessage.accept("답변 작성이 완료되었습니다.") : self?.failMessage.accept("글자수는 500자를 초과할 수 없습니다.")
+            .withUnretained(self)
+            .subscribe(onNext: { onwer, isSuccess in
+                isSuccess ? onwer.successMessage.accept("답변 작성이 완료되었습니다.") : onwer.failMessage.accept("글자수는 500자를 초과할 수 없습니다.")
             }).disposed(by: disposeBag)
         
-        input.deleteButtonTrigger.asObservable().flatMap { _ in
-            self.privateQuestionService.removeAnswer(id: self.id)
-        }.subscribe { [weak self] competable in
-            competable ? self?.successMessage.accept("질문이 삭제되었습니다.") : self?.failMessage.accept("에러욤")
+        input.deleteButtonTrigger
+            .asObservable()
+            .withUnretained(self)
+            .flatMap { onwer, _ in
+                onwer.privateQuestionService.removeAnswer(id: onwer.id)
+            }
+            .withUnretained(self)
+            .subscribe { onwer, competable in
+            competable ? onwer.successMessage.accept("질문이 삭제되었습니다.") : onwer.failMessage.accept("에러욤")
         }.disposed(by: disposeBag)
         
         let output = KPQuestionService().fetchGroupQuestion(id: self.id) // api 나오면 다시 적용해야함

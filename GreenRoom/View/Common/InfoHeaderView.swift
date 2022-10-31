@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class InfoHeaderView: UICollectionReusableView {
+final class InfoHeaderView: BaseCollectionReusableView {
     
     static let reuseIdentifier = "InfoHeaderView"
     
@@ -25,17 +25,7 @@ final class InfoHeaderView: UICollectionReusableView {
     private var subTitleLabel = Utilities.shared.generateLabel(text: "SubTitleLabel", color: .customGray, font: .sfPro(size: 12, family: .Regular))
     
     //MARK: - Init
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        
-        configureUI()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    private func configureUI(){
+    override func configureUI(){
         self.backgroundColor = .white
         addSubview(titleLabel)
         addSubview(subTitleLabel)
@@ -49,7 +39,6 @@ final class InfoHeaderView: UICollectionReusableView {
             $0.leading.equalTo(titleLabel.snp.leading)
             $0.top.equalTo(titleLabel.snp.bottom).offset(20)
         }
-        
     }
     
     private func configure() {
@@ -66,7 +55,6 @@ final class InfoHeaderView: UICollectionReusableView {
         subTitleLabel.attributedText = attributeString
     }
 
-    
     private func configureFilterLayout() {
         addSubview(filterView)
         

@@ -12,33 +12,67 @@ final class FilteringViewModel: ViewModelType {
     
     var disposeBag = DisposeBag()
     
-    let publicQuestionService: PublicQuestionService
+    private let publicQuestionService: PublicQuestionService
     
-    struct Input {
-        let trigger: Observable<Bool>
-    }
+    struct Input { }
     
     struct Output {
         let publicQuestions: Observable<[FilteringSectionModel]>
     }
     
-    let categoryId: Int
+    private let mode: FilterMode
+//    private let categoryId: Int?
+//    private let keyword: String?
     
-    init(categoryId: Int, publicQuestionService: PublicQuestionService) {
-        self.categoryId = categoryId
+    private let filteringQuestion = PublishSubject<[FilteringSectionModel]>()
+    
+    init(mode: FilterMode,
+         publicQuestionService: PublicQuestionService) {
+        self.mode = mode
         self.publicQuestionService = publicQuestionService
     }
+//    init(categoryId: Int? = nil,
+//         keyword: String? = nil,
+//         publicQuestionService: PublicQuestionService) {
+//        self.categoryId = categoryId
+//        self.keyword = keyword
+//        self.publicQuestionService = publicQuestionService
+//    }
     
     func transform(input: Input) -> Output {
         
-        let models = input.trigger.flatMap { _ in
-            self.publicQuestionService.fetchFilteredQuestion(categoryId: self.categoryId)
-                .map { questions -> [FilteringSectionModel] in
-                    return [FilteringSectionModel(header: Info(title: Category(rawValue: self.categoryId)?.title ?? "공통", subTitle: "관련된 질문리스트를 보여드려요!\n질문에 참여 시 동료들의 모든 답변을 확인할 수 있어요 :)"), items: questions)]
+        switch self.mode {
+        case .filter(id: let id):
+            self.publicQuestionService.fetchFilteredQuestion(categoryId: id)
+                .map { questions in
+                    [FilteringSectionModel(
+                        header: Info(title: Category(rawValue: id)?.title ?? "공통",
+                                 subTitle: "관련된 질문리스트를 보여드려요!\n질문에 참여 시 동료들의 모든 답변을 확인할 수 있어요 :)"),
+                        items: questions)]
                 }
+                .bind(to: filteringQuestion)
+                .disposed(by: disposeBag)
+        case .search(keyword: let keyword):
+            self.publicQuestionService.searchGreenRoomQuestion(keyword: keyword)
+                .map { questions in
+                    [FilteringSectionModel(
+                        header: Info(title: keyword,
+                                 subTitle: "관련된 질문리스트를 보여드려요!\n질문에 참여 시 동료들의 모든 답변을 확인할 수 있어요 :)"),
+                        items: questions)]
+                }
+                .bind(to: filteringQuestion)
+                .disposed(by: disposeBag)
         }
+            
+        return Output(publicQuestions: filteringQuestion.asObservable())
+    }
+    
+    private func fetchFilteringQuestion(id: Int) {
         
-        return Output(publicQuestions: models)
+    }
+    
+    private func fetchFilteringQuestion(keyword: String) {
+        
     }
 }
 

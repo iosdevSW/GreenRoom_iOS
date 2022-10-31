@@ -13,8 +13,8 @@ import RxDataSources
 final class ScrapedQuestionViewController: BaseViewController {
 
     //MARK: - Properties
-    var viewModel: ScrapViewModel!
-    private var collectionView: UICollectionView!
+    private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: self.configureCollectionViewLayout())
+    private let viewModel: ScrapViewModel
     
     var editMode: Bool = false {
         didSet {
@@ -98,7 +98,6 @@ final class ScrapedQuestionViewController: BaseViewController {
     }
     
     override func setupBinding() {
-        
         editButton.rx.tap.asObservable()
             .subscribe(onNext: {
                 self.editMode = true
@@ -124,8 +123,7 @@ final class ScrapedQuestionViewController: BaseViewController {
 
 //MARK: - CollectionView
 extension ScrapedQuestionViewController {
-    
-    private func configureCollectionView() {
+    private func configureCollectionViewLayout() -> UICollectionViewFlowLayout {
         let layout = UICollectionViewFlowLayout()
         let width = view.bounds.width * 0.42
         
@@ -134,8 +132,10 @@ extension ScrapedQuestionViewController {
         layout.sectionInset = UIEdgeInsets(top: 0, left: margin, bottom: margin * 3, right: margin)
         layout.headerReferenceSize = CGSize(width: view.bounds.width, height: view.bounds.height*0.14)
         
-
-        collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        return layout
+    }
+    
+    private func configureCollectionView() {
         collectionView.backgroundColor = .backgroundGray
         collectionView.allowsMultipleSelection = true
         collectionView.register(InfoHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: InfoHeaderView.reuseIdentifier)
@@ -154,7 +154,6 @@ extension ScrapedQuestionViewController {
             return cell
             
         } configureSupplementaryView: { dataSource, collectionView, kind, indexPath in
-            
             guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: InfoHeaderView.reuseIdentifier, for: indexPath) as? InfoHeaderView else {
                     return UICollectionReusableView()
             }

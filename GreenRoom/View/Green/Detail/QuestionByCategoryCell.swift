@@ -8,7 +8,7 @@
 import UIKit
 
 /// 특정 카테고리나 검색에 대한 결과를 보여주는 셀 B2, B3-1
-final class QuestionByCategoryCell: UICollectionViewCell {
+final class QuestionByCategoryCell: BaseCollectionViewCell {
     
     static let reuseIdentifier = "QuestionByCategoryCell"
     
@@ -22,9 +22,9 @@ final class QuestionByCategoryCell: UICollectionViewCell {
         $0.layer.masksToBounds = false
     }
     
-    private var nameLabel = Utilities.shared.generateLabel(text: "박면접", color: .customGray, font: .sfPro(size: 12, family: .Regular))
-    private var categoryLabel = Utilities.shared.generateLabel(text: "디자인", color: .black, font: .sfPro(size: 12, family: .Semibold))
-    private let participantLabel = Utilities.shared.generateLabel(text: "N명이 참여하고 있습니다.", color: .mainColor, font: .sfPro(size: 12, family: .Bold))
+    private lazy var nameLabel = Utilities.shared.generateLabel(text: "박면접", color: .customGray, font: .sfPro(size: 12, family: .Regular))
+    private lazy var categoryLabel = Utilities.shared.generateLabel(text: "디자인", color: .black, font: .sfPro(size: 12, family: .Semibold))
+    private lazy var participantLabel = Utilities.shared.generateLabel(text: "N명이 참여하고 있습니다.", color: .mainColor, font: .sfPro(size: 12, family: .Bold))
     
     private lazy var questionTextView = UITextView().then {
         $0.backgroundColor = .white
@@ -45,7 +45,7 @@ final class QuestionByCategoryCell: UICollectionViewCell {
         )
     }
     
-    private var answerLabel = UILabel().then {
+    private lazy var answerLabel = UILabel().then {
         $0.numberOfLines = 0
         $0.font = .sfPro(size: 12, family: .Regular)
         $0.text = "작성 시 동료의 답변을 볼 수 있어요!"
@@ -53,23 +53,13 @@ final class QuestionByCategoryCell: UICollectionViewCell {
         $0.textColor = .black
     }
     
-    private var activeLabel = UILabel().then {
+    private lazy var activeLabel = UILabel().then {
         $0.text = "참여 하기"
         $0.font = .sfPro(size: 14, family: .Regular)
         $0.textColor = .customGray
     }
     
-    //MARK: - init
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        configureUI()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    private func configureUI(){
+    override func configureUI(){
         contentView.layer.cornerRadius = 15
         contentView.backgroundColor = .white
         self.contentView.addSubview(profileImageView)

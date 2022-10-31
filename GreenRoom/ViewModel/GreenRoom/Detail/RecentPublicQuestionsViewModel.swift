@@ -24,11 +24,15 @@ final class RecentPublicQuestionsViewModel: ViewModelType {
     
     func transform(input: Input) -> Output {
          
-        let recent = input.trigger.flatMap { _ in
-            self.publicQuestionService.fetchRecentPublicQuestions()
-        }.map { questions in
-            [GreenRoomSectionModel.recent(items:
-                questions.map{ GreenRoomSectionModel.Item.recent(question: $0) } )]
+        let recent = input.trigger
+            .withUnretained(self)
+            .flatMap { onwer, _ in
+                onwer.publicQuestionService.fetchRecentPublicQuestions()
+            }
+            .map { questions in
+                [GreenRoomSectionModel.recent(
+                    items: questions.map{ .recent(question: $0) } )
+                ]
         }
   
         return Output(recent: recent)

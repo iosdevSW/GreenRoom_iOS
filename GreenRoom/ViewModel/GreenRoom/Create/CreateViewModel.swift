@@ -53,14 +53,26 @@ final class CreateViewModel: ViewModelType {
             .bind(to: addQuestionObservable)
             .disposed(by: disposeBag)
         
-        input.submit.withLatestFrom(Observable.zip(addQuestionObservable.asObserver(), input.category.map { String($0) }))
-            .flatMapLatest { (question, category) -> Observable<Bool> in
-                return self.myListService.uploadQuestion(categoryId: Int(category)!, question: question)
-            }.subscribe { _ in
-                self.successMessage.accept("질문 작성이 완료되었어요!")
-            } onError: { error in
-                self.failMessage.accept(error.localizedDescription)
-            }.disposed(by: disposeBag)
+        input.submit.withLatestFrom(
+            Observable.zip(
+                addQuestionObservable.asObserver(),
+                input.category.map { String($0) }
+            )
+        )
+        .withUnretained(self)
+        .flatMapLatest { (owner, element) in
+            let (question, category) = element
+            return owner.myListService.uploadQuestion(
+                categoryId: Int(category)!,
+                question: question
+            )
+        }
+        .withUnretained(self)
+        .subscribe { onwer, _ in
+            onwer.successMessage.accept("질문 작성이 완료되었어요!")
+        } onError: { error in
+            self.failMessage.accept(error.localizedDescription)
+        }.disposed(by: disposeBag)
 
         return Output(isValid:
                         Observable.combineLatest(input.question, input.category).map { text, category in

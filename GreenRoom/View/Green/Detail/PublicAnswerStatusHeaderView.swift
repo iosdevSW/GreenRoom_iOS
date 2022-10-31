@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class PublicAnswerStatusHeaderView: UICollectionReusableView {
+final class PublicAnswerStatusHeaderView: BaseCollectionReusableView {
     
     static let reuseIdentifier = "PublicAnswerStatusHeaderView"
     
@@ -16,9 +16,9 @@ final class PublicAnswerStatusHeaderView: UICollectionReusableView {
     }
     
     //MARK: ProPerties
-    private var participantsLabel = Utilities.shared.generateLabel(text: "N명이 참여하고 있어요", color: .mainColor, font: .sfPro(size: 12, family: .Semibold))
+    private let participantsLabel = Utilities.shared.generateLabel(text: "N명이 참여하고 있어요", color: .mainColor, font: .sfPro(size: 12, family: .Semibold))
     
-    private var statusLabel = PaddingLabel(padding: UIEdgeInsets(top: 20, left: 29, bottom: 20, right: 29)).then {
+    private let statusLabel = PaddingLabel(padding: UIEdgeInsets(top: 20, left: 29, bottom: 20, right: 29)).then {
         $0.textColor = .customGray
         $0.font = .sfPro(size: 16, family: .Bold)
         $0.text = "작성 시 동료의 답변을 볼 수 있어요!"
@@ -28,19 +28,9 @@ final class PublicAnswerStatusHeaderView: UICollectionReusableView {
         $0.layer.cornerRadius = 15
         $0.textAlignment = .center
     }
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        
-        configureUI()
-    }
-        
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
+
     //MARK: - Configure
-    private func configureUI() {
+    override func configureUI() {
         self.backgroundColor = .white
         
         let margin = frame.size.width * 0.08

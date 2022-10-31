@@ -44,7 +44,10 @@ class MainGreenRoomViewModel: ViewModelType {
         
         input.viewWillAppear
             .withLatestFrom(mode)
-            .flatMap { self.layoutUpdate(with: $0.rawValue) }
+            .withUnretained(self)
+            .flatMap { onwer, mode in
+                return onwer.layoutUpdate(with: mode.rawValue)
+            }
             .bind(to: dataSource)
             .disposed(by: disposeBag)
         
@@ -54,39 +57,43 @@ class MainGreenRoomViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         input.nextButtonTrigger
-            .map { _ in
-                return self.currentPage.value + 1
-            }.bind(to: currentPage)
+            .withUnretained(self)
+            .map({ onwer, _ in
+                return onwer.currentPage.value + 1
+            })
+            .bind(to: currentPage)
             .disposed(by: disposeBag)
         
         input.prevButtonTrigger
-            .map { _ in
-                self.currentPage.value - 1
-            }.bind(to: currentPage)
+            .withUnretained(self)
+            .map({ owner, _ in
+                return owner.currentPage.value - 1
+            })
+            .bind(to: currentPage)
             .disposed(by: disposeBag)
         
         self.mode
-            .flatMap { self.layoutUpdate(with: $0.rawValue) }
+            .throttle(.seconds(1), scheduler: MainScheduler.asyncInstance)
+            .withUnretained(self)
+            .flatMap { $0.layoutUpdate(with: $1.rawValue) }
             .bind(to: dataSource)
             .disposed(by: disposeBag)
         
         self.currentPage
-            .flatMap { page in
-                self.fetchMyGreenRoom(page: page)
-            }.bind(to: myGreenRoom)
+            .withUnretained(self)
+            .flatMap { $0.fetchMyGreenRoom(page: $1) }
+            .bind(to: myGreenRoom)
             .disposed(by: disposeBag)
         
         return Output(greenroom: self.dataSource.asObserver())
     }
-    
-    
 }
 
 //MARK: - API Service
 extension MainGreenRoomViewModel {
     
     /// 뷰의 상태를 업데이트
-    func layoutUpdate(with mode: Int) -> Observable<[GreenRoomSectionModel]>{
+    func layoutUpdate(with mode: Int) -> Observable<[GreenRoomSectionModel]> {
         return mode == 0 ? self.fetchGreenRoomTap() : fetchMyListsTap()
     }
     
@@ -114,10 +121,7 @@ extension MainGreenRoomViewModel {
         
         let categoryId = Category(rawValue: UserDefaults.standard.integer(forKey: "CategoryID")) ?? .common
         
-        return Observable.create { emitter in
-            emitter.onNext([GreenRoomSectionModel.filtering(items:[ GreenRoomSectionModel.Item.filtering(interest: categoryId) ])])
-            return Disposables.create()
-        }
+        return .just([.filtering(items:[.filtering(interest: categoryId)])])
     }
     
     /// 인기 질문
@@ -126,8 +130,7 @@ extension MainGreenRoomViewModel {
             .fetchPopularPublicQuestions()
             .map { questions in
                 [GreenRoomSectionModel.popular(
-                    items: questions.map { GreenRoomSectionModel.Item.popular(question: $0)
-                    }
+                    items: questions.map { .popular(question: $0) }
                 )]
             }
     }
@@ -155,7 +158,7 @@ extension MainGreenRoomViewModel {
         return self.myListService
             .fetchPrivateQuestions()
             .map { questions in
-                [GreenRoomSectionModel.MyQuestionList(items: questions.map { GreenRoomSectionModel.Item.MyQuestionList(question: $0)})]
+                [GreenRoomSectionModel.MyQuestionList(items: questions.map { .MyQuestionList(question: $0)})]
             }
     }
 }
