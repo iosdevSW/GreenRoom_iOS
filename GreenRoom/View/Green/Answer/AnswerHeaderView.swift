@@ -49,7 +49,7 @@ final class AnswerHeaderView: UIView {
     private func configureUI() {
         
         self.backgroundColor = .mainColor
-        self.translatesAutoresizingMaskIntoConstraints = false
+
         self.addSubview(categoryLabel)
         categoryLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview()

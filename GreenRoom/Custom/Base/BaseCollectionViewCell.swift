@@ -24,11 +24,7 @@ class BaseCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func bind() {
-        
-    }
+    func bind() { }
     
-    func configureUI() {
-        
-    }
+    func configureUI() { }
 }

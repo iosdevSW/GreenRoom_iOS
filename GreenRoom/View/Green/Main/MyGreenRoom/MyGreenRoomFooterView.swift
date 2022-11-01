@@ -27,7 +27,7 @@ final class MyGreenRoomFooterView: BaseCollectionReusableView {
         profileImageView.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.top.equalToSuperview().offset(30)
-            make.width.equalTo(80)
+            make.width.equalTo(70)
             make.height.equalTo(frame.width * 0.08)
         }
         
@@ -50,7 +50,7 @@ final class MyGreenRoomFooterView: BaseCollectionReusableView {
     }
     
     private func configureImageStack(urls: [String]) {
-
+        
         DispatchQueue.global().async {
             
             var images: [UIImage] = []
@@ -59,10 +59,10 @@ final class MyGreenRoomFooterView: BaseCollectionReusableView {
                 .forEach { url in
                     guard let url = url,
                           let data = try? Data(contentsOf: url),
-                          let image = UIImage(data: data)else { return }
-                    images.append(image)
+                          let image = UIImage(data: data)?.resizeImage(targetSize: CGSize(width: 30, height: 30)),
+                          let roundedImage = image.withRoundedCorners() else { return }
+                    images.append(roundedImage)
                 }
-            
             DispatchQueue.main.async {
                 self.profileImageView.setImageStack(images: images)
             }

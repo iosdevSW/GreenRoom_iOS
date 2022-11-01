@@ -11,7 +11,9 @@ extension UIImageView {
     func setImageStack(images: [UIImage]) {
         let spacing = 20
         
-        let size = CGSize(width: 80, height: 40)
+        let count = images.count
+        
+        let size = CGSize(width: 30 + 20 * (count-1), height: 40)
         UIGraphicsBeginImageContext(size)
         
         images.enumerated().forEach { (index, image) in
@@ -20,5 +22,7 @@ extension UIImageView {
         
         let mergedImage = UIGraphicsGetImageFromCurrentImageContext()!
         UIGraphicsEndImageContext()
+        self.image = mergedImage
     }
+
 }

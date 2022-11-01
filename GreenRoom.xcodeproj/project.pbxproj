@@ -104,6 +104,7 @@
 		E427EC0828C7937B0046B4AA /* SFProText-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = E427EC0728C7937B0046B4AA /* SFProText-Bold.otf */; };
 		E427EC0B28C7A53D0046B4AA /* PublicQuestionsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E427EC0A28C7A53D0046B4AA /* PublicQuestionsCell.swift */; };
 		E427EC1628C830F60046B4AA /* CategorySelectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E427EC1528C830F60046B4AA /* CategorySelectViewController.swift */; };
+		E43D8F58291136D90069BA0C /* UIImage+.swift in Sources */ = {isa = PBXBuildFile; fileRef = E43D8F57291136D90069BA0C /* UIImage+.swift */; };
 		E44456EE28E6E89B0034A207 /* NotificationName+.swift in Sources */ = {isa = PBXBuildFile; fileRef = E44456ED28E6E89B0034A207 /* NotificationName+.swift */; };
 		E445856328C6148F00907950 /* MyGreenRoomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E445856228C6148F00907950 /* MyGreenRoomCell.swift */; };
 		E445856528C619E700907950 /* MyGreenRoomFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E445856428C619E700907950 /* MyGreenRoomFooterView.swift */; };
@@ -290,6 +291,7 @@
 		E427EC0728C7937B0046B4AA /* SFProText-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFProText-Bold.otf"; sourceTree = "<group>"; };
 		E427EC0A28C7A53D0046B4AA /* PublicQuestionsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicQuestionsCell.swift; sourceTree = "<group>"; };
 		E427EC1528C830F60046B4AA /* CategorySelectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategorySelectViewController.swift; sourceTree = "<group>"; };
+		E43D8F57291136D90069BA0C /* UIImage+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+.swift"; sourceTree = "<group>"; };
 		E44456ED28E6E89B0034A207 /* NotificationName+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NotificationName+.swift"; sourceTree = "<group>"; };
 		E445856228C6148F00907950 /* MyGreenRoomCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyGreenRoomCell.swift; sourceTree = "<group>"; };
 		E445856428C619E700907950 /* MyGreenRoomFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyGreenRoomFooterView.swift; sourceTree = "<group>"; };
@@ -986,6 +988,7 @@
 				E46E4C0528E14FC500D1691F /* UILabel+.swift */,
 				E4213BD029019539007F0297 /* UITextField+.swift */,
 				E4213BDD2902FB8D007F0297 /* UIImageView+.swift */,
+				E43D8F57291136D90069BA0C /* UIImage+.swift */,
 				E46E4C0728E14FD400D1691F /* Date+.swift */,
 				E44456ED28E6E89B0034A207 /* NotificationName+.swift */,
 				E4D49AEB28EF287300CF69B1 /* String+.swift */,
@@ -1463,6 +1466,7 @@
 				E4A1761428C64B47009D1DFE /* RecentPublicQuestionsViewController.swift in Sources */,
 				DB9D9F5128F444890061D7DB /* QuestionEditViewModel.swift in Sources */,
 				E49F7D8928BC7D7E000AB49B /* CreateQuestionViewController.swift in Sources */,
+				E43D8F58291136D90069BA0C /* UIImage+.swift in Sources */,
 				E40BC69D28B5F35A00FB557D /* SearchWordCell.swift in Sources */,
 				E4A1760F28C64883009D1DFE /* DetailRecentHeaderView.swift in Sources */,
 				DB797A99289B9BFF00ADF65F /* RegisterNameViewController.swift in Sources */,

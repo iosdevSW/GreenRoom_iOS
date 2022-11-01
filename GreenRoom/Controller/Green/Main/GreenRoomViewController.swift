@@ -102,11 +102,6 @@ class GreenRoomViewController: BaseViewController {
             prevButtonTrigger: self.prevButtonTrigger.asObservable()
         )
         
-        self.nextButtonTrigger
-            .subscribe(onNext: {
-                print($0)
-            }).disposed(by: disposeBag)
-        
         let output = self.viewModel.transform(input: input)
         
         output.greenroom.bind(to: collectionView.rx.items(dataSource: dataSource)).disposed(by: disposeBag)

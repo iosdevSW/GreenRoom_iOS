@@ -87,12 +87,6 @@ final class GreenRoomSearchViewController: BaseViewController {
         output.searchedKeyword
             .bind(to: collectionView.rx.items(dataSource: self.dataSource()))
             .disposed(by: disposeBag)
-//
-//        output.searchResult
-//            .subscribe(onNext: { [weak self] result in
-//                let vc = SearchResultViewController()
-//                self?.navigationController?.pushViewController(vc, animated: false)
-//            }).disposed(by: disposeBag)
     }
 }
 
