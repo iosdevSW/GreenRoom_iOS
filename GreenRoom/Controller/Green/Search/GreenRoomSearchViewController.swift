@@ -32,7 +32,8 @@ final class GreenRoomSearchViewController: BaseViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.tabBarController?.tabBar.isHidden = true
+        
+        self.hideTabbar()
     }
     
     override func configureUI(){
@@ -47,6 +48,7 @@ final class GreenRoomSearchViewController: BaseViewController {
 
     override func setupAttributes() {
         super.setupAttributes()
+        
         configureCollectionView()
         configureSearchBar()
     }
@@ -170,14 +172,11 @@ extension GreenRoomSearchViewController {
 extension GreenRoomSearchViewController {
     func generateLayout() -> UICollectionViewLayout {
         
-        let layout = UICollectionViewCompositionalLayout { (sectionIndex: Int,
+        return UICollectionViewCompositionalLayout { (sectionIndex: Int,
                                                             layoutEnvironment: NSCollectionLayoutEnvironment)
             -> NSCollectionLayoutSection? in
-            
-            
             return sectionIndex == 0 ? self.popularLayout() : self.recentLayout()
         }
-        return layout
     }
     
     private func recentLayout() -> NSCollectionLayoutSection {

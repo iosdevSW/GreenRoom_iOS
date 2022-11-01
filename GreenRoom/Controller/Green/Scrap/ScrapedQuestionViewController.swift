@@ -11,9 +11,10 @@ import RxCocoa
 import RxDataSources
 
 final class ScrapedQuestionViewController: BaseViewController {
-
+    
     //MARK: - Properties
     private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: self.configureCollectionViewLayout())
+    
     private let viewModel: ScrapViewModel
     
     var editMode: Bool = false {
@@ -33,7 +34,6 @@ final class ScrapedQuestionViewController: BaseViewController {
         $0.setTitle("취소", for: .normal)
         $0.setTitleColor(.mainColor, for: .normal)
     }
-
     
     private lazy var deleteButton = UIButton().then {
         $0.backgroundColor = .mainColor
@@ -52,11 +52,7 @@ final class ScrapedQuestionViewController: BaseViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
-    
+
     override func configureUI() {
         self.view.backgroundColor = .white
         
@@ -73,24 +69,13 @@ final class ScrapedQuestionViewController: BaseViewController {
             make.height.equalTo(52)
         }
     }
-
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: editButton)
-        guard let tabbarcontroller = tabBarController as? MainTabbarController else { return }
-        tabbarcontroller.createButton.isHidden = true
-        self.tabBarController?.tabBar.isHidden = true
-        
         self.deleteButton.isHidden = true
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        
-        guard let tabbarcontroller = tabBarController as? MainTabbarController else { return }
-        tabbarcontroller.createButton.isHidden = false
-        self.tabBarController?.tabBar.isHidden = false
+        self.hideTabbar()
     }
     
     override func setupAttributes() {
@@ -99,22 +84,21 @@ final class ScrapedQuestionViewController: BaseViewController {
     
     override func setupBinding() {
         editButton.rx.tap.asObservable()
-            .subscribe(onNext: {
-                self.editMode = true
+            .subscribe(onNext: { [weak self] _ in
+                self?.editMode = true
             }).disposed(by: disposeBag)
         
-        cancelButton.rx.tap.asObservable()
-            .subscribe(onNext: {
-                self.editMode = false
-            }).disposed(by: disposeBag)
+        Observable.combineLatest(
+            cancelButton.rx.tap.asObservable(),
+            deleteButton.rx.tap.asObservable()
+        )
+        .subscribe(onNext: { [weak self] _ in
+            self?.editMode = false
+        }).disposed(by: disposeBag)
         
-        let input = ScrapViewModel.Input(trigger: rx.viewWillAppear.asObservable(),
-                                         buttonTab: deleteButton.rx.tap.asObservable())
-     
-        deleteButton.rx.tap
-            .subscribe(onNext: {
-                self.editMode = false
-            }).disposed(by: disposeBag)
+        let input = ScrapViewModel.Input(
+            trigger: rx.viewWillAppear.asObservable(),
+            buttonTab: deleteButton.rx.tap.asObservable())
         
         let output = self.viewModel.transform(input: input)
         output.scrap.bind(to: collectionView.rx.items(dataSource: dataSource())).disposed(by: disposeBag)
@@ -152,12 +136,10 @@ extension ScrapedQuestionViewController {
             cell.question = item
             cell.delegate = self
             return cell
-            
         } configureSupplementaryView: { dataSource, collectionView, kind, indexPath in
             guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: InfoHeaderView.reuseIdentifier, for: indexPath) as? InfoHeaderView else {
-                    return UICollectionReusableView()
+                return UICollectionReusableView()
             }
-            
             header.filterShowing = false
             header.info = Info(title: "관심 질문", subTitle: "관심을 표시한 모든 질문을 보여드려요!\n질문에 참여 시 동료들의 모든 답변을 확인할 수 있어요 :)")
             return header
@@ -169,14 +151,12 @@ extension ScrapedQuestionViewController {
 extension ScrapedQuestionViewController: ScrapViewCellDelegate {
     
     func didSelectScrapCell(isSelected: Bool, question: GreenRoomQuestion) {
-        
         if isSelected {
             self.viewModel.selectedIndexesObservable
                 .accept(self.viewModel.selectedIndexesObservable.value + [question.id])
         } else {
             self.viewModel.cancelIndexObservable.onNext(question.id)
         }
-         
     }
-
+    
 }

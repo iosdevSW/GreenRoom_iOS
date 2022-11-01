@@ -33,13 +33,8 @@ final class CreateGreenRoomViewController: BaseViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.navigationController?.navigationBar.shadowImage = UIImage()
-        self.navigationController?.navigationBar.tintColor = .mainColor
         
-        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.left"),
-                                                           style: .plain,
-                                                           target: self,
-                                                           action: #selector(dismissal))
+        configureNavigationBar()
     }
     
     override func configureUI() {
@@ -75,13 +70,13 @@ final class CreateGreenRoomViewController: BaseViewController {
             
             guard let header = self.collectionView.supplementaryView(forElementKind: UICollectionView.elementKindSectionHeader, at: IndexPath(row: 0, section: 0)) as? CreateGRHeaderView else { return }
                 
-            let input = CreatePublicQuestionViewModel.Input(date: self.datePickerController.datePicker.rx.date.asObservable(),
-                                                            dateApplyTrigger: self.datePickerController.applyButton.rx.tap.asObservable(),
-                                                            question: header.questionTextView.rx.text.orEmpty.asObservable(),
-                                                            category: self.collectionView.rx.itemSelected.map { $0.row + 1 }.asObservable(),
-                                                            returnTrigger: header.questionTextView.rx.didEndEditing.asObservable(),
-                                                            submit: self.submitButton.rx.tap.asObservable())
-            
+            let input = CreatePublicQuestionViewModel.Input(
+                date: self.datePickerController.datePicker.rx.date.asObservable(),
+                dateApplyTrigger: self.datePickerController.applyButton.rx.tap.asObservable(),
+                question: header.questionTextView.rx.text.orEmpty.asObservable(),
+                category: self.collectionView.rx.itemSelected.map { $0.row + 1 }.asObservable(),
+                returnTrigger: header.questionTextView.rx.didEndEditing.asObservable(),
+                submit: self.submitButton.rx.tap.asObservable())
             
             header.dateContainer.rx
                 .tapGesture()
@@ -124,7 +119,17 @@ final class CreateGreenRoomViewController: BaseViewController {
                 self.present(alert, animated: true)
             }).disposed(by: self.disposeBag)
         }
+    }
+    
+    private func configureNavigationBar() {
+        self.navigationController?.navigationBar.shadowImage = UIImage()
+        self.navigationController?.navigationBar.tintColor = .mainColor
         
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
+            image: UIImage(systemName: "chevron.left"),
+            style: .plain,
+            target: self,
+            action: #selector(dismissal))
     }
     
     @objc func dismissal(){

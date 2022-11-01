@@ -8,7 +8,7 @@
 import UIKit
 import RxSwift
 
-/// 그린룸 질문에 대한 답변을 클릭했을 때 나오는 전체화면 B13
+/// 그린룸 질문에 대한 답변을 클릭했을 때 나오는 전체화면 B13-3(1)
 final class DetailPublicAnswerViewController: BaseViewController {
     
     private let viewModel: DetailPublicAnswerViewModel
@@ -45,18 +45,6 @@ final class DetailPublicAnswerViewController: BaseViewController {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-
-        self.navigationController?.navigationBar.tintColor = .white
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .done, target: self, action: #selector(handleDismissal))
-
     }
     
     override func setupAttributes() {
@@ -109,18 +97,12 @@ final class DetailPublicAnswerViewController: BaseViewController {
             guard let self = self else { return }
             self.answerLabel.text = answer.answer
             self.nameLabel.text = answer.name
-            guard let url = URL(string: answer.profileImage) else { return }
-            self.profileImageView.kf.setImage(with: url)
+            self.profileImageView.kf.setImage(with: URL(string: answer.profileImage))
         }).disposed(by: disposeBag)
         
         output.header
-            .subscribe(onNext: { header in
-                self.headerView.question = header
+            .subscribe(onNext: { [weak self] header in
+                self?.headerView.question = header
             }).disposed(by: disposeBag)
-    }
-    
-    //MARK: - Selector
-    @objc func handleDismissal(){
-        self.navigationController?.popViewController(animated: false)
     }
 }

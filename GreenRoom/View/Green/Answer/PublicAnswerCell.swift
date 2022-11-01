@@ -13,7 +13,7 @@ final class PublicAnswerCell: BaseCollectionViewCell {
     
     //MARK: - ProPerties
     var isReversed: Bool = false {
-        didSet { isReversed ? configureReverseUI() : configureUI() }
+        didSet { isReversed ? configureOddUI() : configureEvenUI() }
     }
     
     var question: PublicAnswer? {
@@ -37,7 +37,7 @@ final class PublicAnswerCell: BaseCollectionViewCell {
     }
     
     //MARK: - Configure
-    override func configureUI() {
+    func configureEvenUI() {
         self.backgroundColor = .white
         
         let imageSize = frame.size.width * 0.1
@@ -58,17 +58,18 @@ final class PublicAnswerCell: BaseCollectionViewCell {
         }
     }
     
-    private func configureReverseUI() {
+    private func configureOddUI() {
         
         let imageSize = frame.size.width * 0.1
         self.addSubview(profileImageView)
-        profileImageView.snp.makeConstraints{ make in
+        profileImageView.snp.remakeConstraints{ make in
             make.centerY.equalToSuperview()
             make.trailing.equalToSuperview().offset(-40)
             make.width.height.equalTo(imageSize)
         }
+        
         self.addSubview(answerLabel)
-        answerLabel.snp.makeConstraints { make in
+        answerLabel.snp.remakeConstraints { make in
             make.centerY.equalToSuperview()
             make.leading.equalToSuperview().offset(40)
             make.trailing.equalTo(profileImageView.snp.leading).offset(-40)

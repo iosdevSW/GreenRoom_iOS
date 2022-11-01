@@ -11,11 +11,11 @@ import RxSwift
 final class FilterView: UIView {
     //MARK: - Properties
     let viewModel: CategoryViewModel
-    let disposeBag = DisposeBag()
+    private var disposeBag = DisposeBag()
     
-    private var selectedCategoriesCollectionView: UICollectionView!
+    private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: configureCollectionViewLayout() )
     
-    private let filterButton = UIButton(type: .roundedRect).then{
+    private lazy var filterButton = UIButton(type: .roundedRect).then{
         $0.backgroundColor = .mainColor
         $0.setTitle("필터 ", for: .normal)
         $0.setTitleColor(.white, for: .normal)
@@ -47,7 +47,7 @@ final class FilterView: UIView {
         }).disposed(by: disposeBag)
         
         viewModel.selectedCategoriesObservable.asObserver()
-            .bind(to: self.selectedCategoriesCollectionView.rx.items(cellIdentifier: "ItemsCell", cellType: FilterItemsCell.self)) { index, id ,cell in
+            .bind(to: self.collectionView.rx.items(cellIdentifier: "ItemsCell", cellType: FilterItemsCell.self)) { index, id ,cell in
                 cell.category = Category(rawValue: id)
             }.disposed(by: disposeBag)
     }
@@ -55,7 +55,7 @@ final class FilterView: UIView {
     //MARK: - CofigureUI
     private func configureUI() {
         self.backgroundColor = .backgroundGray
-        
+        self.collectionView.backgroundColor = .clear
         self.addSubview(self.filterButton)
         self.filterButton.snp.makeConstraints{ make in
             make.top.equalToSuperview().offset(14)
@@ -65,24 +65,27 @@ final class FilterView: UIView {
         }
         
         
-        self.addSubview(selectedCategoriesCollectionView)
-        selectedCategoriesCollectionView.snp.makeConstraints{ make in
+        self.addSubview(collectionView)
+        collectionView.snp.makeConstraints{ make in
             make.top.equalTo(filterButton.snp.bottom).offset(6)
-            make.leading.trailing.equalToSuperview()
-            make.bottom.equalToSuperview()
+            make.bottom.leading.trailing.equalToSuperview()
         }
     }
     
+    private func configureCollectionViewLayout() -> UICollectionViewFlowLayout {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        layout.minimumInteritemSpacing = 16
+        layout.sectionInset = UIEdgeInsets(top: 0, left: 40, bottom: 0, right: 0)
+        return layout
+    }
     private func configureCollectionView() {
-        let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.scrollDirection = .horizontal
-        flowLayout.minimumInteritemSpacing = 16
-        flowLayout.sectionInset = UIEdgeInsets(top: 0, left: 40, bottom: 0, right: 0)
         
-        self.selectedCategoriesCollectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
-        selectedCategoriesCollectionView.backgroundColor = .clear
-        selectedCategoriesCollectionView.register(FilterItemsCell.self, forCellWithReuseIdentifier: "ItemsCell")
-        selectedCategoriesCollectionView.delegate = self
+        collectionView.backgroundColor = .clear
+        collectionView.register(FilterItemsCell.self, forCellWithReuseIdentifier: "ItemsCell")
+        collectionView.rx
+            .setDelegate(self)
+            .disposed(by: disposeBag)
     }
 
 }

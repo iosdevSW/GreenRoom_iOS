@@ -21,8 +21,6 @@ final class FilteringViewModel: ViewModelType {
     }
     
     private let mode: FilterMode
-//    private let categoryId: Int?
-//    private let keyword: String?
     
     private let filteringQuestion = PublishSubject<[FilteringSectionModel]>()
     
@@ -31,13 +29,6 @@ final class FilteringViewModel: ViewModelType {
         self.mode = mode
         self.publicQuestionService = publicQuestionService
     }
-//    init(categoryId: Int? = nil,
-//         keyword: String? = nil,
-//         publicQuestionService: PublicQuestionService) {
-//        self.categoryId = categoryId
-//        self.keyword = keyword
-//        self.publicQuestionService = publicQuestionService
-//    }
     
     func transform(input: Input) -> Output {
         
@@ -65,14 +56,6 @@ final class FilteringViewModel: ViewModelType {
         }
             
         return Output(publicQuestions: filteringQuestion.asObservable())
-    }
-    
-    private func fetchFilteringQuestion(id: Int) {
-        
-    }
-    
-    private func fetchFilteringQuestion(keyword: String) {
-        
     }
 }
 

@@ -12,7 +12,8 @@ import RxDataSources
 
 final class RecentPublicQuestionsViewController: BaseViewController {
     
-    private var collectionView: UICollectionView!
+    private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: configureCollectionViewLayout())
+    
     private let viewModel: RecentPublicQuestionsViewModel
     
     init(viewModel: RecentPublicQuestionsViewModel){
@@ -27,31 +28,16 @@ final class RecentPublicQuestionsViewController: BaseViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.left"),
-                                                                style: .plain,
-                                                                target: self,
-                                                                action: #selector(handleDismissal))
-        self.navigationController?.navigationBar.tintColor = .mainColor
-        guard let tabbarcontroller = tabBarController as? MainTabbarController else { return }
-        tabbarcontroller.createButton.isHidden = true
-        self.tabBarController?.tabBar.isHidden = true
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        
-        guard let tabbarcontroller = tabBarController as? MainTabbarController else { return }
-        tabbarcontroller.createButton.isHidden = false
-        self.tabBarController?.tabBar.isHidden = false
+        self.configureNavigationBackButtonItem()
+        self.hideTabbar()
     }
     
     override func configureUI() {
-        super.configureUI()
+        self.view.backgroundColor = .white
         
         view.addSubview(collectionView)
         collectionView.snp.makeConstraints { make in
-            make.leading.trailing.bottom.equalToSuperview()
-            make.top.equalTo(view.safeAreaLayoutGuide)
+            make.edges.equalToSuperview()
         }
     }
     
@@ -60,37 +46,34 @@ final class RecentPublicQuestionsViewController: BaseViewController {
     }
     
     override func setupBinding() {
-        let input = RecentPublicQuestionsViewModel.Input(trigger: rx.viewWillAppear.asObservable())
-        let output = self.viewModel.transform(input: input)
+        
+        let output = self.viewModel.transform(input: RecentPublicQuestionsViewModel.Input())
         
         output.recent.bind(to: collectionView.rx.items(dataSource: dataSource())).disposed(by: disposeBag)
         
         collectionView.rx.modelSelected(GreenRoomSectionModel.Item.self)
             .withUnretained(self)
             .subscribe(onNext: { onwer, question in
-                switch question {
-                case .recent(question: let question):
+                if case let .recent(question) = question {
                     let vc = PublicAnswerListViewController(viewModel: PublicAnswerViewModel(id: question.id, scrapService: ScrapService(), publicQuestionService: PublicQuestionService()))
                     onwer.navigationController?.pushViewController(vc, animated: false)
-                default: return
-                } 
+                }
             }).disposed(by: disposeBag)
-    }
-    
-    @objc func handleDismissal() {
-        self.navigationController?.popViewController(animated: true)
     }
 }
 
 extension RecentPublicQuestionsViewController {
     
-    private func configureCollectionView() {
+    private func configureCollectionViewLayout() -> UICollectionViewFlowLayout {
         let layout = UICollectionViewFlowLayout()
         layout.itemSize = CGSize(width: view.bounds.width, height: view.bounds.height/8)
-        layout.headerReferenceSize = CGSize(width: view.bounds.width , height: view.bounds.height * 0.25)
-        layout.minimumLineSpacing = 0
-        layout.minimumInteritemSpacing = 0
-        collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        layout.headerReferenceSize = CGSize(width: view.bounds.width , height: view.bounds.height * 0.22)
+        layout.minimumLineSpacing = -1
+        return layout
+    }
+    
+    private func configureCollectionView() {
+        self.collectionView.backgroundColor = .white
         collectionView.register(InfoHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: InfoHeaderView.reuseIdentifier)
         collectionView.register(PublicQuestionsCell.self, forCellWithReuseIdentifier: PublicQuestionsCell.reuseIdentifier)
     }
@@ -101,12 +84,10 @@ extension RecentPublicQuestionsViewController {
             
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PublicQuestionsCell.reuseIdentifier, for: indexPath) as? PublicQuestionsCell else { return UICollectionViewCell() }
             
-            switch item {
-            case .recent(question: let question):
+            if case let .recent(question) = item {
                 cell.configure(question: question)
-                return cell
-            default: return UICollectionViewCell()
             }
+            return cell
             
         } configureSupplementaryView: { dataSource, collectionView, kind,
             indexPath in

@@ -9,6 +9,7 @@ import UIKit
 import RxSwift
 import RxDataSources
 
+/// 필터링/검색결과 질문 화면
 final class FilteringQuestionViewController: BaseViewController {
     
     private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: self.configureCollectionViewLayout())
@@ -35,18 +36,9 @@ final class FilteringQuestionViewController: BaseViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.navigationBar.backgroundColor = .clear
-        guard let tabbarcontroller = tabBarController as? MainTabbarController else { return }
-        tabbarcontroller.createButton.isHidden = true
-        self.tabBarController?.tabBar.isHidden = true
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
         
-        guard let tabbarcontroller = tabBarController as? MainTabbarController else { return }
-        tabbarcontroller.createButton.isHidden = false
-        self.tabBarController?.tabBar.isHidden = false
+        self.configureNavigationBackButtonItem()
+        self.hideTabbar()
     }
      
     override func configureUI() {
