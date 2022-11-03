@@ -13,10 +13,12 @@ final class EditProfileViewModel: ViewModelType {
     
     struct Input{
         let trigger: Observable<Bool>
+        let logout: Observable<Bool>
     }
 
     struct Output {
         let userName: Observable<String>
+        let logOutState: Observable<Bool>
     }
 
     var disposeBag = DisposeBag()
@@ -26,12 +28,18 @@ final class EditProfileViewModel: ViewModelType {
     }
     
     func transform(input: Input) -> Output {
-        return Output(
-            userName: input.trigger
-                .withUnretained(self)
-                .flatMap { onwer, _ in
-                    onwer.userService.fetchUserInfo()
-                }.map { $0.name })
+        
+        let logout = input.logout
+            .flatMap { flag in
+                return AuthService.shared.logout()
+            }
+        let userName = input.trigger
+            .withUnretained(self)
+            .flatMap { onwer, _ in
+                onwer.userService.fetchUserInfo()
+            }.map { $0.name }
+        
+        return Output(userName: userName, logOutState: logout)
     }
     
     func updateUserInfo(nickName: String) {

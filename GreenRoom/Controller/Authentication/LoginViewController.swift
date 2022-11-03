@@ -21,20 +21,11 @@ import SnapKit
 import SwiftKeychainWrapper
 
 
-class LoginViewController: UIViewController{
-    //MARK: - Properties
-    let loginViewModel: LoginViewModel
-    var oauthTokenInfo  = OAuthTokenModel()
-    let disposeBag = DisposeBag()
+class LoginViewController: BaseViewController {
     
-    //MARK: - ViewDidLoad
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        self.view.setGradientColor() // 배경색 그라데이션 설정
-        self.setTopView()
-        self.setBottomView()
-        self.subscribe()
-    }
+    //MARK: - Properties
+    private let loginViewModel: LoginViewModel
+    var oauthTokenInfo  = OAuthTokenModel()
     
     //MARK: - Init
     init(loginViewModel: LoginViewModel){
@@ -46,11 +37,23 @@ class LoginViewController: UIViewController{
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func configureUI() {
+        super.configureUI()
+        
+        self.view.setGradientColor() // 배경색 그라데이션 설정
+        self.setTopView()
+        self.setBottomView()
+    }
+    
+    override func setupAttributes() {
+        super.setupAttributes()
+    }
+    
     @objc func didClickedLoginButton(_ btn: UIButton){
         loginViewModel.oauthLogin(oauthType: btn.tag)
     }
     
-    func subscribe(){
+    override func setupBinding() {
         // oauthtoken 발급시 oauth토큰 정보 가져오기
         _ = loginViewModel.oauthToken
             .take(1)
@@ -82,13 +85,12 @@ class LoginViewController: UIViewController{
             }).disposed(by: disposeBag)
     }
     
-    func moveToRegistVC() {
+    private func moveToRegistVC() {
         let navigationVC = UINavigationController(rootViewController: RegisterNameViewController(loginViewModel: loginViewModel, oauthTokenInfo: oauthTokenInfo))
         navigationVC.modalPresentationStyle = .fullScreen
         self.present(navigationVC, animated: true, completion: {})
     }
 }
-
 
 
 //MARK: -UIConfigure
