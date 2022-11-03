@@ -33,7 +33,6 @@ final class RecentQuestionCell: BaseCollectionViewCell {
         self.questionLabel.snp.makeConstraints { make in
             make.trailing.equalToSuperview()
             make.leading.top.equalToSuperview()
-            make.height.equalTo(110)
         }
         
         self.contentView.addSubview(categoryLabel)
@@ -44,7 +43,7 @@ final class RecentQuestionCell: BaseCollectionViewCell {
         
         self.contentView.addSubview(profileImageView)
         profileImageView.snp.makeConstraints { make in
-            make.top.equalTo(questionLabel.snp.bottom).offset(10)
+            make.centerY.equalTo(categoryLabel)
             make.trailing.equalToSuperview().offset(-13)
             make.width.height.equalTo(frame.size.width / 6)
         }
@@ -52,7 +51,7 @@ final class RecentQuestionCell: BaseCollectionViewCell {
     
     func configure(question: GreenRoomQuestion){
         
-        self.questionLabel.attributedText = question.question.addLineSpacing(foregroundColor: .black)
+        self.questionLabel.attributedText = question.question.addLineSpacing(spacing: 6, foregroundColor: .black)
         
         self.categoryLabel.text = question.categoryName
         guard let url = URL(string: question.profileImage) else { return }

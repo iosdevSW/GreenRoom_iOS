@@ -16,8 +16,6 @@ final class GreenRoomSearchViewController: BaseViewController {
     private var searchBar: UISearchBar!
     private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: generateLayout())
     
-    private let updateTrigger = BehaviorSubject<Void>(value: ())
-    
     private let viewModel: SearchViewModel
     
     //MARK: - LifeCycle
@@ -54,10 +52,13 @@ final class GreenRoomSearchViewController: BaseViewController {
     }
     
     override func setupBinding() {
+        let text = self.searchBar.searchTextField.rx.controlEvent(.editingDidEndOnExit)
+            .withLatestFrom(self.searchBar.searchTextField.rx.text.orEmpty.asObservable())
+            .distinctUntilChanged()
         
         let input = SearchViewModel.Input(
-            trigger: self.updateTrigger.asObservable()
-        )
+            trigger: self.rx.viewWillAppear.asObservable(),
+            text: text)
         
         let output = self.viewModel.transform(input: input)
         
@@ -71,7 +72,6 @@ final class GreenRoomSearchViewController: BaseViewController {
                 )
                 let vc = FilteringQuestionViewController(viewModel: viewModel)
                 onwer.navigationController?.pushViewController(vc, animated: false)
-                onwer.updateTrigger.onNext(())
             }).disposed(by: disposeBag)
         
         self.collectionView.rx.modelSelected(SearchSectionModel.Item.self)
@@ -104,45 +104,34 @@ extension GreenRoomSearchViewController {
     
     private func configureSearchBar(){
         self.navigationController?.navigationBar.tintColor = .customGray
-        self.searchBar = UISearchBar(frame: CGRect(x: 0, y: 0, width: view.frame.width - 100, height: 0))
-        searchBar.backgroundColor = .white
-        searchBar.setImage(UIImage(systemName: "magnifyingglass"), for: .search, state: .normal)
-        searchBar.placeholder = "키워드로 검색해보세요!"
-        searchBar.layer.borderColor = UIColor.mainColor.cgColor
-        searchBar.layer.borderWidth = 2
-        searchBar.layer.cornerRadius = 10
-        
-        searchBar.searchTextField.leftView?.tintColor = .customGray
-        if let textfield = searchBar.value(forKey: "searchField") as? UITextField {
-            
-            textfield.backgroundColor = UIColor.white
-            
-            textfield.attributedPlaceholder = NSAttributedString(string: textfield.placeholder ?? "", attributes: [NSAttributedString.Key.foregroundColor : UIColor.customGray!])
-            
-            textfield.textColor = UIColor.black
-            textfield.layer.borderColor = UIColor.white.cgColor
-            textfield.tintColor = .customGray
-            textfield.font = .sfPro(size: 17, family: .Regular)
-            textfield.delegate = self
-        }
-        
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(systemItem: .cancel, primaryAction: UIAction(handler: { _ in
-            self.navigationController?.popViewController(animated: true)
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(systemItem: .cancel, primaryAction: UIAction(handler: { [weak self] _ in
+            self?.navigationController?.popViewController(animated: true)
         }))
         
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: searchBar)
-    }
-}
-
-//MARK: - UITextFieldDelegate
-extension GreenRoomSearchViewController: UITextFieldDelegate {
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        guard let text = textField.text else { return true }
-        CoreDataManager.shared.saveRecentSearch(keyword: text, date: Date()) { [weak self] completed in
-            self?.updateTrigger.onNext(())
-        }
-        textField.resignFirstResponder()
-        return true
+        self.searchBar = UISearchBar(frame: CGRect(x: 0, y: 0, width: view.frame.width - 70, height: 0))
+        self.searchBar.backgroundColor = .white
+        self.searchBar.setImage(UIImage(systemName: "magnifyingglass"), for: .search, state: .normal)
+        self.searchBar.placeholder = "키워드로 검색해보세요!"
+        self.searchBar.layer.borderColor = UIColor.mainColor.cgColor
+        self.searchBar.layer.borderWidth = 2
+        self.searchBar.layer.cornerRadius = 10
+        self.searchBar.searchTextField.leftView?.tintColor = .customGray
+        
+        guard let textfield = self.searchBar.value(forKey: "searchField") as? UITextField else { return }
+        
+        textfield.backgroundColor = UIColor.white
+        
+        textfield.attributedPlaceholder = NSAttributedString(
+            string: textfield.placeholder ?? "",
+            attributes: [NSAttributedString.Key.foregroundColor : UIColor.customGray!])
+        
+        textfield.textColor = UIColor.black
+        textfield.layer.borderColor = UIColor.white.cgColor
+        textfield.tintColor = .customGray
+        textfield.font = .sfPro(size: 17, family: .Regular)
+        
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: self.searchBar)
+        
     }
 }
 
@@ -173,7 +162,7 @@ extension GreenRoomSearchViewController {
     func generateLayout() -> UICollectionViewLayout {
         
         return UICollectionViewCompositionalLayout { (sectionIndex: Int,
-                                                            layoutEnvironment: NSCollectionLayoutEnvironment)
+                                                      layoutEnvironment: NSCollectionLayoutEnvironment)
             -> NSCollectionLayoutSection? in
             return sectionIndex == 0 ? self.popularLayout() : self.recentLayout()
         }
@@ -219,7 +208,7 @@ extension GreenRoomSearchViewController {
         )
         
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
-
+        
         let groupSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1.0),
             heightDimension: .absolute(38)

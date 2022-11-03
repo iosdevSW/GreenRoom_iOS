@@ -7,6 +7,7 @@
 
 import UIKit
 import CoreData
+import RxSwift
 
 enum CoreDataName: String {
     case recentSearch = "RecentSearchKeyword"
@@ -20,22 +21,25 @@ class CoreDataManager {
     private lazy var context = appDelegate?.persistentContainer.viewContext
     
     // MARK: - 해당 정보를 저장한다
-    func saveRecentSearch(keyword: String, date: Date, completion: @escaping (Bool) -> Void) {
-        guard let context = self.context,
-            let entity = NSEntityDescription.entity(forEntityName: CoreDataName.recentSearch.rawValue, in: context)
-            else { return }
-
-        guard let recentTerms = NSManagedObject(entity: entity, insertInto: context) as? RecentSearchKeyword else { return }
+    func saveRecentSearch(keyword: String, date: Date) -> Observable<Bool> {
         
-        recentTerms.keyword = keyword
-        recentTerms.date = date
-
-        do {
-            try context.save()
-            completion(true)
-        } catch {
-            print(error.localizedDescription)
-            completion(false)
+        return Observable<Bool>.create { observer in
+            guard let context = self.context,
+                let entity = NSEntityDescription.entity(forEntityName: CoreDataName.recentSearch.rawValue, in: context),
+                  let recentTerms = NSManagedObject(entity: entity, insertInto: context) as? RecentSearchKeyword
+            else { return Disposables.create() }
+            
+            recentTerms.keyword = keyword
+            recentTerms.date = date
+            
+            do {
+                try context.save()
+                observer.onNext(true)
+            } catch {
+                print(error.localizedDescription)
+                observer.onNext(false)
+            }
+            return Disposables.create()
         }
     }
     

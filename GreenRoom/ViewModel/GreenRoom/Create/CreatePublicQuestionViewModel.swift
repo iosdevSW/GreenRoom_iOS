@@ -21,7 +21,6 @@ final class CreatePublicQuestionViewModel: ViewModelType {
         let dateApplyTrigger: Observable<Void>
         let question: Observable<String>
         let category: Observable<Int>
-        let returnTrigger: Observable<Void>
         let submit: Observable<Void>
     }
     
@@ -36,56 +35,42 @@ final class CreatePublicQuestionViewModel: ViewModelType {
     private let failMessage = PublishRelay<String>()
     private let successMessage = PublishRelay<String>()
     
-    private let textFieldContentObservable = BehaviorSubject<String>(value: "")
-    private let addQuestionObservable = PublishSubject<String>()
-    
     private let date = BehaviorRelay<Int>(value: 60 * 24)
     private let confirmDate = BehaviorRelay<Int>(value: 60 * 24)
     
-    let categories = Observable<[CreateSection]>.of([CreateSection(items: Constants.categories)])
-    
+    let categories: Observable<[CreateSection]> = .of([CreateSection(items: Constants.categories)])
     
     func transform(input: Input) -> Output {
-        
-        input.question
-            .bind(to: textFieldContentObservable)
-            .disposed(by: disposeBag)
-        
-        input.returnTrigger
-            .withLatestFrom(textFieldContentObservable)
-            .bind(to: addQuestionObservable)
-            .disposed(by: disposeBag)
         
         input.dateApplyTrigger
             .withLatestFrom(input.date.asObservable())
             .map { $0.getMinutes() }
             .bind(to: self.confirmDate)
             .disposed(by: disposeBag)
-        
+    
         input.submit.withLatestFrom(
-            Observable.combineLatest(
-                input.category.asObservable(),
-                addQuestionObservable.asObservable(),
-                confirmDate.asObservable()
-            )
+            Observable.combineLatest(input.category, input.question, confirmDate)
         )
         .withUnretained(self)
         .flatMap { (owner, element) in
-            let (categoryId, question, minutes) = element
-            return owner.publicQuestionService.uploadQuestionList(
-                categoryId: categoryId,
-                question: question,
-                expiredAt: owner.getExpiredDate(minutes: minutes)
+            owner.publicQuestionService.uploadQuestionList(
+                categoryId: element.0,
+                question: element.1,
+                expiredAt: owner.getExpiredDate(minutes: element.2)
             )
-        }.withUnretained(self)
-            .subscribe { onwer, _ in
-                onwer.successMessage.accept("질문 작성이 완료되었어요!")
-            } onError: { error in
-                self.failMessage.accept(error.localizedDescription)
+        }
+        .withUnretained(self)
+            .subscribe { [weak self] _ in
+                self?.successMessage.accept("질문 작성이 완료되었어요!")
+            } onError: { [weak self] error in
+                self?.failMessage.accept(error.localizedDescription)
             }.disposed(by: disposeBag)
         
-        let isValid = Observable.combineLatest(input.question, input.category).map { text, category in
-            return !text.isEmpty && text != "면접자 분들은 나에게 어떤 질문을 줄까요?" && category != -1 }
+        let isValid = Observable.combineLatest(
+            input.question, input.category
+        ).compactMap { [weak self] text, category in
+            self?.checkValidation(text: text, categoryId: category)
+        }
         
         return Output(date: date.asObservable(),
                       isValid: isValid,
@@ -94,13 +79,17 @@ final class CreatePublicQuestionViewModel: ViewModelType {
                       comfirmDate: confirmDate.asObservable())
         
     }
-    
+}
+
+extension CreatePublicQuestionViewModel {
     private func getExpiredDate(minutes: Int) -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
         
         return dateFormatter.string(from: Date().adding(minutes: minutes))
     }
+    
+    private func checkValidation(text: String, categoryId: Int) -> Bool {
+        return !text.isEmpty && text != "면접자 분들은 나에게 어떤 질문을 줄까요?" && categoryId != -1
+    }
 }
-
-
