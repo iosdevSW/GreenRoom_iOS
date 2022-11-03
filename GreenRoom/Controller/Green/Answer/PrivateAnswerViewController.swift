@@ -243,7 +243,6 @@ extension PrivateAnswerViewController {
         self.defaultView.isHidden = false
         self.defaultLabel.isHidden = false
         self.answerPostButton.isHidden = false
-        
     }
     
     private func setEditMode() {
