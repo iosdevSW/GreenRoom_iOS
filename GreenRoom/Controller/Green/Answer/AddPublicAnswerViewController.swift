@@ -13,7 +13,7 @@ final class AddPublicAnswerViewController: BaseViewController {
     //MARK: - Properties
     private let viewModel: MakePublicAnswerViewModel
     private var headerView = AnswerHeaderView(frame: .zero)
-    private var keywordView: KeywordRegisterView!
+    private lazy var keywordView = KeywordRegisterView(viewModel: RegisterKeywordViewModel(id: viewModel.answer.header.id, answerType: .public))
     
     private let doneButton = UIButton().then {
         $0.setTitle("확인",for: .normal)
@@ -23,8 +23,6 @@ final class AddPublicAnswerViewController: BaseViewController {
     private lazy var answerTextView = UITextView().then {
         $0.isEditable = true
         $0.textContainerInset = UIEdgeInsets(top: 20, left: 20, bottom: 0, right: 20)
-        $0.translatesAutoresizingMaskIntoConstraints = true
-        $0.sizeToFit()
         $0.backgroundColor = .clear
         $0.layer.borderColor = UIColor.mainColor.cgColor
         $0.layer.cornerRadius = 15
@@ -37,36 +35,19 @@ final class AddPublicAnswerViewController: BaseViewController {
     init(viewModel: MakePublicAnswerViewModel){
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
-        
-        self.keywordView = KeywordRegisterView(viewModel: RegisterKeywordViewModel(id: viewModel.answer.header.id, answerType: .public))
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.navigationController?.navigationBar.tintColor = .white
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .done, target: self, action: #selector(handleDismissal))
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: doneButton)
-        
-        guard let tabbarcontroller = tabBarController as? MainTabbarController else { return }
-        tabbarcontroller.createButton.isHidden = true
-        self.tabBarController?.tabBar.isHidden = true
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        
-        guard let tabbarcontroller = tabBarController as? MainTabbarController else { return }
-        tabbarcontroller.createButton.isHidden = false
-        self.tabBarController?.tabBar.isHidden = false
+        self.configureNavigationBackButtonItem()
+        self.navigationController?.navigationBar.tintColor = .white
+        self.hideTabbar()
     }
     
     override func configureUI() {
@@ -76,8 +57,7 @@ final class AddPublicAnswerViewController: BaseViewController {
         
         self.view.addSubview(headerView)
         headerView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
-            make.top.equalToSuperview()
+            make.top.leading.trailing.equalToSuperview()
             make.height.equalTo(headerHeight)
         }
         
@@ -100,7 +80,7 @@ final class AddPublicAnswerViewController: BaseViewController {
     //MARK: - binding
     override func setupBinding() {
         super.setupBinding()
-        
+         
         answerTextView.rx.didBeginEditing
             .subscribe(onNext: { [weak self] _ in
                 guard let self else { return }
@@ -158,9 +138,5 @@ final class AddPublicAnswerViewController: BaseViewController {
                 onwer.present(alert, animated: true)
             }).disposed(by: disposeBag)
         
-    }
-    //MARK: - Selector
-    @objc func handleDismissal() {
-        self.navigationController?.popViewController(animated: false)
     }
 }

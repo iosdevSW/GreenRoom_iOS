@@ -19,9 +19,9 @@ extension UIViewController {
         self.navigationItem.rightBarButtonItem = questionButtonItem
     }
     
-    func configureNavigationBackButtonItem() {
-        self.navigationItem.backButtonTitle = ""
-        self.navigationController?.navigationBar.tintColor = .mainColor
+    func configureNavigationBackButtonItem(tintColor: UIColor = .mainColor) {
+        self.navigationController?.navigationBar.topItem?.title = ""
+        self.navigationController?.navigationBar.tintColor = tintColor
     }
     
     func hideKeyboardWhenTapped(){
@@ -69,5 +69,17 @@ extension UIViewController {
         attributedStr.addAttribute(.foregroundColor, value: color, range: (text as NSString).range(of: hilightString))
         
         return attributedStr
+    }
+    
+    func showTabbar() {
+        guard let tabbarcontroller = tabBarController as? MainTabbarController else { return }
+        tabbarcontroller.createButton.isHidden = false
+        self.tabBarController?.tabBar.isHidden = false
+    }
+    
+    func hideTabbar() {
+        guard let tabbarcontroller = tabBarController as? MainTabbarController else { return }
+        tabbarcontroller.createButton.isHidden = true
+        self.tabBarController?.tabBar.isHidden = true
     }
 }

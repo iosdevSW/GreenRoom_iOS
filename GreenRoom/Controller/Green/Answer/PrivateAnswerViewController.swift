@@ -66,7 +66,6 @@ final class PrivateAnswerViewController: BaseViewController {
     private lazy var answerTextView = UITextView().then {
         $0.isEditable = true
         $0.textContainerInset = UIEdgeInsets(top: 20, left: 20, bottom: 0, right: 20)
-        $0.translatesAutoresizingMaskIntoConstraints = true
         $0.sizeToFit()
         $0.backgroundColor = .clear
         $0.layer.borderColor = UIColor.mainColor.cgColor
@@ -88,21 +87,9 @@ final class PrivateAnswerViewController: BaseViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        self.navigationController?.navigationBar.tintColor = .white
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .done, target: self, action: #selector(handleDismissal))
-        
-        guard let tabbarcontroller = tabBarController as? MainTabbarController else { return }
-        tabbarcontroller.createButton.isHidden = true
-        self.tabBarController?.tabBar.isHidden = true
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        
-        guard let tabbarcontroller = tabBarController as? MainTabbarController else { return }
-        tabbarcontroller.createButton.isHidden = false
-        self.tabBarController?.tabBar.isHidden = false
+
+        self.configureNavigationBackButtonItem(tintColor: .white)
+        self.hideTabbar()
     }
     
     //MARK: - Configure
@@ -115,8 +102,7 @@ final class PrivateAnswerViewController: BaseViewController {
         
         self.view.addSubview(headerView)
         headerView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
-            make.top.equalToSuperview()
+            make.top.leading.trailing.equalToSuperview()
             make.height.equalTo(headerHeight)
         }
         
@@ -238,11 +224,6 @@ final class PrivateAnswerViewController: BaseViewController {
             make.top.equalTo(keywordView.snp.bottom).offset(10)
             make.bottom.equalTo(view.safeAreaLayoutGuide)
         }
-    }
-    
-    //MARK: - Selector
-    @objc func handleDismissal(){
-        self.dismiss(animated: false)
     }
 }
 

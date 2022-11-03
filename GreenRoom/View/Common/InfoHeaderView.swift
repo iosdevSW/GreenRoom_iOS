@@ -61,8 +61,8 @@ final class InfoHeaderView: BaseCollectionReusableView {
         filterView.backgroundColor = .backgroundGray
         filterView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
-            make.height.equalTo(frame.size.height * 0.33)
             make.top.equalTo(subTitleLabel.snp.bottom).offset(20)
+            make.bottom.equalToSuperview()
         }
     }
 }

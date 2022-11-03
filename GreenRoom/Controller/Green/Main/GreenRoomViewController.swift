@@ -66,16 +66,8 @@ class GreenRoomViewController: BaseViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        guard let tabbarcontroller = tabBarController as? MainTabbarController else { return }
-        tabbarcontroller.createButton.isHidden = false
-        configureNavigationBar()
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        
-        guard let tabbarcontroller = tabBarController as? MainTabbarController else { return }
-        tabbarcontroller.createButton.isHidden = true
+        self.showTabbar()
+        self.configureNavigationBar()
     }
     
     override func viewWillLayoutSubviews() {
@@ -101,12 +93,7 @@ class GreenRoomViewController: BaseViewController {
             nextButtonTrigger: self.nextButtonTrigger.asObservable(),
             prevButtonTrigger: self.prevButtonTrigger.asObservable()
         )
-        
-        self.nextButtonTrigger
-            .subscribe(onNext: {
-                print($0)
-            }).disposed(by: disposeBag)
-        
+
         let output = self.viewModel.transform(input: input)
         
         output.greenroom.bind(to: collectionView.rx.items(dataSource: dataSource)).disposed(by: disposeBag)
@@ -131,14 +118,17 @@ class GreenRoomViewController: BaseViewController {
                 self.navigationController?.pushViewController(vc, animated: true)
             case .MyGreenRoom(question: let question):
                 guard let id = question.id else { return }
-                let vc = PublicAnswerListViewController(viewModel: PublicAnswerViewModel(id: id,
-                                                                                         scrapService: ScrapService(),
-                                                                                         publicQuestionService: PublicQuestionService()))
+                let vc = PublicAnswerListViewController(
+                    viewModel: PublicAnswerViewModel(
+                        id: id,
+                        scrapService: ScrapService(),
+                        publicQuestionService: PublicQuestionService()
+                    )
+                )
                 self.navigationController?.pushViewController(vc, animated: true)
             case .MyQuestionList(question: let question):
-                let vc = UINavigationController(rootViewController: PrivateAnswerViewController(viewModel: PrivateAnswerViewModel(id: question.id)))
-                vc.modalPresentationStyle = .fullScreen
-                self.present(vc, animated: true)
+                let vc = PrivateAnswerViewController(viewModel: PrivateAnswerViewModel(id: question.id))
+                self.navigationController?.pushViewController(vc, animated: true)
             }
         }).disposed(by: disposeBag)
         
@@ -171,11 +161,9 @@ class GreenRoomViewController: BaseViewController {
             let vc = ScrapedQuestionViewController(viewModel: ScrapViewModel())
             self.navigationController?.pushViewController(vc, animated: true)
         }).disposed(by: disposeBag)
-        
     }
     
     private func configureNavigationBar() {
-        navigationController?.navigationBar.isHidden = false
         
         let iconView = UIImageView(frame: CGRect(x: 0, y: 0, width: 35, height: 35))
         iconView.image = UIImage(named: "GreenRoomIcon")?.withRenderingMode(.alwaysOriginal)
@@ -188,6 +176,7 @@ class GreenRoomViewController: BaseViewController {
             UIBarButtonItem(customView: searchButton)
         ]
         
+        navigationController?.navigationBar.isHidden = false
         navigationController?.navigationBar.tintColor = .mainColor
     }
     
@@ -272,8 +261,6 @@ extension GreenRoomViewController {
         } configureSupplementaryView: { [weak self] dataSource, collectionView, kind, indexPath in
             
             guard let self else { return UICollectionReusableView() }
-            
-            collectionView.register(MyGreenRoomFooterView.self, forSupplementaryViewOfKind: MyGreenRoomFooterView.reuseIdentifier, withReuseIdentifier: MyGreenRoomFooterView.reuseIdentifier)
             
             switch kind {
             case GRFilteringHeaderView.reuseIdentifier:
@@ -429,25 +416,24 @@ extension GreenRoomViewController {
             count: 1)
         group.contentInsets = NSDirectionalEdgeInsets(
             top: 5,
-            leading: 8,
+            leading: 16,
             bottom: 5,
-            trailing: 8)
+            trailing: 0)
         
         let headerSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1.0),
-            heightDimension: .estimated(50))
+            heightDimension: .fractionalHeight(0.09))
         
         let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(
             layoutSize: headerSize,
             elementKind: GreenRoomSectionHeader.reuseIdentifier,
-            alignment: .top)
+            alignment: .topLeading)
         
         let section = NSCollectionLayoutSection(group: group)
         section.boundarySupplementaryItems = [sectionHeader]
         section.orthogonalScrollingBehavior = .continuousGroupLeadingBoundary
-        section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 25, bottom: 20, trailing: 0)
+        section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 0, bottom: 0, trailing: 0)
         return section
-        
     }
     
     func generateMyGreenRoomLayout() -> NSCollectionLayoutSection {
@@ -456,9 +442,11 @@ extension GreenRoomViewController {
         
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize:
-                                                        NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
-                                                                               heightDimension: .fractionalHeight(0.2)), subitems: [item])
+        let group = NSCollectionLayoutGroup.horizontal(
+            layoutSize:
+                NSCollectionLayoutSize(
+                    widthDimension: .fractionalWidth(1.0),
+                    heightDimension: .fractionalHeight(0.2)), subitems: [item])
         
         let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(
             layoutSize: NSCollectionLayoutSize(
@@ -475,11 +463,9 @@ extension GreenRoomViewController {
             alignment: .bottom)
         
         let section = NSCollectionLayoutSection(group: group)
-        section.boundarySupplementaryItems = [sectionHeader,sectionFooter]
+        section.boundarySupplementaryItems = [sectionHeader, sectionFooter]
         section.orthogonalScrollingBehavior = .groupPaging
-        
         return section
-        
     }
 }
 
@@ -488,6 +474,7 @@ extension GreenRoomViewController: RecentHeaderDelegate {
     func didTapViewAllQeustionsButton(type: GreenRoomSectionModel?) {
         
         guard let type else { return }
+        
         switch type {
         case .recent:
             let vc = RecentPublicQuestionsViewController(viewModel: RecentPublicQuestionsViewModel())

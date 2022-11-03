@@ -17,7 +17,7 @@ final class PublicAnswerListViewController: BaseViewController {
     private var mode: PublicAnswerMode = .notPermission {
         didSet { setButtonAttribute() }
     }
-    
+     
     private let viewModel: PublicAnswerViewModel
     
     private lazy var input = PublicAnswerViewModel.Input(
@@ -27,10 +27,10 @@ final class PublicAnswerListViewController: BaseViewController {
     
     private lazy var output = viewModel.transform(input: input)
     
-    private var collectionView: UICollectionView!
-    private var headerView = AnswerHeaderView(frame: .zero)
+    private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: configureCollectionViewLayout())
+    private lazy var headerView = AnswerHeaderView(frame: .zero)
     
-    private var answerPostButton = UIButton().then {
+    private lazy var answerPostButton = UIButton().then {
         $0.backgroundColor = .point
         $0.setTitle("참여하기", for: .normal)
         $0.setTitleColor(.white, for: .normal)
@@ -38,12 +38,20 @@ final class PublicAnswerListViewController: BaseViewController {
         $0.layer.cornerRadius = 8
     }
     
-    private let scrapButton = UIButton().then {
-        $0.setImage(UIImage(systemName: "star"), for: .normal)
+    private var starImage: UIImage? {
+        return UIImage(systemName: "star")
+    }
+    
+    private var starFillImage: UIImage? {
+        return UIImage(systemName: "star.fill")
+    }
+    
+    private lazy var scrapButton = UIButton().then {
+        $0.setImage(starImage, for: .normal)
         $0.imageView?.tintColor = .white
     }
     
-    private let boxButton = UIButton().then {
+    private lazy var boxButton = UIButton().then {
         $0.setImage(UIImage(named: "box"), for: .normal)
         $0.imageView?.tintColor = .white
     }
@@ -59,31 +67,20 @@ final class PublicAnswerListViewController: BaseViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        self.navigationController?.navigationBar.tintColor = .white
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .done, target: self, action: #selector(handleDismissal))
-        
+
         self.navigationItem.rightBarButtonItems = [
             UIBarButtonItem(customView: boxButton),
             UIBarButtonItem(customView: scrapButton)
         ]
         
-        guard let tabbarcontroller = tabBarController as? MainTabbarController else { return }
-        tabbarcontroller.createButton.isHidden = true
-        self.tabBarController?.tabBar.isHidden = true
+        self.hideTabbar()
+        self.configureNavigationBackButtonItem(tintColor: .white)
     }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        
-        guard let tabbarcontroller = tabBarController as? MainTabbarController else { return }
-        tabbarcontroller.createButton.isHidden = false
-        self.tabBarController?.tabBar.isHidden = false
-    }
-    
+
     override func setupAttributes() {
+        super.setupAttributes()
+        
         self.configureCollectionView()
-        self.hideKeyboardWhenTapped()
     }
     
     override func configureUI() {
@@ -121,7 +118,7 @@ final class PublicAnswerListViewController: BaseViewController {
         output.scrapUpdateState
             .withUnretained(self)
             .subscribe(onNext: { onwer, completable in
-                onwer.scrapButton.setImage(UIImage(systemName: completable ? "star.fill" : "star"), for: .normal)
+                onwer.scrapButton.setImage(completable ? onwer.starImage : onwer.starFillImage, for: .normal)
             }).disposed(by: disposeBag)
         
         output.answer
@@ -131,9 +128,10 @@ final class PublicAnswerListViewController: BaseViewController {
                 onwer.headerView.question = QuestionHeader(id: answer.header.id, question: answer.header.question, categoryName: answer.header.categoryName, groupCategoryName: answer.header.categoryName)
                 onwer.collectionView.alpha = answer.header.mode == .permission ? 1.0 : 0.5
                 onwer.mode = answer.header.mode
-                onwer.scrapButton.setImage(UIImage(systemName: answer.header.scrap ? "star.fill" : "star"), for: .normal)
+                
+                onwer.scrapButton.setImage(answer.header.scrap ? onwer.starFillImage : onwer.starImage, for: .normal)
             }).disposed(by: disposeBag)
-        
+          
         output.answer
             .map{ [$0] }
             .bind(to: collectionView.rx.items(dataSource: dataSource()))
@@ -150,28 +148,29 @@ final class PublicAnswerListViewController: BaseViewController {
         collectionView.rx.modelSelected(PublicAnswerSectionModel.Item.self)
             .withUnretained(self)
             .subscribe(onNext: { onwer, item in
-                let vm = DetailPublicAnswerViewModel(question: self.headerView.question,
-                                                     answerID: item.id
-                                                     ,publicQuestionService: PublicQuestionService())
+                let vm = DetailPublicAnswerViewModel(
+                    question: self.headerView.question,
+                    answerID: item.id,
+                    publicQuestionService: PublicQuestionService())
+                
                 let vc = DetailPublicAnswerViewController(viewModel: vm)
                 onwer.navigationController?.pushViewController(vc, animated: false)
             }).disposed(by: disposeBag)
-    }
-    
-    //MARK: - Selector
-    @objc func handleDismissal(){
-        self.navigationController?.popViewController(animated: true)
     }
 }
 
 //MARK: - CollectionView
 extension PublicAnswerListViewController {
-    private func configureCollectionView() {
+    
+    private func configureCollectionViewLayout() -> UICollectionViewFlowLayout {
         let layout = UICollectionViewFlowLayout()
         layout.itemSize = CGSize(width: self.view.frame.width, height: 70)
         layout.minimumLineSpacing = 15
         
-        self.collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        return layout
+    }
+    
+    private func configureCollectionView() {
         collectionView.register(PublicAnswerCell.self, forCellWithReuseIdentifier: PublicAnswerCell.reuseIdentifier)
         collectionView.register(PublicAnswerStatusHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: PublicAnswerStatusHeaderView.reuseIdentifier)
         collectionView.backgroundColor = .clear

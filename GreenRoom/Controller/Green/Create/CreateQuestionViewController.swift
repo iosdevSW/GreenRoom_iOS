@@ -16,7 +16,14 @@ final class CreateQuestionViewController: BaseViewController {
     private let viewModel: CreateViewModel
     
     private let subtitleLabel = UILabel().then {
-        $0.attributedText = Utilities.shared.textWithIcon(text: " 나만 볼 수 있는 질문입니다.", image: UIImage(named:"createQuestionList"), font: .sfPro(size: 12, family: .Regular), textColor: .gray, imageColor: .customGray, iconPosition: .left)
+        $0.attributedText = Utilities.shared.textWithIcon(
+            text: " 나만 볼 수 있는 질문입니다.",
+            image: UIImage(named:"createQuestionList"),
+            font: .sfPro(size: 12, family: .Regular),
+            textColor: .gray,
+            imageColor: .customGray,
+            iconPosition: .left
+        )
     }
     
     private let titleLabel = Utilities.shared.generateLabel(text: "나만의 질문을\n만들어주세요.", color: .black, font: .sfPro(size: 30, family: .Regular))
@@ -33,10 +40,7 @@ final class CreateQuestionViewController: BaseViewController {
         $0.textColor = .customGray
         $0.backgroundColor = .white
         $0.textContainerInset = UIEdgeInsets(top: 16.0, left: 16.0, bottom: 16.0, right: 16.0)
-        $0.layer.maskedCorners = [.layerMaxXMaxYCorner,.layerMaxXMinYCorner,.layerMinXMaxYCorner]
-        $0.layer.cornerRadius = 15
-        $0.layer.borderColor = UIColor.mainColor.cgColor
-        $0.layer.borderWidth = 2
+        $0.setMainLayer()
     }
     
     private let selectedLabel = UILabel().then {
@@ -64,19 +68,14 @@ final class CreateQuestionViewController: BaseViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.navigationController?.navigationBar.shadowImage = UIImage()
-        self.navigationController?.navigationBar.tintColor = .mainColor
         
+        configureNavigationBar()
     }
     
     //MARK: - configure
     override func configureUI() {
         self.view.backgroundColor = .white
         
-        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.left"),
-                                                           style: .plain,
-                                                           target: self,
-                                                           action: #selector(dismissal))
         self.view.addSubview(subtitleLabel)
         self.view.addSubview(titleLabel)
         self.view.addSubview(questionLabel)
@@ -200,6 +199,16 @@ final class CreateQuestionViewController: BaseViewController {
                 }
                 onwer.present(alert, animated: true)
             }).disposed(by: disposeBag)
+    }
+    
+    private func configureNavigationBar() {
+        self.navigationController?.navigationBar.shadowImage = UIImage()
+        self.navigationController?.navigationBar.tintColor = .mainColor
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
+            image: UIImage(systemName: "chevron.left"),
+            style: .plain,
+            target: self,
+            action: #selector(dismissal))
     }
     
     @objc func dismissal(){

@@ -98,15 +98,13 @@ final class CustomPopUpDatePickerController: BaseViewController {
     override func configureUI(){
         
         self.view.addSubview(blurView)
-        self.blurView.snp.makeConstraints { make in
-            make.height.leading.trailing.equalToSuperview()
-            make.top.equalToSuperview().offset(-200)
+        self.blurView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
         }
         
         self.view.addSubview(containerView)
         self.containerView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
-            make.bottom.equalToSuperview()
+            make.bottom.leading.trailing.equalToSuperview()
             make.height.equalToSuperview().multipliedBy(0.6)
         }
         
