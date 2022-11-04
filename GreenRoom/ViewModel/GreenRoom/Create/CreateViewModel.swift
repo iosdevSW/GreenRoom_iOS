@@ -54,7 +54,7 @@ final class CreateViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         input.submit.withLatestFrom(
-            Observable.zip(
+            Observable.combineLatest(
                 addQuestionObservable.asObserver(),
                 input.category.map { String($0) }
             )
@@ -68,17 +68,23 @@ final class CreateViewModel: ViewModelType {
             )
         }
         .withUnretained(self)
-        .subscribe { onwer, _ in
-            onwer.successMessage.accept("질문 작성이 완료되었어요!")
-        } onError: { error in
-            self.failMessage.accept(error.localizedDescription)
+        .subscribe { onwer, state in
+            state ? onwer.successMessage.accept("질문 작성이 완료되었어요!") : self.failMessage.accept("글자수는 50자로 제한되어 있습니다.")
         }.disposed(by: disposeBag)
-
-        return Output(isValid:
-                        Observable.combineLatest(input.question, input.category).map { text, category in
-            return !text.isEmpty && text != "면접자 분들은 나에게 어떤 질문을 줄까요?" && category != -1 },
-                      failMessage: failMessage.asSignal(), successMessage: successMessage.asSignal())
-            
+        
+        let valid = Observable.combineLatest(input.question, input.category)
+            .compactMap { [weak self] text, category in
+                return self?.checkValidation(text: text, categoryId: category)
+            }
+        
+        return Output(isValid: valid,
+                      failMessage: failMessage.asSignal(),
+                      successMessage: successMessage.asSignal())
+        
     }
-
+    
+    private func checkValidation(text: String, categoryId: Int) -> Bool {
+        return !text.isEmpty && text != "면접자 분들은 나에게 어떤 질문을 줄까요?" && categoryId != -1
+    }
+    
 }

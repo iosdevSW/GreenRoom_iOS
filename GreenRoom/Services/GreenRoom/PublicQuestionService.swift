@@ -188,19 +188,15 @@ final class PublicQuestionService {
         ]
         
         return Observable.create { emitter in
-            AF.request(self.baseURL, method: .post, parameters: parameters, encoding:JSONEncoding.default, interceptor: AuthManager()).responseString { response in
+            AF.request(self.baseURL, method: .post, parameters: parameters, encoding:JSONEncoding.default, interceptor: AuthManager())
+                .validate(statusCode: 200..<300)
+                .responseString { response in
                 
                 switch response.result {
                 case .success(_):
-                    if response.response?.statusCode == 400 {
-                        emitter.onError(QuestionError.exceedMaximumLength)
-                    } else if response.response?.statusCode == 404 {
-                        emitter.onError(QuestionError.invalidCategory)
-                    } else {
-                        emitter.onNext(true)
-                    }
-                case .failure(let error):
-                    emitter.onError(error)
+                    emitter.onNext(true)
+                case .failure(_):
+                    emitter.onNext(false)
                 }
             }
             return Disposables.create()

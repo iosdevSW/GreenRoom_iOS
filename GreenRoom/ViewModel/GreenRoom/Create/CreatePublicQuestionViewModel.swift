@@ -60,10 +60,8 @@ final class CreatePublicQuestionViewModel: ViewModelType {
             )
         }
         .withUnretained(self)
-            .subscribe { [weak self] _ in
-                self?.successMessage.accept("질문 작성이 완료되었어요!")
-            } onError: { [weak self] error in
-                self?.failMessage.accept(error.localizedDescription)
+            .subscribe { onwer, state in
+                state ? onwer.successMessage.accept("질문 작성이 완료되었어요!") : onwer.failMessage.accept("글자수는 50자로 제한되어 있습니다.")
             }.disposed(by: disposeBag)
         
         let isValid = Observable.combineLatest(

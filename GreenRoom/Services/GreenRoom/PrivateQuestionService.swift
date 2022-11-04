@@ -51,15 +51,9 @@ final class PrivateQuestionService {
             AF.request(requestURL, method: .post, parameters: parameters, encoding: JSONEncoding.default, interceptor: AuthManager()).responseData { response in
                 switch response.result {
                 case .success(_):
-                    if response.response?.statusCode == 400 {
-                        emitter.onError(QuestionError.exceedMaximumLength)
-                    } else if response.response?.statusCode == 404 {
-                        emitter.onError(QuestionError.invalidCategory)
-                    } else {
-                        emitter.onNext(true)
-                    }
-                case .failure(let error):
-                    emitter.onError(error)
+                    emitter.onNext(true)
+                case .failure(_):
+                    emitter.onNext(false)
                 }
             }
             return Disposables.create()

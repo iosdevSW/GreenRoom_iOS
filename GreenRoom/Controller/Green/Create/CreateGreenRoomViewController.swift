@@ -66,11 +66,13 @@ final class CreateGreenRoomViewController: BaseViewController {
   
         viewModel.categories.bind(to: self.collectionView.rx.items(dataSource: self.dataSource())).disposed(by: disposeBag)
 
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
+        DispatchQueue.main.async {
             
             guard let header = self.collectionView.supplementaryView(forElementKind: UICollectionView.elementKindSectionHeader, at: IndexPath(row: 0, section: 0)) as? CreateGRHeaderView else { return }
             
-            let question = header.questionTextView.rx.didEndEditing.asObservable().withLatestFrom(header.questionTextView.rx.text.orEmpty.asObservable())
+            let question = header.questionTextView.rx.didEndEditing
+                .asObservable()
+                .withLatestFrom(header.questionTextView.rx.text.orEmpty.asObservable())
                 .distinctUntilChanged()
                 .filter { !$0.isEmpty }
             
