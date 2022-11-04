@@ -86,7 +86,7 @@ extension KPReviewViewController {
                 let persent = item.persent ?? 0
                 cell.keywordPersent.text = String(format: "%2.f%%", persent * 100)
                 
-//                cell.keywordLabel.text = item.keyword.joined(separator: "  ")
+                cell.keywordLabel.text = item.keyword.joined(separator: "  ")
             }
             
             cell.questionLabel.text = "Q\(indexPath.row+1)\n\(item.question)"
