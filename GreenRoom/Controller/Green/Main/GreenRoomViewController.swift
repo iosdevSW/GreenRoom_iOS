@@ -70,6 +70,12 @@ class GreenRoomViewController: BaseViewController {
         self.configureNavigationBar()
     }
     
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        
+        self.hideTabbar()
+    }
+    
     override func viewWillLayoutSubviews() {
         self.underline.setGradient(
             color1: UIColor(red: 110/255.0, green: 234/255.0, blue: 174/255.0, alpha: 1.0),

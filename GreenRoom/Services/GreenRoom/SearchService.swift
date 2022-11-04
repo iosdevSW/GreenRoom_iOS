@@ -15,12 +15,13 @@ final class SearchService {
         let url = Constants.baseURL + "/api/green-questions/popular-search-words"
         
         return Observable.create { emitter in
-            AF.request(url, method: .get, encoding: URLEncoding.default, interceptor: AuthManager())
+            AF.request(url, method: .get, interceptor: AuthManager())
                 .validate(statusCode: 200..<300)
                 .responseDecodable(of: [String].self) {
                     response in
                     switch response.result {
                     case .success(let keywords):
+                        print(keywords)
                         emitter.onNext(keywords)
                     case .failure(let error):
                         emitter.onError(error)

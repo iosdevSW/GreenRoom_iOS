@@ -12,10 +12,11 @@ import RxDataSources
 final class CreateGreenRoomViewController: BaseViewController {
     
     private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: configureCollectionViewLayout())
+    
     private let viewModel: CreatePublicQuestionViewModel
     private lazy var datePickerController = CustomPopUpDatePickerController()
     
-    private let submitButton = UIButton().then {
+    private var submitButton = UIButton().then {
         $0.backgroundColor = .mainColor
         $0.setTitle("작성완료", for: .normal)
         $0.setTitleColor(.white, for: .normal)
@@ -39,14 +40,13 @@ final class CreateGreenRoomViewController: BaseViewController {
     
     override func configureUI() {
         self.view.backgroundColor = .white
-        self.view.addSubview(collectionView)
-        self.view.addSubview(submitButton)
         
+        self.view.addSubview(collectionView)
         collectionView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
-            make.top.bottom.equalTo(view.safeAreaLayoutGuide)
+            make.edges.equalToSuperview()
         }
         
+        self.view.addSubview(submitButton)
         submitButton.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(13)
             make.trailing.equalToSuperview().offset(-13)
@@ -63,26 +63,29 @@ final class CreateGreenRoomViewController: BaseViewController {
     }
     
     override func setupBinding() {
-    
+  
         viewModel.categories.bind(to: self.collectionView.rx.items(dataSource: self.dataSource())).disposed(by: disposeBag)
-        
+
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
             
             guard let header = self.collectionView.supplementaryView(forElementKind: UICollectionView.elementKindSectionHeader, at: IndexPath(row: 0, section: 0)) as? CreateGRHeaderView else { return }
-                
+            
+            let question = header.questionTextView.rx.didEndEditing.asObservable().withLatestFrom(header.questionTextView.rx.text.orEmpty.asObservable())
+                .distinctUntilChanged()
+                .filter { !$0.isEmpty }
+            
             let input = CreatePublicQuestionViewModel.Input(
                 date: self.datePickerController.datePicker.rx.date.asObservable(),
                 dateApplyTrigger: self.datePickerController.applyButton.rx.tap.asObservable(),
-                question: header.questionTextView.rx.text.orEmpty.asObservable(),
+                question: question,
                 category: self.collectionView.rx.itemSelected.map { $0.row + 1 }.asObservable(),
-                returnTrigger: header.questionTextView.rx.didEndEditing.asObservable(),
                 submit: self.submitButton.rx.tap.asObservable())
             
             header.dateContainer.rx
                 .tapGesture()
                 .when(.recognized)
                 .subscribe(onNext: { [weak self] _ in
-                    guard let self = self else { return }
+                    guard let self else { return }
                     self.datePickerController.modalPresentationStyle = .overCurrentContext
                     self.present(self.datePickerController, animated: true)
                 }).disposed(by: self.disposeBag)
@@ -100,9 +103,8 @@ final class CreateGreenRoomViewController: BaseViewController {
                 .bind(to: self.submitButton.rx.alpha)
                 .disposed(by: self.disposeBag)
             
-
             output.successMessage.emit(onNext: { [weak self] message in
-                guard let self = self else { return }
+                guard let self else { return }
                 
                 let alert = self.comfirmAlert(title: "작성 완료", subtitle: message) { _ in
                     self.dismiss(animated: true)
@@ -111,7 +113,7 @@ final class CreateGreenRoomViewController: BaseViewController {
             }).disposed(by: self.disposeBag)
             
             output.failMessage.emit(onNext: { [weak self] message in
-                guard let self = self else { return }
+                guard let self else { return }
                 
                 let alert = self.comfirmAlert(title: "작성 실패", subtitle: message) { _ in
                     print("다시 작성")
@@ -132,8 +134,8 @@ final class CreateGreenRoomViewController: BaseViewController {
             action: #selector(dismissal))
     }
     
-    @objc func dismissal(){
-        self.dismiss(animated: false)
+    @objc func dismissal() {
+        self.dismiss(animated: true)
     }
 }
 

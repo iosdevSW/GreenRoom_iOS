@@ -38,7 +38,7 @@ final class EditProfileInfoViewController: BaseViewController {
         configuration.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 30, bottom: 0, trailing: 63)
         $0.titleLabel?.font = .sfPro(size: 16, family: .Regular)
         $0.imageView?.tintColor = .black
-        $0.backgroundColor = .red
+        $0.backgroundColor = .clear
         
         $0.configuration = configuration
     }
@@ -106,7 +106,9 @@ final class EditProfileInfoViewController: BaseViewController {
     }
     
     override func setupBinding() {
-        let input = EditProfileViewModel.Input(trigger: self.rx.viewWillAppear.asObservable())
+        let input = EditProfileViewModel.Input(trigger: self.rx.viewWillAppear.asObservable(), logout: logoutButton.rx.tap.asObservable().flatMap({
+            self.showAlert(title: "로그아웃", message: "로그아웃 하시겠습니까?")
+        }))
         
         let output = viewModel.transform(input: input)
         
@@ -118,14 +120,11 @@ final class EditProfileInfoViewController: BaseViewController {
                 self?.viewModel.updateUserInfo(nickName: nickname)
             }).disposed(by: disposeBag)
         
-//        logoutButton.rx.tap
-//            .flatMap { _ in
-//                return self.showAlert(title: "로그아웃", message: "로그아웃 하시겠습니까?")
-//            }.flatMap { _ in AuthService.shared.logout() }
-//            .subscribe(onNext : {
-//                let vc = LoginViewController(loginViewModel: LoginViewModel())
-//                self.present(vc, animated: true)
-//            }).disposed(by: disposeBag)
+        output.logOutState
+            .subscribe(onNext: { _ in
+                let vc = LoginViewController(loginViewModel: LoginViewModel())
+                self.navigationController?.setViewControllers([vc], animated: false)
+            }).disposed(by: disposeBag)
     }
 }
 

@@ -26,6 +26,7 @@ final class PublicAnswerListViewController: BaseViewController {
     )
     
     private lazy var output = viewModel.transform(input: input)
+    private lazy var timeOutView = TimeOutView()
     
     private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: configureCollectionViewLayout())
     private lazy var headerView = AnswerHeaderView(frame: .zero)
@@ -56,6 +57,7 @@ final class PublicAnswerListViewController: BaseViewController {
         $0.imageView?.tintColor = .white
     }
     
+    // MARK: - LifeCycle
     init(viewModel: PublicAnswerViewModel){
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -103,13 +105,20 @@ final class PublicAnswerListViewController: BaseViewController {
             make.bottom.equalTo(view.safeAreaLayoutGuide)
         }
         
-        
         self.view.addSubview(answerPostButton)
         answerPostButton.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(15)
             make.trailing.equalToSuperview().offset(-15)
             make.height.equalTo(buttonHeight)
             make.bottom.equalTo(view.safeAreaLayoutGuide)
+        }
+        
+        self.view.addSubview(timeOutView)
+        timeOutView.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.bottom.equalTo(answerPostButton.snp.top).offset(-16)
+            make.width.equalTo(110)
+            make.height.equalTo(45)
         }
     }
     
@@ -128,7 +137,7 @@ final class PublicAnswerListViewController: BaseViewController {
                 onwer.headerView.question = QuestionHeader(id: answer.header.id, question: answer.header.question, categoryName: answer.header.categoryName, groupCategoryName: answer.header.categoryName)
                 onwer.collectionView.alpha = answer.header.mode == .permission ? 1.0 : 0.5
                 onwer.mode = answer.header.mode
-                
+                onwer.timeOutView.configure(time: answer.header.expiredAt)
                 onwer.scrapButton.setImage(answer.header.scrap ? onwer.starFillImage : onwer.starImage, for: .normal)
             }).disposed(by: disposeBag)
           

@@ -20,7 +20,13 @@ final class PopularQuestionCell: BaseCollectionViewCell {
         $0.tintColor = .mainColor
     }
     
-    private let nameLabel = Utilities.shared.generateLabel(text: "박면접", color: .gray, font: .sfPro(size: 12, family: .Regular))
+    private let nameLabel = UILabel().then {
+        $0.text = "박면접"
+        $0.textColor = .gray
+        $0.font = .sfPro(size: 12, family: .Regular)
+        $0.textAlignment = .center
+    }
+    
     private let categoryLabel = Utilities.shared.generateLabel(text: "디자인", color: .black, font: .sfPro(size: 12, family: .Regular))
     private let participantsLabel = Utilities.shared.generateLabel(text: "N명이 참여하고 있습니다.", color: .mainColor, font: .sfPro(size: 12, family: .Bold))
     private let expiredLabel = Utilities.shared.generateLabel(text: "23:59 남음", color: .point, font: .sfPro(size: 12, family: .Bold))
@@ -47,12 +53,6 @@ final class PopularQuestionCell: BaseCollectionViewCell {
             make.leading.equalToSuperview().offset(frame.width / 20)
         }
         
-        self.contentView.addSubview(nameLabel)
-        nameLabel.snp.makeConstraints { make in
-            make.centerX.equalTo(profileImageView)
-            make.top.equalTo(profileImageView.snp.bottom).offset(8)
-        }
-        
         self.contentView.addSubview(categoryLabel)
         categoryLabel.snp.makeConstraints { make in
             make.leading.equalTo(profileImageView.snp.trailing).offset(15)
@@ -62,7 +62,7 @@ final class PopularQuestionCell: BaseCollectionViewCell {
         self.contentView.addSubview(participantsLabel)
         participantsLabel.snp.makeConstraints { make in
             make.leading.equalTo(categoryLabel.snp.trailing).offset(10)
-            make.top.equalToSuperview()
+            make.centerY.equalTo(categoryLabel)
         }
         
         self.contentView.addSubview(questionLabel)
@@ -80,6 +80,12 @@ final class PopularQuestionCell: BaseCollectionViewCell {
             make.trailing.equalToSuperview().offset(-20)
         }
         
+        self.contentView.addSubview(nameLabel)
+        nameLabel.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(4)
+            make.trailing.equalTo(questionLabel.snp.leading).offset(-4)
+            make.top.equalTo(profileImageView.snp.bottom).offset(8)
+        }
     }
     
     func configure(question: PopularGreenRoomQuestion){
@@ -87,10 +93,7 @@ final class PopularQuestionCell: BaseCollectionViewCell {
         self.questionLabel.attributedText = question.question.addLineSpacing(foregroundColor: .black)
         self.categoryLabel.text = question.categoryName
         self.participantsLabel.text = "\(question.participants)명이 참여하고 있습니다."
-        
-        guard let url = URL(string: question.profileImage) else { return }
-        self.profileImageView.kf.setImage(with: url)
-        
-        expiredLabel.text = "\(question.remainedTime) 남음"
+        self.profileImageView.kf.setImage(with: URL(string: question.profileImage))
+        self.expiredLabel.text = "\(question.remainedTime) 남음"
     }
 }

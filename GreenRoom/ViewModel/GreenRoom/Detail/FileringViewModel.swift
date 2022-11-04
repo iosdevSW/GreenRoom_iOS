@@ -46,7 +46,7 @@ final class FilteringViewModel: ViewModelType {
         case .search(keyword: let keyword):
             self.publicQuestionService.searchGreenRoomQuestion(keyword: keyword)
                 .map { questions in
-                    [FilteringSectionModel(
+                    return [FilteringSectionModel(
                         header: Info(title: keyword,
                                  subTitle: "관련된 질문리스트를 보여드려요!\n질문에 참여 시 동료들의 모든 답변을 확인할 수 있어요 :)"),
                         items: questions)]
