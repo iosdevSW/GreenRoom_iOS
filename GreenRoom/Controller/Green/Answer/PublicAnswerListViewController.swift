@@ -21,7 +21,8 @@ final class PublicAnswerListViewController: BaseViewController {
     private let viewModel: PublicAnswerViewModel
     
     private lazy var input = PublicAnswerViewModel.Input(
-        scrapButtonTrigger: scrapButton.rx.tap.asObservable(),
+        scrapButtonTrigger: scrapButton.rx.tap.asObservable()
+            .throttle(.seconds(1), scheduler: MainScheduler.instance),
         registerGreenRoomTrigger: boxButton.rx.tap.asObservable()
     )
     

@@ -99,7 +99,7 @@ class GreenRoomViewController: BaseViewController {
             nextButtonTrigger: self.nextButtonTrigger.asObservable(),
             prevButtonTrigger: self.prevButtonTrigger.asObservable()
         )
-
+        
         let output = self.viewModel.transform(input: input)
         
         output.greenroom.bind(to: collectionView.rx.items(dataSource: dataSource)).disposed(by: disposeBag)
@@ -113,21 +113,23 @@ class GreenRoomViewController: BaseViewController {
                 let vc = FilteringQuestionViewController(viewModel: viewModel)
                 self.navigationController?.pushViewController(vc, animated: true)
             case .popular(question: let question):
-                let vc = PublicAnswerListViewController(viewModel: PublicAnswerViewModel(id: question.id,
-                                                                                         scrapService: ScrapService(),
-                                                                                         publicQuestionService: PublicQuestionService()))
+                let vc = PublicAnswerListViewController(viewModel: PublicAnswerViewModel(
+                    id: question.id,
+                    scrapRepository: ScrapRepository(),
+                    publicQuestionService: PublicQuestionService()))
                 self.navigationController?.pushViewController(vc, animated: true)
             case .recent(question: let question):
-                let vc = PublicAnswerListViewController(viewModel: PublicAnswerViewModel(id: question.id,
-                                                                                         scrapService: ScrapService(),
-                                                                                         publicQuestionService: PublicQuestionService()))
+                let vc = PublicAnswerListViewController(viewModel: PublicAnswerViewModel(
+                    id: question.id,
+                    scrapRepository: ScrapRepository(),
+                    publicQuestionService: PublicQuestionService()))
                 self.navigationController?.pushViewController(vc, animated: true)
             case .MyGreenRoom(question: let question):
                 guard let id = question.id else { return }
                 let vc = PublicAnswerListViewController(
                     viewModel: PublicAnswerViewModel(
                         id: id,
-                        scrapService: ScrapService(),
+                        scrapRepository: ScrapRepository(),
                         publicQuestionService: PublicQuestionService()
                     )
                 )
@@ -164,7 +166,8 @@ class GreenRoomViewController: BaseViewController {
         }).disposed(by: disposeBag)
         
         bookmarkButton.rx.tap.subscribe(onNext: {
-            let vc = ScrapedQuestionViewController(viewModel: ScrapViewModel())
+            let viewModel = ScrapViewModel(scrapRepositry: ScrapRepository())
+            let vc = ScrapedQuestionViewController(viewModel: viewModel)
             self.navigationController?.pushViewController(vc, animated: true)
         }).disposed(by: disposeBag)
     }
@@ -221,7 +224,7 @@ class GreenRoomViewController: BaseViewController {
 //MARK: - collectionView
 extension GreenRoomViewController {
     private func configureCollecitonView() {
-
+        
         collectionView.backgroundColor = .white
         collectionView.register(GRFilteringCell.self, forCellWithReuseIdentifier: GRFilteringCell.reuseIdentifier)
         collectionView.register(PopularQuestionCell.self, forCellWithReuseIdentifier: PopularQuestionCell.reuseIdentifer)
@@ -251,6 +254,7 @@ extension GreenRoomViewController {
                 return cell
                 
             case .recent(question: let question):
+                print(question)
                 guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RecentQuestionCell.reuseIdentifer, for: indexPath) as? RecentQuestionCell else { return UICollectionViewCell() }
                 cell.configure(question: question)
                 return cell

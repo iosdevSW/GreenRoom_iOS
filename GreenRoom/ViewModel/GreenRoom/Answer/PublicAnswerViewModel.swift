@@ -12,7 +12,7 @@ import RxCocoa
 final class PublicAnswerViewModel: ViewModelType {
     
     private let publicQuestionService: PublicQuestionService
-    private let scrapService: ScrapService
+    private let scrapRepository: ScrapRepositoryInterface
     
     var disposeBag = DisposeBag()
     
@@ -27,8 +27,7 @@ final class PublicAnswerViewModel: ViewModelType {
         let scrapUpdateState: Observable<Bool>
     }
     
-    private let textFieldContentObservable = BehaviorSubject<String>(value: "")
-    private let scrapStateObservable = BehaviorSubject<Bool>(value: false)
+    private let scrapStateObservable = PublishSubject<Bool>()
     private let detailPublicAnswer = PublishSubject<PublicAnswerList>()
     
     private let failMessage = PublishRelay<String>()
@@ -36,9 +35,9 @@ final class PublicAnswerViewModel: ViewModelType {
     
     let id: Int
     
-    init(id: Int, scrapService: ScrapService, publicQuestionService: PublicQuestionService){
+    init(id: Int, scrapRepository: ScrapRepositoryInterface, publicQuestionService: PublicQuestionService){
         self.id = id
-        self.scrapService = scrapService
+        self.scrapRepository = scrapRepository
         self.publicQuestionService = publicQuestionService
     }
     
@@ -52,11 +51,13 @@ final class PublicAnswerViewModel: ViewModelType {
                 onwer.detailPublicAnswer.onNext(question)
             }).disposed(by: disposeBag)
         
-        input.scrapButtonTrigger.withLatestFrom(scrapStateObservable)
+        input.scrapButtonTrigger
+            .withLatestFrom(scrapStateObservable)
             .withUnretained(self)
             .flatMap { onwer, state in
-                return state ? onwer.scrapService.deleteScrapQuestion(ids: [onwer.id]) : onwer.scrapService.updateScrapQuestion(id: onwer.id)
-            }.bind(to: scrapStateObservable)
+                return state ? onwer.scrapRepository.deleteScrapQuestion(ids: [onwer.id]) : onwer.scrapRepository.updateScrapQuestion(id: onwer.id)
+            }
+            .bind(to: scrapStateObservable)
             .disposed(by: disposeBag)
         
         let output = detailPublicAnswer.map { detailPublicAnswer in

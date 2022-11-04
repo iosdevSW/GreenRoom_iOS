@@ -13,7 +13,7 @@ final class ScrapViewModel: ViewModelType {
     
     var disposeBag = DisposeBag()
     
-    private let scrapService = ScrapService()
+    private let scrapRepositry: ScrapRepositoryInterface
     
     struct Input {
         let trigger: Observable<Bool>
@@ -29,13 +29,16 @@ final class ScrapViewModel: ViewModelType {
     
     private let scrapObesrvable = BehaviorSubject<[ScrapSectionModel]>(value: [])
     
+    init(scrapRepositry: ScrapRepositoryInterface) {
+        self.scrapRepositry = scrapRepositry
+    }
 
     func transform(input: Input) -> Output {
         
         input.trigger
             .withUnretained(self)
             .flatMap { owner, _ in
-                owner.scrapService.fetchScrapQuestions()
+                owner.scrapRepositry.fetchScrapQuestions()
             }.map { [ScrapSectionModel(items: $0)] }
             .bind(to: scrapObesrvable)
             .disposed(by: disposeBag)
@@ -51,11 +54,11 @@ final class ScrapViewModel: ViewModelType {
             .withLatestFrom(selectedIndexesObservable.asObservable())
             .withUnretained(self)
             .flatMap { onwer, index in
-                onwer.scrapService.deleteScrapQuestion(ids: index)
+                onwer.scrapRepositry.deleteScrapQuestion(ids: index)
             }
             .withUnretained(self)
             .flatMap { onwer, index in
-                onwer.scrapService.fetchScrapQuestions()
+                onwer.scrapRepositry.fetchScrapQuestions()
             }
             .map { [ScrapSectionModel(items: $0)] }
             .bind(to: scrapObesrvable)

@@ -83,11 +83,11 @@ final class PublicQuestionService {
     /** 그린룸질문 상세정보 조회 */
     func fetchDetailPublicQuestion(id: Int) -> Observable<PublicAnswerList> {
         let requestURL = baseURL + "/\(id)"
-    
         return Observable.create { emitter in
             AF.request(requestURL, method: .get, encoding: URLEncoding.default, interceptor: AuthManager())
                 .validate(statusCode: 200..<300)
                 .responseDecodable(of: DetailPublicQuestionDTO.self) { response in
+                    
                     switch response.result {
                     case .success(let question):
 
