@@ -28,15 +28,13 @@ class KPReviewViewController: BaseViewController, UICollectionViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.collectionView.delegate = self
-        
-        self.navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.darken!]
-        self.navigationItem.title = self.viewModel.recordingType == .camera ? "녹화 다시보기" : "녹음 다시듣기"
+        self.setNavigationBarAppearance()
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         print("viewDidLayoutSubviews")
-    }
+            }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -61,8 +59,23 @@ class KPReviewViewController: BaseViewController, UICollectionViewDelegate {
             .bind(to: collectionView.rx.items(dataSource: configureDataSource()))
             .disposed(by: disposeBag)
     }
+    
+    //MARK: - Method
+    func setNavigationBarAppearance(){
+        if #available(iOS 15,*) {
+            let appearance = UINavigationBarAppearance()
+            appearance.backgroundColor = .white
+            appearance.titleTextAttributes = [.foregroundColor: UIColor.darken!]
+            navigationItem.standardAppearance = appearance
+            navigationItem.scrollEdgeAppearance = appearance
+        }
+        self.navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.darken!]
+        self.navigationItem.title = self.viewModel.recordingType == .camera ? "녹화 다시보기" : "녹음 다시듣기"
+    }
 }
 
+
+//MARK: - ConfigureDataSource
 extension KPReviewViewController {
     private func configureDataSource() -> RxCollectionViewSectionedReloadDataSource<KPDetailModel> {
         return RxCollectionViewSectionedReloadDataSource<KPDetailModel> { dataSource, collectionView, indexPath, item  in

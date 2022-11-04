@@ -49,7 +49,6 @@ class KPFinishViewController: BaseViewController{
         self.configureNavigationBackButtonItem()
         self.setNavigationItem()
         self.navigationItem.hidesBackButton = true
-        
     }
     
     override func viewDidAppear(_ animated: Bool) {

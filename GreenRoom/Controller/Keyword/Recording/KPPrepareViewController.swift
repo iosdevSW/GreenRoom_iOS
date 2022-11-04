@@ -7,7 +7,6 @@
 
 import UIKit
 import RxSwift
-import SwiftUI
 
 class KPPrepareViewController: BaseViewController{
     //MARK: - Properties

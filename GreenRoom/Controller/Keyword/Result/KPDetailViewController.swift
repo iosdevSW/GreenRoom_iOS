@@ -46,7 +46,6 @@ class KPDetailViewController: BaseViewController {
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        setNavigationBarColor(.clear)
     }
     
     //MARK: - Method
@@ -60,6 +59,11 @@ class KPDetailViewController: BaseViewController {
         }else {
             self.navigationController?.navigationBar.barTintColor = color
         }
+    }
+    
+    //MARK: - Selector
+    @objc func didClickReviewButton(_ sender: UIButton) {
+        self.navigationController?.pushViewController(KPReviewViewController(viewModel: viewmodel), animated: true)
     }
     
     //MARK: - Bind
@@ -87,8 +91,10 @@ class KPDetailViewController: BaseViewController {
 }
 extension KPDetailViewController {
     private func configureDataSource() -> RxCollectionViewSectionedReloadDataSource<KPDetailModel> {
-        return RxCollectionViewSectionedReloadDataSource<KPDetailModel> { dataSource, collectionView, indexPath, item  in
+        return RxCollectionViewSectionedReloadDataSource<KPDetailModel> { [weak self] dataSource, collectionView, indexPath, item  in
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DetailCell", for: indexPath) as! DetailCell
+            
+            guard let self = self else { return cell}
             
             let sttAnswer = item.sttAnswer ?? "변환된 내용 없음"
             
@@ -132,6 +138,8 @@ extension KPDetailViewController {
                                                                                                    highlightString: highlight,
                                                                                                    color: .point)
                 cell.goalProgressBarView.persentLabel.text =  String(format: "%2.f", KPPersent*100) + "/100"
+                
+                cell.goalProgressBarView.reviewButton.addTarget(self, action: #selector(self.didClickReviewButton(_:)), for: .touchUpInside)
                 
                 let progressWidth = UIScreen.main.bounds.width - 60
                 let newX =  progressWidth * goalPersent
