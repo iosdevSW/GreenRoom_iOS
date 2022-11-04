@@ -136,10 +136,15 @@ final class CreateQuestionViewController: BaseViewController {
     //MARK: - Binding
     override func setupBinding() {
         
+        let question = self.questionTextView.rx.didEndEditing
+            .asObservable()
+            .withLatestFrom(questionTextView.rx.text.orEmpty.asObservable())
+            .distinctUntilChanged()
+            .filter { !$0.isEmpty }
+        
         let input = CreateViewModel.Input(
-            question: questionTextView.rx.text.orEmpty.asObservable(),
+            question: question,
             category: collectionView.rx.itemSelected.map { $0.row + 1}.asObservable(),
-            returnTrigger: questionTextView.rx.didEndEditing.asObservable(),
             submit: doneButton.rx.tap.asObservable())
         
         self.questionTextView.rx.didBeginEditing
@@ -149,7 +154,6 @@ final class CreateQuestionViewController: BaseViewController {
                     onwer.questionTextView.text = ""
                     onwer.questionTextView.textColor = .black
                 }
-                
             }.disposed(by: disposeBag)
         
         self.questionTextView.rx.didEndEditing

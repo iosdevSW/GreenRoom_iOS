@@ -39,14 +39,14 @@ final class PrivateQuestionService {
 
     /** 나의 질문 생성 API */
     func uploadQuestion(categoryId: Int, question: String) -> Observable<Bool> {
-        
+
         let requestURL = self.baseURL
-        
+
         let parameters: Parameters = [
             "categoryId": categoryId,
             "question": question
         ]
-        
+
         return Observable.create { emitter in
             AF.request(requestURL, method: .post, parameters: parameters, encoding: JSONEncoding.default, interceptor: AuthManager()).responseData { response in
                 switch response.result {

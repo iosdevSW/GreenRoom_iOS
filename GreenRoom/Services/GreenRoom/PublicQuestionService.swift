@@ -203,7 +203,6 @@ final class PublicQuestionService {
         }
     }
     
-    
     /** 그린룸 질문에 대한 답변 등록*/
     func uploadAnswer(id: Int, answer: String, keywords: [String]) -> Observable<Bool> {
         let requestURL = baseURL + "/answer"

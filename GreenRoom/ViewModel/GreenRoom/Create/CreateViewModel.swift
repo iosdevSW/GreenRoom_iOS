@@ -27,7 +27,6 @@ final class CreateViewModel: ViewModelType {
     struct Input {
         let question: Observable<String>
         let category: Observable<Int>
-        let returnTrigger: Observable<Void>
         let submit: Observable<Void>
     }
     
@@ -37,9 +36,6 @@ final class CreateViewModel: ViewModelType {
         let successMessage: Signal<String>
     }
     
-    private let textFieldContentObservable = BehaviorSubject<String>(value: "")
-    private let addQuestionObservable = PublishSubject<String>()
-    
     private let failMessage = PublishRelay<String>()
     private let successMessage = PublishRelay<String>()
     
@@ -47,25 +43,12 @@ final class CreateViewModel: ViewModelType {
     
     func transform(input: Input) -> Output {
         
-        input.question.bind(to: textFieldContentObservable).disposed(by: disposeBag)
-        
-        input.returnTrigger.withLatestFrom(textFieldContentObservable)
-            .bind(to: addQuestionObservable)
-            .disposed(by: disposeBag)
-        
         input.submit.withLatestFrom(
-            Observable.combineLatest(
-                addQuestionObservable.asObserver(),
-                input.category.map { String($0) }
-            )
+            Observable.combineLatest(input.question, input.category.map { String($0) })
         )
         .withUnretained(self)
         .flatMapLatest { (owner, element) in
-            let (question, category) = element
-            return owner.myListService.uploadQuestion(
-                categoryId: Int(category)!,
-                question: question
-            )
+            owner.myListService.uploadQuestion(categoryId: Int(element.1)!, question: element.0)
         }
         .withUnretained(self)
         .subscribe { onwer, state in
