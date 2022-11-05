@@ -118,7 +118,6 @@ final class KPRecordingViewController: BaseViewController{
                     self.view.addSubview(indicatorView)
                 }
                 if  self.viewmodel.recordingType == .camera {
-//                    self.speechToText(url)
                     self.convertM4a(url)
                 } else {
                     self.speechToText(url)

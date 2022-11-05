@@ -117,21 +117,14 @@ final class KPFindQuestionViewController: BaseViewController, UITableViewDelegat
     func beginPaging(){
         self.isPaging = true
         
-        let page = self.viewModel.nextPage.value
         let title = self.searchBarView.text
         let idString = self.viewModel.filteringObservable.value
+        guard let nextPage = self.viewModel.referenceObservable.value?.currentPages else { return }
         
-        KeywordPracticeService().fetchReferenceQuestions(categoryId: idString, title: title, page: page)
-            .bind(onNext: { questions in
-                self.viewModel.baseQuestionsObservable
-                    .take(1)
-                    .bind(onNext: { ques in
-                        var tempQuestions = ques
-                        tempQuestions.append(contentsOf: questions)
-                        self.viewModel.baseQuestionsObservable.onNext(tempQuestions)
-                        
-                        self.isPaging = false
-                    }).disposed(by: self.disposeBag)
+        KeywordPracticeService().fetchReferenceQuestions(categoryId: idString, title: title, page: nextPage+1)
+            .bind(onNext: { reference in
+                self.viewModel.referenceObservable.accept(reference)
+                self.isPaging = false
             }).disposed(by: disposeBag)
     }
     
@@ -139,12 +132,10 @@ final class KPFindQuestionViewController: BaseViewController, UITableViewDelegat
     override func setupBinding() {
         viewModel.baseQuestionsObservable
             .bind(to: questionListTableView.rx.items(cellIdentifier: "QuestionListCell", cellType: QuestionListCell.self)) { index, item, cell in
-                
                 cell.mainLabel.text = item.question
                 cell.categoryLabel.text = item.categoryName
                 cell.questionTypeLabel.text = item.questionType
                 cell.isFindMode = true
-                
             }.disposed(by: disposeBag)
         
         questionListTableView.rx.modelSelected(ReferenceQuestionModel.self)
@@ -154,31 +145,26 @@ final class KPFindQuestionViewController: BaseViewController, UITableViewDelegat
             }).disposed(by: disposeBag)
         
         filterView.viewModel.selectedCategoriesObservable
-            .subscribe(onNext: { [weak self] ids in
-                let idString = ids.map{ String($0)}.joined(separator: ",")
-                self?.viewModel.filteringObservable.accept(idString)
-                self?.searchBarView.text = nil
-            }).disposed(by: disposeBag)
+            .map { $0.map { String($0) }.joined(separator: ",") }
+            .bind(to: self.viewModel.filteringObservable)
+            .disposed(by: disposeBag)
         
         searchBarView.rx.text
-            .bind(onNext: { [weak self] text in
-                guard let self = self else { return }
-                let idString = self.viewModel.filteringObservable.value
-                KeywordPracticeService().fetchReferenceQuestions(categoryId: idString, title: text, page: nil)
-                    .bind(to: self.viewModel.baseQuestionsObservable)
-                    .disposed(by: self.disposeBag)
-            }).disposed(by: disposeBag)
+            .bind(to: self.viewModel.searchTextObservable)
+            .disposed(by: disposeBag)
         
         questionListTableView.rx.didScroll
-            .bind(onNext: {
+            .bind(onNext: { [weak self] in
+                guard let self = self else { return }
                 let contentHeight = self.questionListTableView.contentSize.height
                 let contentOffsetY = self.questionListTableView.contentOffset.y
                 let tableViewHeight = self.questionListTableView.frame.height
                 
                 if contentOffsetY > contentHeight - tableViewHeight {
-                    self.beginPaging()
+                    if self.viewModel.hasNextPage.value {
+                        self.beginPaging()
+                    }
                 }
-                
             }).disposed(by: disposeBag)
     }
     
