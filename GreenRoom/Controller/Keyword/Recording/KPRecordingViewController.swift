@@ -261,7 +261,7 @@ final class KPRecordingViewController: BaseViewController{
     
     private func saveURL(_ url: URL) {
         // 길게 녹화할경우 음성이 녹음 안되는 현상이 있음 (이유 찾아 고쳐야함) 2번의 오류도 1번이 해결되면 해결될 가능성 있음
-        // 녹화일 경우 mp4 -> m4a로 변환이 필요함 ( 영상이 십몇초를 넘을경우 변환이 안되는 오류 )
+        // 녹화일 경우 mp4 -> m4a로 변환이 필요함 ( 영상이 십몇초를 넘을경우 변환이 안되는 오류 -> mp4 형식이 제한됨 => mov형식으로 해결 )
         self.viewmodel.URLs
             .filter{ $0.count < self.viewmodel.selectedQuestions.value.count }
             .take(1)
@@ -360,6 +360,7 @@ extension KPRecordingViewController: AVCaptureFileOutputRecordingDelegate {
             //비디오 장치
             let videoInput = try AVCaptureDeviceInput(device:camera)
             movieFileOutput = AVCaptureMovieFileOutput()
+
             if captureSession!.canAddInput(videoInput) &&
                 captureSession!.canAddOutput(movieFileOutput) {
                 captureSession?.addInput(videoInput)
@@ -399,7 +400,7 @@ extension KPRecordingViewController: AVCaptureFileOutputRecordingDelegate {
     
     // Recording Methods
     private func startRecording() {
-        movieFileOutput.startRecording(to: tempURL(extn: "mp4"), recordingDelegate: self)
+        movieFileOutput.startRecording(to: tempURL(extn: "mov"), recordingDelegate: self)
     }
     
     private func tempURL(extn: String)-> URL{

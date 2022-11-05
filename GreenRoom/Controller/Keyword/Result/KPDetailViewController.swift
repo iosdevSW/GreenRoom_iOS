@@ -137,6 +137,7 @@ extension KPDetailViewController {
                 cell.goalProgressBarView.guideLabel.attributedText = self.setColorHighlightAttribute(text: "목표까지 \(highlight) 남았어요",
                                                                                                    highlightString: highlight,
                                                                                                    color: .point)
+                
                 cell.goalProgressBarView.persentLabel.text =  String(format: "%2.f", KPPersent*100) + "/100"
                 
                 cell.goalProgressBarView.reviewButton.addTarget(self, action: #selector(self.didClickReviewButton(_:)), for: .touchUpInside)
