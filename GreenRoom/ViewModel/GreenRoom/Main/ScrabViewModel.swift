@@ -13,10 +13,9 @@ final class ScrapViewModel: ViewModelType {
     
     var disposeBag = DisposeBag()
     
-    private let scrapService = ScrapService()
+    private let scrapRepositry: ScrapRepositoryInterface
     
     struct Input {
-        let trigger: Observable<Bool>
         let buttonTab: Observable<Void>
     }
     
@@ -28,14 +27,18 @@ final class ScrapViewModel: ViewModelType {
     let cancelIndexObservable = PublishSubject<Int>()
     
     private let scrapObesrvable = BehaviorSubject<[ScrapSectionModel]>(value: [])
+    private let trigger = BehaviorSubject<Void>(value: ())
     
+    init(scrapRepositry: ScrapRepositoryInterface) {
+        self.scrapRepositry = scrapRepositry
+    }
 
     func transform(input: Input) -> Output {
         
-        input.trigger
+        self.trigger
             .withUnretained(self)
             .flatMap { owner, _ in
-                owner.scrapService.fetchScrapQuestions()
+                owner.scrapRepositry.fetchScrapQuestions()
             }.map { [ScrapSectionModel(items: $0)] }
             .bind(to: scrapObesrvable)
             .disposed(by: disposeBag)
@@ -51,14 +54,9 @@ final class ScrapViewModel: ViewModelType {
             .withLatestFrom(selectedIndexesObservable.asObservable())
             .withUnretained(self)
             .flatMap { onwer, index in
-                onwer.scrapService.deleteScrapQuestion(ids: index)
-            }
-            .withUnretained(self)
-            .flatMap { onwer, index in
-                onwer.scrapService.fetchScrapQuestions()
-            }
-            .map { [ScrapSectionModel(items: $0)] }
-            .bind(to: scrapObesrvable)
+                onwer.scrapRepositry.deleteScrapQuestion(ids: index)
+            }.map { _ in () }
+            .bind(to: trigger)
             .disposed(by: disposeBag)
 
         return Output(scrap: scrapObesrvable.asObservable())

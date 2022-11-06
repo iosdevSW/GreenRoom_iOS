@@ -21,7 +21,8 @@ final class PublicAnswerListViewController: BaseViewController {
     private let viewModel: PublicAnswerViewModel
     
     private lazy var input = PublicAnswerViewModel.Input(
-        scrapButtonTrigger: scrapButton.rx.tap.asObservable(),
+        scrapButtonTrigger: scrapButton.rx.tap.asObservable()
+            .throttle(.milliseconds(300), scheduler: MainScheduler.instance),
         registerGreenRoomTrigger: boxButton.rx.tap.asObservable()
     )
     
@@ -127,22 +128,23 @@ final class PublicAnswerListViewController: BaseViewController {
         output.scrapUpdateState
             .withUnretained(self)
             .subscribe(onNext: { onwer, completable in
-                onwer.scrapButton.setImage(completable ? onwer.starImage : onwer.starFillImage, for: .normal)
+                let scrapImage = completable ? onwer.starFillImage : onwer.starImage
+                onwer.scrapButton.setImage(scrapImage, for: .normal)
             }).disposed(by: disposeBag)
         
         output.answer
             .withUnretained(self)
             .subscribe(onNext: { onwer, answer in
-                
                 onwer.headerView.question = QuestionHeader(id: answer.header.id, question: answer.header.question, categoryName: answer.header.categoryName, groupCategoryName: answer.header.categoryName)
                 onwer.collectionView.alpha = answer.header.mode == .permission ? 1.0 : 0.5
                 onwer.mode = answer.header.mode
                 onwer.timeOutView.configure(time: answer.header.expiredAt)
                 onwer.scrapButton.setImage(answer.header.scrap ? onwer.starFillImage : onwer.starImage, for: .normal)
             }).disposed(by: disposeBag)
-          
+        
         output.answer
-            .map{ [$0] }
+            .toArray()
+            .asObservable()
             .bind(to: collectionView.rx.items(dataSource: dataSource()))
             .disposed(by: disposeBag)
         
@@ -150,19 +152,19 @@ final class PublicAnswerListViewController: BaseViewController {
             .withLatestFrom(output.answer)
             .withUnretained(self)
             .subscribe(onNext: { onwer, answer in
-                let vc = AddPublicAnswerViewController(viewModel: MakePublicAnswerViewModel(answer: answer, publicQuestionService: PublicQuestionService()))
+                let vc = AddPublicAnswerViewController(viewModel: MakePublicAnswerViewModel(answer: answer, repository: ApplyPublicAnswerRepository()))
                 onwer.navigationController?.pushViewController(vc, animated: false)
             }).disposed(by: disposeBag)
         
         collectionView.rx.modelSelected(PublicAnswerSectionModel.Item.self)
             .withUnretained(self)
             .subscribe(onNext: { onwer, item in
-                let vm = DetailPublicAnswerViewModel(
+                let viewModel = DetailPublicAnswerViewModel(
                     question: self.headerView.question,
                     answerID: item.id,
-                    publicQuestionService: PublicQuestionService())
+                    repository: DetailPublicAnswerRepository())
                 
-                let vc = DetailPublicAnswerViewController(viewModel: vm)
+                let vc = DetailPublicAnswerViewController(viewModel: viewModel)
                 onwer.navigationController?.pushViewController(vc, animated: false)
             }).disposed(by: disposeBag)
     }

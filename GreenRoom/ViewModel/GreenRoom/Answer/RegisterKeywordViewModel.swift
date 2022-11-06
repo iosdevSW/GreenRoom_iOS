@@ -11,9 +11,8 @@ import RxCocoa
 
 final class RegisterKeywordViewModel: ViewModelType {
     
-    let publicService = PublicQuestionService()
-    let privateService = PrivateQuestionService()
     let kpQuestionService = KPQuestionService()
+    private let repository: RegisterKeywordRepositoryInterface
     var disposeBag = DisposeBag()
       
     struct Input {
@@ -32,19 +31,19 @@ final class RegisterKeywordViewModel: ViewModelType {
     private let id: Int
     private let answerType: AnswerType
     
-    init(id: Int, answerType: AnswerType){
+    init(id: Int, answerType: AnswerType, repository: RegisterKeywordRepositoryInterface){
         self.id = id
         self.answerType = answerType
+        self.repository = repository
     }
     
     func transform(input: Input) -> Output {
-        
         
         switch answerType {
         case .public:
             break
         case .private:
-            self.privateService.fetchPrivateQuestion(id: id)
+            self.repository.fetchPrivateQuestion(id: id)
                 .map { $0.keywords }
                 .bind(to: registeredKeywordObservable)
                 .disposed(by: disposeBag)

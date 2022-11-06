@@ -12,8 +12,7 @@ final class FilteringViewModel: ViewModelType {
     
     var disposeBag = DisposeBag()
     
-    private let publicQuestionService: PublicQuestionService
-    
+    private let fileringRepository: FilteringRepositoryInterface
     struct Input { }
     
     struct Output {
@@ -25,16 +24,17 @@ final class FilteringViewModel: ViewModelType {
     private let filteringQuestion = PublishSubject<[FilteringSectionModel]>()
     
     init(mode: FilterMode,
-         publicQuestionService: PublicQuestionService) {
+         fileringRepository: FilteringRepositoryInterface) {
         self.mode = mode
-        self.publicQuestionService = publicQuestionService
+        self.fileringRepository = fileringRepository
     }
     
     func transform(input: Input) -> Output {
         
         switch self.mode {
         case .filter(id: let id):
-            self.publicQuestionService.fetchFilteredQuestion(categoryId: id)
+            self.fileringRepository
+                .fetchFilteringQuestion(categoryId: id)
                 .map { questions in
                     [FilteringSectionModel(
                         header: Info(title: Category(rawValue: id)?.title ?? "공통",
@@ -44,7 +44,8 @@ final class FilteringViewModel: ViewModelType {
                 .bind(to: filteringQuestion)
                 .disposed(by: disposeBag)
         case .search(keyword: let keyword):
-            self.publicQuestionService.searchGreenRoomQuestion(keyword: keyword)
+            self.fileringRepository
+                .fetchFilteringQuestion(keyword: keyword)
                 .map { questions in
                     return [FilteringSectionModel(
                         header: Info(title: keyword,

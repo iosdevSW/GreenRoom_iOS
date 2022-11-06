@@ -11,7 +11,7 @@ import RxCocoa
 
 final class PrivateAnswerViewModel: ViewModelType {
     
-    private let privateQuestionService = PrivateQuestionService()
+    private let repository: PrivateAnswerRepositoryInterface
     var disposeBag = DisposeBag()
     
     var placeholder: String {
@@ -25,7 +25,6 @@ final class PrivateAnswerViewModel: ViewModelType {
     
     struct Input {
         let text: Observable<String>
-        let endEditingTrigger: Observable<Void>
         let keywords: Observable<[String]>
         let deleteButtonTrigger: Observable<Bool>
         let doneButtonTrigger: Observable<Void>
@@ -37,30 +36,24 @@ final class PrivateAnswerViewModel: ViewModelType {
         let successMessage: Signal<String>
         let failMessage: Signal<String>
     }
-    
-    private let textFieldContentObservable = BehaviorSubject<String>(value: "")
+
     private let failMessage = PublishRelay<String>()
     private let successMessage = PublishRelay<String>()
     
     let id: Int
     
-    init(id: Int){
+    init(id: Int, repository: PrivateAnswerRepositoryInterface){
         self.id = id
+        self.repository = repository
     }
     
     func transform(input: Input) -> Output {
         
-        input.endEditingTrigger.withLatestFrom(input.text)
-            .bind(to: textFieldContentObservable)
-            .disposed(by: disposeBag)
-        
         input.doneButtonTrigger
-            .withLatestFrom(
-                Observable.combineLatest(textFieldContentObservable.asObserver(), input.keywords.asObservable()))
+            .withLatestFrom(Observable.combineLatest(input.text, input.keywords))
             .withUnretained(self)
-            .flatMap { (onwer, element) in
-                let (answer, keywords) = element
-                return onwer.privateQuestionService.uploadAnswer(id: onwer.id, answer: answer, keywords: keywords)
+            .flatMap { owner, element in
+                self.repository.uploadAnswer(id: owner.id, answer: element.0, keywords: element.1)
             }
             .withUnretained(self)
             .subscribe(onNext: { onwer, isSuccess in
@@ -71,14 +64,14 @@ final class PrivateAnswerViewModel: ViewModelType {
             .asObservable()
             .withUnretained(self)
             .flatMap { onwer, _ in
-                onwer.privateQuestionService.removeAnswer(id: onwer.id)
+                onwer.repository.deleteQuestion(id: onwer.id)
             }
             .withUnretained(self)
             .subscribe { onwer, competable in
-            competable ? onwer.successMessage.accept("나의 질문이 삭제되었습니다.") : onwer.failMessage.accept("에러")
-        }.disposed(by: disposeBag)
+                competable ? onwer.successMessage.accept("나의 질문이 삭제되었습니다.") : onwer.failMessage.accept("에러")
+            }.disposed(by: disposeBag)
         
-        let output = self.privateQuestionService.fetchPrivateQuestion(id: self.id)
+        let output = self.repository.fetchPrivateQuestion(id: self.id)
         
         return Output(answer: output.asObservable(),
                       keywords: output.map { $0.keywords },

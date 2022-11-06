@@ -13,7 +13,7 @@ final class AddPublicAnswerViewController: BaseViewController {
     //MARK: - Properties
     private let viewModel: MakePublicAnswerViewModel
     private var headerView = AnswerHeaderView(frame: .zero)
-    private lazy var keywordView = KeywordRegisterView(viewModel: RegisterKeywordViewModel(id: viewModel.answer.header.id, answerType: .public))
+    private lazy var keywordView = KeywordRegisterView(viewModel: RegisterKeywordViewModel(id: viewModel.answer.header.id, answerType: .public, repository: RegisterKeywordRepository()))
     
     private let doneButton = UIButton().then {
         $0.setTitle("확인",for: .normal)
@@ -100,9 +100,14 @@ final class AddPublicAnswerViewController: BaseViewController {
                 }
             }).disposed(by: disposeBag)
         
+        let text = self.answerTextView.rx.didEndEditing
+            .asObservable()
+            .withLatestFrom(answerTextView.rx.text.orEmpty.asObservable())
+            .distinctUntilChanged()
+            .filter { !$0.isEmpty }
+        
         let input = MakePublicAnswerViewModel.Input(
-            text: answerTextView.rx.text.orEmpty.asObservable(),
-            endEditingTrigger: self.answerTextView.rx.didEndEditing.asObservable(),
+            text: text,
             keywords: keywordView.output.registeredKeywords,
             doneButtonTrigger: doneButton.rx.tap.asObservable())
         

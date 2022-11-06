@@ -11,8 +11,8 @@ import RxCocoa
 
 final class PublicAnswerViewModel: ViewModelType {
     
-    private let publicQuestionService: PublicQuestionService
-    private let scrapService: ScrapService
+    private let detailGreenRoomRepository: DetailGreenRoomRepositoryInterface
+    private let scrapRepository: ScrapRepositoryInterface
     
     var disposeBag = DisposeBag()
     
@@ -27,7 +27,6 @@ final class PublicAnswerViewModel: ViewModelType {
         let scrapUpdateState: Observable<Bool>
     }
     
-    private let textFieldContentObservable = BehaviorSubject<String>(value: "")
     private let scrapStateObservable = BehaviorSubject<Bool>(value: false)
     private let detailPublicAnswer = PublishSubject<PublicAnswerList>()
     
@@ -36,15 +35,15 @@ final class PublicAnswerViewModel: ViewModelType {
     
     let id: Int
     
-    init(id: Int, scrapService: ScrapService, publicQuestionService: PublicQuestionService){
+    init(id: Int, scrapRepository: ScrapRepositoryInterface, detailGreenRoomRepository: DetailGreenRoomRepositoryInterface){
         self.id = id
-        self.scrapService = scrapService
-        self.publicQuestionService = publicQuestionService
+        self.scrapRepository = scrapRepository
+        self.detailGreenRoomRepository = detailGreenRoomRepository
     }
     
     func transform(input: Input) -> Output {
         
-        publicQuestionService
+        detailGreenRoomRepository
             .fetchDetailPublicQuestion(id: id)
             .withUnretained(self)
             .subscribe(onNext: { onwer, question in
@@ -52,11 +51,13 @@ final class PublicAnswerViewModel: ViewModelType {
                 onwer.detailPublicAnswer.onNext(question)
             }).disposed(by: disposeBag)
         
-        input.scrapButtonTrigger.withLatestFrom(scrapStateObservable)
+        input.scrapButtonTrigger
+            .withLatestFrom(scrapStateObservable)
             .withUnretained(self)
             .flatMap { onwer, state in
-                return state ? onwer.scrapService.deleteScrapQuestion(ids: [onwer.id]) : onwer.scrapService.updateScrapQuestion(id: onwer.id)
-            }.bind(to: scrapStateObservable)
+                state ? onwer.scrapRepository.deleteScrapQuestion(ids: [onwer.id]) : onwer.scrapRepository.updateScrapQuestion(id: onwer.id)
+            }
+            .bind(to: scrapStateObservable)
             .disposed(by: disposeBag)
         
         let output = detailPublicAnswer.map { detailPublicAnswer in

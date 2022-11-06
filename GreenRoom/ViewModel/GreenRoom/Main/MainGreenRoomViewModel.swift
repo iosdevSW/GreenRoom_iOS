@@ -17,8 +17,8 @@ class MainGreenRoomViewModel: ViewModelType {
         case MyList
     }
     
-    private var publicQuestionService = PublicQuestionService()
-    private var myListService = PrivateQuestionService()
+    private let greenRoomRepositry: MainGreenRoomRepositoryInferface
+//    private var publicQuestionService = PublicQuestionService()
     
     var disposeBag = DisposeBag()
     
@@ -39,6 +39,10 @@ class MainGreenRoomViewModel: ViewModelType {
     private var currentPage = BehaviorRelay<Int>(value: 0)
 
     private let myGreenRoom = BehaviorSubject<[GreenRoomSectionModel]>(value: [])
+    
+    init(greenRoomRepositry: MainGreenRoomRepositoryInferface) {
+        self.greenRoomRepositry = greenRoomRepositry
+    }
     
     func transform(input: Input) -> Output {
         
@@ -126,7 +130,8 @@ extension MainGreenRoomViewModel {
     
     /// 인기 질문
     private func fetchPopular() -> Observable<[GreenRoomSectionModel]> {
-        return self.publicQuestionService
+        
+        return self.greenRoomRepositry
             .fetchPopularPublicQuestions()
             .map { questions in
                 [GreenRoomSectionModel.popular(
@@ -137,7 +142,8 @@ extension MainGreenRoomViewModel {
     
     ///최근 질문
     private func fetchRecent() -> Observable<[GreenRoomSectionModel]> {
-        return self.publicQuestionService
+        
+        return self.greenRoomRepositry
             .fetchRecentPublicQuestions()
             .map { questions in
                 [GreenRoomSectionModel.recent(items: questions.map { GreenRoomSectionModel.Item.recent(question: $0)})]
@@ -147,7 +153,8 @@ extension MainGreenRoomViewModel {
     /// 내가 작성한 그린룸
     private func fetchMyGreenRoom(page: Int) -> Observable<[GreenRoomSectionModel]>{
         
-        return publicQuestionService.fetchPublicQuestions(page: page)
+        return self.greenRoomRepositry
+            .fetchOwnedPublicQuestions(page: page)
             .map { question in
                 [GreenRoomSectionModel.MyGreenRoom(items: [GreenRoomSectionModel.Item.MyGreenRoom(question: question)])]
             }
@@ -155,7 +162,7 @@ extension MainGreenRoomViewModel {
     
     /// 내가 작성한 질문
     private func fetchMyList() -> Observable<[GreenRoomSectionModel]> {
-        return self.myListService
+        return self.greenRoomRepositry
             .fetchPrivateQuestions()
             .map { questions in
                 [GreenRoomSectionModel.MyQuestionList(items: questions.map { .MyQuestionList(question: $0)})]

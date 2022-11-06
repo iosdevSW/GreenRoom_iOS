@@ -53,9 +53,12 @@ final class RecentPublicQuestionsViewController: BaseViewController {
         
         collectionView.rx.modelSelected(GreenRoomSectionModel.Item.self)
             .withUnretained(self)
-            .subscribe(onNext: { onwer, question in
-                if case let .recent(question) = question {
-                    let vc = PublicAnswerListViewController(viewModel: PublicAnswerViewModel(id: question.id, scrapService: ScrapService(), publicQuestionService: PublicQuestionService()))
+            .subscribe(onNext: { onwer, item in
+                if case .recent(let question) = item {
+                    
+                    let viewModel = PublicAnswerViewModel(id: question.id, scrapRepository: ScrapRepository(), detailGreenRoomRepository: DetailGreenRoomRepository())
+
+                    let vc = PublicAnswerListViewController(viewModel: viewModel)
                     onwer.navigationController?.pushViewController(vc, animated: false)
                 }
             }).disposed(by: disposeBag)

@@ -11,7 +11,8 @@ import RxCocoa
 
 final class QuestionEditViewModel: ViewModelType {
     
-    private let privateQuestionService = PrivateQuestionService()
+    private let repository: PrivateAnswerRepositoryInterface
+    
     var disposeBag = DisposeBag()
     
     var placeholder: String {
@@ -41,8 +42,9 @@ final class QuestionEditViewModel: ViewModelType {
     
     let id: Int
     
-    init(id: Int){
+    init(id: Int, repository: PrivateAnswerRepositoryInterface){
         self.id = id
+        self.repository = repository
     }
     
     func transform(input: Input) -> Output {
@@ -71,7 +73,7 @@ final class QuestionEditViewModel: ViewModelType {
             .asObservable()
             .withUnretained(self)
             .flatMap { onwer, _ in
-                onwer.privateQuestionService.removeAnswer(id: onwer.id)
+                onwer.repository.deleteQuestion(id: onwer.id)
             }
             .withUnretained(self)
             .subscribe { onwer, competable in

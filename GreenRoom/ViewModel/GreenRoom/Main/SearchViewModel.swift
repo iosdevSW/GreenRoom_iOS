@@ -10,7 +10,8 @@ import RxSwift
 
 final class SearchViewModel: ViewModelType {
     
-    private let searchService = SearchService()
+    private let searchRepository: SearchRepositoryInterface
+    
     var disposeBag = DisposeBag()
     
     struct Input {
@@ -23,6 +24,10 @@ final class SearchViewModel: ViewModelType {
     }
     
     private let updateTrigger = BehaviorSubject<Bool>(value: true)
+    
+    init(repository: SearchRepositoryInterface){
+        self.searchRepository = repository
+    }
     
     func transform(input: Input) -> Output {
         
@@ -47,18 +52,14 @@ final class SearchViewModel: ViewModelType {
     private func fetchRecentKeywords() -> Observable<[SearchSectionModel]> {
         return Observable.of([
             .recent(header: "최근 검색어",
-                    items: CoreDataManager.shared.loadFromCoreData(request: RecentSearchKeyword.fetchRequest())
-                .sorted { $0.date! > $1.date! }
-                .prefix(10)
-                .compactMap({ keyword in
-                    keyword.keyword
-                })
+                    items: searchRepository.fetchRecentKeywords()
                     .map { SearchTagItem(text: $0, type: .recent) })
         ])
     }
     
     private func fetchPopularKeyword() -> Observable<[SearchSectionModel]> {
-        return searchService.fetchPopularKeywords().map { keywords in
+        
+        return searchRepository.fetchPopularKeywords().map { keywords in
             return [SearchSectionModel.popular(header: "인기 검색어",items: keywords.map { SearchSectionModel.Item(text: $0, type: .popular) })]
         }
     }

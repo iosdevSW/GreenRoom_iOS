@@ -96,7 +96,7 @@ final class PrivateAnswerViewController: BaseViewController {
     override func configureUI() {
         super.configureUI()
         
-        self.keywordView = KeywordRegisterView(viewModel: RegisterKeywordViewModel(id: viewModel.id, answerType: .private))
+        self.keywordView = KeywordRegisterView(viewModel: RegisterKeywordViewModel(id: viewModel.id, answerType: .private, repository: RegisterKeywordRepository()))
         
         let headerHeight = UIScreen.main.bounds.height * 0.3
         
@@ -153,13 +153,17 @@ final class PrivateAnswerViewController: BaseViewController {
                 
             }).disposed(by: disposeBag)
         
+        let question = answerTextView.rx.didEndEditing
+            .asObservable()
+            .withLatestFrom(answerTextView.rx.text.orEmpty.asObservable())
+            .distinctUntilChanged()
+            .filter { !$0.isEmpty }
+
         let input = PrivateAnswerViewModel.Input(
-            text: answerTextView.rx.text.orEmpty.asObservable(),
-            endEditingTrigger: self.answerTextView.rx.didEndEditing.asObservable(),
+            text: question,
             keywords: keywordView.output.registeredKeywords.asObservable(),
             deleteButtonTrigger: deleteButton.rx.tap.flatMap { self.showAlert(title: "질문 삭제", message: "마이질문을 삭제하시겠습니까?\n한 번 삭제 후 되돌릴 수 없습니다.")},
             doneButtonTrigger: self.doneButton.rx.tap.asObservable())
-        
         
         doneButton.rx.tap
             .withUnretained(self)
@@ -192,8 +196,8 @@ final class PrivateAnswerViewController: BaseViewController {
         output.successMessage
             .withUnretained(self)
             .emit(onNext: { onwer, message in
-                let alert = onwer.comfirmAlert(title: "등록 완료", subtitle: message) { _ in
-                    onwer.dismiss(animated: true)
+                let alert = onwer.comfirmAlert(title: "등록 완료", subtitle: message) { [weak self] _ in
+                    self?.navigationController?.popViewController(animated: true)
                 }
                 onwer.present(alert, animated: true)
             }).disposed(by: disposeBag)

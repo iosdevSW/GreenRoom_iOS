@@ -70,11 +70,11 @@ class GreenRoomViewController: BaseViewController {
         self.configureNavigationBar()
     }
     
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        
-        self.hideTabbar()
-    }
+//    override func viewDidDisappear(_ animated: Bool) {
+//        super.viewDidDisappear(animated)
+//
+//        self.hideTabbar()
+//    }
     
     override func viewWillLayoutSubviews() {
         self.underline.setGradient(
@@ -99,7 +99,7 @@ class GreenRoomViewController: BaseViewController {
             nextButtonTrigger: self.nextButtonTrigger.asObservable(),
             prevButtonTrigger: self.prevButtonTrigger.asObservable()
         )
-
+        
         let output = self.viewModel.transform(input: input)
         
         output.greenroom.bind(to: collectionView.rx.items(dataSource: dataSource)).disposed(by: disposeBag)
@@ -109,31 +109,36 @@ class GreenRoomViewController: BaseViewController {
             
             switch item {
             case .filtering(interest: let category):
-                let viewModel = FilteringViewModel(mode: .filter(id: category.rawValue), publicQuestionService: PublicQuestionService())
+                let viewModel = FilteringViewModel(
+                    mode: .filter(id: category.rawValue),
+                    fileringRepository: FilteringRepository())
                 let vc = FilteringQuestionViewController(viewModel: viewModel)
                 self.navigationController?.pushViewController(vc, animated: true)
             case .popular(question: let question):
-                let vc = PublicAnswerListViewController(viewModel: PublicAnswerViewModel(id: question.id,
-                                                                                         scrapService: ScrapService(),
-                                                                                         publicQuestionService: PublicQuestionService()))
+                let vc = PublicAnswerListViewController(viewModel: PublicAnswerViewModel(
+                    id: question.id,
+                    scrapRepository: ScrapRepository(),
+                    detailGreenRoomRepository: DetailGreenRoomRepository()))
                 self.navigationController?.pushViewController(vc, animated: true)
             case .recent(question: let question):
-                let vc = PublicAnswerListViewController(viewModel: PublicAnswerViewModel(id: question.id,
-                                                                                         scrapService: ScrapService(),
-                                                                                         publicQuestionService: PublicQuestionService()))
+                let vc = PublicAnswerListViewController(viewModel: PublicAnswerViewModel(
+                    id: question.id,
+                    scrapRepository: ScrapRepository(),
+                    detailGreenRoomRepository: DetailGreenRoomRepository()))
                 self.navigationController?.pushViewController(vc, animated: true)
             case .MyGreenRoom(question: let question):
                 guard let id = question.id else { return }
-                let vc = PublicAnswerListViewController(
-                    viewModel: PublicAnswerViewModel(
-                        id: id,
-                        scrapService: ScrapService(),
-                        publicQuestionService: PublicQuestionService()
-                    )
-                )
+                let vc = PublicAnswerListViewController(viewModel: PublicAnswerViewModel(
+                    id: id,
+                    scrapRepository: ScrapRepository(),
+                    detailGreenRoomRepository: DetailGreenRoomRepository()))
                 self.navigationController?.pushViewController(vc, animated: true)
             case .MyQuestionList(question: let question):
-                let vc = PrivateAnswerViewController(viewModel: PrivateAnswerViewModel(id: question.id))
+                let vc = PrivateAnswerViewController(
+                    viewModel:
+                        PrivateAnswerViewModel(
+                            id: question.id,
+                            repository: PrivateAnswerRepository()))
                 self.navigationController?.pushViewController(vc, animated: true)
             }
         }).disposed(by: disposeBag)
@@ -159,12 +164,13 @@ class GreenRoomViewController: BaseViewController {
         }).disposed(by: disposeBag)
         
         searchButton.rx.tap.subscribe(onNext: {
-            let vc = GreenRoomSearchViewController(viewModel: SearchViewModel())
+            let vc = GreenRoomSearchViewController(viewModel: SearchViewModel(repository: SearchRepository()))
             self.navigationController?.pushViewController(vc, animated: true)
         }).disposed(by: disposeBag)
         
         bookmarkButton.rx.tap.subscribe(onNext: {
-            let vc = ScrapedQuestionViewController(viewModel: ScrapViewModel())
+            let viewModel = ScrapViewModel(scrapRepositry: ScrapRepository())
+            let vc = ScrapedQuestionViewController(viewModel: viewModel)
             self.navigationController?.pushViewController(vc, animated: true)
         }).disposed(by: disposeBag)
     }
@@ -221,7 +227,7 @@ class GreenRoomViewController: BaseViewController {
 //MARK: - collectionView
 extension GreenRoomViewController {
     private func configureCollecitonView() {
-
+        
         collectionView.backgroundColor = .white
         collectionView.register(GRFilteringCell.self, forCellWithReuseIdentifier: GRFilteringCell.reuseIdentifier)
         collectionView.register(PopularQuestionCell.self, forCellWithReuseIdentifier: PopularQuestionCell.reuseIdentifer)
@@ -483,11 +489,12 @@ extension GreenRoomViewController: RecentHeaderDelegate {
         
         switch type {
         case .recent:
-            let vc = RecentPublicQuestionsViewController(viewModel: RecentPublicQuestionsViewModel())
+            let vc = RecentPublicQuestionsViewController(viewModel: RecentPublicQuestionsViewModel(repository: RecentPublicQuestionRepository()))
             self.navigationController?.pushViewController(vc, animated: true)
         case .MyQuestionList:
-            let vc = RecentPublicQuestionsViewController(viewModel: RecentPublicQuestionsViewModel())
-            self.navigationController?.pushViewController(vc, animated: true)
+            return
+//            let vc = RecentPublicQuestionsViewController(viewModel: RecentPublicQuestionsViewModel())
+//            self.navigationController?.pushViewController(vc, animated: true)
         default:
             return
         }

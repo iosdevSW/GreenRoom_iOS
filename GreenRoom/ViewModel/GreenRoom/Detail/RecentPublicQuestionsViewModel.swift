@@ -10,7 +10,7 @@ import RxSwift
 
 final class RecentPublicQuestionsViewModel: ViewModelType {
     
-    private var publicQuestionService = PublicQuestionService()
+    private let repository: RecentPublicQuestionRepositoryInterface
     
     var disposeBag = DisposeBag()
     
@@ -20,9 +20,13 @@ final class RecentPublicQuestionsViewModel: ViewModelType {
         let recent: Observable<[GreenRoomSectionModel]>
     }
     
+    init(repository: RecentPublicQuestionRepositoryInterface) {
+        self.repository = repository
+    }
+    
     func transform(input: Input) -> Output {
         
-        let recent = publicQuestionService.fetchRecentPublicQuestions()
+        let recent = repository.fetchRecentPublicQuestions()
             .map { questions in
                 [GreenRoomSectionModel.recent(
                     items: questions.map{ .recent(question: $0) } )

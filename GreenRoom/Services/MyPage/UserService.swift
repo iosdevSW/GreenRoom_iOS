@@ -36,65 +36,50 @@ final class UserService {
 //MARK: - /api/users/profile-image
 extension UserService {
     
-    func updateProfileImage(image: UIImage?) -> Single<Bool> {
-        guard let imageData = convertImage(image: image) else { return Single.just(false) }
-        
-        let param = ["profileImage": "user-profile-image.\(imageData.description)"]
-        
-        return self.fetchPresignedURL(parameters: param)
-            .flatMap { self.uploadImage(url: $0, imageData: imageData.data) }
-    }
+//    func updateProfileImage(image: UIImage?) -> Single<Bool> {
+//        guard let imageData = convertImage(image: image) else { return Single.just(false) }
+//        
+//        let param = ["profileImage": "user-profile-image.\(imageData.description)"]
+//        
+//        return self.fetchPresignedURL(parameters: param)
+//            .flatMap { self.uploadImage(url: $0, imageData: imageData.data) }
+//    }
     
-    private func uploadImage(url: String, imageData: Data) -> Single<Bool> {
-        
-        return Single.create { emitter in
-            AF.upload(imageData, to: url, method: .put).response { response in
-                switch response.result {
-                case .success(_):
-                    print("DEBUG: image upload success with AWS S3")
-                    emitter(.success(true))
-                case .failure(let error):
-                    emitter(.failure(error))
-                }
-            }
-            return Disposables.create()
-        }
-    }
+//    private func uploadImage(url: String, imageData: Data) -> Single<Bool> {
+//        
+//        return Single.create { emitter in
+//            AF.upload(imageData, to: url, method: .put).response { response in
+//                switch response.result {
+//                case .success(_):
+//                    print("DEBUG: image upload success with AWS S3")
+//                    emitter(.success(true))
+//                case .failure(let error):
+//                    emitter(.failure(error))
+//                }
+//            }
+//            return Disposables.create()
+//        }
+//    }
     
-    private func fetchPresignedURL(parameters: [String: String]) -> Single<String> {
-        return Single.create { emitter in
-            AF.request(Constants.baseURL + "/api/users/profile-image",
-                       method: .put,
-                       parameters: parameters,
-                       encoder: .json,
-                       interceptor: AuthManager())
-            .validate(statusCode: 200..<300)
-            .responseDecodable(of: PresignedURL.self) { response in
-                switch response.result {
-                case .success(let url):
-                    emitter(.success(url.profileImage))
-                case .failure(let error):
-                    emitter(.failure(error))
-                }
-            }
-            return Disposables.create()
-        }
-    }
-    
-    private func convertImage(image: UIImage?) -> ProfileImageType? {
-        if let jpegData = image?.jpegData(compressionQuality: 1.0) {
-            print("jpegData")
-            return .JPEG(image: jpegData)
-            
-        } else if let pngData = image?.pngData() {
-            print("DEBUG: convent error to JPEG")
-            return .PNG(image: pngData)
-        } else {
-            print("nil")
-            return nil
-        }
-        
-    }
+//    private func fetchPresignedURL(parameters: [String: String]) -> Single<String> {
+//        return Single.create { emitter in
+//            AF.request(Constants.baseURL + "/api/users/profile-image",
+//                       method: .put,
+//                       parameters: parameters,
+//                       encoder: .json,
+//                       interceptor: AuthManager())
+//            .validate(statusCode: 200..<300)
+//            .responseDecodable(of: PresignedURL.self) { response in
+//                switch response.result {
+//                case .success(let url):
+//                    emitter(.success(url.profileImage))
+//                case .failure(let error):
+//                    emitter(.failure(error))
+//                }
+//            }
+//            return Disposables.create()
+//        }
+//    }
 }
 
 //MARK: - update user info

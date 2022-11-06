@@ -12,7 +12,7 @@ import Kingfisher
 
 protocol ProfileCellDelegate: AnyObject {
     func didTapEditProfileImage()
-    func didTapEditProfileInfo()
+    func didTapEditProfileInfo(name: String)
 }
 
 final class ProfileCell: BaseCollectionViewCell {
@@ -23,11 +23,7 @@ final class ProfileCell: BaseCollectionViewCell {
     weak var delegate: ProfileCellDelegate?
     
     var user: User? {
-        didSet {
-            DispatchQueue.main.async {
-                self.configure()
-            }
-        }
+        didSet { self.configure() }
     }
     
     private var editIconView = UIImageView().then {
@@ -132,6 +128,7 @@ final class ProfileCell: BaseCollectionViewCell {
     }
     
     @objc func didTapEditProfileInfo(){
-        delegate?.didTapEditProfileInfo()
+        guard let name = user?.name else { return }
+        delegate?.didTapEditProfileInfo(name: name)
     }
 }

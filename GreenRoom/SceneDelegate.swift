@@ -46,7 +46,7 @@ extension SceneDelegate {
     private func createCustomTabbar() -> MainTabbarController {
         let mainTabbarController = MainTabbarController()
         
-        let greenRoomController = self.createNavigationController(viewController: GreenRoomViewController(viewModel: MainGreenRoomViewModel()),
+        let greenRoomController = self.createNavigationController(viewController: GreenRoomViewController(viewModel: MainGreenRoomViewModel(greenRoomRepositry: MainGreenRoomRepositry())),
                                                                   title: "그린룸",
                                                                   image: UIImage(named: "greenroom"),
                                                                   tag: 1)
@@ -57,11 +57,13 @@ extension SceneDelegate {
                                                                 image: UIImage(named: "keyword"),
                                                                 tag: 2)
       
-        let mypageController = self.createNavigationController(viewController:
-                                                                MyPageViewController(viewModel: MyPageViewModel()),
-                                                               title: "마이페이지",
-                                                               image: UIImage(named: "mypage"),
-                                                               tag: 3)
+        let mypageController = self.createNavigationController(
+            viewController:
+                MyPageViewController(viewModel: MyPageViewModel(repository: MyPageRepository())),
+            title: "마이페이지",
+            image: UIImage(named: "mypage"),
+            tag: 3)
+        
         mainTabbarController.tabBar.tintColor = .darken
         mainTabbarController.tabBar.unselectedItemTintColor = .customGray
         mainTabbarController.viewControllers = [keywordController,greenRoomController,mypageController]

@@ -13,7 +13,7 @@ final class DetailPublicAnswerViewController: BaseViewController {
     
     private let viewModel: DetailPublicAnswerViewModel
     
-    private lazy var output = viewModel.transform(input: DetailPublicAnswerViewModel.Input())
+    private lazy var output = viewModel.transform(input: DetailPublicAnswerViewModel.Input(trigger: self.rx.viewWillAppear.asObservable()))
     
     private lazy var scrollView = UIScrollView()
     private lazy var headerView = AnswerHeaderView(frame: .zero)

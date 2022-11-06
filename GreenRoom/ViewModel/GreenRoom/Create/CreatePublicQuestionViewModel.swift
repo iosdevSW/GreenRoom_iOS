@@ -12,7 +12,7 @@ import RxCocoa
 
 final class CreatePublicQuestionViewModel: ViewModelType {
     
-    private let publicQuestionService = PublicQuestionService()
+    private let applyRepositry: ApplyQuestionRepositoryInterface
     
     var disposeBag = DisposeBag()
     
@@ -40,6 +40,10 @@ final class CreatePublicQuestionViewModel: ViewModelType {
     
     let categories: Observable<[CreateSection]> = .of([CreateSection(items: Constants.categories)])
     
+    init(repositry: ApplyQuestionRepositoryInterface) {
+        self.applyRepositry = repositry
+    }
+    
     func transform(input: Input) -> Output {
         
         input.dateApplyTrigger
@@ -53,17 +57,15 @@ final class CreatePublicQuestionViewModel: ViewModelType {
         )
         .withUnretained(self)
         .flatMap { (owner, element) in
-            owner.publicQuestionService.uploadQuestionList(
+            owner.applyRepositry.applyPublicQuestion(
                 categoryId: element.0,
                 question: element.1,
                 expiredAt: owner.getExpiredDate(minutes: element.2)
             )
         }
         .withUnretained(self)
-            .subscribe { [weak self] _ in
-                self?.successMessage.accept("질문 작성이 완료되었어요!")
-            } onError: { [weak self] error in
-                self?.failMessage.accept(error.localizedDescription)
+            .subscribe { onwer, state in
+                state ? onwer.successMessage.accept("질문 작성이 완료되었어요!") : onwer.failMessage.accept("글자수는 50자로 제한되어 있습니다.")
             }.disposed(by: disposeBag)
         
         let isValid = Observable.combineLatest(
