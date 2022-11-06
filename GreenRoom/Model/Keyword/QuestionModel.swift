@@ -52,6 +52,14 @@ struct GroupQuestion: Codable {
     let keywords: [String]
 }
 
+//참여한 그린룸 질문 모델
+struct KPGreenRoomQuestion: Codable {
+    let id: Int
+    let categoryName: String
+    let profileImage: String
+    let question: String
+}
+
 //키워드 연습용
 struct KPQuestion {
     let id: Int
@@ -63,6 +71,8 @@ struct KPQuestion {
     var sttAnswer: String?
     var persent: CGFloat?
 }
+
+
 
 func parsingKPQuestion(_ groupQuestion: GroupQuestion) -> KPQuestion {
     return KPQuestion(id: groupQuestion.id,

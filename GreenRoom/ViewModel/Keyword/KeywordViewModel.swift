@@ -26,8 +26,6 @@ class KeywordViewModel {
     
     var keywordOnOff = BehaviorRelay<Bool>(value: true) // 키워드 On / Off 여부
     
-    var recordingType: RecordingType = .camera // 카메라 on / off 여부
-    
     var goalPersent = BehaviorRelay<CGFloat>(value: 0) // 전체 질문 키워드 매칭률 목표 퍼센트
     
     var totalPersent = BehaviorRelay<CGFloat>(value: 0) // 전체 질문 키워드 매칭률 퍼센트
@@ -36,22 +34,39 @@ class KeywordViewModel {
     
     var STTResult = BehaviorRelay<[String]>(value: [])
     
+    var recordingType: RecordingType = .camera // 카메라 on / off 여부
+    
+    var hasNextPage = BehaviorRelay<Bool>(value: false) // 다음 페이지 여부
+    
+    var isPaging = false //현재 페이징중인지 여부
+    
     init(){
-        selectedQuestions.subscribe(onNext: { items in
-            self.selectedQuestionDetailModel.onNext([KPDetailModel(items: items)])
-        }).disposed(by: disposeBag)
+        selectedQuestions
+            .subscribe(onNext: { items in
+                self.selectedQuestionDetailModel.onNext([KPDetailModel(items: items)])
+            }).disposed(by: disposeBag)
         
         groupInfo
-            .map { $0?.groupQuestions.map { parsingKPQuestion($0)}}
+            .map { $0?.groupQuestions.map { parsingKPQuestion($0) } }
             .subscribe(onNext: { [weak self] questions in
                 if let questions = questions {
-                    
                     self?.groupQuestions.accept(questions)
                 } else {
                     self?.groupQuestions.accept([])
                 }
             })
             .disposed(by: disposeBag)
+        
+        groupQuestions
+            .map{ (max(($0.count-1), 0) / 20)}
+            .bind(onNext: { currentPage in
+                guard let totalPage = self.groupInfo.value?.totalPages else { return }
+                if currentPage+1 == totalPage {
+                    self.hasNextPage.accept(false)
+                } else {
+                    self.hasNextPage.accept(true)
+                }
+            }).disposed(by: disposeBag)
     }
     
     func updateGroupQuestions() {
@@ -61,8 +76,33 @@ class KeywordViewModel {
         }
         
         KeywordPracticeService().fetchGroupQuestions(groupId: groupID)
+            .take(1)
             .bind(to: self.groupInfo)
             .disposed(by: disposeBag)
+    }
+    
+    func pagingGroupQuestion() {
+        self.isPaging = true
+        guard let groupId = self.selectedGroupID.value else {
+            groupInfo.accept(nil)
+            return
+        }
+        
+        let nextPage = max((self.groupQuestions.value.count - 1), 0) / 20
+        KeywordPracticeService().fetchGroupQuestions(groupId: groupId, page: nextPage+1)
+            .take(1)
+            .bind(onNext: { test in
+                print(test.questionCnt)
+            })
+        KeywordPracticeService().fetchGroupQuestions(groupId: groupId, page: nextPage+1)
+            .take(1)
+            .map { $0.groupQuestions.map { parsingKPQuestion($0) } }
+            .bind(onNext: { questions in
+                var tempQuestions = self.groupQuestions.value
+                tempQuestions.append(contentsOf: questions)
+                self.groupQuestions.accept(tempQuestions)
+                self.isPaging = false
+            }).disposed(by: disposeBag)
     }
     
     func resetData() {

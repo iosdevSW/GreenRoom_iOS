@@ -41,7 +41,6 @@ final class FilterView: UIView {
     }
     //MARK: - Bind
     private func bind() {
-        
         filterButton.rx.tap.subscribe(onNext: {
             NotificationCenter.default.post(name: .categoryObserver, object: nil, userInfo: ["viewModel": self.viewModel])
         }).disposed(by: disposeBag)

@@ -66,7 +66,7 @@ final class KPMainViewController: BaseViewController {
         
         participatedQuestionsButton.rx.tap
             .bind(onNext: { [weak self] _ in
-                let vc = KPGreenRoomQuestionsViewController()
+                let vc = KPGreenRoomQuestionsViewController(viewModel: KPGreenRoomViewModel())
                 self?.navigationController?.pushViewController(vc, animated: true)
             }).disposed(by: disposeBag)
         
