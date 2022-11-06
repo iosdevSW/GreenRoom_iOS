@@ -20,7 +20,7 @@ protocol ViewModelType {
 
 final class CreateViewModel: ViewModelType {
     
-    private let myListService = PrivateQuestionService()
+    private let applyRepositry: ApplyQuestionRepositoryInterface
     
     var disposeBag = DisposeBag()
     
@@ -41,6 +41,10 @@ final class CreateViewModel: ViewModelType {
     
     let categories = Observable.of(Constants.categories)
     
+    init(repository: ApplyQuestionRepositoryInterface) {
+        self.applyRepositry = repository
+    }
+    
     func transform(input: Input) -> Output {
         
         input.submit.withLatestFrom(
@@ -48,7 +52,7 @@ final class CreateViewModel: ViewModelType {
         )
         .withUnretained(self)
         .flatMapLatest { (owner, element) in
-            owner.myListService.uploadQuestion(categoryId: Int(element.1)!, question: element.0)
+            owner.applyRepositry.applyPrivateQuestion(cateogryId: Int(element.1)!, question: element.0) 
         }
         .withUnretained(self)
         .subscribe { onwer, state in

@@ -9,7 +9,7 @@ import RxSwift
 
 final class EditProfileViewModel: ViewModelType {
 
-    private let userService: UserService
+    private let repository: EditProfileRepositoryInterface
     
     struct Input{
         let trigger: Observable<Bool>
@@ -22,9 +22,11 @@ final class EditProfileViewModel: ViewModelType {
     }
 
     var disposeBag = DisposeBag()
+    private let name: String
     
-    init(userService: UserService){
-        self.userService = userService
+    init(name: String, repository: EditProfileRepositoryInterface){
+        self.name = name
+        self.repository = repository
     }
     
     func transform(input: Input) -> Output {
@@ -33,21 +35,13 @@ final class EditProfileViewModel: ViewModelType {
             .flatMap { flag in
                 return AuthService.shared.logout()
             }
-        let userName = input.trigger
-            .withUnretained(self)
-            .flatMap { onwer, _ in
-                onwer.userService.fetchUserInfo()
-            }.map { $0.name }
-        
-        return Output(userName: userName, logOutState: logout)
+        return Output(userName: .just(self.name), logOutState: logout)
     }
     
     func updateUserInfo(nickName: String) {
-        let parameter = [ "name" : nickName ]
-
-        self.userService.updateUserInfo(parameter: parameter) { _ in
-            print("업데이트에 성공했습니다.")
-        }
-
+        self.repository.updateNickname(name: nickName)
+            .subscribe(onNext: { _ in
+                print("업데이트에 성공했습니다.")
+            }).disposed(by: disposeBag)
     }
 }

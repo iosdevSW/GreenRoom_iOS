@@ -55,7 +55,8 @@ final class RecentPublicQuestionsViewController: BaseViewController {
             .withUnretained(self)
             .subscribe(onNext: { onwer, item in
                 if case .recent(let question) = item {
-                    let viewModel = PublicAnswerViewModel(id: question.id, scrapRepository: ScrapRepository(), publicQuestionService: PublicQuestionService())
+                    
+                    let viewModel = PublicAnswerViewModel(id: question.id, scrapRepository: ScrapRepository(), detailGreenRoomRepository: DetailGreenRoomRepository())
 
                     let vc = PublicAnswerListViewController(viewModel: viewModel)
                     onwer.navigationController?.pushViewController(vc, animated: false)

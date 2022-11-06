@@ -26,12 +26,10 @@ final class NetworkManager: Provider {
             AFRequest
                 .validate(statusCode: 200..<300)
                 .responseData(completionHandler: { response in
-                    print(response)
                 switch response.result {
                 case .success(let result):
                     single(.success(result))
                 case .failure(let error):
-                    print(error.localizedDescription)
                     single(.failure(error))
                 }
             })
@@ -39,25 +37,18 @@ final class NetworkManager: Provider {
         }
     }
     
-    /**
-     data와 http status코드를 확인
-     URLSession에서 나온 data, response, error를 파라미터로 가짐.
-     */
-    private func verify(data: Data?, urlResponse: HTTPURLResponse, error: Error?) -> Result<Data, Error> {
-        
-        switch urlResponse.statusCode {
-        case 200...299:
-            if let data = data {
-                return .success(data)
-            } else {
-                return .failure(APIError.unknown)
+    func upload(url: String, data: Data) -> Single<Data> {
+        return Single.create { single in
+            AF.upload(data, to: url, method: .put).response { response in
+                switch response.result {
+                case .success(let data):
+                    single(.success(data ?? Data()))
+                    print("image upload success with AWS S3")
+                case .failure(let error):
+                    single(.failure(error))
+                }
             }
-        case 400...499:
-            return .failure(APIError.badRequest(error?.localizedDescription))
-        case 500...599:
-            return .failure(APIError.serverError(error?.localizedDescription))
-        default:
-            return .failure(APIError.unknown)
+            return Disposables.create()
         }
     }
 }

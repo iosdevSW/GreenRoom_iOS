@@ -121,8 +121,10 @@ final class EditProfileInfoViewController: BaseViewController {
             }).disposed(by: disposeBag)
         
         output.logOutState
-            .subscribe(onNext: { _ in
+            .subscribe(onNext: { [weak self] _ in
+                guard let self else { return }
                 let vc = LoginViewController(loginViewModel: LoginViewModel())
+                self.hideTabbar()
                 self.navigationController?.setViewControllers([vc], animated: false)
             }).disposed(by: disposeBag)
     }

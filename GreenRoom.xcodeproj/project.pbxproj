@@ -170,7 +170,6 @@
 		E4A2E9F828EABE1500E7F5C0 /* PublicAnswerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A2E9F728EABE1500E7F5C0 /* PublicAnswerCell.swift */; };
 		E4A2E9FA28EACBCC00E7F5C0 /* PrivateAnswer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A2E9F928EACBCC00E7F5C0 /* PrivateAnswer.swift */; };
 		E4A2E9FC28EACCBA00E7F5C0 /* AddAnswerQuestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A2E9FB28EACCBA00E7F5C0 /* AddAnswerQuestion.swift */; };
-		E4C4C4AE28BCA53D008826AB /* SearchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4C4C4AD28BCA53D008826AB /* SearchService.swift */; };
 		E4C4C4BC28BD1172008826AB /* MainTabbarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4C4C4BB28BD1172008826AB /* MainTabbarController.swift */; };
 		E4C4C4BE28BD1ACD008826AB /* CreatePopOverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4C4C4BD28BD1ACD008826AB /* CreatePopOverViewController.swift */; };
 		E4C4C4C028BDE8AB008826AB /* CreateGreenRoomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4C4C4BF28BDE8AB008826AB /* CreateGreenRoomViewController.swift */; };
@@ -186,6 +185,22 @@
 		E4EF361828C4BF0400746050 /* RecentQuestionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4EF361728C4BF0400746050 /* RecentQuestionCell.swift */; };
 		E4EF361A28C4EA3E00746050 /* RecentPageFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4EF361928C4EA3E00746050 /* RecentPageFooterView.swift */; };
 		E4EF915028F424E000052796 /* AnswerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4EF914F28F424E000052796 /* AnswerType.swift */; };
+		E4EFC199291798A500B023F6 /* SearchRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4EFC198291798A500B023F6 /* SearchRequest.swift */; };
+		E4EFC19B291799ED00B023F6 /* SearchRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4EFC19A291799ED00B023F6 /* SearchRepository.swift */; };
+		E4EFC19D29179DD600B023F6 /* MainGreenRoomRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4EFC19C29179DD600B023F6 /* MainGreenRoomRepository.swift */; };
+		E4EFC1A029179FAB00B023F6 /* GreenRoomRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4EFC19F29179FAB00B023F6 /* GreenRoomRequest.swift */; };
+		E4EFC1A42917A66000B023F6 /* ApplyQuestionRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4EFC1A32917A66000B023F6 /* ApplyQuestionRepository.swift */; };
+		E4EFC1A62917A7FD00B023F6 /* PrivateQuesitonRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4EFC1A52917A7FD00B023F6 /* PrivateQuesitonRequest.swift */; };
+		E4EFC1A82917AA2E00B023F6 /* DetailGreenRoomRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4EFC1A72917AA2E00B023F6 /* DetailGreenRoomRepository.swift */; };
+		E4EFC1AA2917AD1900B023F6 /* FilteringRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4EFC1A92917AD1900B023F6 /* FilteringRepository.swift */; };
+		E4EFC1AC2917AEA700B023F6 /* RecentPublicQuestionRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4EFC1AB2917AEA700B023F6 /* RecentPublicQuestionRepository.swift */; };
+		E4EFC1AE2917B1ED00B023F6 /* DetailPublicAnswerRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4EFC1AD2917B1ED00B023F6 /* DetailPublicAnswerRepository.swift */; };
+		E4EFC1B02917B38100B023F6 /* ApplyPublicAnswerRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4EFC1AF2917B38100B023F6 /* ApplyPublicAnswerRepository.swift */; };
+		E4EFC1B32917C2D400B023F6 /* UserRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4EFC1B22917C2D400B023F6 /* UserRequest.swift */; };
+		E4EFC1B52917C3B000B023F6 /* MyPageRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4EFC1B42917C3B000B023F6 /* MyPageRepository.swift */; };
+		E4EFC1B72917D62700B023F6 /* EditProfileRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4EFC1B62917D62700B023F6 /* EditProfileRepository.swift */; };
+		E4EFC1B92917DBED00B023F6 /* PrivateAnswerRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4EFC1B82917DBED00B023F6 /* PrivateAnswerRepository.swift */; };
+		E4EFC1BB2917E08100B023F6 /* RegisterKeywordRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4EFC1BA2917E08100B023F6 /* RegisterKeywordRepository.swift */; };
 		E4F7D32928FDAAAB003C0A13 /* DetailPublicAnswerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4F7D32828FDAAAB003C0A13 /* DetailPublicAnswerViewController.swift */; };
 		E4F7D32B28FDACAB003C0A13 /* DetailPublicAnswerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4F7D32A28FDACAB003C0A13 /* DetailPublicAnswerViewModel.swift */; };
 		E4F8888B28E5E36300840101 /* PopularPublicQuestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4F8888A28E5E36300840101 /* PopularPublicQuestion.swift */; };
@@ -363,7 +378,6 @@
 		E4A2E9F728EABE1500E7F5C0 /* PublicAnswerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicAnswerCell.swift; sourceTree = "<group>"; };
 		E4A2E9F928EACBCC00E7F5C0 /* PrivateAnswer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivateAnswer.swift; sourceTree = "<group>"; };
 		E4A2E9FB28EACCBA00E7F5C0 /* AddAnswerQuestion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddAnswerQuestion.swift; sourceTree = "<group>"; };
-		E4C4C4AD28BCA53D008826AB /* SearchService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchService.swift; sourceTree = "<group>"; };
 		E4C4C4BB28BD1172008826AB /* MainTabbarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabbarController.swift; sourceTree = "<group>"; };
 		E4C4C4BD28BD1ACD008826AB /* CreatePopOverViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePopOverViewController.swift; sourceTree = "<group>"; };
 		E4C4C4BF28BDE8AB008826AB /* CreateGreenRoomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateGreenRoomViewController.swift; sourceTree = "<group>"; };
@@ -381,6 +395,22 @@
 		E4EF362228C5ADA300746050 /* FAQ.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FAQ.swift; sourceTree = "<group>"; };
 		E4EF362328C5ADA300746050 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		E4EF914F28F424E000052796 /* AnswerType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnswerType.swift; sourceTree = "<group>"; };
+		E4EFC198291798A500B023F6 /* SearchRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchRequest.swift; sourceTree = "<group>"; };
+		E4EFC19A291799ED00B023F6 /* SearchRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchRepository.swift; sourceTree = "<group>"; };
+		E4EFC19C29179DD600B023F6 /* MainGreenRoomRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainGreenRoomRepository.swift; sourceTree = "<group>"; };
+		E4EFC19F29179FAB00B023F6 /* GreenRoomRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GreenRoomRequest.swift; sourceTree = "<group>"; };
+		E4EFC1A32917A66000B023F6 /* ApplyQuestionRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplyQuestionRepository.swift; sourceTree = "<group>"; };
+		E4EFC1A52917A7FD00B023F6 /* PrivateQuesitonRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivateQuesitonRequest.swift; sourceTree = "<group>"; };
+		E4EFC1A72917AA2E00B023F6 /* DetailGreenRoomRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailGreenRoomRepository.swift; sourceTree = "<group>"; };
+		E4EFC1A92917AD1900B023F6 /* FilteringRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilteringRepository.swift; sourceTree = "<group>"; };
+		E4EFC1AB2917AEA700B023F6 /* RecentPublicQuestionRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentPublicQuestionRepository.swift; sourceTree = "<group>"; };
+		E4EFC1AD2917B1ED00B023F6 /* DetailPublicAnswerRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailPublicAnswerRepository.swift; sourceTree = "<group>"; };
+		E4EFC1AF2917B38100B023F6 /* ApplyPublicAnswerRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplyPublicAnswerRepository.swift; sourceTree = "<group>"; };
+		E4EFC1B22917C2D400B023F6 /* UserRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRequest.swift; sourceTree = "<group>"; };
+		E4EFC1B42917C3B000B023F6 /* MyPageRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageRepository.swift; sourceTree = "<group>"; };
+		E4EFC1B62917D62700B023F6 /* EditProfileRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileRepository.swift; sourceTree = "<group>"; };
+		E4EFC1B82917DBED00B023F6 /* PrivateAnswerRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivateAnswerRepository.swift; sourceTree = "<group>"; };
+		E4EFC1BA2917E08100B023F6 /* RegisterKeywordRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterKeywordRepository.swift; sourceTree = "<group>"; };
 		E4F7D32828FDAAAB003C0A13 /* DetailPublicAnswerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailPublicAnswerViewController.swift; sourceTree = "<group>"; };
 		E4F7D32A28FDACAB003C0A13 /* DetailPublicAnswerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailPublicAnswerViewModel.swift; sourceTree = "<group>"; };
 		E4F8888A28E5E36300840101 /* PopularPublicQuestion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopularPublicQuestion.swift; sourceTree = "<group>"; };
@@ -624,7 +654,7 @@
 		DBD0821B2897E6EE0092241F /* GreenRoom */ = {
 			isa = PBXGroup;
 			children = (
-				E47EC5F82915511C007C5D5D /* Network */,
+				E4EFC1BC2917E37D00B023F6 /* Domain */,
 				DBBA947F289968CD00264405 /* Custom */,
 				E46539DA28ACD77B00F17A6C /* Utils */,
 				DBD082642897E7840092241F /* Resource */,
@@ -1055,6 +1085,9 @@
 		E47EC5F82915511C007C5D5D /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				E4EFC1B12917C2CE00B023F6 /* User */,
+				E4EFC19E29179F9E00B023F6 /* GreenRoom */,
+				E4EFC1972917989C00B023F6 /* Search */,
 				E47EC602291557C1007C5D5D /* Scrap */,
 				E47EC5F929155124007C5D5D /* Base */,
 			);
@@ -1223,9 +1256,6 @@
 			isa = PBXGroup;
 			children = (
 				E44D507D28BE56A10086C447 /* PrivateQuestionService.swift */,
-				E4EC67AA28E1CDC200469D17 /* PublicQuestionService.swift */,
-				E4C4C4AD28BCA53D008826AB /* SearchService.swift */,
-				E4EC67B428E2063200469D17 /* ScrapRepository.swift */,
 			);
 			path = GreenRoom;
 			sourceTree = "<group>";
@@ -1237,6 +1267,125 @@
 				E4206CD528D5E53C0011E117 /* CreatePublicQuestionViewModel.swift */,
 			);
 			path = Create;
+			sourceTree = "<group>";
+		};
+		E4EFC1972917989C00B023F6 /* Search */ = {
+			isa = PBXGroup;
+			children = (
+				E4EFC198291798A500B023F6 /* SearchRequest.swift */,
+			);
+			path = Search;
+			sourceTree = "<group>";
+		};
+		E4EFC19E29179F9E00B023F6 /* GreenRoom */ = {
+			isa = PBXGroup;
+			children = (
+				E4EFC19F29179FAB00B023F6 /* GreenRoomRequest.swift */,
+				E4EFC1A52917A7FD00B023F6 /* PrivateQuesitonRequest.swift */,
+			);
+			path = GreenRoom;
+			sourceTree = "<group>";
+		};
+		E4EFC1B12917C2CE00B023F6 /* User */ = {
+			isa = PBXGroup;
+			children = (
+				E4EFC1B22917C2D400B023F6 /* UserRequest.swift */,
+			);
+			path = User;
+			sourceTree = "<group>";
+		};
+		E4EFC1BC2917E37D00B023F6 /* Domain */ = {
+			isa = PBXGroup;
+			children = (
+				E4EFC1BD2917E38400B023F6 /* Repository */,
+				E47EC5F82915511C007C5D5D /* Network */,
+			);
+			path = Domain;
+			sourceTree = "<group>";
+		};
+		E4EFC1BD2917E38400B023F6 /* Repository */ = {
+			isa = PBXGroup;
+			children = (
+				E4EFC1C32917E4A700B023F6 /* Apply */,
+				E4EFC1BE2917E3A900B023F6 /* GreenRoom */,
+				E4EC67AA28E1CDC200469D17 /* PublicQuestionService.swift */,
+				E4EFC1C42917E61C00B023F6 /* MyPage */,
+			);
+			path = Repository;
+			sourceTree = "<group>";
+		};
+		E4EFC1BE2917E3A900B023F6 /* GreenRoom */ = {
+			isa = PBXGroup;
+			children = (
+				E4EFC1C22917E42E00B023F6 /* Main */,
+				E4EFC1BF2917E3CC00B023F6 /* Search */,
+				E4EFC1C02917E3D600B023F6 /* Scrap */,
+				E4EFC1C12917E42400B023F6 /* Detail */,
+				E4EFC1C52917E65800B023F6 /* Private */,
+			);
+			path = GreenRoom;
+			sourceTree = "<group>";
+		};
+		E4EFC1BF2917E3CC00B023F6 /* Search */ = {
+			isa = PBXGroup;
+			children = (
+				E4EFC19A291799ED00B023F6 /* SearchRepository.swift */,
+			);
+			path = Search;
+			sourceTree = "<group>";
+		};
+		E4EFC1C02917E3D600B023F6 /* Scrap */ = {
+			isa = PBXGroup;
+			children = (
+				E4EC67B428E2063200469D17 /* ScrapRepository.swift */,
+			);
+			path = Scrap;
+			sourceTree = "<group>";
+		};
+		E4EFC1C12917E42400B023F6 /* Detail */ = {
+			isa = PBXGroup;
+			children = (
+				E4EFC1AB2917AEA700B023F6 /* RecentPublicQuestionRepository.swift */,
+				E4EFC1A72917AA2E00B023F6 /* DetailGreenRoomRepository.swift */,
+				E4EFC1AD2917B1ED00B023F6 /* DetailPublicAnswerRepository.swift */,
+			);
+			path = Detail;
+			sourceTree = "<group>";
+		};
+		E4EFC1C22917E42E00B023F6 /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				E4EFC1A92917AD1900B023F6 /* FilteringRepository.swift */,
+				E4EFC19C29179DD600B023F6 /* MainGreenRoomRepository.swift */,
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
+		E4EFC1C32917E4A700B023F6 /* Apply */ = {
+			isa = PBXGroup;
+			children = (
+				E4EFC1BA2917E08100B023F6 /* RegisterKeywordRepository.swift */,
+				E4EFC1A32917A66000B023F6 /* ApplyQuestionRepository.swift */,
+				E4EFC1AF2917B38100B023F6 /* ApplyPublicAnswerRepository.swift */,
+			);
+			path = Apply;
+			sourceTree = "<group>";
+		};
+		E4EFC1C42917E61C00B023F6 /* MyPage */ = {
+			isa = PBXGroup;
+			children = (
+				E4EFC1B42917C3B000B023F6 /* MyPageRepository.swift */,
+				E4EFC1B62917D62700B023F6 /* EditProfileRepository.swift */,
+			);
+			path = MyPage;
+			sourceTree = "<group>";
+		};
+		E4EFC1C52917E65800B023F6 /* Private */ = {
+			isa = PBXGroup;
+			children = (
+				E4EFC1B82917DBED00B023F6 /* PrivateAnswerRepository.swift */,
+			);
+			path = Private;
 			sourceTree = "<group>";
 		};
 		E4F8888C28E5E4FC00840101 /* Question */ = {
@@ -1379,9 +1528,11 @@
 				DB9D9F4A28E702740061D7DB /* RegisterKeywordViewModel.swift in Sources */,
 				E44D507E28BE56A10086C447 /* PrivateQuestionService.swift in Sources */,
 				E4206CD828D5EE810011E117 /* CreateGRModel.swift in Sources */,
+				E4EFC1B72917D62700B023F6 /* EditProfileRepository.swift in Sources */,
 				E49EF3D928B539FF00358340 /* PopularQuestionCell.swift in Sources */,
 				E461E42F28CE1EBE001EBF74 /* RecentPublicQuestionsViewModel.swift in Sources */,
 				E4A2E9F228EAB7D700E7F5C0 /* PublicAnswerViewModel.swift in Sources */,
+				E4EFC19B291799ED00B023F6 /* SearchRepository.swift in Sources */,
 				DB9CF9BE289E81FE0091B705 /* CateogryCell.swift in Sources */,
 				E46E4BF828DD87B200D1691F /* KeywordCell.swift in Sources */,
 				E46539DC28ACDAD100F17A6C /* SetNotificationRow.swift in Sources */,
@@ -1397,7 +1548,7 @@
 				DBA8ED7828BF7457007526CF /* KPReviewViewController.swift in Sources */,
 				E46E4C0628E14FC500D1691F /* UILabel+.swift in Sources */,
 				E4843D4C28EC60E200329DC4 /* AddPublicAnswerViewController.swift in Sources */,
-				E4C4C4AE28BCA53D008826AB /* SearchService.swift in Sources */,
+				E4EFC1A62917A7FD00B023F6 /* PrivateQuesitonRequest.swift in Sources */,
 				E4647BCA290BAEBE00DBD3EE /* BaseCollectionViewCell.swift in Sources */,
 				E46E4C0428E14FAE00D1691F /* UIViewController+.swift in Sources */,
 				DB9D9F4528E702390061D7DB /* KeywordViewModel.swift in Sources */,
@@ -1405,6 +1556,7 @@
 				E46E4BF628DD76B200D1691F /* UIView+.swift in Sources */,
 				E47D1D2828E9FF43004EE4DE /* PublicAnswerListViewController.swift in Sources */,
 				E46E4BE628DC219600D1691F /* AnswerHeaderView.swift in Sources */,
+				E4EFC1B02917B38100B023F6 /* ApplyPublicAnswerRepository.swift in Sources */,
 				E4C4C4BE28BD1ACD008826AB /* CreatePopOverViewController.swift in Sources */,
 				E40BC6E628B8834100FB557D /* SearchResultHeaderView.swift in Sources */,
 				DB9D9F5328F4498A0061D7DB /* KPQuestionService.swift in Sources */,
@@ -1413,8 +1565,12 @@
 				DB9D9F4F28F436130061D7DB /* KPQuestionEditViewController.swift in Sources */,
 				DBB251EA28D98C7000310820 /* KeywordPracticeService.swift in Sources */,
 				E47EC601291557BC007C5D5D /* ScrapReqeust.swift in Sources */,
+				E4EFC1B52917C3B000B023F6 /* MyPageRepository.swift in Sources */,
 				E4213BE02903A0C2007F0297 /* ProfileImageType.swift in Sources */,
+				E4EFC1AC2917AEA700B023F6 /* RecentPublicQuestionRepository.swift in Sources */,
 				E4460DD328CA01D400AFA108 /* FilteringQuestionViewController.swift in Sources */,
+				E4EFC199291798A500B023F6 /* SearchRequest.swift in Sources */,
+				E4EFC1A42917A66000B023F6 /* ApplyQuestionRepository.swift in Sources */,
 				E4EF361628C4BED700746050 /* GreenRoomSectionHeader.swift in Sources */,
 				DB006B9328C342E200867013 /* KPQuestionsViewController.swift in Sources */,
 				E4A1760A28C63698009D1DFE /* GRFilteringHeaderView.swift in Sources */,
@@ -1424,6 +1580,7 @@
 				E4C4FDB7290E5AFA0050C574 /* FilterMode.swift in Sources */,
 				E47D1D2028E9B4FA004EE4DE /* FileringSectionModel.swift in Sources */,
 				E470539928AB882900884B56 /* SettingRow.swift in Sources */,
+				E4EFC1A82917AA2E00B023F6 /* DetailGreenRoomRepository.swift in Sources */,
 				E4A2E9F428EAB8D000E7F5C0 /* DetailPublicAnswer.swift in Sources */,
 				E40BC6B528B756EE00FB557D /* SearchSectionModel.swift in Sources */,
 				E4647BCC290BAECE00DBD3EE /* BaseCollectionReusableView.swift in Sources */,
@@ -1451,6 +1608,7 @@
 				E4460DD528CA05A100AFA108 /* QuestionByCategoryCell.swift in Sources */,
 				E49CC15628C326DA009216E1 /* EditProfileViewModel.swift in Sources */,
 				DBD082522897E75B0092241F /* MainGreenRoomViewModel.swift in Sources */,
+				E4EFC1B92917DBED00B023F6 /* PrivateAnswerRepository.swift in Sources */,
 				E47EC5FD29155567007C5D5D /* APIError.swift in Sources */,
 				E49EF3DC28B5E9AC00358340 /* GreenRoomSearchViewController.swift in Sources */,
 				E4141ABC28AF528E004D74B3 /* FAQCell.swift in Sources */,
@@ -1464,6 +1622,7 @@
 				E4D49AEC28EF287300CF69B1 /* String+.swift in Sources */,
 				DBA8ED7A28BF8009007526CF /* KPReviewModel.swift in Sources */,
 				E4036A3428ED989600C0F707 /* FilteringQuestion.swift in Sources */,
+				E4EFC1AE2917B1ED00B023F6 /* DetailPublicAnswerRepository.swift in Sources */,
 				DB9D9F4928E702740061D7DB /* PrivateAnswerViewModel.swift in Sources */,
 				E4141ACB28AF79E7004D74B3 /* FAQViewController.swift in Sources */,
 				DB006B8E28C3282700867013 /* KPGroupEditViewController.swift in Sources */,
@@ -1471,6 +1630,7 @@
 				E48F8B4F28C26864007AAF40 /* AuthManager.swift in Sources */,
 				E4206CDA28D623930011E117 /* CustomPopUpDatePickerController.swift in Sources */,
 				E47D1D2A28EA012A004EE4DE /* PublicAnswerMode.swift in Sources */,
+				E4EFC19D29179DD600B023F6 /* MainGreenRoomRepository.swift in Sources */,
 				E46E4BEF28DD732900D1691F /* UIColor+.swift in Sources */,
 				E4206CD428D5E2F90011E117 /* CreateGRHeaderView.swift in Sources */,
 				DBD082602897E7740092241F /* AuthService.swift in Sources */,
@@ -1500,6 +1660,8 @@
 				DB006B8A28C31F4200867013 /* GroupCell.swift in Sources */,
 				E42B42642913A3200033134D /* TimeOutView.swift in Sources */,
 				E461E42228CB1445001EBF74 /* SearchViewModel.swift in Sources */,
+				E4EFC1A029179FAB00B023F6 /* GreenRoomRequest.swift in Sources */,
+				E4EFC1BB2917E08100B023F6 /* RegisterKeywordRepository.swift in Sources */,
 				DB05246928B5FE50003209D4 /* KPPrepareViewController.swift in Sources */,
 				E4A1761428C64B47009D1DFE /* RecentPublicQuestionsViewController.swift in Sources */,
 				DB9D9F5128F444890061D7DB /* QuestionEditViewModel.swift in Sources */,
@@ -1507,6 +1669,7 @@
 				E43D8F58291136D90069BA0C /* UIImage+.swift in Sources */,
 				E40BC69D28B5F35A00FB557D /* SearchWordCell.swift in Sources */,
 				E4A1760F28C64883009D1DFE /* DetailRecentHeaderView.swift in Sources */,
+				E4EFC1B32917C2D400B023F6 /* UserRequest.swift in Sources */,
 				DB797A99289B9BFF00ADF65F /* RegisterNameViewController.swift in Sources */,
 				E40BC6E428B880FE00FB557D /* SearchResultNotFountCell.swift in Sources */,
 				DB9D9F3F28E702200061D7DB /* LoginViewModel.swift in Sources */,
@@ -1534,6 +1697,7 @@
 				DB006B9128C33FDA00867013 /* KPGroupsViewController.swift in Sources */,
 				E4141ACA28AF79E7004D74B3 /* QNAViewController.swift in Sources */,
 				DBD0825A2897E75B0092241F /* ProfileCell.swift in Sources */,
+				E4EFC1AA2917AD1900B023F6 /* FilteringRepository.swift in Sources */,
 				DBD082552897E75B0092241F /* GreenRoomViewController.swift in Sources */,
 				DB9D9F4428E702390061D7DB /* BaseQuestionsViewModel.swift in Sources */,
 				DB563F9A28ABADDF00E7193D /* RxNaverThirdPartyLoginProxy.swift in Sources */,

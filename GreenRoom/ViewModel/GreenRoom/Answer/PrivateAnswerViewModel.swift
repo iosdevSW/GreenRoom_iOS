@@ -11,7 +11,7 @@ import RxCocoa
 
 final class PrivateAnswerViewModel: ViewModelType {
     
-    private let privateQuestionService = PrivateQuestionService()
+    private let repository: PrivateAnswerRepositoryInterface
     var disposeBag = DisposeBag()
     
     var placeholder: String {
@@ -42,19 +42,18 @@ final class PrivateAnswerViewModel: ViewModelType {
     
     let id: Int
     
-    init(id: Int){
+    init(id: Int, repository: PrivateAnswerRepositoryInterface){
         self.id = id
+        self.repository = repository
     }
     
     func transform(input: Input) -> Output {
         
         input.doneButtonTrigger
-            .withLatestFrom(
-                Observable.combineLatest(input.text, input.keywords.asObservable()))
+            .withLatestFrom(Observable.combineLatest(input.text, input.keywords))
             .withUnretained(self)
-            .flatMap { (onwer, element) in
-                let (answer, keywords) = element
-                return onwer.privateQuestionService.uploadAnswer(id: onwer.id, answer: answer, keywords: keywords)
+            .flatMap { owner, element in
+                self.repository.uploadAnswer(id: owner.id, answer: element.0, keywords: element.1)
             }
             .withUnretained(self)
             .subscribe(onNext: { onwer, isSuccess in
@@ -65,14 +64,14 @@ final class PrivateAnswerViewModel: ViewModelType {
             .asObservable()
             .withUnretained(self)
             .flatMap { onwer, _ in
-                onwer.privateQuestionService.removeAnswer(id: onwer.id)
+                onwer.repository.deleteQuestion(id: onwer.id)
             }
             .withUnretained(self)
             .subscribe { onwer, competable in
                 competable ? onwer.successMessage.accept("나의 질문이 삭제되었습니다.") : onwer.failMessage.accept("에러")
             }.disposed(by: disposeBag)
         
-        let output = self.privateQuestionService.fetchPrivateQuestion(id: self.id)
+        let output = self.repository.fetchPrivateQuestion(id: self.id)
         
         return Output(answer: output.asObservable(),
                       keywords: output.map { $0.keywords },

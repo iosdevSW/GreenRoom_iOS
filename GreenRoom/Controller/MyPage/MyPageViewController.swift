@@ -242,8 +242,9 @@ extension MyPageViewController: ProfileCellDelegate, PHPickerViewControllerDeleg
         }
     }
     
-    func didTapEditProfileInfo() {
-        let vc = EditProfileInfoViewController(viewModel: EditProfileViewModel(userService: UserService()))
+    func didTapEditProfileInfo(name: String) {
+        let viewModel = EditProfileViewModel(name: name, repository: EditProfileRepository())
+        let vc = EditProfileInfoViewController(viewModel: viewModel)
         navigationController?.pushViewController(vc, animated: false)
     }
     

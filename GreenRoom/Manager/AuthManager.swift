@@ -21,10 +21,10 @@ class AuthManager: RequestInterceptor {
             }
             return
         }
-        
+   
         var urlRequest = urlRequest
         urlRequest.headers.add(.authorization(bearerToken: accessToken))
-
+        urlRequest.headers.add(.contentType("application/json"))
         completion(.success(urlRequest))
     }
     

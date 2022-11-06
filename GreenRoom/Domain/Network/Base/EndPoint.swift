@@ -17,13 +17,11 @@ protocol EndPoint {
     var headers: ReaquestHeaders? { get }
     var parameters: Parameters? { get }
     var encoding: ParameterEncoding { get }
-    var interceptor: RequestInterceptor? { get }
 }
 
 extension EndPoint {
     var headers: ReaquestHeaders? { return nil }
     var parameter: Parameters? { return nil }
-    var interceptor: RequestInterceptor? { return nil }
 }
 
 extension EndPoint {
@@ -31,7 +29,7 @@ extension EndPoint {
     func getRequest() -> DataRequest? {
         guard let url = URL(string: "\(baseURL)\(path)") else { return nil }
         
-        return AF.request(url, method: self.method, parameters: parameters, encoding: encoding, interceptor: interceptor)
+        return AF.request(url, method: self.method, parameters: parameters, encoding: encoding, interceptor: AuthManager())
     }
 }
 

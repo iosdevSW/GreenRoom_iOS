@@ -10,7 +10,7 @@ import RxCocoa
 
 final class MakePublicAnswerViewModel: ViewModelType {
     
-    var publicQuestionService: PublicQuestionService
+    private let repository: ApplyPublicAnswerRepositoryInterface
     
     var disposeBag = DisposeBag()
     
@@ -25,7 +25,6 @@ final class MakePublicAnswerViewModel: ViewModelType {
     
     struct Input {
         let text: Observable<String>
-        let endEditingTrigger: Observable<Void>
         let keywords: Observable<[String]>
         let doneButtonTrigger: Observable<Void>
     }
@@ -35,32 +34,28 @@ final class MakePublicAnswerViewModel: ViewModelType {
         let successMessage: Signal<String>
         let failMessage: Signal<String>
     }
-    
-    private let textFieldContentObservable = BehaviorSubject<String>(value: "")
+
     private let failMessage = PublishRelay<String>()
     private let successMessage = PublishRelay<String>()
     
     let answer: PublicAnswerSectionModel
     
-    init(answer: PublicAnswerSectionModel, publicQuestionService: PublicQuestionService){
+    init(answer: PublicAnswerSectionModel, repository: ApplyPublicAnswerRepositoryInterface){
         self.answer = answer
-        self.publicQuestionService = publicQuestionService
+        self.repository = repository
     }
     
     func transform(input: Input) -> Output {
         
-        input.endEditingTrigger.withLatestFrom(input.text)
-            .bind(to: textFieldContentObservable).disposed(by: disposeBag)
-        
         input.doneButtonTrigger.withLatestFrom(
             Observable.combineLatest(
-                textFieldContentObservable.asObserver(),
-                input.keywords.asObservable())
+                input.text,
+                input.keywords)
         )
         .withUnretained(self)
         .flatMap { onwer, element in
             let (answer, keywords) = element
-            return onwer.publicQuestionService.uploadAnswer(id: onwer.answer.header.id, answer: answer, keywords: keywords)
+            return onwer.repository.applyAnswer(id: onwer.answer.header.id, answer: answer, keywords: keywords)
         }
         .withUnretained(self)
         .subscribe(onNext: { onwer, isSuccess in

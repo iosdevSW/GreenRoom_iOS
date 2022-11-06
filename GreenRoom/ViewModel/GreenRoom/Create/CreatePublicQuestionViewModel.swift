@@ -12,7 +12,7 @@ import RxCocoa
 
 final class CreatePublicQuestionViewModel: ViewModelType {
     
-    private let publicQuestionService = PublicQuestionService()
+    private let applyRepositry: ApplyQuestionRepositoryInterface
     
     var disposeBag = DisposeBag()
     
@@ -40,6 +40,10 @@ final class CreatePublicQuestionViewModel: ViewModelType {
     
     let categories: Observable<[CreateSection]> = .of([CreateSection(items: Constants.categories)])
     
+    init(repositry: ApplyQuestionRepositoryInterface) {
+        self.applyRepositry = repositry
+    }
+    
     func transform(input: Input) -> Output {
         
         input.dateApplyTrigger
@@ -53,7 +57,7 @@ final class CreatePublicQuestionViewModel: ViewModelType {
         )
         .withUnretained(self)
         .flatMap { (owner, element) in
-            owner.publicQuestionService.uploadQuestionList(
+            owner.applyRepositry.applyPublicQuestion(
                 categoryId: element.0,
                 question: element.1,
                 expiredAt: owner.getExpiredDate(minutes: element.2)

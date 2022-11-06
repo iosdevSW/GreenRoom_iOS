@@ -36,10 +36,7 @@ final class ScrapRepository: ScrapRepositoryInterface {
         let request = ScrapRequest.delete(ids: ids)
         return NetworkManager.shared.request(with: request)
             .asObservable()
-            .map { data in
-                print(data)
-                return true
-            }
-            .catchAndReturn(false)
+            .map { _ in false }
+            .catchAndReturn(true)
     }
 }

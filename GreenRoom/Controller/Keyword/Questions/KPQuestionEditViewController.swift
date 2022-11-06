@@ -82,8 +82,11 @@ final class KPQuestionEditViewController: BaseViewController {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
         
-        self.keywordView = KeywordRegisterView(viewModel: RegisterKeywordViewModel(id: viewModel.id,
-                                                                                   answerType: .kpQuestion))
+        self.keywordView = KeywordRegisterView(viewModel: RegisterKeywordViewModel(
+            id: viewModel.id,
+            answerType: .kpQuestion,
+            repository: RegisterKeywordRepository())
+        )
     }
     
     required init?(coder: NSCoder) {

@@ -54,8 +54,4 @@ extension ScrapRequest: EndPoint {
             return JSONEncoding.default
         }
     }
-    
-    var interceptor: RequestInterceptor? {
-        return AuthManager()
-    }
 }

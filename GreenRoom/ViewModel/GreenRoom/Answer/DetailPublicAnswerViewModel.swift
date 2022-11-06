@@ -11,11 +11,13 @@ import RxCocoa
 
 final class DetailPublicAnswerViewModel: ViewModelType {
     
-    private let publicQuestionService: PublicQuestionService
+    private let repository: DetailPublicAnswerRepositoryInterface
     
     var disposeBag = DisposeBag()
     
-    struct Input { }
+    struct Input {
+        let trigger: Observable<Bool>
+    }
     
     struct Output {
         let header: Observable<QuestionHeader>
@@ -24,25 +26,27 @@ final class DetailPublicAnswerViewModel: ViewModelType {
     
     private let detailPublicAnswer = PublishSubject<SpecificPublicAnswer>()
     
-    let question: QuestionHeader
-    let id: Int
+    private let question: QuestionHeader
+    private let id: Int
     
     init(question: QuestionHeader,
          answerID: Int,
-         publicQuestionService: PublicQuestionService
+         repository: DetailPublicAnswerRepositoryInterface
     ){
         self.question = question
         self.id = answerID
-        self.publicQuestionService = publicQuestionService
+        self.repository = repository
     }
     
     func transform(input: Input) -> Output {
         
-        publicQuestionService
-            .fetchDetailAnswer(id: self.id)
-            .bind(to: detailPublicAnswer)
+        input.trigger
+            .withUnretained(self)
+            .flatMap { onwer, _ in
+                onwer.repository.fetchDetailAnswer(id: onwer.id)
+            }.bind(to: detailPublicAnswer)
             .disposed(by: disposeBag)
-        
+
         return Output(
             header: Observable.just(question),
             answer: self.detailPublicAnswer.asObservable()

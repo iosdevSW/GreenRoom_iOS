@@ -96,12 +96,12 @@ final class ScrapedQuestionViewController: BaseViewController {
             self?.editMode = false
         }).disposed(by: disposeBag)
         
-        let input = ScrapViewModel.Input(
-            trigger: rx.viewWillAppear.asObservable(),
-            buttonTab: deleteButton.rx.tap.asObservable())
+        let input = ScrapViewModel.Input(buttonTab: deleteButton.rx.tap.asObservable())
         
         let output = self.viewModel.transform(input: input)
-        output.scrap.bind(to: collectionView.rx.items(dataSource: dataSource())).disposed(by: disposeBag)
+        output.scrap
+            .bind(to: collectionView.rx.items(dataSource: dataSource()))
+            .disposed(by: disposeBag)
     }
 }
 
@@ -151,6 +151,7 @@ extension ScrapedQuestionViewController {
 extension ScrapedQuestionViewController: ScrapViewCellDelegate {
     
     func didSelectScrapCell(isSelected: Bool, question: GreenRoomQuestion) {
+        print(question)
         if isSelected {
             self.viewModel.selectedIndexesObservable
                 .accept(self.viewModel.selectedIndexesObservable.value + [question.id])

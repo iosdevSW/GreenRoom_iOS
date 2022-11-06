@@ -8,9 +8,8 @@
 import Foundation
 import UIKit
 import RxSwift
-import RxCocoa
 
-class MyPageViewModel: ViewModelType {
+final class MyPageViewModel: ViewModelType {
 
     struct Input {
         let viewTrigger: Observable<Bool>
@@ -21,14 +20,16 @@ class MyPageViewModel: ViewModelType {
         var MyPageDataSource: Observable<[MyPageSectionModel]>
     }
     
-    let userService = UserService()
+    private let mypageRepository: MyPageRepositoryInterface
+    
     var disposeBag = DisposeBag()
     
     //MARK: - MyPageViewController
     private let userObservable = BehaviorSubject<[MyPageSectionModel]>(value: [MyPageSectionModel.profile(items: [MyPageSectionModel.Item.profile(profileInfo: User(categoryID: 1, category: "공통", name: "박면접", profileImage: ""))])])
-
-    private let settingsObservable = Observable<[MyPageSectionModel]>.create { observer in
-        observer.onNext(
+    
+    private let updateState = PublishSubject<Void>()
+    
+    private let settingsObservable: Observable<[MyPageSectionModel]> = .of(
             [
                 MyPageSectionModel.setting(header: "사용자 설정", items: [
                     MyPageSectionModel.SectionItem.setting(settingInfo:InfoItem(iconImage: UIImage(named: "notification"), title: "알림 설정", setting: .notification)),
@@ -41,34 +42,34 @@ class MyPageViewModel: ViewModelType {
                 MyPageSectionModel.setting(header: "문의", items: [
                     MyPageSectionModel.SectionItem.setting(settingInfo:InfoItem(iconImage: UIImage(named: "FAQ")!, title: "FAQ", setting: .FAQ)),
                     MyPageSectionModel.SectionItem.setting(settingInfo:InfoItem(iconImage: UIImage(named: "QNA")!, title: "직접 문의", setting: .QNA))])])
-        return Disposables.create()
+    
+    init(repository: MyPageRepositoryInterface) {
+        self.mypageRepository = repository
     }
     
     func transform(input: Input) -> Output {
         input.viewTrigger
             .withUnretained(self)
-            .flatMap { onwer, _ in
-                onwer.userService.fetchUserInfo()
-            }
-            .map {
-                [MyPageSectionModel.profile(
-                    items: [MyPageSectionModel.Item.profile(profileInfo: $0)]
-                )]
-            }.bind(to: self.userObservable)
+            .map { _ in () }
+            .bind(to: updateState)
             .disposed(by: disposeBag)
 
         input.profileImage
             .withUnretained(self)
-            .flatMap { onwer, image in
-                onwer.userService.updateProfileImage(image: image)
+            .flatMap { owner, image in
+                owner.updateProfileImage(image: image)
             }
             .withUnretained(self)
-            .flatMap { onwer, _ in
-                onwer.fetchUserInfo()
-            }
-            .bind(to: self.userObservable)
+            .map { _ in () }
+            .bind(to: updateState)
             .disposed(by: disposeBag)
-
+        
+        self.updateState
+            .withUnretained(self)
+            .flatMap { owner, _ in
+                owner.fetchUserInfo()
+            }.bind(to: userObservable)
+            .disposed(by: disposeBag)
         return Output(MyPageDataSource: Observable.combineLatest(userObservable, settingsObservable).map{ $0.0 + $0.1})
     }
     //MARK: - QNAViewController
@@ -120,12 +121,38 @@ class MyPageViewModel: ViewModelType {
     ]
     
     private func fetchUserInfo() -> Observable<[MyPageSectionModel]> {
-        return self.userService.fetchUserInfo().compactMap {
-            return [MyPageSectionModel.profile(items: [
-                MyPageSectionModel.Item.profile(profileInfo: $0)
-            ])]
+        return mypageRepository.fetchUserInfo().map {
+            [MyPageSectionModel.profile(
+                items: [.profile(profileInfo: $0)]
+            )]
         }
     }
-}
+    
+    private func convertImage(image: UIImage?) -> ProfileImageType? {
+        if let jpegData = image?.jpegData(compressionQuality: 1.0) {
+            print("jpegData")
+            return .JPEG(image: jpegData)
+            
+        } else if let pngData = image?.pngData() {
+            print("DEBUG: convent error to JPEG")
+            return .PNG(image: pngData)
+        } else {
+            print("nil")
+            return nil
+        }
+    }
+    
+    private func updateProfileImage(image: UIImage?) -> Observable<Bool> {
+        guard let imageData = convertImage(image: image) else { return .just(false) }
+        
+        let description = "user-profile-image.\(imageData.description)"
+        
+        return self.mypageRepository.fetchPresignedURL(profileImage: description)
+            .withUnretained(self)
+            .flatMap { owner, url in
+                owner.mypageRepository.fetchUpload(url: url, data: imageData.data)
+            }
 
+    }
+}
 
