@@ -12,7 +12,7 @@ import Alamofire
 
 class KeywordPracticeService {
     ///기본,그린룸 질문조회
-    func fetchReferenceQuestions(categoryId: String?, title: String?, page: Int?)-> Observable<[ReferenceQuestionModel]>{
+    func fetchReferenceQuestions(categoryId: String?, title: String?, page: Int?)-> Observable<ReferenceModel>{
         let urlString = Constants.baseURL + "/api/interview-questions"
         let url = URL(string: urlString)!
         
@@ -27,7 +27,7 @@ class KeywordPracticeService {
         return Observable.create { emitter in
             let request = AF.request(url, method: .get, parameters: param ,encoding: URLEncoding.default, interceptor: AuthManager())
             
-            request.responseDecodable(of: [ReferenceQuestionModel].self) { res in
+            request.responseDecodable(of: ReferenceModel.self) { res in
                 switch res.result {
                 case .success(let data):
                     emitter.onNext(data)

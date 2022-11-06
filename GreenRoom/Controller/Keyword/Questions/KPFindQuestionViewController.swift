@@ -12,9 +12,10 @@ import RxSwift
 import RxCocoa
 import KakaoSDKUser
 
-final class KPFindQuestionViewController: BaseViewController{
+final class KPFindQuestionViewController: BaseViewController, UITableViewDelegate{
     //MARK: - Properties
     private let viewModel = BaseQuestionsViewModel()
+    private var isPaging = false // 현재 페이징진행중인지
     
     private let searchBarView = UISearchBar().then{
         $0.placeholder = "키워드로 검색해보세요!"
@@ -113,16 +114,28 @@ final class KPFindQuestionViewController: BaseViewController{
             }).disposed(by: disposeBag)
     }
     
+    func beginPaging(){
+        self.isPaging = true
+        
+        let title = self.searchBarView.text
+        let idString = self.viewModel.filteringObservable.value
+        guard let nextPage = self.viewModel.referenceObservable.value?.currentPages else { return }
+        
+        KeywordPracticeService().fetchReferenceQuestions(categoryId: idString, title: title, page: nextPage+1)
+            .bind(onNext: { reference in
+                self.viewModel.referenceObservable.accept(reference)
+                self.isPaging = false
+            }).disposed(by: disposeBag)
+    }
+    
     //MARK: - Bind
     override func setupBinding() {
         viewModel.baseQuestionsObservable
             .bind(to: questionListTableView.rx.items(cellIdentifier: "QuestionListCell", cellType: QuestionListCell.self)) { index, item, cell in
-                
                 cell.mainLabel.text = item.question
                 cell.categoryLabel.text = item.categoryName
                 cell.questionTypeLabel.text = item.questionType
                 cell.isFindMode = true
-                
             }.disposed(by: disposeBag)
         
         questionListTableView.rx.modelSelected(ReferenceQuestionModel.self)
@@ -132,19 +145,26 @@ final class KPFindQuestionViewController: BaseViewController{
             }).disposed(by: disposeBag)
         
         filterView.viewModel.selectedCategoriesObservable
-            .subscribe(onNext: { [weak self] ids in
-                let idString = ids.map{ String($0)}.joined(separator: ",")
-                self?.viewModel.filteringObservable.accept(idString)
-                self?.searchBarView.text = nil
-            }).disposed(by: disposeBag)
+            .map { $0.map { String($0) }.joined(separator: ",") }
+            .bind(to: self.viewModel.filteringObservable)
+            .disposed(by: disposeBag)
         
         searchBarView.rx.text
-            .bind(onNext: { [weak self] text in
+            .bind(to: self.viewModel.searchTextObservable)
+            .disposed(by: disposeBag)
+        
+        questionListTableView.rx.didScroll
+            .bind(onNext: { [weak self] in
                 guard let self = self else { return }
-                let idString = self.viewModel.filteringObservable.value
-                KeywordPracticeService().fetchReferenceQuestions(categoryId: idString, title: text, page: nil)
-                    .bind(to: self.viewModel.baseQuestionsObservable)
-                    .disposed(by: self.disposeBag)
+                let contentHeight = self.questionListTableView.contentSize.height
+                let contentOffsetY = self.questionListTableView.contentOffset.y
+                let tableViewHeight = self.questionListTableView.frame.height
+                
+                if contentOffsetY > contentHeight - tableViewHeight {
+                    if self.viewModel.hasNextPage.value {
+                        self.beginPaging()
+                    }
+                }
             }).disposed(by: disposeBag)
     }
     

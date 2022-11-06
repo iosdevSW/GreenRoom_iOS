@@ -7,6 +7,12 @@
 
 import UIKit
 // 기본질문/ 그린룸 조회 모델
+struct ReferenceModel: Codable {
+    let currentPages: Int
+    let totalPages: Int
+    var questions: [ReferenceQuestionModel]
+}
+
 struct ReferenceQuestionModel: Codable {
     let categoryName: String
     let id: Int

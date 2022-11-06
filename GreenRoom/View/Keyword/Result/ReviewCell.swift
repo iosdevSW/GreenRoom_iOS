@@ -59,7 +59,7 @@ class ReviewCell: UICollectionViewCell {
         $0.numberOfLines = 0
     }
     
-    let categoryLabel = UILabel().then {
+    let categoryLabel = PaddingLabel(padding: .init(top: 0, left: 6, bottom: 0, right: 6)).then {
         $0.backgroundColor = .customGray
         $0.textColor = .darkGray
         $0.font = .sfPro(size: 12, family: .Semibold)
@@ -70,6 +70,11 @@ class ReviewCell: UICollectionViewCell {
     
     let keywordPersent = UILabel().then {
         $0.textColor = .mainColor
+        $0.font = .sfPro(size: 16, family: .Semibold)
+    }
+    
+    let keywordLabel = UILabel().then {
+        $0.textColor = .customGray
         $0.font = .sfPro(size: 16, family: .Semibold)
     }
     
@@ -272,8 +277,14 @@ class ReviewCell: UICollectionViewCell {
         self.categoryLabel.snp.makeConstraints{ make in
             make.top.equalTo(self.questionLabel.snp.bottom).offset(8)
             make.leading.equalToSuperview().offset(44)
-            make.width.equalTo(40)
             make.height.equalTo(20)
+        }
+        
+        self.addSubview(self.keywordLabel)
+        self.keywordLabel.snp.makeConstraints{ make in
+            make.leading.equalToSuperview().offset(44)
+            make.height.equalTo(30)
+            make.top.equalTo(self.categoryLabel.snp.bottom).offset(8)
         }
         
         self.frameView.addSubview(self.playSlider)

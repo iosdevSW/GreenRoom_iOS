@@ -4,7 +4,6 @@
 //
 //  Created by SangWoo's MacBook on 2022/08/28.
 //
-// 메모리 누수 발생.. 어딜까..
 import UIKit
 import AVFoundation
 import Speech
@@ -21,7 +20,7 @@ final class KPRecordingViewController: BaseViewController{
     private var captureSession: AVCaptureSession?
     private var captureDevice: AVCaptureDevice?
     private var videoPreviewLayer: AVCaptureVideoPreviewLayer?
-    private var moviFileOutput: AVCaptureMovieFileOutput!
+    private var movieFileOutput: AVCaptureMovieFileOutput!
     
     // 녹음을 위한 객체
     private var audioRecorder: AVAudioRecorder?
@@ -86,7 +85,7 @@ final class KPRecordingViewController: BaseViewController{
         super.viewWillAppear(animated)
         self.navigationController?.navigationBar.isHidden = true
     }
-    
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         self.navigationController?.navigationBar.isHidden = false
@@ -118,7 +117,11 @@ final class KPRecordingViewController: BaseViewController{
                     indicatorView.startAnimating()
                     self.view.addSubview(indicatorView)
                 }
-                self.speechToText(url)
+                if  self.viewmodel.recordingType == .camera {
+                    self.convertM4a(url)
+                } else {
+                    self.speechToText(url)
+                }
             }).disposed(by: disposeBag)
         
         viewmodel.STTResult
@@ -160,8 +163,8 @@ final class KPRecordingViewController: BaseViewController{
     //MARK: - Method
     // 비디오 녹화시
     func videoRecording() {
-        if moviFileOutput.isRecording {
-            moviFileOutput.stopRecording() //녹화 중단
+        if movieFileOutput.isRecording {
+            movieFileOutput.stopRecording() //녹화 중단
             recordingTrriger(isRecording: true)
         } else {
             recordingTrriger(isRecording: false)
@@ -189,6 +192,41 @@ final class KPRecordingViewController: BaseViewController{
         self.recordingButton.isHidden = isRecording
         if !isRecording {
             self.keywordLabel.isHidden = self.viewmodel.keywordOnOff.value == true ? false : true
+        }
+    }
+    
+    private func convertM4a(_ url: URL) {
+        let avAsset = AVAsset(url: url)
+        let exportSession = AVAssetExportSession(asset: avAsset, presetName: AVAssetExportPresetPassthrough)
+        let tempURL = url.deletingLastPathComponent()
+        let outputURL = tempURL.appendingPathComponent("sttFile\(self.viewmodel.URLs.value.count+1).m4a")
+        self.deleteFile(outputURL) // AVAssetExportSession은 파일 덮어쓰기를 하지 않기떄문에 기존 파일경로에 파일 존재시 실패하므로 삭제해주기.
+        print(avAsset.metadata)
+       
+        exportSession?.outputFileType = .m4a
+        exportSession?.outputURL = outputURL
+        
+        let start = CMTimeMakeWithSeconds(0, preferredTimescale: 0)
+        
+        let range = CMTimeRange(start: start, duration: avAsset.duration)
+        
+        exportSession?.timeRange = range
+        exportSession!.exportAsynchronously{
+            [weak self] () -> Void in
+            switch exportSession!.status{
+            case .failed:
+                print("failed")
+                print("\(exportSession!.error!)")
+            case .cancelled:
+                print("Export cancelled")
+            case .completed:
+                DispatchQueue.main.async {
+                    print("시작")
+                    self?.speechToText(outputURL)
+                }
+            default:
+                break
+            }
         }
     }
     
@@ -222,7 +260,7 @@ final class KPRecordingViewController: BaseViewController{
     
     private func saveURL(_ url: URL) {
         // 길게 녹화할경우 음성이 녹음 안되는 현상이 있음 (이유 찾아 고쳐야함) 2번의 오류도 1번이 해결되면 해결될 가능성 있음
-        // 녹화일 경우 mp4 -> m4a로 변환이 필요함 ( 영상이 십몇초를 넘을경우 변환이 안되는 오류 )
+        // 녹화일 경우 mp4 -> m4a로 변환이 필요함 ( 영상이 십몇초를 넘을경우 변환이 안되는 오류 -> mp4 형식이 제한됨 => mov형식으로 해결 )
         self.viewmodel.URLs
             .filter{ $0.count < self.viewmodel.selectedQuestions.value.count }
             .take(1)
@@ -232,6 +270,17 @@ final class KPRecordingViewController: BaseViewController{
                 self?.viewmodel.URLs.accept(urls)
             }).disposed(by: disposeBag)
     }
+    
+    private func deleteFile(_ filePath:URL) {
+            guard FileManager.default.fileExists(atPath: filePath.path) else{
+                return
+            }
+            do {
+                try FileManager.default.removeItem(atPath: filePath.path)
+            }catch{
+                fatalError("Unable to delete file: \(error) : \(#function).")
+            }
+        }
     
     private func returnPersent(_ stt: String)->CGFloat {
         var count = 0
@@ -287,10 +336,10 @@ final class KPRecordingViewController: BaseViewController{
 extension KPRecordingViewController: AVCaptureFileOutputRecordingDelegate {
     private func setupCaptureSession() {
         captureSession = AVCaptureSession()
-        captureSession?.sessionPreset = .photo // set resoultion
+        captureSession?.sessionPreset = .high // set resoultion
         
         let cameras = AVCaptureDevice.DiscoverySession(
-            deviceTypes: [.builtInTrueDepthCamera , .builtInDualCamera, .builtInWideAngleCamera],
+            deviceTypes: [.builtInTrueDepthCamera , .builtInDualCamera],
             mediaType: .video,
             position: .front
         )
@@ -308,11 +357,13 @@ extension KPRecordingViewController: AVCaptureFileOutputRecordingDelegate {
             }
             
             //비디오 장치
-            let videoInput = try AVCaptureDeviceInput(device: camera)
-            moviFileOutput = AVCaptureMovieFileOutput()
-            if captureSession!.canAddInput(videoInput) && captureSession!.canAddOutput(moviFileOutput) {
+            let videoInput = try AVCaptureDeviceInput(device:camera)
+            movieFileOutput = AVCaptureMovieFileOutput()
+
+            if captureSession!.canAddInput(videoInput) &&
+                captureSession!.canAddOutput(movieFileOutput) {
                 captureSession?.addInput(videoInput)
-                captureSession?.addOutput(moviFileOutput)
+                captureSession?.addOutput(movieFileOutput)
                 // 여기에서 preview 세팅하는 함수 호출
                 setupLivePreview()
             }
@@ -321,6 +372,7 @@ extension KPRecordingViewController: AVCaptureFileOutputRecordingDelegate {
             print(error.localizedDescription)
         }
     }
+
     
     private func setupLivePreview() {
         // previewLayer 세팅
@@ -347,30 +399,20 @@ extension KPRecordingViewController: AVCaptureFileOutputRecordingDelegate {
     
     // Recording Methods
     private func startRecording() {
-        moviFileOutput.startRecording(to: tempURL(extn: "mp4"), recordingDelegate: self)
+        movieFileOutput.startRecording(to: tempURL(extn: "mov"), recordingDelegate: self)
     }
     
     private func tempURL(extn: String)-> URL{
         let tempDirectoryURL = URL(fileURLWithPath: NSTemporaryDirectory())
-        let directoryURL = tempDirectoryURL.appendingPathComponent("NewDirectory")
         
-        // 폴더 없으면 폴더 생성
-        if !fileManager.fileExists(atPath: directoryURL.path){
-            do {
-                try fileManager.createDirectory(at: directoryURL, withIntermediateDirectories: false)
-            }catch let error {
-                print(error.localizedDescription)
-            }
-        }
-        
-        return directoryURL.appendingPathComponent("recordingFile\(self.viewmodel.URLs.value.count+1).\(extn)")    // 파일이 저장될 경로
+        return tempDirectoryURL.appendingPathComponent("recordingFile\(self.viewmodel.URLs.value.count+1).\(extn)")    // 파일이 저장될 경로
     }
     
     //레코딩 시작시 호출
     func fileOutput(_ output: AVCaptureFileOutput, didStartRecordingTo fileURL: URL, from connections: [AVCaptureConnection]) {
         print("녹화시작")
     }
-    
+
     //레코딩 끝날시 호출 시작할때 파라미터로 입력한 url 기반으로 저장 작업 수행
     func fileOutput(_ output: AVCaptureFileOutput, didFinishRecordingTo outputFileURL: URL, from connections: [AVCaptureConnection], error: Error?) {
         self.saveURL(outputFileURL)
