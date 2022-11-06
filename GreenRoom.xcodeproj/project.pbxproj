@@ -38,6 +38,8 @@
 		DB9D9F4F28F436130061D7DB /* KPQuestionEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9D9F4E28F436130061D7DB /* KPQuestionEditViewController.swift */; };
 		DB9D9F5128F444890061D7DB /* QuestionEditViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9D9F5028F444890061D7DB /* QuestionEditViewModel.swift */; };
 		DB9D9F5328F4498A0061D7DB /* KPQuestionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9D9F5228F4498A0061D7DB /* KPQuestionService.swift */; };
+		DBA1FEB72917A26F0020384A /* KPGreenRoomViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA1FEB62917A26F0020384A /* KPGreenRoomViewModel.swift */; };
+		DBA1FEB92917A85E0020384A /* KPGreenRoomListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA1FEB82917A85E0020384A /* KPGreenRoomListCell.swift */; };
 		DBA8ED6428B9D336007526CF /* RecentSearchKeyword+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA8ED6328B9D336007526CF /* RecentSearchKeyword+CoreDataClass.swift */; };
 		DBA8ED6628B9D347007526CF /* RecentSearchKeyword+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA8ED6528B9D347007526CF /* RecentSearchKeyword+CoreDataProperties.swift */; };
 		DBA8ED6A28B9D621007526CF /* PracticeQuestionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA8ED6928B9D621007526CF /* PracticeQuestionCell.swift */; };
@@ -220,6 +222,8 @@
 		DB9D9F4E28F436130061D7DB /* KPQuestionEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KPQuestionEditViewController.swift; sourceTree = "<group>"; };
 		DB9D9F5028F444890061D7DB /* QuestionEditViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionEditViewModel.swift; sourceTree = "<group>"; };
 		DB9D9F5228F4498A0061D7DB /* KPQuestionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KPQuestionService.swift; sourceTree = "<group>"; };
+		DBA1FEB62917A26F0020384A /* KPGreenRoomViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KPGreenRoomViewModel.swift; sourceTree = "<group>"; };
+		DBA1FEB82917A85E0020384A /* KPGreenRoomListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KPGreenRoomListCell.swift; sourceTree = "<group>"; };
 		DBA8ED6328B9D336007526CF /* RecentSearchKeyword+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "RecentSearchKeyword+CoreDataClass.swift"; path = "GreenRoom/Model/RecentSearchKeyword+CoreDataClass.swift"; sourceTree = SOURCE_ROOT; };
 		DBA8ED6528B9D347007526CF /* RecentSearchKeyword+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "RecentSearchKeyword+CoreDataProperties.swift"; path = "GreenRoom/Model/RecentSearchKeyword+CoreDataProperties.swift"; sourceTree = SOURCE_ROOT; };
 		DBA8ED6928B9D621007526CF /* PracticeQuestionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PracticeQuestionCell.swift; sourceTree = "<group>"; };
@@ -494,6 +498,7 @@
 				DB9D9F4228E702390061D7DB /* BaseQuestionsViewModel.swift */,
 				DB9D9F4328E702390061D7DB /* KeywordViewModel.swift */,
 				DB9D9F5028F444890061D7DB /* QuestionEditViewModel.swift */,
+				DBA1FEB62917A26F0020384A /* KPGreenRoomViewModel.swift */,
 			);
 			path = Keyword;
 			sourceTree = "<group>";
@@ -522,6 +527,7 @@
 			isa = PBXGroup;
 			children = (
 				DBFB296F28B351F400B1DAC9 /* QuestionListCell.swift */,
+				DBA1FEB82917A85E0020384A /* KPGreenRoomListCell.swift */,
 			);
 			path = Questions;
 			sourceTree = "<group>";
@@ -1432,6 +1438,7 @@
 				E4A1760F28C64883009D1DFE /* DetailRecentHeaderView.swift in Sources */,
 				DB797A99289B9BFF00ADF65F /* RegisterNameViewController.swift in Sources */,
 				E40BC6E428B880FE00FB557D /* SearchResultNotFountCell.swift in Sources */,
+				DBA1FEB72917A26F0020384A /* KPGreenRoomViewModel.swift in Sources */,
 				DB9D9F3F28E702200061D7DB /* LoginViewModel.swift in Sources */,
 				E40BC6FB28B892C400FB557D /* CoreDataManager.swift in Sources */,
 				E4EC67B128E2056100469D17 /* ScrapSectionModel.swift in Sources */,
@@ -1452,6 +1459,7 @@
 				E4A2E9FC28EACCBA00E7F5C0 /* AddAnswerQuestion.swift in Sources */,
 				E4C8AE6928B35519007E010D /* UserService.swift in Sources */,
 				E461E42D28CE1645001EBF74 /* ScrapViewCell.swift in Sources */,
+				DBA1FEB92917A85E0020384A /* KPGreenRoomListCell.swift in Sources */,
 				DBD0821F2897E6EE0092241F /* SceneDelegate.swift in Sources */,
 				DB006B9128C33FDA00867013 /* KPGroupsViewController.swift in Sources */,
 				E4141ACA28AF79E7004D74B3 /* QNAViewController.swift in Sources */,

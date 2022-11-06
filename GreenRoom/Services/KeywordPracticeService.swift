@@ -39,18 +39,43 @@ class KeywordPracticeService {
         }
     }
     
+    ///그린룸 공개질문 조회
+    func fetchInvolveQuestions(category: String? = nil)-> Observable<[KPGreenRoomQuestion]> {
+        let url = URL(string: Constants.baseURL + "/api/green-questions/involve-questions")!
+        
+        var param: Parameters?
+        if let category = category { param = ["category" : category] }
+        
+        return Observable.create { emitter in
+            let request = AF.request(url, method: .get, parameters: param, encoding: URLEncoding.default, interceptor: AuthManager())
+            
+            request.responseDecodable(of: [KPGreenRoomQuestion].self){ res in
+                switch res.result {
+                case .success(let questions):
+                    emitter.onNext(questions)
+                case .failure(let error):
+                    print(error.localizedDescription)
+                }
+            }
+            
+            return Disposables.create()
+        }
+    }
+    
     ///그룹에 속한 면접질문 조회
-    func fetchGroupQuestions(groupId: Int)-> Observable<GroupQuestionModel> {
+    func fetchGroupQuestions(groupId: Int, page: Int? = nil)-> Observable<GroupQuestionModel> {
         let urlString = Constants.baseURL + "/api/groups/\(groupId)/questions"
         let url = URL(string: urlString)!
         
+        var param: Parameters?
+        if let page = page { param = ["page" : page] }
+        
         return Observable.create { emitter in
-            let request = AF.request(url, method: .get, interceptor: AuthManager())
+            let request = AF.request(url, method: .get, parameters: param, encoding: URLEncoding.default, interceptor: AuthManager())
             
             request.responseDecodable(of: GroupQuestionModel.self) { response in
                 switch response.result {
                 case .success(let model):
-                    print(model)
                     emitter.onNext(model)
                 case .failure(let error):
                     emitter.onError(error)

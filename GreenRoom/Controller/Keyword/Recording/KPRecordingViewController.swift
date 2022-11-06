@@ -233,7 +233,6 @@ final class KPRecordingViewController: BaseViewController{
     // STT 실행
     private func speechToText(_ url: URL) {
         self.recognizerRequest = SFSpeechURLRecognitionRequest(url: url)
-        
         _ = self.speechRecognizer?.recognitionTask(with: recognizerRequest!) { [weak self]( result, error) in
             guard let self = self else { return }
             guard let result = result else {
@@ -243,9 +242,8 @@ final class KPRecordingViewController: BaseViewController{
                 
                 return
             }
-            
-            let stt = result.bestTranscription.formattedString
             if result.isFinal {
+                let stt = result.bestTranscription.formattedString
                 self.viewmodel.STTResult
                     .take(1)
                     .bind(onNext: { sttResults in

@@ -203,7 +203,6 @@ final class KPQuestionsViewController: BaseViewController {
             .bind(onNext: { [weak self] question in
                 guard let self = self else { return }
                 var questions = self.viewmodel.selectedQuestions.value
-                
                 questions.append(question)
                 self.viewmodel.selectedQuestions.accept(questions)
             }).disposed(by: disposeBag)
@@ -316,7 +315,19 @@ final class KPQuestionsViewController: BaseViewController {
                     }).disposed(by: self!.disposeBag)
             }).disposed(by: disposeBag)
         
-        
+        self.questionListTableView.rx.didScroll
+            .bind(onNext: { [weak self] in
+                guard let self = self else { return }
+                let contentHeight = self.questionListTableView.contentSize.height
+                let contentOffsetY = self.questionListTableView.contentOffset.y
+                let tableViewHeight = self.questionListTableView.frame.height
+                
+                if contentOffsetY > contentHeight - tableViewHeight {
+                    if self.viewmodel.hasNextPage.value && !self.viewmodel.isPaging {
+                        self.viewmodel.pagingGroupQuestion()
+                    }
+                }
+            }).disposed(by: disposeBag)
     }
     
     //MARK: - ConfigureUI

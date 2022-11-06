@@ -44,6 +44,7 @@ class KPPrepareViewController: BaseViewController{
     //MARK: - Init
     init(viewmodel: KeywordViewModel) {
         self.viewmodel = viewmodel
+        self.viewmodel.recordingType = .camera
         super.init(nibName: nil, bundle: nil)
     }
     

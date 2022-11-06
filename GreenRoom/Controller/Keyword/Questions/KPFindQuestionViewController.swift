@@ -161,7 +161,7 @@ final class KPFindQuestionViewController: BaseViewController, UITableViewDelegat
                 let tableViewHeight = self.questionListTableView.frame.height
                 
                 if contentOffsetY > contentHeight - tableViewHeight {
-                    if self.viewModel.hasNextPage.value {
+                    if self.viewModel.hasNextPage.value && !self.isPaging {
                         self.beginPaging()
                     }
                 }
