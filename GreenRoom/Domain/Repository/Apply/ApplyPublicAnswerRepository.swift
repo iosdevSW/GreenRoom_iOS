@@ -15,7 +15,8 @@ protocol ApplyPublicAnswerRepositoryInterface {
 
 final class ApplyPublicAnswerRepository: ApplyPublicAnswerRepositoryInterface {
     func applyAnswer(id: Int, answer: String, keywords: [String]) -> Observable<Bool> {
-        let request = GreenRoomRequest.applyAnswer(id: id, answer: answer, keywords: keywords)
+        
+        let request = keywords.isEmpty ? GreenRoomRequest.applyAnswer(id: id, answer: answer) : GreenRoomRequest.applyAnswerWithKeyword(id: id, answer: answer, keywords: keywords)
         return NetworkManager.shared.request(with: request)
             .asObservable()
             .map { _ in true }

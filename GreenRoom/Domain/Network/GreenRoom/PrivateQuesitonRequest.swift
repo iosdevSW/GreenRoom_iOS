@@ -13,7 +13,10 @@ enum PrivateQuestionRequest {
     case owned
     case applyQuestion(categoryId: Int, question: String)
     case delete(id: Int)
-    case applyAnswer(id: Int, answer: String, keywords: [String])
+    
+    case applyAnswerWithKeywords(id: Int, answer: String, keywords: [String])
+    case applyKeyword(id: Int, keywords: [String])
+    case applyAnswer(id: Int, answer: String)
 }
 
 extension PrivateQuestionRequest: EndPoint {
@@ -28,7 +31,11 @@ extension PrivateQuestionRequest: EndPoint {
             return "/\(id)"
         case .delete(id: let id):
             return "/\(id)"
-        case .applyAnswer(id: let id, answer: _, keywords: _):
+        case .applyAnswer(id: let id, answer: _):
+            return "/answer/\(id)"
+        case .applyKeyword(id: let id, keywords: _):
+            return "/answer/\(id)"
+        case .applyAnswerWithKeywords(id: let id, answer: _, keywords: _):
             return "/answer/\(id)"
         default: return ""
         }
@@ -47,7 +54,11 @@ extension PrivateQuestionRequest: EndPoint {
         switch self {
         case .applyQuestion(categoryId: let id, question: let question):
             return ["categoryId" : id, "question": question]
-        case .applyAnswer(id: _, answer: let answer, keywords: let keywords):
+        case .applyAnswer(id: _, answer: let answer):
+            return ["answer": answer]
+        case .applyKeyword(id: _, keywords: let keywords):
+            return ["keywords": keywords]
+        case .applyAnswerWithKeywords(id: _, answer: let answer, keywords: let keywords):
             return ["answer": answer, "keywords": keywords]
         default:
             return nil
@@ -56,7 +67,7 @@ extension PrivateQuestionRequest: EndPoint {
     
     var encoding: ParameterEncoding {
         switch self {
-        case .applyQuestion, .applyAnswer:
+        case .applyQuestion, .applyAnswer, .applyKeyword, .applyAnswerWithKeywords:
             return JSONEncoding.default
         default:
             return URLEncoding.default

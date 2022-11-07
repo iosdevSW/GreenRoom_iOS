@@ -14,7 +14,8 @@ enum GreenRoomRequest {
     case recent
     case owned(page: Int)
     case applyQuestion(categoryId: Int, question: String, expiredAt: String)
-    case applyAnswer(id: Int, answer: String, keywords: [String])
+    case applyAnswerWithKeyword(id: Int, answer: String, keywords: [String])
+    case applyAnswer(id: Int, answer: String)
     case detailQuestion(id: Int)
     case detailAnswer(id: Int)
     case detailAnswers(id: Int)
@@ -62,12 +63,14 @@ extension GreenRoomRequest: EndPoint {
                 "categoryId" : id,
                 "question": question,
                 "expiredAt": expiredAt]
-        case .applyAnswer(id: let id, answer: let answer, keywords: let keywords):
+        case .applyAnswerWithKeyword(id: let id, answer: let answer, keywords: let keywords):
             return [
                 "id": id,
                 "answer": answer,
                 "keywords": keywords
             ]
+        case .applyAnswer(id: let id, answer: let answer):
+            return ["id": id, "answer": answer]
         default:
             return nil
         }

@@ -152,7 +152,7 @@ final class PublicAnswerListViewController: BaseViewController {
             .withLatestFrom(output.answer)
             .withUnretained(self)
             .subscribe(onNext: { onwer, answer in
-                let vc = AddPublicAnswerViewController(viewModel: MakePublicAnswerViewModel(answer: answer, repository: ApplyPublicAnswerRepository()))
+                let vc = ApplyPublicAnswerViewController(viewModel: MakePublicAnswerViewModel(answer: answer, repository: ApplyPublicAnswerRepository()))
                 onwer.navigationController?.pushViewController(vc, animated: false)
             }).disposed(by: disposeBag)
         
