@@ -43,7 +43,7 @@ extension GreenRoomRequest: EndPoint {
             return "/answer/\(id)"
         case .detailAnswers(id: let id):
             return "/\(id)/answers"
-        case .applyAnswer:
+        case .applyAnswer, .applyAnswerWithKeyword:
             return "/answer"
         default: return ""
         }
@@ -51,7 +51,7 @@ extension GreenRoomRequest: EndPoint {
     
     var method: HTTPMethod {
         switch self {
-        case .applyQuestion, .applyAnswer: return .post
+        case .applyQuestion, .applyAnswer, .applyAnswerWithKeyword: return .post
         default: return .get
         }
     }
@@ -78,7 +78,7 @@ extension GreenRoomRequest: EndPoint {
     
     var encoding: ParameterEncoding {
         switch self {
-        case .applyQuestion, .applyAnswer:
+        case .applyQuestion, .applyAnswer, .applyAnswerWithKeyword:
             return JSONEncoding.default
         default: return URLEncoding.default
         }
