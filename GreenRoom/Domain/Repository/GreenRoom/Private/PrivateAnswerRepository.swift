@@ -31,7 +31,17 @@ final class PrivateAnswerRepository: PrivateAnswerRepositoryInterface {
     }
     
     func uploadAnswer(id: Int, answer: String, keywords: [String]) -> Observable<Bool> {
-        let request = PrivateQuestionRequest.applyAnswer(id: id, answer: answer, keywords: keywords)
+        
+        let request: PrivateQuestionRequest
+        
+        if keywords.isEmpty {
+            request = PrivateQuestionRequest.applyAnswer(id: id, answer: answer)
+        } else if answer.isEmpty {
+            request = PrivateQuestionRequest.applyKeyword(id: id, keywords: keywords)
+        } else {
+            request = PrivateQuestionRequest.applyAnswerWithKeywords(id: id, answer: answer, keywords: keywords)
+        }
+        
         return NetworkManager.shared.request(with: request)
             .asObservable()
             .map { _ in true }

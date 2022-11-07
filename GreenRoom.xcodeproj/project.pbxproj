@@ -152,7 +152,7 @@
 		E47EC601291557BC007C5D5D /* ScrapReqeust.swift in Sources */ = {isa = PBXBuildFile; fileRef = E47EC600291557BC007C5D5D /* ScrapReqeust.swift */; };
 		E47EE51628C48B7800618CA6 /* SFProText-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = E49CC16B28C331E4009216E1 /* SFProText-Semibold.otf */; };
 		E4843CFC28EAD06700329DC4 /* PublicAnswerSectionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4843CFB28EAD06700329DC4 /* PublicAnswerSectionModel.swift */; };
-		E4843D4C28EC60E200329DC4 /* AddPublicAnswerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4843D4B28EC60E200329DC4 /* AddPublicAnswerViewController.swift */; };
+		E4843D4C28EC60E200329DC4 /* ApplyPublicAnswerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4843D4B28EC60E200329DC4 /* ApplyPublicAnswerViewController.swift */; };
 		E4843D4E28EC657B00329DC4 /* MakePublicAnswerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4843D4D28EC657B00329DC4 /* MakePublicAnswerViewModel.swift */; };
 		E48F6C6328E340490083B74A /* Auth.swift in Sources */ = {isa = PBXBuildFile; fileRef = E48F6C6228E340490083B74A /* Auth.swift */; };
 		E48F8B4F28C26864007AAF40 /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E48F8B4E28C26864007AAF40 /* AuthManager.swift */; };
@@ -361,7 +361,7 @@
 		E47EC5FE29155576007C5D5D /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		E47EC600291557BC007C5D5D /* ScrapReqeust.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrapReqeust.swift; sourceTree = "<group>"; };
 		E4843CFB28EAD06700329DC4 /* PublicAnswerSectionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicAnswerSectionModel.swift; sourceTree = "<group>"; };
-		E4843D4B28EC60E200329DC4 /* AddPublicAnswerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPublicAnswerViewController.swift; sourceTree = "<group>"; };
+		E4843D4B28EC60E200329DC4 /* ApplyPublicAnswerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplyPublicAnswerViewController.swift; sourceTree = "<group>"; };
 		E4843D4D28EC657B00329DC4 /* MakePublicAnswerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakePublicAnswerViewModel.swift; sourceTree = "<group>"; };
 		E48F6C6228E340490083B74A /* Auth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Auth.swift; sourceTree = "<group>"; };
 		E48F8B4E28C26864007AAF40 /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
@@ -950,7 +950,7 @@
 			isa = PBXGroup;
 			children = (
 				E46E4BE328DC213800D1691F /* PrivateAnswerViewController.swift */,
-				E4843D4B28EC60E200329DC4 /* AddPublicAnswerViewController.swift */,
+				E4843D4B28EC60E200329DC4 /* ApplyPublicAnswerViewController.swift */,
 				E47D1D2728E9FF43004EE4DE /* PublicAnswerListViewController.swift */,
 				E4F7D32828FDAAAB003C0A13 /* DetailPublicAnswerViewController.swift */,
 			);
@@ -1553,7 +1553,7 @@
 				E46E4C0828E14FD400D1691F /* Date+.swift in Sources */,
 				DBA8ED7828BF7457007526CF /* KPReviewViewController.swift in Sources */,
 				E46E4C0628E14FC500D1691F /* UILabel+.swift in Sources */,
-				E4843D4C28EC60E200329DC4 /* AddPublicAnswerViewController.swift in Sources */,
+				E4843D4C28EC60E200329DC4 /* ApplyPublicAnswerViewController.swift in Sources */,
 				E4EFC1A62917A7FD00B023F6 /* PrivateQuesitonRequest.swift in Sources */,
 				E4647BCA290BAEBE00DBD3EE /* BaseCollectionViewCell.swift in Sources */,
 				E46E4C0428E14FAE00D1691F /* UIViewController+.swift in Sources */,

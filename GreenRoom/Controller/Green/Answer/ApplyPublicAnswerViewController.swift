@@ -8,12 +8,17 @@
 import UIKit
 import RxSwift
 
-final class AddPublicAnswerViewController: BaseViewController {
+final class ApplyPublicAnswerViewController: BaseViewController {
     
     //MARK: - Properties
     private let viewModel: MakePublicAnswerViewModel
     private var headerView = AnswerHeaderView(frame: .zero)
-    private lazy var keywordView = KeywordRegisterView(viewModel: RegisterKeywordViewModel(id: viewModel.answer.header.id, answerType: .public, repository: RegisterKeywordRepository()))
+    private lazy var keywordView = KeywordRegisterView(
+        viewModel: RegisterKeywordViewModel(
+            id: viewModel.answer.header.id,
+            answerType: .public,
+            repository: RegisterKeywordRepository())
+    )
     
     private let doneButton = UIButton().then {
         $0.setTitle("확인",for: .normal)
@@ -137,7 +142,7 @@ final class AddPublicAnswerViewController: BaseViewController {
         output.failMessage
             .withUnretained(self)
             .emit(onNext: { onwer, message in
-                let alert = onwer.comfirmAlert(title: "삭제 실패", subtitle: message) { _ in
+                let alert = onwer.comfirmAlert(title: "등록 실패", subtitle: message) { _ in
                     
                 }
                 onwer.present(alert, animated: true)

@@ -33,7 +33,7 @@ final class PublicAnswerViewModel: ViewModelType {
     private let failMessage = PublishRelay<String>()
     private let successMessage = PublishRelay<String>()
     
-    let id: Int
+    private let id: Int
     
     init(id: Int, scrapRepository: ScrapRepositoryInterface, detailGreenRoomRepository: DetailGreenRoomRepositoryInterface){
         self.id = id

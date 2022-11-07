@@ -24,8 +24,6 @@ final class RegisterKeywordViewModel: ViewModelType {
         let registeredKeywords: Observable<[String]>
     }
     
-    private let textFieldContentObservable = BehaviorSubject<String>(value: "")
-    private let addKeywordObservable = PublishSubject<String>()
     private let registeredKeywordObservable = BehaviorRelay<[String]>(value: [])
     
     private let id: Int
@@ -54,16 +52,7 @@ final class RegisterKeywordViewModel: ViewModelType {
                 .disposed(by: disposeBag)
         }
         
-        input.inputKeyword
-            .bind(to: textFieldContentObservable)
-            .disposed(by: disposeBag)
-        
-        input.trigger
-            .withLatestFrom(textFieldContentObservable)
-            .bind(to: addKeywordObservable)
-            .disposed(by: disposeBag)
-        
-        addKeywordObservable
+        input.trigger.withLatestFrom(input.inputKeyword.filter { !$0.isEmpty })
             .withUnretained(self)
             .subscribe(onNext: { onwer, keyword in
                 onwer.registeredKeywordObservable
