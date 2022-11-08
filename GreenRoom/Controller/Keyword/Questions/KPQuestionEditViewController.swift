@@ -13,17 +13,21 @@ final class KPQuestionEditViewController: BaseViewController {
     //MARK: - Properties
     private var mode: PrivateAnswerMode = .unWritten {
         didSet {
+            var barButtonItems = [UIBarButtonItem]()
             switch self.mode {
             case .edit:
                 self.setEditMode()
+                barButtonItems.append(.init(customView: doneButton))
             case .written(let answer):
                 self.setWrittenMode(answer: answer)
+                barButtonItems.append(.init(customView: doneButton))
+                barButtonItems.append(.init(customView: deleteButton))
             case .unWritten:
                 self.setUnwrittenMode()
+                barButtonItems.append(.init(customView: deleteButton))
             }
-            self.navigationItem.rightBarButtonItem = UIBarButtonItem(
-                customView: self.mode == .edit ? doneButton : deleteButton
-            )
+            
+            self.navigationItem.rightBarButtonItems = barButtonItems
         }
     }
     
@@ -95,7 +99,6 @@ final class KPQuestionEditViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
