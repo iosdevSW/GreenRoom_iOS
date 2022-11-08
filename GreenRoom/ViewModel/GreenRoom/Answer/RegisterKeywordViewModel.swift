@@ -18,6 +18,7 @@ final class RegisterKeywordViewModel: ViewModelType {
     struct Input {
         let inputKeyword: Observable<String>
         let trigger: Observable<Void>
+        let removeKeyword: Observable<IndexPath>
     }
     
     struct Output {
@@ -58,6 +59,15 @@ final class RegisterKeywordViewModel: ViewModelType {
                 onwer.registeredKeywordObservable
                     .accept(onwer.registeredKeywordObservable.value + [keyword])
         }).disposed(by: disposeBag)
+        
+        input.removeKeyword
+            .map { $0.row}
+            .withUnretained(self)
+            .subscribe(onNext: { (onwer,row) in
+                var keywords = onwer.registeredKeywordObservable.value
+                keywords.remove(at: row)
+                onwer.registeredKeywordObservable.accept(keywords)
+            }).disposed(by: disposeBag)
         
         return Output(registeredKeywords: self.registeredKeywordObservable.asObservable())
     }

@@ -92,3 +92,20 @@ extension UIViewController {
         self.tabBarController?.tabBar.isHidden = true
     }
 }
+
+extension UIViewController {
+    func setKPCompleteNavigationItem() {
+        let completeButtonItem = UIBarButtonItem(title: "완료",
+                                                 style: .plain,
+                                                 target: self,
+                                                 action: #selector(self.didClickKPCompleteButton(_:)))
+        completeButtonItem.setTitleTextAttributes([.foregroundColor : UIColor.mainColor!,
+                                                   .font : UIFont.sfPro(size: 16, family: .Bold)],
+                                                  for: .normal)
+        self.navigationItem.rightBarButtonItem = completeButtonItem
+    }
+    
+    @objc func didClickKPCompleteButton(_ sender: UIButton) {
+        self.navigationController?.popToRootViewController(animated: true)
+    }
+}

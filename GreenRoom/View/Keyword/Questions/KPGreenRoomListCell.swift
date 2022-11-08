@@ -9,6 +9,11 @@ import UIKit
 
 class KPGreenRoomListCell: UITableViewCell {
     //MARK: - Properties
+    private let frameView = UIView().then {
+        $0.setMainLayer()
+        $0.backgroundColor = .white
+    }
+    
     private lazy var profileImageView = UIImageView(frame: .zero).then {
         $0.contentMode = .scaleAspectFill
         $0.layer.cornerRadius = frame.size.width / 12
@@ -18,8 +23,7 @@ class KPGreenRoomListCell: UITableViewCell {
     
     private let categoryLabel = Utilities.shared.generateLabel(text: "디자인", color: .black, font: .sfPro(size: 12, family: .Semibold))
 
-    private lazy var questionLabel = PaddingLabel(padding: UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15)).then {
-        $0.backgroundColor = .white
+    private lazy var questionLabel = UILabel().then {
         $0.numberOfLines = 0
     }
     
@@ -27,6 +31,8 @@ class KPGreenRoomListCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         self.configureUI()
+        self.backgroundColor = .clear
+        self.selectionStyle = .none
     }
     
     required init?(coder: NSCoder) {
@@ -35,26 +41,33 @@ class KPGreenRoomListCell: UITableViewCell {
     
     //MARK: - Configure
     private func configureUI(){
-        self.contentView.setMainLayer()
-        self.backgroundColor = .white
-        self.contentView.addSubview(questionLabel)
-        self.questionLabel.snp.makeConstraints { make in
-            make.trailing.equalToSuperview()
-            make.leading.top.equalToSuperview()
-            make.height.equalTo(110)
+        self.contentView.addSubview(frameView)
+        self.frameView.snp.makeConstraints{ make in
+            make.leading.equalToSuperview().offset(20)
+            make.trailing.equalToSuperview().offset(-20)
+            make.top.equalToSuperview()
+            make.bottom.equalToSuperview().offset(-10)
         }
         
-        self.contentView.addSubview(categoryLabel)
-        self.categoryLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(13)
-            make.bottom.equalToSuperview().offset(-15)
-        }
-        
-        self.contentView.addSubview(profileImageView)
+        self.frameView.addSubview(profileImageView)
         profileImageView.snp.makeConstraints { make in
-            make.top.equalTo(questionLabel.snp.bottom).offset(10)
-            make.trailing.equalToSuperview().offset(-13)
+            make.top.equalToSuperview().offset(10)
+            make.leading.equalToSuperview().offset(10)
             make.width.height.equalTo(frame.size.width / 6)
+        }
+        
+        self.frameView.addSubview(categoryLabel)
+        self.categoryLabel.snp.makeConstraints { make in
+            make.leading.equalTo(self.profileImageView.snp.trailing).offset(10)
+            make.centerY.equalTo(self.profileImageView.snp.centerY).offset(-6)
+        }
+        
+        self.frameView.addSubview(questionLabel)
+        self.questionLabel.snp.makeConstraints { make in
+            make.trailing.equalToSuperview().offset(-10)
+            make.leading.equalTo(self.profileImageView.snp.trailing).offset(10)
+            make.top.equalTo(self.categoryLabel.snp.bottom).offset(8)
+            make.bottom.equalToSuperview().offset(-10)
         }
     }
     

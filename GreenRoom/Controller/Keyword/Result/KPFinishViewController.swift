@@ -47,7 +47,7 @@ class KPFinishViewController: BaseViewController{
         super.viewDidLoad()
         self.view.backgroundColor = .white
         self.configureNavigationBackButtonItem()
-        self.setNavigationItem()
+        self.setKPCompleteNavigationItem()
         self.navigationItem.hidesBackButton = true
     }
     
@@ -65,11 +65,7 @@ class KPFinishViewController: BaseViewController{
     @objc func didClickReviewButton(_ sender: UIButton) {
         self.navigationController?.pushViewController(KPReviewViewController(viewModel: viewmodel), animated: true)
     }
-    
-    @objc func didClickCompleteButton(_ sender: UIButton) {
-        self.navigationController?.popToRootViewController(animated: true)
-    }
-    
+
     //MARK: - Bind
     override func setupBinding() {
         viewmodel.selectedQuestions
@@ -149,16 +145,5 @@ class KPFinishViewController: BaseViewController{
         }else {
             self.navigationController?.navigationBar.barTintColor = color
         }
-    }
-    
-    func setNavigationItem() {
-        let questionButtonItem = UIBarButtonItem(title: "완료",
-                                                 style: .plain,
-                                                 target: self,
-                                                 action: #selector(self.didClickCompleteButton(_:)))
-        questionButtonItem.setTitleTextAttributes([.foregroundColor : UIColor.mainColor!,
-                                                   .font : UIFont.sfPro(size: 16, family: .Bold)],
-                                                  for: .normal)
-        self.navigationItem.rightBarButtonItem = questionButtonItem
     }
 }

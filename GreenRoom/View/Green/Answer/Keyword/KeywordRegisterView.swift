@@ -18,7 +18,9 @@ final class KeywordRegisterView: UIView {
     
     private lazy var input = RegisterKeywordViewModel.Input(
         inputKeyword: self.keywordTextField.rx.text.orEmpty.asObservable(),
-        trigger: keywordTextField.rx.controlEvent([.editingDidEndOnExit]).asObservable())
+        trigger: keywordTextField.rx.controlEvent([.editingDidEndOnExit]).asObservable(),
+        removeKeyword: self.collectionView.rx.itemSelected.asObservable()
+    )
     
     lazy var output = viewModel.transform(input: input)
     
@@ -96,9 +98,8 @@ final class KeywordRegisterView: UIView {
             .disposed(by: self.disposeBag)
     }
     
-    private func bind() {
-        
-        self.output.registeredKeywords.asObservable()
+    private func bind() {        
+        self.output.registeredKeywords
             .bind(to: self.collectionView.rx.items(cellIdentifier: KeywordCell.reuseIdentifier, cellType: KeywordCell.self)) { index, keyword, cell in
                 cell.keyword = keyword
             }.disposed(by: disposeBag)
@@ -119,8 +120,9 @@ extension KeywordRegisterView: UICollectionViewDelegateFlowLayout {
             $0.font = .sfPro(size: 12, family: .Semibold)
             $0.sizeToFit()
         }
-        
+
         output.registeredKeywords
+            .take(1)
             .subscribe(onNext: { keywords in
                 label.text = keywords[indexPath.row]
             }).disposed(by: disposeBag)
