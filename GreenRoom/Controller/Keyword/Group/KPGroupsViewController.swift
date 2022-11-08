@@ -95,7 +95,6 @@ final class KPGroupsViewController: BaseViewController {
                     })
                 }).disposed(by: disposeBag)
         }
-        
     }
     
     //MARK: - ConfigureUI

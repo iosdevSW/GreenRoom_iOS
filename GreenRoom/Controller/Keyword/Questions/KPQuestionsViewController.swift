@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import RxSwift
 import RxCocoa
 import Alamofire
 
@@ -195,16 +196,25 @@ final class KPQuestionsViewController: BaseViewController {
         questionListTableView.rx.itemSelected
             .bind(onNext: { [weak self] indexPath in // 서비스 로직시엔 Id로 다룰 것 같음
                 guard let self = self else { return }
-                let cell = self.questionListTableView.cellForRow(at: indexPath) as! QuestionListCell
-                cell.isSelected = true
+                let questionCnt = self.viewmodel.selectedQuestions.value.count
+                if questionCnt < 10 {
+                    let cell = self.questionListTableView.cellForRow(at: indexPath) as! QuestionListCell
+                    cell.isSelected = true
+                }
             }).disposed(by: disposeBag)
         
         questionListTableView.rx.modelSelected(KPQuestion.self)
             .bind(onNext: { [weak self] question in
                 guard let self = self else { return }
                 var questions = self.viewmodel.selectedQuestions.value
-                questions.append(question)
-                self.viewmodel.selectedQuestions.accept(questions)
+                if questions.count < 10 {
+                    questions.append(question)
+                    self.viewmodel.selectedQuestions.accept(questions)
+                }else {
+//                    self.showGuideAlert(title: "최대 10개의 질문까지 가능합니다.")
+                    self.showGuideAlert(title: "", message: "최대 10개의 질문까지 가능합니다.")
+                }
+                
             }).disposed(by: disposeBag)
         
         questionListTableView.rx.itemDeselected
@@ -226,28 +236,29 @@ final class KPQuestionsViewController: BaseViewController {
                 }
             }).disposed(by: disposeBag)
             
-        viewmodel.selectedQuestions
-            .bind(onNext: { [weak self]questions in
-                guard let self = self else { return }
-                let isHidden = questions.count == 0 ? true : false
-                
-                if self.viewmodel.groupEditMode.value {
-                    self.moveGroupButton.isHidden = isHidden
-                    self.deleteQuestionButton.isHidden = isHidden
-                } else {
-                    self.practiceInterviewButton.isHidden = isHidden
-                    self.practiceInterviewButton.setTitle("\(questions.count)개의 면접 연습하기", for: .normal)
-                }
-                
-                if isHidden {
-                    self.allSelectButton.setTitle("모두선택", for: .normal)
-                } else {
-                    self.allSelectButton.setTitle("모두해제", for: .normal)
-                }
-                
-                self.keywordOnButton.isHidden = true
-                self.keywordOffButton.isHidden = true
-            }).disposed(by: disposeBag)
+        Observable.combineLatest(viewmodel.selectedQuestions.map { $0.count },
+                                 viewmodel.groupEditMode )
+        .bind(onNext:  { [weak self] (questionCnt,isEdit) in
+            guard let self = self else { return }
+            let isHidden = questionCnt == 0 ? true : false
+            
+            if isEdit {
+                self.moveGroupButton.isHidden = isHidden
+                self.deleteQuestionButton.isHidden = isHidden
+            }else {
+                self.practiceInterviewButton.isHidden = isHidden
+                self.practiceInterviewButton.setTitle("\(questionCnt)개의 면접 연습하기", for: .normal)
+            }
+            
+            if isHidden {
+                self.allSelectButton.setTitle("모두선택", for: .normal)
+            } else {
+                self.allSelectButton.setTitle("모두해제", for: .normal)
+            }
+            
+            self.keywordOnButton.isHidden = true
+            self.keywordOffButton.isHidden = true
+        }).disposed(by: disposeBag)
         
         viewmodel.selectedQuestions
             .map{ $0.map { $0.register }}

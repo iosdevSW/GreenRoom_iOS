@@ -29,6 +29,7 @@ class KPDetailViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
+        self.setKPCompleteNavigationItem()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -71,6 +72,11 @@ class KPDetailViewController: BaseViewController {
         self.viewmodel.selectedQuestionDetailModel
             .bind(to: self.collectionView.rx.items(dataSource: self.configureDataSource()))
             .disposed(by: self.disposeBag)
+        
+        self.viewmodel.keywordOnOff
+            .map { !$0 }
+            .bind(to: self.navigationItem.rx.hidesBackButton)
+            .disposed(by: disposeBag)
     }
     
     //MARK: - ConfigureUI
