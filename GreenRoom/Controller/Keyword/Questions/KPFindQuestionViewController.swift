@@ -51,11 +51,6 @@ final class KPFindQuestionViewController: BaseViewController, UITableViewDelegat
         $0.layer.shadowOffset = CGSize(width: 0, height: 5)
     }
     
-    let btn = UIButton(type: .roundedRect).then{
-        $0.translatesAutoresizingMaskIntoConstraints = false
-        $0.setTitle("logout", for: .normal)
-    }
-    
     //MARK: - Init
     init() {
         super.init(nibName: nil, bundle: nil)
@@ -72,8 +67,6 @@ final class KPFindQuestionViewController: BaseViewController, UITableViewDelegat
         
         hideKeyboardWhenTapped()
         configureNavigationBackButtonItem()
-
-        btn.addTarget(self, action: #selector(logout(_:)), for: .touchUpInside)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -82,38 +75,6 @@ final class KPFindQuestionViewController: BaseViewController, UITableViewDelegat
     }
     
     //MARK: - Method
-    
-    //MARK: - Selector
-    @objc func logout(_ sender: UIButton){
-        KeychainWrapper.standard.removeObject(forKey: "accessToken")
-        KeychainWrapper.standard.removeObject(forKey: "refreshToken")
-        KeychainWrapper.standard.removeObject(forKey: "oauthType")
-        AuthService.shared.logout()
-            .subscribe(onNext: { isSuccess in
-                let oauthType = KeychainWrapper.standard.integer(forKey: "oauthType")!
-                switch oauthType {
-                case 0:
-                    UserApi.shared.logout(){_ in () }
-                case 1:
-                    NaverThirdPartyLoginConnection.getSharedInstance().requestDeleteToken()
-                default:
-                    print("애플로그아웃")
-                }
-                
-                KeychainWrapper.standard.removeObject(forKey: "accessToken")
-                KeychainWrapper.standard.removeObject(forKey: "refreshToken")
-                KeychainWrapper.standard.removeObject(forKey: "oauthType")
-                
-                let loginVC = LoginViewController(loginViewModel: LoginViewModel())
-                loginVC.modalPresentationStyle = .fullScreen
-                
-                self.present(loginVC, animated: false)
-            }, onError: { error in
-                //로그아웃 실패
-                print(error)
-            }).disposed(by: disposeBag)
-    }
-    
     func beginPaging(){
         self.isPaging = true
         
@@ -192,12 +153,6 @@ final class KPFindQuestionViewController: BaseViewController, UITableViewDelegat
             make.leading.equalToSuperview()
             make.trailing.equalToSuperview().offset(-20)
             make.bottom.equalToSuperview()
-        }
-        
-        self.view.addSubview(btn)
-        btn.snp.makeConstraints{ make in
-            make.centerY.equalTo(filterView.snp.centerY)
-            make.leading.equalTo(filterView.snp.trailing)
         }
     }
 }

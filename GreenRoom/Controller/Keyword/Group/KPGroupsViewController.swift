@@ -11,6 +11,7 @@ final class KPGroupsViewController: BaseViewController {
     //MARK: - Properties
     private var baseQuestionViewModel: BaseQuestionsViewModel?
     private var keywordViewModel: KeywordViewModel?
+    private var kpGreenRoomViewModel: KPGreenRoomViewModel?
     
     let groupView = GroupView(viewModel: GroupViewModel()).then {
         $0.backgroundColor = .white
@@ -24,6 +25,11 @@ final class KPGroupsViewController: BaseViewController {
     
     init(viewModel: KeywordViewModel) {
         self.keywordViewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    init(viewModel: KPGreenRoomViewModel) {
+        self.kpGreenRoomViewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -53,6 +59,20 @@ final class KPGroupsViewController: BaseViewController {
                     KeywordPracticeService().addInterViewQuestion(groupId: group.id,
                                                                   questionId: question.id,
                                                                   questionTypeCode: question.questionTypeCode)
+                    self?.showGuideAlert(title: "질문이 \(group.name)에 추가되었습니다.") { _ in
+                        self?.navigationController?.popViewController(animated: true)
+                    }
+                }).disposed(by: disposeBag)
+        }
+        
+        if kpGreenRoomViewModel != nil {
+            groupView.groupTableView.rx.modelSelected(GroupModel.self).asDriver()
+                .drive(onNext: { [weak self] group in
+                    guard let question = self?.kpGreenRoomViewModel?.selectedQuestionObservable.value else { return }
+                    // api 수정 필요.
+                    KeywordPracticeService().addInterViewQuestion(groupId: group.id,
+                                                                  questionId: question.id,
+                                                                  questionTypeCode: 1)
                     self?.showGuideAlert(title: "질문이 \(group.name)에 추가되었습니다.") { _ in
                         self?.navigationController?.popViewController(animated: true)
                     }

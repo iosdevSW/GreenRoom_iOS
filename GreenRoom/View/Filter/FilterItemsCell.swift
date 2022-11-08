@@ -23,8 +23,6 @@ final class FilterItemsCell: UICollectionViewCell {
     //MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
-//        self.backgroundColor = .white
-        
         self.configureUI()
     }
     

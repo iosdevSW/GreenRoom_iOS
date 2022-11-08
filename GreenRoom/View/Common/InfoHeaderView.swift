@@ -20,7 +20,7 @@ final class InfoHeaderView: BaseCollectionReusableView {
         didSet { filterShowing ? configureFilterLayout() : filterView.removeFromSuperview() }
     }
     
-    private var filterView = FilterView(viewModel: CategoryViewModel())
+    var filterView = FilterView(viewModel: CategoryViewModel())
     private var titleLabel = Utilities.shared.generateLabel(text: "Title", color: .black, font: .sfPro(size: 16, family: .Semibold))
     private var subTitleLabel = Utilities.shared.generateLabel(text: "SubTitleLabel", color: .customGray, font: .sfPro(size: 12, family: .Regular))
     
@@ -57,7 +57,6 @@ final class InfoHeaderView: BaseCollectionReusableView {
 
     private func configureFilterLayout() {
         addSubview(filterView)
-        
         filterView.backgroundColor = .backgroundGray
         filterView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()

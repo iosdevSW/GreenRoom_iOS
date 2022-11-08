@@ -66,7 +66,7 @@ final class FilterView: UIView {
         
         self.addSubview(collectionView)
         collectionView.snp.makeConstraints{ make in
-            make.top.equalTo(filterButton.snp.bottom).offset(6)
+            make.top.equalTo(filterButton.snp.bottom).offset(8)
             make.bottom.leading.trailing.equalToSuperview()
         }
     }
@@ -104,6 +104,6 @@ extension FilterView: UICollectionViewDelegateFlowLayout {
                 tempLabel.text = category?.title
             }).disposed(by: disposeBag)
         
-        return CGSize(width: tempLabel.intrinsicContentSize.width, height: 22)
+        return CGSize(width: tempLabel.intrinsicContentSize.width, height: tempLabel.intrinsicContentSize.height)
     }
 }
