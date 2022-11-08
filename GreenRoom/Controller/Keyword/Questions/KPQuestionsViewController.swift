@@ -211,8 +211,7 @@ final class KPQuestionsViewController: BaseViewController {
                     questions.append(question)
                     self.viewmodel.selectedQuestions.accept(questions)
                 }else {
-//                    self.showGuideAlert(title: "최대 10개의 질문까지 가능합니다.")
-                    self.showGuideAlert(title: "", message: "최대 10개의 질문까지 가능합니다.")
+                    self.showGuideAlert(title: "최대 10개의 질문까지 가능합니다.")
                 }
                 
             }).disposed(by: disposeBag)

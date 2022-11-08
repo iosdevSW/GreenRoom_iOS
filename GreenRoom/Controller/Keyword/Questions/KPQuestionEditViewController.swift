@@ -81,7 +81,7 @@ final class KPQuestionEditViewController: BaseViewController {
     init(viewModel: QuestionEditViewModel){
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
-        
+
         self.keywordView = KeywordRegisterView(viewModel: RegisterKeywordViewModel(
             id: viewModel.id,
             answerType: .kpQuestion,
@@ -95,6 +95,7 @@ final class KPQuestionEditViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
