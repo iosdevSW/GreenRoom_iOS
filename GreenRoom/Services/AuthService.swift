@@ -79,8 +79,8 @@ class AuthService {
             .response { response in
                 switch response.result {
                 case .success(_):
-                    
                     let oauthType = KeychainWrapper.standard.integer(forKey: "oauthType")!
+                    KeychainWrapper.standard.removeAllKeys()
                     switch oauthType {
                     case 0:
                         UserApi.shared.logout(){_ in () }
@@ -89,7 +89,7 @@ class AuthService {
                     default:
                         print("애플로그아웃")
                     }
-                    KeychainWrapper.standard.removeAllKeys()
+                    
                     emitter.onNext(true)
                 case .failure(let error):
                     print(error.localizedDescription)

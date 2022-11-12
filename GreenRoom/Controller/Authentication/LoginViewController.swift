@@ -66,7 +66,6 @@ class LoginViewController: BaseViewController {
             .take(1)
             .subscribe(on: MainScheduler.instance)
             .subscribe(onNext: { res in
-                print(res.accessToken)
                 KeychainWrapper.standard.set(res.accessToken, forKey: "accessToken")
                 KeychainWrapper.standard.set(res.refreshToken, forKey: "refreshToken")
                 self.dismiss(animated: true)
