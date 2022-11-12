@@ -67,7 +67,9 @@ final class EditProfileInfoViewController: BaseViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        self.showTabbar()
         self.view.inputViewController?.hidesBottomBarWhenPushed = true
+        self.tabBarController?.tabBar.isHidden = false
         self.navigationController?.navigationBar.isHidden = false
         self.navigationController?.navigationBar.shadowImage = UIImage()
         navigationController?.navigationBar.tintColor = .mainColor
@@ -123,9 +125,9 @@ final class EditProfileInfoViewController: BaseViewController {
         output.logOutState
             .subscribe(onNext: { [weak self] _ in
                 guard let self else { return }
-                let vc = LoginViewController(loginViewModel: LoginViewModel())
+                NotificationCenter.default.post(name: .authenticationObserver, object: nil)
                 self.hideTabbar()
-                self.navigationController?.setViewControllers([vc], animated: false)
+                
             }).disposed(by: disposeBag)
     }
 }

@@ -33,6 +33,11 @@ class LoginViewController: BaseViewController {
         super.init(nibName: nil, bundle: nil)
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+    
+    }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -57,24 +62,24 @@ class LoginViewController: BaseViewController {
         // oauthtoken 발급시 oauth토큰 정보 가져오기
         _ = loginViewModel.oauthToken
             .take(1)
-            .subscribe(onNext: { tokenModel in
-                self.oauthTokenInfo = tokenModel
+            .subscribe(onNext: { [weak self] tokenModel in
+                self?.oauthTokenInfo = tokenModel
             })
         
         // JWT토큰 받아 키체인에 저장하고 예외처리
         loginViewModel.loginObservable
             .take(1)
             .subscribe(on: MainScheduler.instance)
-            .subscribe(onNext: { res in
+            .subscribe(onNext: { [weak self] res in
                 KeychainWrapper.standard.set(res.accessToken, forKey: "accessToken")
                 KeychainWrapper.standard.set(res.refreshToken, forKey: "refreshToken")
-                self.dismiss(animated: true)
-            },onError: { error in
+                self?.dismiss(animated: true)
+            },onError: { [weak self] error in
                 guard let statusCode = error.asAFError?.responseCode else { return }
                 switch statusCode {
                 case 400:
                     //회원 정보 없음
-                    self.moveToRegistVC() // 회원가입 화면으로
+                    self?.moveToRegistVC() // 회원가입 화면으로
                 case 401:
                     // 토큰 유효하지 않음 -> 토큰 갱신
                     print("유효하지 않은 토큰")
