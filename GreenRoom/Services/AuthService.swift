@@ -79,7 +79,6 @@ class AuthService {
             .response { response in
                 switch response.result {
                 case .success(_):
-                    
                     let oauthType = KeychainWrapper.standard.integer(forKey: "oauthType")!
                     switch oauthType {
                     case 0:

@@ -9,14 +9,14 @@ import UIKit
 import SnapKit
 import SwiftKeychainWrapper
 import RxSwift
+import RxCocoa
 
-class RegisterCompleteViewControlller: UIViewController{
-    var completeButton: UIButton!
-    let loginViewModel = LoginViewModel()
+final class RegisterCompleteViewControlller: BaseViewController{
+    //MARK: - Properties
+    private var completeButton: UIButton!
+    private let loginViewModel = LoginViewModel()
     
-    let disposeBag = DisposeBag()
-    
-    let oauthTokenInfo: OAuthTokenModel
+    private let oauthTokenInfo: OAuthTokenModel
     
     init(oauthTokenInfo: OAuthTokenModel) {
         self.oauthTokenInfo = oauthTokenInfo
@@ -31,20 +31,17 @@ class RegisterCompleteViewControlller: UIViewController{
         super.viewDidLoad()
         self.view.backgroundColor = .white
         self.navigationItem.hidesBackButton = true
-        configureUI()
+        regist()
     }
     
-    @objc func didClickCompleteButton(_: UIButton){
+    private func regist() {
         guard let oauthAccessToken = KeychainWrapper.standard.string(forKey: "accessToken") else { return }
-        AuthService.shared.loginAPI(oauthAccessToken,
-                                             authType: oauthTokenInfo.oauthType!)
+        AuthService.shared.loginAPI(oauthAccessToken,authType: oauthTokenInfo.oauthType!)
             .subscribe(on: MainScheduler.instance)
             .subscribe(onNext: { res in
                 KeychainWrapper.standard.set(res.accessToken, forKey: "accessToken")
                 KeychainWrapper.standard.set(res.refreshToken, forKey: "refreshToken")
                 KeychainWrapper.standard.set(res.refreshToken, forKey: "oauthType")
-                print("로그인 성공")
-                super.dismiss(animated: true) // 검증 필요
             },onError: { error in
                 guard let statusCode = error.asAFError?.responseCode else { return }
                 switch statusCode {
@@ -59,10 +56,20 @@ class RegisterCompleteViewControlller: UIViewController{
                 }
             }).disposed(by: disposeBag)
     }
-}
-
-extension RegisterCompleteViewControlller {
-    func configureUI(){
+    
+    //MARK: - Bind
+    override func setupBinding() {
+        completeButton.rx.tap
+            .bind(onNext: {
+                self.showGuideAlert(title: "회원가입 완료") { _ in
+                    super.dismiss(animated: true)
+                }
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    //MARK: - ConfigureUI
+    override func configureUI() {
         let completeLable = UILabel().then{
             $0.translatesAutoresizingMaskIntoConstraints = false
             $0.font = .sfPro(size: 30, family: .Semibold)
@@ -143,7 +150,6 @@ extension RegisterCompleteViewControlller {
                 make.trailing.equalToSuperview().offset(-36)
                 make.height.equalTo(54)
             }
-            $0.addTarget(self, action: #selector(didClickCompleteButton(_:)), for: .touchUpInside)
         }
     }
 }
