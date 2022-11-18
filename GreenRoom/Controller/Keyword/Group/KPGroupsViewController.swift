@@ -72,7 +72,7 @@ final class KPGroupsViewController: BaseViewController {
                     // api 수정 필요.
                     KeywordPracticeService().addInterViewQuestion(groupId: group.id,
                                                                   questionId: question.id,
-                                                                  questionTypeCode: 1)
+                                                                  questionTypeCode: 2)
                     self?.showGuideAlert(title: "질문이 \(group.name)에 추가되었습니다.") { _ in
                         self?.navigationController?.popViewController(animated: true)
                     }

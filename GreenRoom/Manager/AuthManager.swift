@@ -13,7 +13,7 @@ class AuthManager: RequestInterceptor {
     private var retryLimit = 3
     
     func adapt(_ urlRequest: URLRequest, for session: Session, completion: @escaping (Result<URLRequest, Error>) -> Void) {
-        
+
         guard urlRequest.url?.absoluteString.hasPrefix(Constants.baseURL) == true else { return }
         guard let accessToken = KeychainWrapper.standard.string(forKey: "accessToken") else {
             DispatchQueue.main.async {
@@ -29,7 +29,7 @@ class AuthManager: RequestInterceptor {
     }
     
     func retry(_ request: Request, for session: Session, dueTo error: Error, completion: @escaping (RetryResult) -> Void) {
-        
+    
         guard let response = request.task?.response as? HTTPURLResponse, response.statusCode == 401 || response.statusCode == 403 else {
             completion(.doNotRetryWithError(error))
             return
