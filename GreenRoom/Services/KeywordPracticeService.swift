@@ -86,17 +86,17 @@ class KeywordPracticeService {
         }
     }
     
-    ///면접 연습용 질문 담기
+    
+    ///면접 연습용 질문 담기 ( 기본, 개인 질문, 공개 ) 0: 기본, 1: 개인, 2: 공개
     func addInterViewQuestion(groupId: Int, questionId: Int, questionTypeCode: Int) {
-        let urlString = Constants.baseURL + "/api/interview-questions"
-        let url = URL(string: urlString)!
-        
-        let param: Parameters = [
+        var param: Parameters = [
             "groupId" : groupId,
             "questionId" : questionId,
-            "questionTypeCode" : questionTypeCode
         ]
-
+        let urlString = questionTypeCode == 2 ? Constants.baseURL + "/api/green-questions/group" : Constants.baseURL + "/api/interview-questions"
+        if questionTypeCode != 2  { param["questionTypeCode"] = questionTypeCode }
+        let url = URL(string: urlString)!
+        
         let request = AF.request(url, method: .post, parameters: param, encoding: JSONEncoding.default, interceptor: AuthManager()).validate(statusCode: 200..<300)
         
         request.responseString(){ response in
