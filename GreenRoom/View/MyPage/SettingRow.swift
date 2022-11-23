@@ -42,20 +42,19 @@ final class SettingRow: BaseCollectionViewCell {
     override func configureUI() {
         backgroundColor = .white
         
-        addSubview(iconImageView)
+        addSubviews([iconImageView, titleLabel, infoLabel])
+        
         iconImageView.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(58)
             make.centerY.equalToSuperview()
             make.width.height.equalTo(27)
         }
         
-        addSubview(titleLabel)
         titleLabel.snp.makeConstraints { make in
             make.leading.equalTo(iconImageView.snp.trailing).offset(16)
             make.centerY.equalToSuperview()
         }
         
-        addSubview(infoLabel)
         infoLabel.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
             make.trailing.equalToSuperview().offset(-48)

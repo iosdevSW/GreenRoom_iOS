@@ -30,14 +30,12 @@ final class SearchResultHeaderView: BaseCollectionReusableView {
     }
     
     override func configureUI(){
-        backgroundColor = .white
-        self.addSubview(titleLabel)
+        self.addSubviews([titleLabel, subtitleLabel])
+        
         titleLabel.snp.makeConstraints {
             $0.top.equalToSuperview().offset(30)
             $0.leading.equalToSuperview().offset(47)
         }
-        
-        self.addSubview(subtitleLabel)
         subtitleLabel.snp.makeConstraints {
             $0.top.equalTo(titleLabel.snp.bottom).offset(7)
             $0.leading.equalToSuperview().offset(46)

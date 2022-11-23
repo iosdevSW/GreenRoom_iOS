@@ -1,8 +1,8 @@
 //
-//  TempMyPage.swift
+//  ProfileCell.swift
 //  GreenRoom
 //
-//  Created by SangWoo's MacBook on 2022/08/01.
+//  Created by Doyun Park on 2022/08/16.
 //
 
 import Foundation
@@ -33,13 +33,7 @@ final class ProfileCell: BaseCollectionViewCell {
         $0.tintColor = .mainColor
     }
     
-    private lazy var profileImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 90, height: 90)).then {
-        $0.tintColor = .customGray
-        $0.contentMode = .scaleAspectFill
-        $0.layer.cornerRadius = 45
-        $0.backgroundColor = .clear
-        $0.layer.masksToBounds = true
-    }
+    private lazy var profileImageView = ProfileImageView()
     
     private var nameLabel = UILabel().then {
         $0.text = "김면접"
@@ -58,8 +52,6 @@ final class ProfileCell: BaseCollectionViewCell {
         $0.setImage(UIImage(systemName: "chevron.right"), for: .normal)
         $0.imageView?.tintColor = .customGray
         $0.semanticContentAttribute = .forceRightToLeft
-        
-        $0.addTarget(self, action: #selector(didTapEditProfileInfo), for: .touchUpInside)
     }
     
     //MARK: - Configure
@@ -71,39 +63,15 @@ final class ProfileCell: BaseCollectionViewCell {
         nameLabel.attributedText = Utilities.shared.textWithIcon(text: " \(user.name)", image: UIImage(named: category.selectedImageName), font: .sfPro(size: 12, family: .Regular), textColor: .black, imageColor: nil, iconPosition: .left)
         profileImageView.layer.borderColor = UIColor.white.cgColor
         profileImageView.layer.borderWidth = 4
-        
-        guard let url = URL(string: user.profileImage) else { return }
-        
-        
-        profileImageView.kf.indicatorType = .activity
-        profileImageView.kf.setImage(with: url,placeholder: UIImage(named:"DefaultProfile"))
+        profileImageView.setImage(at: user.profileImage)
     }
     
     override func configureUI(){
-        
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTapEditProfileImageButton(tapGestureRecognizer:)))
-        profileImageView.isUserInteractionEnabled = true
-        profileImageView.addGestureRecognizer(tapGestureRecognizer)
-        
+
         contentView.backgroundColor = UIColor(red: 249/255.0, green: 249/255.0, blue: 249/255.0, alpha: 1.0)
         contentView.clipsToBounds = true
         contentView.layer.cornerRadius = 15
         contentView.layer.maskedCorners = [.layerMaxXMaxYCorner,.layerMinXMaxYCorner]
-        
-        contentView.addSubview(profileImageView)
-        profileImageView.snp.makeConstraints { make in
-            make.height.width.equalTo(90)
-            make.centerX.equalToSuperview()
-            make.top.equalToSuperview().offset(33)
-        }
-        
-        contentView.addSubview(editIconView)
-        editIconView.snp.makeConstraints { make in
-            make.width.height.equalTo(26)
-            make.trailing.equalTo(profileImageView.snp.trailing)
-            make.bottom.equalTo(profileImageView.snp.bottom)
-        }
-        
         
         let stackView = UIStackView(arrangedSubviews: [nameLabel,editButton])
         stackView.axis = .vertical
@@ -111,7 +79,18 @@ final class ProfileCell: BaseCollectionViewCell {
         stackView.distribution = .fillProportionally
         stackView.spacing = 4
         
-        contentView.addSubview(stackView)
+        contentView.addSubviews([profileImageView, editIconView, stackView])
+        profileImageView.snp.makeConstraints { make in
+            make.height.width.equalTo(90)
+            make.centerX.equalToSuperview()
+            make.top.equalToSuperview().offset(33)
+        }
+        
+        editIconView.snp.makeConstraints { make in
+            make.width.height.equalTo(26)
+            make.trailing.equalTo(profileImageView.snp.trailing)
+            make.bottom.equalTo(profileImageView.snp.bottom)
+        }
         
         stackView.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
@@ -121,14 +100,20 @@ final class ProfileCell: BaseCollectionViewCell {
         }
     }
     
-    
-    //MARK: - Selector
-    @objc func didTapEditProfileImageButton(tapGestureRecognizer: UITapGestureRecognizer){
-        delegate?.didTapEditProfileImage()
-    }
-    
-    @objc func didTapEditProfileInfo(){
-        guard let name = user?.name else { return }
-        delegate?.didTapEditProfileInfo(name: name)
+    override func bind() {
+        profileImageView.rx.tapGesture()
+            .when(.recognized)
+            .subscribe(onNext: { [weak self] _ in
+                self?.delegate?.didTapEditProfileImage()
+            })
+            .disposed(by: disposeBag)
+        
+        editButton.rx.tap
+            .subscribe { [weak self] _ in
+                guard let self else { return }
+                guard let name = self.user?.name else { return }
+                self.delegate?.didTapEditProfileInfo(name: name)
+            }
+            .disposed(by: disposeBag)
     }
 }

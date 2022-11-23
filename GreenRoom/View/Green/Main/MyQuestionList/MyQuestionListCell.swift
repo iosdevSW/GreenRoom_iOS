@@ -44,10 +44,10 @@ class MyQuestionListCell: BaseCollectionViewCell {
         self.backgroundColor = .clear
         self.containerView.backgroundColor = .white
         self.containerView.setMainLayer()
-        self.containerView.addSubview(categoryLabel)
-        self.containerView.addSubview(questionLabel)
-        self.contentView.addSubview(groupCategoryNameLabel)
-        self.contentView.addSubview(containerView)
+        
+        self.containerView.addSubviews([categoryLabel, questionLabel])
+        self.contentView.addSubviews([groupCategoryNameLabel, containerView])
+        
         
         self.containerView.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(bounds.size.height*0.18)

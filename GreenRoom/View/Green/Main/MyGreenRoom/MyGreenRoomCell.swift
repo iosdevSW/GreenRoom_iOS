@@ -45,6 +45,9 @@ final class MyGreenRoomCell: BaseCollectionViewCell {
     
     //MARK: - Configure
     override func configureUI(){
+        
+        
+        self.contentView.addSubviews([leftButton, rightButton, questionLabel, defaultImageView])
         self.backgroundColor = .white
         
         let topLine = UIView()
@@ -56,7 +59,6 @@ final class MyGreenRoomCell: BaseCollectionViewCell {
             make.height.equalTo(2)
         }
         
-        self.contentView.addSubview(questionLabel)
         questionLabel.snp.makeConstraints { make in
             make.center.equalToSuperview()
             make.width.equalToSuperview().multipliedBy(0.8)
@@ -71,7 +73,6 @@ final class MyGreenRoomCell: BaseCollectionViewCell {
             make.height.equalTo(2)
         }
         
-        contentView.addSubview(leftButton)
         leftButton.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(15)
             make.centerY.equalToSuperview()
@@ -79,7 +80,6 @@ final class MyGreenRoomCell: BaseCollectionViewCell {
             make.height.equalTo(60)
         }
         
-        contentView.addSubview(rightButton)
         rightButton.snp.makeConstraints { make in
             make.leading.equalTo(questionLabel.snp.trailing)
             make.centerY.equalToSuperview()
@@ -87,7 +87,6 @@ final class MyGreenRoomCell: BaseCollectionViewCell {
             make.height.equalTo(60)
         }
         
-        contentView.addSubview(defaultImageView)
         defaultImageView.snp.makeConstraints { make in
             make.center.equalToSuperview()
             make.width.equalTo(150)

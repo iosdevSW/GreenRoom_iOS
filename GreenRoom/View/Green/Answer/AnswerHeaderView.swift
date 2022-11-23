@@ -50,13 +50,13 @@ final class AnswerHeaderView: UIView {
         
         self.backgroundColor = .mainColor
 
-        self.addSubview(categoryLabel)
+        self.addSubviews([categoryLabel, questionTextView])
+        
         categoryLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.top.equalToSuperview().offset(50)
         }
 
-        self.addSubview(questionTextView)
         questionTextView.snp.makeConstraints { make in
             make.top.equalTo(categoryLabel.snp.bottom)
             make.leading.trailing.bottom.equalToSuperview()

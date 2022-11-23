@@ -20,8 +20,6 @@ final class SearchWordHeaderView: BaseCollectionReusableView {
     }
     
     override func configureUI() {
-        backgroundColor = .white
-        
         self.addSubview(titleLabel)
         titleLabel.snp.makeConstraints {
             $0.leading.equalToSuperview().offset(34)

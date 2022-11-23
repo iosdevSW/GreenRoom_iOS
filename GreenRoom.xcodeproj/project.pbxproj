@@ -183,6 +183,9 @@
 		E4EC67B128E2056100469D17 /* ScrapSectionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4EC67B028E2056100469D17 /* ScrapSectionModel.swift */; };
 		E4EC67B328E205A600469D17 /* PublicQuestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4EC67B228E205A600469D17 /* PublicQuestion.swift */; };
 		E4EC67B528E2063200469D17 /* ScrapRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4EC67B428E2063200469D17 /* ScrapRepository.swift */; };
+		E4EDAEC4292DB5D1000CD5C1 /* ProfileImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4EDAEC3292DB5D1000CD5C1 /* ProfileImageView.swift */; };
+		E4EDAEC6292DB64D000CD5C1 /* UIView+addSubview.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4EDAEC5292DB64D000CD5C1 /* UIView+addSubview.swift */; };
+		E4EDAECA292DC07D000CD5C1 /* UICollectionView+Reusable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4EDAEC9292DC07D000CD5C1 /* UICollectionView+Reusable.swift */; };
 		E4EF361628C4BED700746050 /* GreenRoomSectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4EF361528C4BED600746050 /* GreenRoomSectionHeader.swift */; };
 		E4EF361828C4BF0400746050 /* RecentQuestionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4EF361728C4BF0400746050 /* RecentQuestionCell.swift */; };
 		E4EF361A28C4EA3E00746050 /* RecentPageFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4EF361928C4EA3E00746050 /* RecentPageFooterView.swift */; };
@@ -393,6 +396,9 @@
 		E4EC67B028E2056100469D17 /* ScrapSectionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrapSectionModel.swift; sourceTree = "<group>"; };
 		E4EC67B228E205A600469D17 /* PublicQuestion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicQuestion.swift; sourceTree = "<group>"; };
 		E4EC67B428E2063200469D17 /* ScrapRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrapRepository.swift; sourceTree = "<group>"; };
+		E4EDAEC3292DB5D1000CD5C1 /* ProfileImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImageView.swift; sourceTree = "<group>"; };
+		E4EDAEC5292DB64D000CD5C1 /* UIView+addSubview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+addSubview.swift"; sourceTree = "<group>"; };
+		E4EDAEC9292DC07D000CD5C1 /* UICollectionView+Reusable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionView+Reusable.swift"; sourceTree = "<group>"; };
 		E4EF361528C4BED600746050 /* GreenRoomSectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GreenRoomSectionHeader.swift; sourceTree = "<group>"; };
 		E4EF361728C4BF0400746050 /* RecentQuestionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentQuestionCell.swift; sourceTree = "<group>"; };
 		E4EF361928C4EA3E00746050 /* RecentPageFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentPageFooterView.swift; sourceTree = "<group>"; };
@@ -634,6 +640,7 @@
 				DB006B9428C39D3C00867013 /* CustomSwitch.swift */,
 				DB9989DF28D5DA280056D40B /* CustomSlider.swift */,
 				DBB251EB28D9B7B400310820 /* LodingIndicator.swift */,
+				E4EDAEC3292DB5D1000CD5C1 /* ProfileImageView.swift */,
 			);
 			path = Custom;
 			sourceTree = "<group>";
@@ -660,7 +667,7 @@
 		DBD0821B2897E6EE0092241F /* GreenRoom */ = {
 			isa = PBXGroup;
 			children = (
-				E4EFC1BC2917E37D00B023F6 /* Domain */,
+				E4EFC1BC2917E37D00B023F6 /* Data */,
 				DBBA947F289968CD00264405 /* Custom */,
 				E46539DA28ACD77B00F17A6C /* Utils */,
 				DBD082642897E7840092241F /* Resource */,
@@ -1026,14 +1033,10 @@
 		E46E4BF228DD735400D1691F /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				E46E4BEE28DD732900D1691F /* UIColor+.swift */,
-				E46E4C0328E14FAE00D1691F /* UIViewController+.swift */,
-				E46E4BF528DD76B200D1691F /* UIView+.swift */,
+				E4EDAEC2292DB599000CD5C1 /* View */,
 				E46E4BF028DD734C00D1691F /* UIFont+.swift */,
 				E46E4BF328DD769A00D1691F /* UIButton+.swift */,
-				E46E4C0528E14FC500D1691F /* UILabel+.swift */,
 				E4213BD029019539007F0297 /* UITextField+.swift */,
-				E4213BDD2902FB8D007F0297 /* UIImageView+.swift */,
 				E43D8F57291136D90069BA0C /* UIImage+.swift */,
 				E46E4C0728E14FD400D1691F /* Date+.swift */,
 				E44456ED28E6E89B0034A207 /* NotificationName+.swift */,
@@ -1275,6 +1278,20 @@
 			path = Create;
 			sourceTree = "<group>";
 		};
+		E4EDAEC2292DB599000CD5C1 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				E46E4C0328E14FAE00D1691F /* UIViewController+.swift */,
+				E46E4BF528DD76B200D1691F /* UIView+.swift */,
+				E4EDAEC5292DB64D000CD5C1 /* UIView+addSubview.swift */,
+				E46E4C0528E14FC500D1691F /* UILabel+.swift */,
+				E46E4BEE28DD732900D1691F /* UIColor+.swift */,
+				E4213BDD2902FB8D007F0297 /* UIImageView+.swift */,
+				E4EDAEC9292DC07D000CD5C1 /* UICollectionView+Reusable.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		E4EFC1972917989C00B023F6 /* Search */ = {
 			isa = PBXGroup;
 			children = (
@@ -1300,13 +1317,13 @@
 			path = User;
 			sourceTree = "<group>";
 		};
-		E4EFC1BC2917E37D00B023F6 /* Domain */ = {
+		E4EFC1BC2917E37D00B023F6 /* Data */ = {
 			isa = PBXGroup;
 			children = (
 				E4EFC1BD2917E38400B023F6 /* Repository */,
 				E47EC5F82915511C007C5D5D /* Network */,
 			);
-			path = Domain;
+			path = Data;
 			sourceTree = "<group>";
 		};
 		E4EFC1BD2917E38400B023F6 /* Repository */ = {
@@ -1544,6 +1561,7 @@
 				E46539DC28ACDAD100F17A6C /* SetNotificationRow.swift in Sources */,
 				E46539D928ACD77600F17A6C /* Utilities.swift in Sources */,
 				DBA8ED6E28BB89C3007526CF /* KPFinishViewController.swift in Sources */,
+				E4EDAEC4292DB5D1000CD5C1 /* ProfileImageView.swift in Sources */,
 				E470539728AB856D00884B56 /* SettingHeader.swift in Sources */,
 				E461E42B28CE14B0001EBF74 /* ScrapedQuestionViewController.swift in Sources */,
 				DB563FA028AF841400E7193D /* RxAppleLoginProxy.swift in Sources */,
@@ -1588,6 +1606,7 @@
 				E470539928AB882900884B56 /* SettingRow.swift in Sources */,
 				E4EFC1A82917AA2E00B023F6 /* DetailGreenRoomRepository.swift in Sources */,
 				E4A2E9F428EAB8D000E7F5C0 /* DetailPublicAnswer.swift in Sources */,
+				E4EDAEC6292DB64D000CD5C1 /* UIView+addSubview.swift in Sources */,
 				E40BC6B528B756EE00FB557D /* SearchSectionModel.swift in Sources */,
 				E4647BCC290BAECE00DBD3EE /* BaseCollectionReusableView.swift in Sources */,
 				E4EF361828C4BF0400746050 /* RecentQuestionCell.swift in Sources */,
@@ -1679,6 +1698,7 @@
 				DB797A99289B9BFF00ADF65F /* RegisterNameViewController.swift in Sources */,
 				E40BC6E428B880FE00FB557D /* SearchResultNotFountCell.swift in Sources */,
 				DBA1FEB72917A26F0020384A /* KPGreenRoomViewModel.swift in Sources */,
+				E4EDAECA292DC07D000CD5C1 /* UICollectionView+Reusable.swift in Sources */,
 				DB9D9F3F28E702200061D7DB /* LoginViewModel.swift in Sources */,
 				E40BC6FB28B892C400FB557D /* CoreDataManager.swift in Sources */,
 				E4EC67B128E2056100469D17 /* ScrapSectionModel.swift in Sources */,

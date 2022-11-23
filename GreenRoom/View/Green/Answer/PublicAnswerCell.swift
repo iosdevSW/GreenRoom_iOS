@@ -20,14 +20,7 @@ final class PublicAnswerCell: BaseCollectionViewCell {
         didSet { configure() }
     }
     
-    private lazy var profileImageView = UIImageView(frame: .zero).then {
-        $0.contentMode = .scaleAspectFit
-        $0.layer.cornerRadius = frame.size.width * 0.1 / 2
-        $0.layer.masksToBounds = true
-        $0.image = UIImage(named: "GreenRoomIcon")
-        $0.alpha = 0.3
-        $0.backgroundColor = .customGray
-    }
+    private lazy var profileImageView = ProfileImageView()
     
     private var answerLabel = UILabel().then {
         $0.textColor = .customGray
@@ -61,27 +54,27 @@ final class PublicAnswerCell: BaseCollectionViewCell {
     private func configureOddUI() {
         
         let imageSize = frame.size.width * 0.1
-        self.addSubview(profileImageView)
+        
+        self.addSubviews([profileImageView, answerLabel])
+        
         profileImageView.snp.remakeConstraints{ make in
             make.centerY.equalToSuperview()
             make.trailing.equalToSuperview().offset(-40)
             make.width.height.equalTo(imageSize)
         }
         
-        self.addSubview(answerLabel)
         answerLabel.snp.remakeConstraints { make in
             make.centerY.equalToSuperview()
             make.leading.equalToSuperview().offset(40)
             make.trailing.equalTo(profileImageView.snp.leading).offset(-40)
             make.height.equalTo(60)
         }
-
     }
     
     private func configure() {
         guard let question = question else { return }
         
-        self.profileImageView.kf.setImage(with: URL(string: question.profileImage))
+        self.profileImageView.setImage(at: question.profileImage)
         self.profileImageView.alpha = 1.0
         self.answerLabel.text = question.answer
         self.answerLabel.textColor = .black
