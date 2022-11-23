@@ -60,20 +60,18 @@ final class ApplyPublicAnswerViewController: BaseViewController {
         
         let headerHeight = UIScreen.main.bounds.height * 0.3
         
-        self.view.addSubview(headerView)
+        self.view.addSubviews([headerView, keywordView, answerTextView])
         headerView.snp.makeConstraints { make in
             make.top.leading.trailing.equalToSuperview()
             make.height.equalTo(headerHeight)
         }
         
-        self.view.addSubview(keywordView)
         keywordView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
             make.top.equalTo(self.headerView.snp.bottom).offset(15)
             make.height.equalTo(115)
         }
         
-        self.view.addSubview(answerTextView)
         answerTextView.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(30)
             make.trailing.equalToSuperview().offset(-30)

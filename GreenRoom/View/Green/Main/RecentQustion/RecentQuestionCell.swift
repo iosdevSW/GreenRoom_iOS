@@ -11,12 +11,7 @@ final class RecentQuestionCell: BaseCollectionViewCell {
     static let reuseIdentifer = "RecentQuestionCell"
     
     //MARK: - Properties
-    private lazy var profileImageView = UIImageView(frame: .zero).then {
-        $0.contentMode = .scaleAspectFill
-        $0.layer.cornerRadius = frame.size.width / 12
-        $0.layer.masksToBounds = true
-        $0.image = UIImage(named: "CharacterProfile1")
-    }
+    private lazy var profileImageView = ProfileImageView()
     
     private let categoryLabel = Utilities.shared.generateLabel(text: "디자인", color: .black, font: .sfPro(size: 12, family: .Semibold))
 
@@ -29,22 +24,22 @@ final class RecentQuestionCell: BaseCollectionViewCell {
     override func configureUI(){
         self.contentView.setMainLayer()
         self.backgroundColor = .white
-        self.contentView.addSubview(questionLabel)
-        self.questionLabel.snp.makeConstraints { make in
-            make.trailing.equalToSuperview()
-            make.leading.top.equalToSuperview()
-        }
         
-        self.contentView.addSubview(categoryLabel)
+        self.contentView.addSubviews([questionLabel, categoryLabel, profileImageView])
+        
         self.categoryLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(13)
-            make.bottom.equalToSuperview().offset(-15)
+            make.top.equalToSuperview().offset(13)
+            make.leading.trailing.equalToSuperview().inset(13)
         }
         
-        self.contentView.addSubview(profileImageView)
+        self.questionLabel.snp.makeConstraints { make in
+            make.trailing.leading.equalToSuperview()
+            make.top.equalTo(categoryLabel.snp.bottom)
+        }
+        
         profileImageView.snp.makeConstraints { make in
             make.centerY.equalTo(categoryLabel)
-            make.trailing.equalToSuperview().offset(-13)
+            make.trailing.equalToSuperview().inset(13)
             make.width.height.equalTo(frame.size.width / 6)
         }
     }
@@ -54,10 +49,7 @@ final class RecentQuestionCell: BaseCollectionViewCell {
         self.questionLabel.attributedText = question.question.addLineSpacing(spacing: 6, foregroundColor: .black)
         
         self.categoryLabel.text = question.categoryName
-        guard let url = URL(string: question.profileImage) else { return }
-        
-        self.profileImageView.kf.setImage(with: url, placeholder: UIImage(named:"CharacterProfile1"))
-        
+        self.profileImageView.setImage(at: question.profileImage)
     }
 }
 

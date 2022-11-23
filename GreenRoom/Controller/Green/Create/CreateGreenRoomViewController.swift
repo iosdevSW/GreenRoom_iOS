@@ -41,12 +41,12 @@ final class CreateGreenRoomViewController: BaseViewController {
     override func configureUI() {
         self.view.backgroundColor = .white
         
-        self.view.addSubview(collectionView)
+        self.view.addSubviews([collectionView, submitButton])
+        
         collectionView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
         
-        self.view.addSubview(submitButton)
         submitButton.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(13)
             make.trailing.equalToSuperview().offset(-13)

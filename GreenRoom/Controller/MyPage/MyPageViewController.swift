@@ -89,10 +89,11 @@ extension MyPageViewController {
     
     private func configureCollectionView() {
         self.collectionView.backgroundColor = .white
-        collectionView.register(ProfileCell.self, forCellWithReuseIdentifier: ProfileCell.reuseIdentifier)
-        collectionView.register(SettingHeader.self, forSupplementaryViewOfKind: SettingHeader.reuseIdentifier, withReuseIdentifier: SettingHeader.reuseIdentifier)
-        collectionView.register(SettingRow.self, forCellWithReuseIdentifier: SettingRow.reuseIdentifier)
-        collectionView.register(SetNotificationRow.self, forCellWithReuseIdentifier: SetNotificationRow.reuseIdentifier)
+        
+        collectionView.register(ProfileCell.self)
+        collectionView.register(SettingHeader.self)
+        collectionView.register(SettingRow.self)
+        collectionView.register(SetNotificationRow.self)
     }
     
     //MARK: - CollectionViewDataSoruce
@@ -102,20 +103,19 @@ extension MyPageViewController {
             switch item {
                 
             case .profile(profileInfo: let user) :
-                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ProfileCell.reuseIdentifier, for: indexPath) as? ProfileCell else {
-                    return UICollectionViewCell()
-                }
+                guard let cell = collectionView.dequeueCell(ProfileCell.self, for: indexPath) else { return UICollectionViewCell() }
                 cell.user = user
                 cell.delegate = self
                 return cell
             case .setting(settingInfo: let setting) :
                 switch setting.setting {
                 case .notification:
-                    guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SetNotificationRow.reuseIdentifier, for: indexPath) as? SetNotificationRow else { return UICollectionViewCell() }
+                    guard let cell =
+                            collectionView.dequeueCell(SetNotificationRow.self, for: indexPath) else { return UICollectionViewCell() }
                     cell.setting = setting
                     return cell
                 default:
-                    guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SettingRow.reuseIdentifier, for: indexPath) as? SettingRow else {
+                    guard let cell = collectionView.dequeueCell(SettingRow.self, for: indexPath) else {
                         return UICollectionViewCell()
                     }
                     cell.setting = setting
@@ -125,6 +125,7 @@ extension MyPageViewController {
         } configureSupplementaryView: { dataSource, collectionView, kind, indexPath in
             switch dataSource[indexPath.section] {
             case .setting(header: let header, items: _):
+
                 guard let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: SettingHeader.reuseIdentifier, withReuseIdentifier: SettingHeader.reuseIdentifier, for: indexPath) as? SettingHeader else { return UICollectionReusableView() }
                 headerView.configure(title: header)
                 return headerView
@@ -249,3 +250,5 @@ extension MyPageViewController: ProfileCellDelegate, PHPickerViewControllerDeleg
     }
     
 }
+
+

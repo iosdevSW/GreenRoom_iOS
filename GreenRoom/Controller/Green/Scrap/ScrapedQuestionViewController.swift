@@ -56,12 +56,11 @@ final class ScrapedQuestionViewController: BaseViewController {
     override func configureUI() {
         self.view.backgroundColor = .white
         
-        self.view.addSubview(collectionView)
+        self.view.addSubviews([collectionView, deleteButton])
         collectionView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
         
-        self.view.addSubview(deleteButton)
         deleteButton.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(20)
             make.trailing.equalToSuperview().offset(-20)

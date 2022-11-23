@@ -99,14 +99,14 @@ final class PublicAnswerListViewController: BaseViewController {
         }
         
         let buttonHeight = view.frame.size.height * 0.07
-        self.view.addSubview(collectionView)
+        
+        self.view.addSubviews([collectionView, answerPostButton, timeOutView])
         collectionView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
             make.top.equalTo(headerView.snp.bottom).offset(20)
             make.bottom.equalTo(view.safeAreaLayoutGuide)
         }
         
-        self.view.addSubview(answerPostButton)
         answerPostButton.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(15)
             make.trailing.equalToSuperview().offset(-15)
@@ -114,7 +114,6 @@ final class PublicAnswerListViewController: BaseViewController {
             make.bottom.equalTo(view.safeAreaLayoutGuide)
         }
         
-        self.view.addSubview(timeOutView)
         timeOutView.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.bottom.equalTo(answerPostButton.snp.top).offset(-16)

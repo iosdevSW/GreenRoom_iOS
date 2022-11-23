@@ -97,43 +97,39 @@ final class CustomPopUpDatePickerController: BaseViewController {
     //MARK: - Configure
     override func configureUI(){
         
-        self.view.addSubview(blurView)
+        self.view.addSubviews([blurView, containerView])
+        
         self.blurView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
         
-        self.view.addSubview(containerView)
         self.containerView.snp.makeConstraints { make in
             make.bottom.leading.trailing.equalToSuperview()
             make.height.equalToSuperview().multipliedBy(0.6)
         }
         
+        self.containerView.addSubviews([datePicker, titleLabel, subtitle, setTimeLabel, cancelButton, applyButton])
         
-        self.containerView.addSubview(datePicker)
         self.datePicker.snp.makeConstraints { make in
             make.center.equalToSuperview()
             make.leading.trailing.equalToSuperview()
             make.height.equalTo(150)
         }
         
-        self.containerView.addSubview(titleLabel)
         self.titleLabel.snp.makeConstraints{ make in
             make.top.leading.equalToSuperview().offset(41)
         }
         
-        self.containerView.addSubview(subtitle)
         self.subtitle.snp.makeConstraints{ make in
             make.leading.equalTo(titleLabel.snp.leading)
             make.top.equalTo(titleLabel.snp.bottom).offset(10)
         }
         
-        self.containerView.addSubview(setTimeLabel)
         self.setTimeLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.top.equalTo(subtitle.snp.bottom).offset(30)
         }
         
-        self.containerView.addSubview(cancelButton)
         self.cancelButton.snp.makeConstraints{ make in
             make.leading.equalToSuperview().offset(24)
             make.bottom.equalToSuperview().offset(-30)
@@ -141,7 +137,6 @@ final class CustomPopUpDatePickerController: BaseViewController {
             make.width.equalTo(150)
         }
         
-        self.containerView.addSubview(applyButton)
         self.applyButton.snp.makeConstraints{ make in
             make.trailing.equalToSuperview().offset(-24)
             make.bottom.equalToSuperview().offset(-30)

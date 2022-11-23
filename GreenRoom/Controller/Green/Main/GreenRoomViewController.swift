@@ -70,12 +70,6 @@ class GreenRoomViewController: BaseViewController {
         self.configureNavigationBar()
     }
     
-//    override func viewDidDisappear(_ animated: Bool) {
-//        super.viewDidDisappear(animated)
-//
-//        self.hideTabbar()
-//    }
-    
     override func viewWillLayoutSubviews() {
         self.underline.setGradient(
             color1: UIColor(red: 110/255.0, green: 234/255.0, blue: 174/255.0, alpha: 1.0),
@@ -200,7 +194,7 @@ class GreenRoomViewController: BaseViewController {
         buttonStack.axis = .horizontal
         buttonStack.distribution = .equalSpacing
         
-        self.view.addSubview(buttonStack)
+        self.view.addSubviews([buttonStack, underline, collectionView])
         buttonStack.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide).offset(27)
             make.leading.equalToSuperview().offset(view.frame.width / 5)
@@ -208,15 +202,13 @@ class GreenRoomViewController: BaseViewController {
             make.height.equalTo(30)
         }
         
-        self.view.addSubview(underline)
         underline.snp.makeConstraints { make in
             make.top.equalTo(buttonStack.snp.bottom).offset(5)
             make.leading.equalToSuperview().offset(view.frame.width/15)
             make.trailing.equalToSuperview().offset(-view.frame.width/15)
             make.height.equalTo(3)
         }
-        
-        self.view.addSubview(collectionView)
+
         collectionView.snp.makeConstraints { make in
             make.bottom.leading.trailing.equalToSuperview()
             make.top.equalTo(underline.snp.bottom)
