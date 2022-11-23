@@ -8,9 +8,7 @@
 import UIKit
 
 final class MyGreenRoomFooterView: BaseCollectionReusableView {
-    
-    static let reuseIdentifier = "MyGreenRoomFooterView"
-    
+
     private let participantLabel = UILabel().then {
         $0.text = "N명이 참여하고 있습니다."
         $0.textColor = .mainColor

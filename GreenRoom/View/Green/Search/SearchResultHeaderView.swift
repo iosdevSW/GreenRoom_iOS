@@ -9,9 +9,7 @@ import Foundation
 import UIKit
 
 final class SearchResultHeaderView: BaseCollectionReusableView {
-    
-    static let reuseIdentifier = "SearchResultHeaderView"
-    
+
     //MARK: - Properties
     private var titleLabel = UILabel().then {
         $0.font = .sfPro(size: 16, family: .Bold)

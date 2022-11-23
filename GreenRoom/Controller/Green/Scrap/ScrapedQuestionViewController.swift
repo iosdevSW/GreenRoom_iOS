@@ -121,16 +121,16 @@ extension ScrapedQuestionViewController {
     private func configureCollectionView() {
         collectionView.backgroundColor = .backgroundGray
         collectionView.allowsMultipleSelection = true
+        
+        collectionView.registerCell(ScrapViewCell.self)
         collectionView.register(InfoHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: InfoHeaderView.reuseIdentifier)
-        collectionView.register(ScrapViewCell.self, forCellWithReuseIdentifier: ScrapViewCell.reuseIdentifier)
     }
     
     private func dataSource() -> RxCollectionViewSectionedReloadDataSource<ScrapSectionModel> {
         
         return RxCollectionViewSectionedReloadDataSource<ScrapSectionModel> {
             (dataSource, collectionView, indexPath, item) in
-            
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ScrapViewCell.reuseIdentifier, for: indexPath) as? ScrapViewCell else { return UICollectionViewCell() }
+            guard let cell = collectionView.dequeueCell(ScrapViewCell.self, for: indexPath) else { return UICollectionViewCell() }
             cell.editMode = self.editMode
             cell.question = item
             cell.delegate = self
@@ -150,7 +150,6 @@ extension ScrapedQuestionViewController {
 extension ScrapedQuestionViewController: ScrapViewCellDelegate {
     
     func didSelectScrapCell(isSelected: Bool, question: GreenRoomQuestion) {
-        print(question)
         if isSelected {
             self.viewModel.selectedIndexesObservable
                 .accept(self.viewModel.selectedIndexesObservable.value + [question.id])

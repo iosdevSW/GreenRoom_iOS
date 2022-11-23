@@ -9,8 +9,6 @@ import UIKit
 
 final class SearchWordCell: BaseCollectionViewCell {
     
-    static let reuseIdentifier = "SearchWordCell"
-    
     //MARK: - Properties
     var tagType: SearchTagItem! {
         didSet {

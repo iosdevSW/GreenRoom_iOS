@@ -13,8 +13,6 @@ protocol RecentHeaderDelegate: AnyObject {
 
 final class GreenRoomSectionHeader: BaseCollectionReusableView {
     
-    static let reuseIdentifier = "GreenRoomSectionHeader"
-    
     var type: GreenRoomSectionModel? {
         didSet { configure() }
     }

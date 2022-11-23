@@ -18,8 +18,6 @@ protocol ProfileCellDelegate: AnyObject {
 final class ProfileCell: BaseCollectionViewCell {
     
     //MARK: - Properties
-    static let reuseIdentifier = "ProfileCell"
-    
     weak var delegate: ProfileCellDelegate?
     
     var user: User? {

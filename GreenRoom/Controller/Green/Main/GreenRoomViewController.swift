@@ -221,16 +221,11 @@ extension GreenRoomViewController {
     private func configureCollecitonView() {
         
         collectionView.backgroundColor = .white
-        collectionView.register(GRFilteringCell.self, forCellWithReuseIdentifier: GRFilteringCell.reuseIdentifier)
-        collectionView.register(PopularQuestionCell.self, forCellWithReuseIdentifier: PopularQuestionCell.reuseIdentifer)
-        collectionView.register(RecentQuestionCell.self, forCellWithReuseIdentifier: RecentQuestionCell.reuseIdentifer)
-        collectionView.register(MyQuestionListCell.self, forCellWithReuseIdentifier: MyQuestionListCell.reuseIedentifier)
-        collectionView.register(MyGreenRoomCell.self, forCellWithReuseIdentifier: MyGreenRoomCell.reuseIdentifer)
+        [GRFilteringCell.self, PopularQuestionCell.self, RecentQuestionCell.self, MyQuestionListCell.self, MyGreenRoomCell.self]
+            .forEach { collectionView.registerCell($0) }
         
-        collectionView.register(GRFilteringHeaderView.self, forSupplementaryViewOfKind: GRFilteringHeaderView.reuseIdentifier, withReuseIdentifier: GRFilteringHeaderView.reuseIdentifier)
-        collectionView.register(GreenRoomSectionHeader.self,forSupplementaryViewOfKind: GreenRoomSectionHeader.reuseIdentifier, withReuseIdentifier: GreenRoomSectionHeader.reuseIdentifier)
-        collectionView.register(RecentPageFooterView.self, forSupplementaryViewOfKind: RecentPageFooterView.reuseIdentifier, withReuseIdentifier: RecentPageFooterView.reuseIdentifier)
-        collectionView.register(MyGreenRoomFooterView.self, forSupplementaryViewOfKind: MyGreenRoomFooterView.reuseIdentifier, withReuseIdentifier: MyGreenRoomFooterView.reuseIdentifier)
+        [GRFilteringHeaderView.self, GreenRoomSectionHeader.self, RecentPageFooterView.self, MyGreenRoomFooterView.self]
+            .forEach { collectionView.registerResuableView($0) }
     }
     
     private func dataSource() -> RxCollectionViewSectionedReloadDataSource<GreenRoomSectionModel> {
@@ -239,26 +234,26 @@ extension GreenRoomViewController {
             
             switch item {
             case .filtering(interest: let category):
-                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: GRFilteringCell.reuseIdentifier, for: indexPath) as? GRFilteringCell else { return UICollectionViewCell() }
+                guard let cell = collectionView.dequeueCell(GRFilteringCell.self, for: indexPath) else { return UICollectionViewCell() }
                 cell.configure(title: category.title)
                 return cell
                 
             case .popular(question: let question):
-                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PopularQuestionCell.reuseIdentifer, for: indexPath) as? PopularQuestionCell else { return UICollectionViewCell() }
+                guard let cell = collectionView.dequeueCell(PopularQuestionCell.self, for: indexPath) else { return UICollectionViewCell() }
                 cell.configure(question: question)
                 return cell
                 
             case .recent(question: let question):
-                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RecentQuestionCell.reuseIdentifer, for: indexPath) as? RecentQuestionCell else { return UICollectionViewCell() }
+                guard let cell = collectionView.dequeueCell(RecentQuestionCell.self, for: indexPath) else { return UICollectionViewCell() }
                 cell.configure(question: question)
                 return cell
             case .MyGreenRoom(question: let question):
-                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MyGreenRoomCell.reuseIdentifer, for: indexPath) as? MyGreenRoomCell else { return UICollectionViewCell() }
+                guard let cell = collectionView.dequeueCell(MyGreenRoomCell.self, for: indexPath) else { return UICollectionViewCell() }
                 cell.configure(question: question)
                 cell.delegate = self
                 return cell
             case .MyQuestionList(question: let question):
-                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MyQuestionListCell.reuseIedentifier, for: indexPath) as? MyQuestionListCell else { return UICollectionViewCell() }
+                guard let cell = collectionView.dequeueCell(MyQuestionListCell.self, for: indexPath) else { return UICollectionViewCell() }
                 cell.configure(question: question)
                 return cell
             }
@@ -268,22 +263,20 @@ extension GreenRoomViewController {
             
             switch kind {
             case GRFilteringHeaderView.reuseIdentifier:
-                guard let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: GRFilteringHeaderView.reuseIdentifier, withReuseIdentifier: GRFilteringHeaderView.reuseIdentifier, for: indexPath) as? GRFilteringHeaderView else { return UICollectionReusableView() }
+                guard let headerView = collectionView.dequeReusableView(GRFilteringHeaderView.self, for: indexPath) else { return UICollectionReusableView() }
                 return headerView
             case RecentPageFooterView.reuseIdentifier:
-                guard let footerView = collectionView.dequeueReusableSupplementaryView(ofKind: RecentPageFooterView.reuseIdentifier, withReuseIdentifier: RecentPageFooterView.reuseIdentifier, for: indexPath) as? RecentPageFooterView else { return UICollectionReusableView() }
+                guard let footerView = collectionView.dequeReusableView(RecentPageFooterView.self, for: indexPath) else { return UICollectionReusableView() }
                 footerView.bind(input: self.viewModel.currentBannerPage, pageNumber: 3)
                 return footerView
             case MyGreenRoomFooterView.reuseIdentifier:
-                guard let footerView = collectionView.dequeueReusableSupplementaryView(ofKind: MyGreenRoomFooterView.reuseIdentifier, withReuseIdentifier: MyGreenRoomFooterView.reuseIdentifier, for: indexPath) as? MyGreenRoomFooterView else { return UICollectionReusableView() }
-                switch dataSource[indexPath.section].items[indexPath.row] {
-                case .MyGreenRoom(question: let question):
+                guard let footerView = collectionView.dequeReusableView(MyGreenRoomFooterView.self, for: indexPath) else { return UICollectionReusableView() }
+                if case let .MyGreenRoom(question) = dataSource[indexPath.section].items[indexPath.row] {
                     footerView.configure(with: question)
-                default: break
                 }
                 return footerView
             default:
-                guard let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: GreenRoomSectionHeader.reuseIdentifier, withReuseIdentifier: GreenRoomSectionHeader.reuseIdentifier, for: indexPath) as? GreenRoomSectionHeader else { return UICollectionReusableView() }
+                guard let headerView = collectionView.dequeReusableView(GreenRoomSectionHeader.self, for: indexPath) else { return UICollectionReusableView() }
                 headerView.delegate = self
                 headerView.type = dataSource[indexPath.section]
                 return headerView

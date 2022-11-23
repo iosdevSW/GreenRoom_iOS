@@ -10,9 +10,7 @@ import RxSwift
 import RxGesture
 
 final class CreateGRHeaderView: BaseCollectionReusableView {
-    
-    static let reuseIdentifier = "CreateGRHeaderView"
-    
+
     //MARK: - Properties
     private let subtitleLabel = UILabel().then {
         $0.attributedText = Utilities.shared.textWithIcon(text: "모두가 볼 수 있는 질문입니다.", image: UIImage(named:"createQuestionList"), font: .sfPro(size: 12, family: .Regular), textColor: .customGray, imageColor: .customGray, iconPosition: .left)

@@ -9,8 +9,6 @@ import UIKit
 
 final class PublicAnswerCell: BaseCollectionViewCell {
     
-    static let reuseIdentifier = "PublicAnswerCell"
-    
     //MARK: - ProPerties
     var isReversed: Bool = false {
         didSet { isReversed ? configureOddUI() : configureEvenUI() }

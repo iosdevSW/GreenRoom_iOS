@@ -189,7 +189,7 @@ extension PublicAnswerListViewController {
     private func dataSource() -> RxCollectionViewSectionedReloadDataSource<PublicAnswerSectionModel> {
         return RxCollectionViewSectionedReloadDataSource<PublicAnswerSectionModel> { [weak self] (dataSource, collectionView, indexPath, item) in
             guard let self else { return UICollectionViewCell() }
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PublicAnswerCell.reuseIdentifier, for: indexPath) as? PublicAnswerCell else { return UICollectionViewCell() }
+            guard let cell = collectionView.dequeueCell(PublicAnswerCell.self, for: indexPath) else { return UICollectionViewCell() }
             cell.isReversed = indexPath.row % 2 != 0
             cell.question = self.mode == .permission ? item : nil
             
@@ -197,7 +197,6 @@ extension PublicAnswerListViewController {
             
         } configureSupplementaryView: { dataSource, collectionView, kind,
             indexPath in
-            
             guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: PublicAnswerStatusHeaderView.reuseIdentifier, for: indexPath) as? PublicAnswerStatusHeaderView else {
                 return UICollectionReusableView()
             }

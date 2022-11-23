@@ -11,8 +11,6 @@ import UIKit
 final class SettingHeader: BaseCollectionReusableView {
     
     //MARK: - Properties
-    static let reuseIdentifier = "SettingHeader"
-    
     private var headerLabel = UILabel().then {
         $0.font = .sfPro(size: 12, family: .Bold)
         $0.textColor = .customGray

@@ -9,8 +9,6 @@ import Foundation
 import UIKit
 
 final class SetNotificationRow: BaseCollectionViewCell {
-    
-    static let reuseIdentifier = "SetNotificationRow"
         
     var setting: InfoItem? {
         didSet{ configure() }

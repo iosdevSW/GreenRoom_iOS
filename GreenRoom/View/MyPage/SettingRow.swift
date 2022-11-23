@@ -10,8 +10,6 @@ import UIKit
 
 final class SettingRow: BaseCollectionViewCell {
     
-    static let reuseIdentifier = "SettingRow"
-    
     var setting: InfoItem? {
         didSet{
             DispatchQueue.main.async {

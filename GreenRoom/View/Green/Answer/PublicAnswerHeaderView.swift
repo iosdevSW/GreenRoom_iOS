@@ -10,8 +10,6 @@ import UIKit
 
 final class PublicAnswerHeaderView: BaseCollectionReusableView {
     
-    static let reuseIdentifier = "PublicAnswerHeaderView"
-    
     //MARK: - Properties
     private lazy var participantLabel = UILabel().then {
         $0.text = "N명이 참여하고 있습니다."

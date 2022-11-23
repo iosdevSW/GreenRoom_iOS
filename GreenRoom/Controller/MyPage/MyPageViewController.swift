@@ -90,10 +90,10 @@ extension MyPageViewController {
     private func configureCollectionView() {
         self.collectionView.backgroundColor = .white
         
-        collectionView.register(ProfileCell.self)
-        collectionView.register(SettingHeader.self)
-        collectionView.register(SettingRow.self)
-        collectionView.register(SetNotificationRow.self)
+        collectionView.registerCell(ProfileCell.self)
+        collectionView.registerResuableView(SettingHeader.self)
+        collectionView.registerCell(SettingRow.self)
+        collectionView.registerCell(SetNotificationRow.self)
     }
     
     //MARK: - CollectionViewDataSoruce
@@ -125,8 +125,9 @@ extension MyPageViewController {
         } configureSupplementaryView: { dataSource, collectionView, kind, indexPath in
             switch dataSource[indexPath.section] {
             case .setting(header: let header, items: _):
-
-                guard let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: SettingHeader.reuseIdentifier, withReuseIdentifier: SettingHeader.reuseIdentifier, for: indexPath) as? SettingHeader else { return UICollectionReusableView() }
+                guard let headerView = collectionView.dequeReusableView(SettingHeader.self, for: indexPath) else {
+                    return UICollectionReusableView()
+                }
                 headerView.configure(title: header)
                 return headerView
             default: return UICollectionReusableView()

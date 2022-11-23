@@ -9,9 +9,7 @@ import Foundation
 import UIKit
 
 final class SearchWordHeaderView: BaseCollectionReusableView {
-    
-    static let reuseIdentifier = "SearchWordHeaderView"
-    
+
     //MARK: - Properties
     private var titleLabel = UILabel().then {
         $0.text = "최근 검색어"

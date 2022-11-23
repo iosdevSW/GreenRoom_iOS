@@ -77,8 +77,8 @@ extension RecentPublicQuestionsViewController {
     
     private func configureCollectionView() {
         self.collectionView.backgroundColor = .white
-        collectionView.register(InfoHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: InfoHeaderView.reuseIdentifier)
-        collectionView.register(PublicQuestionsCell.self, forCellWithReuseIdentifier: PublicQuestionsCell.reuseIdentifier)
+        collectionView.registerCell(PublicQuestionsCell.self)
+        collectionView.registerResuableView(InfoHeaderView.self)
     }
     
     private func dataSource() -> RxCollectionViewSectionedReloadDataSource<GreenRoomSectionModel> {

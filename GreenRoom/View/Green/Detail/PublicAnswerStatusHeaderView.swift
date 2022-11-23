@@ -9,8 +9,6 @@ import UIKit
 
 final class PublicAnswerStatusHeaderView: BaseCollectionReusableView {
     
-    static let reuseIdentifier = "PublicAnswerStatusHeaderView"
-    
     var question: DetailPublicQuestionDTO! {
         didSet { configure() }
     }

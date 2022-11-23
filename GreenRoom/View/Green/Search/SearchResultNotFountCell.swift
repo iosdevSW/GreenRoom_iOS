@@ -10,8 +10,6 @@ import UIKit
 
 final class SearchResultNotFoundCell: BaseCollectionViewCell {
     
-    static let reuseIdentifier = "SearchResultNotFoundCell"
-    
     //MARK: - Properties
     private let imageView = UIImageView().then {
         $0.image = UIImage(named: "NotFound")?.withRenderingMode(.alwaysOriginal)
