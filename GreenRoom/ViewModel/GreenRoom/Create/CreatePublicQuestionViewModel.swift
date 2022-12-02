@@ -12,7 +12,7 @@ import RxCocoa
 
 final class CreatePublicQuestionViewModel: ViewModelType {
     
-    private let applyRepositry: ApplyQuestionRepositoryInterface
+    private let applyRepositry: ApplyQuestionRepository
     
     var disposeBag = DisposeBag()
     
@@ -40,7 +40,7 @@ final class CreatePublicQuestionViewModel: ViewModelType {
     
     let categories: Observable<[CreateSection]> = .of([CreateSection(items: Constants.categories)])
     
-    init(repositry: ApplyQuestionRepositoryInterface) {
+    init(repositry: ApplyQuestionRepository) {
         self.applyRepositry = repositry
     }
     

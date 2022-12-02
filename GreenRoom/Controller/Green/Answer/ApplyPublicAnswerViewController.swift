@@ -17,7 +17,7 @@ final class ApplyPublicAnswerViewController: BaseViewController {
         viewModel: RegisterKeywordViewModel(
             id: viewModel.answer.header.id,
             answerType: .public,
-            repository: RegisterKeywordRepository())
+            repository: DefaultRegisterKeywordRepository())
     )
     
     private let doneButton = UIButton().then {

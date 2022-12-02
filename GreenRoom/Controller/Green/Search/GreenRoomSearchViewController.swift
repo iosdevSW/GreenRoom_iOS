@@ -68,7 +68,7 @@ final class GreenRoomSearchViewController: BaseViewController {
             .subscribe(onNext: { onwer, keyword in
                 let viewModel = FilteringViewModel(
                     mode: .search(keyword: keyword),
-                    fileringRepository: FilteringRepository()
+                    fileringRepository: DefaultFilteringRepository()
                 )
                 let vc = FilteringQuestionViewController(viewModel: viewModel)
                 onwer.navigationController?.pushViewController(vc, animated: false)
@@ -80,7 +80,7 @@ final class GreenRoomSearchViewController: BaseViewController {
             .subscribe(onNext: { onwer, keyword in
                 let viewModel = FilteringViewModel(
                     mode: .search(keyword: keyword.text),
-                    fileringRepository: FilteringRepository()
+                    fileringRepository: DefaultFilteringRepository()
                 )
                 let vc = FilteringQuestionViewController(viewModel: viewModel)
                 onwer.navigationController?.pushViewController(vc, animated: false)

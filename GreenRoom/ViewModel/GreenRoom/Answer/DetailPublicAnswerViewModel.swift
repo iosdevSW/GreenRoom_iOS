@@ -11,7 +11,7 @@ import RxCocoa
 
 final class DetailPublicAnswerViewModel: ViewModelType {
     
-    private let repository: DetailPublicAnswerRepositoryInterface
+    private let repository: DetailPublicAnswerRepository
     
     var disposeBag = DisposeBag()
     
@@ -31,7 +31,7 @@ final class DetailPublicAnswerViewModel: ViewModelType {
     
     init(question: QuestionHeader,
          answerID: Int,
-         repository: DetailPublicAnswerRepositoryInterface
+         repository: DetailPublicAnswerRepository
     ){
         self.question = question
         self.id = answerID

@@ -10,7 +10,7 @@ import RxCocoa
 
 final class MakePublicAnswerViewModel: ViewModelType {
     
-    private let repository: ApplyPublicAnswerRepositoryInterface
+    private let repository: ApplyPublicAnswerRepository
     
     var disposeBag = DisposeBag()
     
@@ -40,7 +40,7 @@ final class MakePublicAnswerViewModel: ViewModelType {
     
     let answer: PublicAnswerSectionModel
     
-    init(answer: PublicAnswerSectionModel, repository: ApplyPublicAnswerRepositoryInterface){
+    init(answer: PublicAnswerSectionModel, repository: ApplyPublicAnswerRepository){
         self.answer = answer
         self.repository = repository
     }

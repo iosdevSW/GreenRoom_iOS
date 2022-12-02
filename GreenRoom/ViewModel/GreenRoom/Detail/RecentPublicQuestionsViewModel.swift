@@ -10,7 +10,7 @@ import RxSwift
 
 final class RecentPublicQuestionsViewModel: ViewModelType {
     
-    private let repository: RecentPublicQuestionRepositoryInterface
+    private let repository: RecentPublicQuestionRepository
     
     var disposeBag = DisposeBag()
     
@@ -20,7 +20,7 @@ final class RecentPublicQuestionsViewModel: ViewModelType {
         let recent: Observable<[GreenRoomSectionModel]>
     }
     
-    init(repository: RecentPublicQuestionRepositoryInterface) {
+    init(repository: RecentPublicQuestionRepository) {
         self.repository = repository
     }
     

@@ -96,7 +96,7 @@ final class PrivateAnswerViewController: BaseViewController {
     override func configureUI() {
         super.configureUI()
         
-        self.keywordView = KeywordRegisterView(viewModel: RegisterKeywordViewModel(id: viewModel.id, answerType: .private, repository: RegisterKeywordRepository()))
+        self.keywordView = KeywordRegisterView(viewModel: RegisterKeywordViewModel(id: viewModel.id, answerType: .private, repository: DefaultRegisterKeywordRepository()))
         
         let headerHeight = UIScreen.main.bounds.height * 0.3
         

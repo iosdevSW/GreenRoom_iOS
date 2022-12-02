@@ -9,7 +9,7 @@ import RxSwift
 
 final class EditProfileViewModel: ViewModelType {
 
-    private let repository: EditProfileRepositoryInterface
+    private let repository: UserRepository
     
     struct Input{
         let trigger: Observable<Bool>
@@ -24,7 +24,7 @@ final class EditProfileViewModel: ViewModelType {
     var disposeBag = DisposeBag()
     private let name: String
     
-    init(name: String, repository: EditProfileRepositoryInterface){
+    init(name: String, repository: UserRepository){
         self.name = name
         self.repository = repository
     }

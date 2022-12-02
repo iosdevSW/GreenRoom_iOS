@@ -20,7 +20,7 @@ final class MyPageViewModel: ViewModelType {
         var MyPageDataSource: Observable<[MyPageSectionModel]>
     }
     
-    private let mypageRepository: MyPageRepositoryInterface
+    private let mypageRepository: UserRepository
     
     var disposeBag = DisposeBag()
     
@@ -43,7 +43,7 @@ final class MyPageViewModel: ViewModelType {
                     MyPageSectionModel.SectionItem.setting(settingInfo:InfoItem(iconImage: UIImage(named: "FAQ")!, title: "FAQ", setting: .FAQ)),
                     MyPageSectionModel.SectionItem.setting(settingInfo:InfoItem(iconImage: UIImage(named: "QNA")!, title: "직접 문의", setting: .QNA))])])
     
-    init(repository: MyPageRepositoryInterface) {
+    init(repository: UserRepository) {
         self.mypageRepository = repository
     }
     

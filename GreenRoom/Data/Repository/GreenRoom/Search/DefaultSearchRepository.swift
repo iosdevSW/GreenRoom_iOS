@@ -8,13 +8,13 @@
 import RxSwift
 import Alamofire
 
-protocol SearchRepositoryInterface {
+protocol SearchRepository {
     func fetchPopularKeywords() -> Observable<[String]>
     func fetchRecentKeywords() -> [String]
     func searchQuestion(keyword: String) -> Observable<[FilteringQuestion]>
 }
 
-final class SearchRepository: SearchRepositoryInterface {
+final class DefaultSearchRepository: SearchRepository {
 
     func fetchPopularKeywords() -> Observable<[String]>{
         let request = SearchRequest.popular

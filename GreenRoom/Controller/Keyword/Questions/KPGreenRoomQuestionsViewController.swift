@@ -94,7 +94,7 @@ final class KPGreenRoomQuestionsViewController: BaseViewController {
         
         self.InvolveButton.rx.tap
             .bind(onNext: {
-                let vc = RecentPublicQuestionsViewController(viewModel: RecentPublicQuestionsViewModel(repository: RecentPublicQuestionRepository()))
+                let vc = RecentPublicQuestionsViewController(viewModel: RecentPublicQuestionsViewModel(repository: DefaultRecentPublicQuestionRepository()))
                 self.navigationController?.pushViewController(vc, animated: true)
             }).disposed(by: disposeBag)
         

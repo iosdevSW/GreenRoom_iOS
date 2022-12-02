@@ -9,12 +9,12 @@ import Foundation
 import RxSwift
 import Alamofire
 
-protocol RegisterKeywordRepositoryInterface {
+protocol RegisterKeywordRepository {
     func fetchPrivateQuestion(id: Int) -> Observable<PrivateAnswer>
     func fetchGroupQuestion(id: Int) -> Observable<GroupQuestionInfo>
 }
 
-final class RegisterKeywordRepository: RegisterKeywordRepositoryInterface {
+final class DefaultRegisterKeywordRepository: RegisterKeywordRepository {
     func fetchPrivateQuestion(id: Int) -> Observable<PrivateAnswer> {
         let request = PrivateQuestionRequest.fetch(id: id)
         return NetworkManager.shared.request(with: request)

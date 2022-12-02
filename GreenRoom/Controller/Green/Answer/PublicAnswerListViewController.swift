@@ -151,7 +151,7 @@ final class PublicAnswerListViewController: BaseViewController {
             .withLatestFrom(output.answer)
             .withUnretained(self)
             .subscribe(onNext: { onwer, answer in
-                let vc = ApplyPublicAnswerViewController(viewModel: MakePublicAnswerViewModel(answer: answer, repository: ApplyPublicAnswerRepository()))
+                let vc = ApplyPublicAnswerViewController(viewModel: MakePublicAnswerViewModel(answer: answer, repository: DefaultApplyPublicAnswerRepository()))
                 onwer.navigationController?.pushViewController(vc, animated: false)
             }).disposed(by: disposeBag)
         
@@ -161,7 +161,7 @@ final class PublicAnswerListViewController: BaseViewController {
                 let viewModel = DetailPublicAnswerViewModel(
                     question: self.headerView.question,
                     answerID: item.id,
-                    repository: DetailPublicAnswerRepository())
+                    repository: DefaultDetailPublicAnswerRepository())
                 
                 let vc = DetailPublicAnswerViewController(viewModel: viewModel)
                 onwer.navigationController?.pushViewController(vc, animated: false)

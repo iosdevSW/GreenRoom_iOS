@@ -114,7 +114,7 @@ final class MainTabbarController: UITabBarController {
     
     @objc func didTapEditQuestionButton(_ notification: NSNotification) {
         guard let id = notification.userInfo?["id"] as? Int else { return }
-        let vc = UINavigationController(rootViewController: KPQuestionEditViewController(viewModel: QuestionEditViewModel(id: id, repository: PrivateAnswerRepository())))
+        let vc = UINavigationController(rootViewController: KPQuestionEditViewController(viewModel: QuestionEditViewModel(id: id, repository: DefaultPrivateAnswerRepository())))
         vc.modalPresentationStyle = .fullScreen
         present(vc, animated: true)
     }
@@ -137,14 +137,14 @@ extension MainTabbarController: UIPopoverPresentationControllerDelegate {
 extension MainTabbarController: CreatePopOverDeleagte {
     
     func didTapGreenRoomCreate() {
-        let viewModel = CreatePublicQuestionViewModel(repositry: ApplyQuestionRepository())
+        let viewModel = CreatePublicQuestionViewModel(repositry: DefaultApplyQuestionRepository())
         let vc = UINavigationController(rootViewController: CreateGreenRoomViewController(viewModel: viewModel))
         vc.modalPresentationStyle = .fullScreen
         present(vc, animated: true)
     }
     
     func didTapQuestionListCreate() {
-        let viewModel = CreateViewModel(repository: ApplyQuestionRepository())
+        let viewModel = CreateViewModel(repository: DefaultApplyQuestionRepository())
         let vc = UINavigationController(rootViewController: CreateQuestionViewController(viewModel: viewModel))
         vc.modalPresentationStyle = .fullScreen
         present(vc, animated: true)

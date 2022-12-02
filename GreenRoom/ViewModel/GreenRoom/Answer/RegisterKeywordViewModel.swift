@@ -12,7 +12,7 @@ import RxCocoa
 final class RegisterKeywordViewModel: ViewModelType {
     
     let kpQuestionService = KPQuestionService()
-    private let repository: RegisterKeywordRepositoryInterface
+    private let repository: RegisterKeywordRepository
     var disposeBag = DisposeBag()
       
     struct Input {
@@ -30,7 +30,7 @@ final class RegisterKeywordViewModel: ViewModelType {
     private let id: Int
     private let answerType: AnswerType
     
-    init(id: Int, answerType: AnswerType, repository: RegisterKeywordRepositoryInterface){
+    init(id: Int, answerType: AnswerType, repository: RegisterKeywordRepository){
         self.id = id
         self.answerType = answerType
         self.repository = repository

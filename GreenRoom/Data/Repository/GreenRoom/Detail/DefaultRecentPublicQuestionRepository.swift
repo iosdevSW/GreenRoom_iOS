@@ -9,11 +9,11 @@ import Foundation
 import RxSwift
 
 /** 최근 그린룸 질문 클릭*/
-protocol RecentPublicQuestionRepositoryInterface {
+protocol RecentPublicQuestionRepository {
     func fetchRecentPublicQuestions() -> Observable<[GreenRoomQuestion]>
 }
 
-final class RecentPublicQuestionRepository: RecentPublicQuestionRepositoryInterface {
+final class DefaultRecentPublicQuestionRepository: RecentPublicQuestionRepository {
     func fetchRecentPublicQuestions() -> Observable<[GreenRoomQuestion]> {
         let request = GreenRoomRequest.recent
         return NetworkManager.shared.request(with: request)
