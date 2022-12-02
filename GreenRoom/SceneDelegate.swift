@@ -46,7 +46,7 @@ extension SceneDelegate {
     private func createCustomTabbar() -> MainTabbarController {
         let mainTabbarController = MainTabbarController()
         
-        let greenRoomController = self.createNavigationController(viewController: GreenRoomViewController(viewModel: MainGreenRoomViewModel(greenRoomRepositry: MainGreenRoomRepositry())),
+        let greenRoomController = self.createNavigationController(viewController: GreenRoomViewController(viewModel: MainGreenRoomViewModel(greenRoomRepositry: DefaultMainGreenRoomRepositry())),
                                                                   title: "그린룸",
                                                                   image: UIImage(named: "greenroom"),
                                                                   tag: 1)
@@ -59,7 +59,7 @@ extension SceneDelegate {
       
         let mypageController = self.createNavigationController(
             viewController:
-                MyPageViewController(viewModel: MyPageViewModel(repository: MyPageRepository())),
+                MyPageViewController(viewModel: MyPageViewModel(repository: DefaultUserRepository())),
             title: "마이페이지",
             image: UIImage(named: "mypage"),
             tag: 3)

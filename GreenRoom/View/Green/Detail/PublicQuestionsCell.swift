@@ -11,7 +11,6 @@ import UIKit
 /// 특정 질문에 대한 리스트를 보여주는 셀 B4, B10
 final class PublicQuestionsCell: BaseCollectionViewCell {
 
-    static let reuseIdentifier = "PublicQuestionsCell"
     //MARK: - Properties
 
     private lazy var containerView = UIView()

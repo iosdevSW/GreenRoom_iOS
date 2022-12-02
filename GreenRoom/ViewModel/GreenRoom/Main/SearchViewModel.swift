@@ -10,7 +10,7 @@ import RxSwift
 
 final class SearchViewModel: ViewModelType {
     
-    private let searchRepository: SearchRepositoryInterface
+    private let searchRepository: SearchRepository
     
     var disposeBag = DisposeBag()
     
@@ -25,7 +25,7 @@ final class SearchViewModel: ViewModelType {
     
     private let updateTrigger = BehaviorSubject<Bool>(value: true)
     
-    init(repository: SearchRepositoryInterface){
+    init(repository: SearchRepository){
         self.searchRepository = repository
     }
     

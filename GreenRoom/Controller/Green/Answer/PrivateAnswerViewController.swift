@@ -96,29 +96,27 @@ final class PrivateAnswerViewController: BaseViewController {
     override func configureUI() {
         super.configureUI()
         
-        self.keywordView = KeywordRegisterView(viewModel: RegisterKeywordViewModel(id: viewModel.id, answerType: .private, repository: RegisterKeywordRepository()))
+        self.keywordView = KeywordRegisterView(viewModel: RegisterKeywordViewModel(id: viewModel.id, answerType: .private, repository: DefaultRegisterKeywordRepository()))
         
         let headerHeight = UIScreen.main.bounds.height * 0.3
         
-        self.view.addSubview(headerView)
+        self.view.addSubviews([headerView, defaultView, defaultLabel, answerPostButton])
+        
         headerView.snp.makeConstraints { make in
             make.top.leading.trailing.equalToSuperview()
             make.height.equalTo(headerHeight)
         }
         
-        self.view.addSubview(defaultView)
         defaultView.snp.makeConstraints { make in
             make.center.equalToSuperview()
             make.width.height.equalTo(80)
         }
         
-        self.view.addSubview(defaultLabel)
         defaultLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.top.equalTo(defaultView.snp.bottom).offset(20)
         }
         
-        self.view.addSubview(answerPostButton)
         answerPostButton.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(15)
             make.trailing.equalToSuperview().offset(-15)

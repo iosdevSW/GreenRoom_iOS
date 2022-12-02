@@ -12,10 +12,8 @@ protocol ScrapViewCellDelegate: AnyObject {
     func didSelectScrapCell(isSelected: Bool, question: GreenRoomQuestion)
 }
 
-class ScrapViewCell: BaseCollectionViewCell {
-    
-    static let reuseIdentifier = "ScrapViewCell"
-    
+final class ScrapViewCell: BaseCollectionViewCell {
+
     //MARK: - Properties
     var question: GreenRoomQuestion! {
         didSet { configure() }

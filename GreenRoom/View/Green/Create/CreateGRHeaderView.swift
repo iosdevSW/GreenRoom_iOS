@@ -10,9 +10,7 @@ import RxSwift
 import RxGesture
 
 final class CreateGRHeaderView: BaseCollectionReusableView {
-    
-    static let reuseIdentifier = "CreateGRHeaderView"
-    
+
     //MARK: - Properties
     private let subtitleLabel = UILabel().then {
         $0.attributedText = Utilities.shared.textWithIcon(text: "모두가 볼 수 있는 질문입니다.", image: UIImage(named:"createQuestionList"), font: .sfPro(size: 12, family: .Regular), textColor: .customGray, imageColor: .customGray, iconPosition: .left)
@@ -84,13 +82,9 @@ final class CreateGRHeaderView: BaseCollectionReusableView {
     
     // MARK: - configure
     override func configureUI(){
-        self.backgroundColor = .white
-        self.addSubview(subtitleLabel)
-        self.addSubview(titleLabel)
-        self.addSubview(questionLabel)
-        self.addSubview(questionTextView)
-        self.addSubview(selectedLabel)
-    
+        
+        self.addSubviews([subtitleLabel,titleLabel, questionLabel, questionTextView, selectedLabel, dateContainer])
+        self.dateContainer.addSubviews([dateSelectLabel, setTimeLabel, startDateLabel, endDateLabel])
         
         subtitleLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(34)
@@ -101,12 +95,6 @@ final class CreateGRHeaderView: BaseCollectionReusableView {
             make.leading.equalToSuperview().offset(34)
             make.top.equalTo(subtitleLabel.snp.bottom).offset(6)
         }
-        
-        self.addSubview(dateContainer)
-        self.dateContainer.addSubview(dateSelectLabel)
-        self.dateContainer.addSubview(setTimeLabel)
-        self.dateContainer.addSubview(startDateLabel)
-        self.dateContainer.addSubview(endDateLabel)
         
         dateContainer.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview()

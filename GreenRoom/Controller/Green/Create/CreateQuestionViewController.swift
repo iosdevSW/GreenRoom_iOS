@@ -76,13 +76,7 @@ final class CreateQuestionViewController: BaseViewController {
     override func configureUI() {
         self.view.backgroundColor = .white
         
-        self.view.addSubview(subtitleLabel)
-        self.view.addSubview(titleLabel)
-        self.view.addSubview(questionLabel)
-        self.view.addSubview(questionTextView)
-        self.view.addSubview(selectedLabel)
-        self.view.addSubview(collectionView)
-        self.view.addSubview(doneButton)
+        self.view.addSubviews([titleLabel, subtitleLabel, questionLabel, questionTextView, selectedLabel, collectionView, doneButton])
         
         self.subtitleLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(34)

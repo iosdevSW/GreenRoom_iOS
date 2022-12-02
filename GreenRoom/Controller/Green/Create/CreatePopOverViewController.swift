@@ -67,8 +67,7 @@ final class CreatePopOverViewController: BaseViewController {
         
         self.preferredContentSize = CGSize(width: 160, height: 110)
         
-        self.view.addSubview(greenroomButton)
-        self.view.addSubview(questionListButton)
+        self.view.addSubviews([greenroomButton, questionListButton])
         
         greenroomButton.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()

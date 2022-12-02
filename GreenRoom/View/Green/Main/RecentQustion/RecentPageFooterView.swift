@@ -11,8 +11,6 @@ import RxSwift
 
 final class RecentPageFooterView: BaseCollectionReusableView {
     
-    static let reuseIdentifier = "RecentPageFooterView"
-    
     private let bannerPageControl = UIPageControl().then{
         $0.pageIndicatorTintColor = .customGray
         $0.currentPageIndicatorTintColor = .mainColor

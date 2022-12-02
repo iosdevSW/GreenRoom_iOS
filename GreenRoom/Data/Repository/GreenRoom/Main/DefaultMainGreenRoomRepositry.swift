@@ -1,5 +1,5 @@
 //
-//  MainGreenRoomRepository.swift
+//  DefaultMainGreenRoomRepositry.swift
 //  GreenRoom
 //
 //  Created by Doyun Park on 2022/11/06.
@@ -8,7 +8,7 @@
 import RxSwift
 import Alamofire
 
-protocol MainGreenRoomRepositoryInferface {
+protocol MainGreenRoomRepository {
     /** 인기있는 그린룸 질문 조회*/
     func fetchPopularPublicQuestions() -> Observable<[PopularGreenRoomQuestion]>
     /** 최근 그린룸 질문 조회*/
@@ -19,7 +19,7 @@ protocol MainGreenRoomRepositoryInferface {
     func fetchPrivateQuestions() -> Observable<[PrivateQuestion]>
 }
 
-final class MainGreenRoomRepositry: MainGreenRoomRepositoryInferface {
+final class DefaultMainGreenRoomRepositry: MainGreenRoomRepository {
     
     func fetchFilteringPublicQuestions(categoryId: Int) -> Observable<[FilteringQuestion]> {
         let request = GreenRoomRequest.filtering(categoryId: categoryId)

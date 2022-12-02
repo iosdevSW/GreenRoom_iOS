@@ -9,13 +9,13 @@ import Foundation
 import RxSwift
 import Alamofire
 
-protocol ScrapRepositoryInterface {
+protocol ScrapRepository {
     func fetchScrapQuestions() -> Observable<[GreenRoomQuestion]>
     func updateScrapQuestion(id: Int) -> Observable<Bool>
     func deleteScrapQuestion(ids: [Int]) -> Observable<Bool>
 }
 
-final class ScrapRepository: ScrapRepositoryInterface {
+final class DefaultScrapRepository: ScrapRepository {
     
     func fetchScrapQuestions() -> Observable<[GreenRoomQuestion]> {
         let request = ScrapRequest.fetchQuestions

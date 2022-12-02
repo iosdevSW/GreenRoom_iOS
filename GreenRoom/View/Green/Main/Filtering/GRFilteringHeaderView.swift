@@ -9,8 +9,6 @@ import UIKit
 
 final class GRFilteringHeaderView: BaseCollectionReusableView {
     
-    static let reuseIdentifier = "GRFilteringHeaderView"
-    
     //MARK: - Properties
     private let filterLabel = UILabel().then {
         $0.numberOfLines = 0

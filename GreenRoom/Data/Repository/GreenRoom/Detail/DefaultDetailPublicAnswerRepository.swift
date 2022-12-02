@@ -9,11 +9,11 @@ import UIKit
 import RxSwift
 
 /** 그린룸 질문에 담긴 답변들 중 하나를 클릭했을 때 */
-protocol DetailPublicAnswerRepositoryInterface {
+protocol DetailPublicAnswerRepository {
     func fetchDetailAnswer(id: Int) -> Observable<SpecificPublicAnswer>
 }
 
-final class DetailPublicAnswerRepository: DetailPublicAnswerRepositoryInterface {
+final class DefaultDetailPublicAnswerRepository: DetailPublicAnswerRepository {
     func fetchDetailAnswer(id: Int) -> Observable<SpecificPublicAnswer> {
         let request = GreenRoomRequest.detailAnswer(id: id)
         return NetworkManager.shared.request(with: request)

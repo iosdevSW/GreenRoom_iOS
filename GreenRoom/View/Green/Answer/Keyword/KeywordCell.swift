@@ -9,8 +9,6 @@ import UIKit
 
 final class KeywordCell: UICollectionViewCell {
     
-    static let reuseIdentifier = "KeywordCell"
-    
     var keyword: String! {
         didSet { self.keywordLabel.text = keyword }
     }

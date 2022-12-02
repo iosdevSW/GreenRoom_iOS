@@ -8,13 +8,13 @@
 import Foundation
 import RxSwift
 
-protocol PrivateAnswerRepositoryInterface {
+protocol PrivateAnswerRepository {
     func fetchPrivateQuestion(id: Int) -> Observable<PrivateAnswer>
     func deleteQuestion(id: Int) -> Observable<Bool>
     func uploadAnswer(id: Int, answer: String, keywords: [String]) -> Observable<Bool>
 }
 
-final class PrivateAnswerRepository: PrivateAnswerRepositoryInterface {
+final class DefaultPrivateAnswerRepository: PrivateAnswerRepository {
     func fetchPrivateQuestion(id: Int) -> Observable<PrivateAnswer> {
         let request = PrivateQuestionRequest.fetch(id: id)
         return NetworkManager.shared.request(with: request)

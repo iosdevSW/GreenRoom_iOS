@@ -8,14 +8,14 @@
 import Foundation
 import RxSwift
 
-protocol FilteringRepositoryInterface {
+protocol FilteringRepository {
     /** 내가 관심있어 하는 직무에 대한 질문들 조회*/
     func fetchFilteringQuestion(categoryId: Int) -> Observable<[FilteringQuestion]>
     /** 검색 기능으로 조회*/
     func fetchFilteringQuestion(keyword: String) -> Observable<[FilteringQuestion]>
 }
 
-final class FilteringRepository: FilteringRepositoryInterface {
+final class DefaultFilteringRepository: FilteringRepository {
     func fetchFilteringQuestion(categoryId: Int) -> Observable<[FilteringQuestion]> {
         let request = GreenRoomRequest.filtering(categoryId: categoryId)
         return NetworkManager.shared.request(with: request)

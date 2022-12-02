@@ -9,9 +9,7 @@ import Foundation
 import UIKit
 
 final class SearchWordHeaderView: BaseCollectionReusableView {
-    
-    static let reuseIdentifier = "SearchWordHeaderView"
-    
+
     //MARK: - Properties
     private var titleLabel = UILabel().then {
         $0.text = "최근 검색어"
@@ -20,8 +18,6 @@ final class SearchWordHeaderView: BaseCollectionReusableView {
     }
     
     override func configureUI() {
-        backgroundColor = .white
-        
         self.addSubview(titleLabel)
         titleLabel.snp.makeConstraints {
             $0.leading.equalToSuperview().offset(34)

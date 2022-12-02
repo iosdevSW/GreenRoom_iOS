@@ -17,7 +17,7 @@ class MainGreenRoomViewModel: ViewModelType {
         case MyList
     }
     
-    private let greenRoomRepositry: MainGreenRoomRepositoryInferface
+    private let greenRoomRepositry: MainGreenRoomRepository
 //    private var publicQuestionService = PublicQuestionService()
     
     var disposeBag = DisposeBag()
@@ -40,7 +40,7 @@ class MainGreenRoomViewModel: ViewModelType {
 
     private let myGreenRoom = BehaviorSubject<[GreenRoomSectionModel]>(value: [])
     
-    init(greenRoomRepositry: MainGreenRoomRepositoryInferface) {
+    init(greenRoomRepositry: MainGreenRoomRepository) {
         self.greenRoomRepositry = greenRoomRepositry
     }
     

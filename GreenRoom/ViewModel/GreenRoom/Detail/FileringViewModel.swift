@@ -12,7 +12,7 @@ final class FilteringViewModel: ViewModelType {
     
     var disposeBag = DisposeBag()
     
-    private let fileringRepository: FilteringRepositoryInterface
+    private let fileringRepository: FilteringRepository
     struct Input { }
     
     struct Output {
@@ -24,7 +24,7 @@ final class FilteringViewModel: ViewModelType {
     private let filteringQuestion = PublishSubject<[FilteringSectionModel]>()
     
     init(mode: FilterMode,
-         fileringRepository: FilteringRepositoryInterface) {
+         fileringRepository: FilteringRepository) {
         self.mode = mode
         self.fileringRepository = fileringRepository
     }

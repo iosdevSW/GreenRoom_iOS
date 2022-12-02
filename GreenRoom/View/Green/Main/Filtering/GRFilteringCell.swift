@@ -9,8 +9,6 @@ import UIKit
 
 final class GRFilteringCell: BaseCollectionViewCell {
     
-    static let reuseIdentifier = "GRFilteringCell"
-    
     //MARK: - Properties
     private var filteringLabel = UILabel().then {
         $0.font = .sfPro(size: 16, family: .Regular)

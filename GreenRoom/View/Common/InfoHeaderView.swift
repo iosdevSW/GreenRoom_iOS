@@ -9,8 +9,6 @@ import UIKit
 
 final class InfoHeaderView: BaseCollectionReusableView {
     
-    static let reuseIdentifier = "InfoHeaderView"
-    
     //MARK: - Properties
     var info: Info! {
         didSet { configure() }

@@ -56,7 +56,7 @@ final class RecentPublicQuestionsViewController: BaseViewController {
             .subscribe(onNext: { onwer, item in
                 if case .recent(let question) = item {
                     
-                    let viewModel = PublicAnswerViewModel(id: question.id, scrapRepository: ScrapRepository(), detailGreenRoomRepository: DetailGreenRoomRepository())
+                    let viewModel = PublicAnswerViewModel(id: question.id, scrapRepository: DefaultScrapRepository(), detailGreenRoomRepository: DefaultDetailGreenRoomRepository())
 
                     let vc = PublicAnswerListViewController(viewModel: viewModel)
                     onwer.navigationController?.pushViewController(vc, animated: false)
@@ -77,8 +77,8 @@ extension RecentPublicQuestionsViewController {
     
     private func configureCollectionView() {
         self.collectionView.backgroundColor = .white
-        collectionView.register(InfoHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: InfoHeaderView.reuseIdentifier)
-        collectionView.register(PublicQuestionsCell.self, forCellWithReuseIdentifier: PublicQuestionsCell.reuseIdentifier)
+        collectionView.registerCell(PublicQuestionsCell.self)
+        collectionView.registerResuableView(InfoHeaderView.self)
     }
     
     private func dataSource() -> RxCollectionViewSectionedReloadDataSource<GreenRoomSectionModel> {

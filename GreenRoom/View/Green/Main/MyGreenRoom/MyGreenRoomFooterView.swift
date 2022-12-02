@@ -8,9 +8,7 @@
 import UIKit
 
 final class MyGreenRoomFooterView: BaseCollectionReusableView {
-    
-    static let reuseIdentifier = "MyGreenRoomFooterView"
-    
+
     private let participantLabel = UILabel().then {
         $0.text = "N명이 참여하고 있습니다."
         $0.textColor = .mainColor
@@ -23,7 +21,8 @@ final class MyGreenRoomFooterView: BaseCollectionReusableView {
     
     override func configureUI() {
         self.backgroundColor = .backgroundGray
-        self.addSubview(profileImageView)
+        self.addSubviews([profileImageView, participantLabel])
+        
         profileImageView.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.top.equalToSuperview().offset(30)
@@ -31,7 +30,6 @@ final class MyGreenRoomFooterView: BaseCollectionReusableView {
             make.height.equalTo(frame.width * 0.08)
         }
         
-        self.addSubview(participantLabel)
         participantLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.bottom.equalTo(profileImageView.snp.top).offset(-5)

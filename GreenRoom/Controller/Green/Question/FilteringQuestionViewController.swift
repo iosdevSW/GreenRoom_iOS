@@ -44,7 +44,8 @@ final class FilteringQuestionViewController: BaseViewController {
     override func configureUI() {
         self.view.backgroundColor = .white
         
-        self.view.addSubview(collectionView)
+        self.view.addSubviews([collectionView, defaultLabel])
+        
         collectionView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
@@ -56,7 +57,6 @@ final class FilteringQuestionViewController: BaseViewController {
             make.width.height.equalTo(86)
         }
         
-        self.view.addSubview(defaultLabel)
         defaultLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.top.equalTo(notFoundImageView.snp.bottom).offset(20)

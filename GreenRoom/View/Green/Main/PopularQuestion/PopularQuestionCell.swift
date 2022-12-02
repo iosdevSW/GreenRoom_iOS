@@ -10,16 +10,10 @@ import UIKit
 final class PopularQuestionCell: BaseCollectionViewCell {
     
     static let reuseIdentifer = "PopularQuestionCell"
+    
     //MARK: - Properties
-    
-    private lazy var profileImageView = UIImageView(frame: .zero).then {
-        $0.contentMode = .scaleAspectFill
-        $0.layer.cornerRadius = self.frame.width / 20
-        $0.layer.masksToBounds = true
-        $0.image = UIImage(named: "CharacterProfile1")
-        $0.tintColor = .mainColor
-    }
-    
+    private lazy var profileImageView = ProfileImageView()
+
     private let nameLabel = UILabel().then {
         $0.text = "박면접"
         $0.textColor = .gray
@@ -45,27 +39,31 @@ final class PopularQuestionCell: BaseCollectionViewCell {
     //MARK: - Configure
     override func configureUI(){
         self.backgroundColor = .backgroundGray
+        self.contentView.addSubviews([
+            profileImageView,
+            categoryLabel,
+            participantsLabel,
+            questionLabel,
+            expiredLabel,
+            nameLabel]
+        )
         
-        self.contentView.addSubview(profileImageView)
         profileImageView.snp.makeConstraints { make in
             make.width.height.equalTo(frame.width/10)
             make.top.equalToSuperview().offset(10)
             make.leading.equalToSuperview().offset(frame.width / 20)
         }
         
-        self.contentView.addSubview(categoryLabel)
         categoryLabel.snp.makeConstraints { make in
             make.leading.equalTo(profileImageView.snp.trailing).offset(15)
             make.top.equalToSuperview()
         }
         
-        self.contentView.addSubview(participantsLabel)
         participantsLabel.snp.makeConstraints { make in
             make.leading.equalTo(categoryLabel.snp.trailing).offset(10)
             make.centerY.equalTo(categoryLabel)
         }
         
-        self.contentView.addSubview(questionLabel)
         questionLabel.snp.makeConstraints { make in
             make.top.equalTo(categoryLabel.snp.bottom).offset(5)
             make.leading.equalTo(profileImageView.snp.trailing).offset(15)
@@ -73,14 +71,12 @@ final class PopularQuestionCell: BaseCollectionViewCell {
             make.height.equalTo(83)
         }
         
-        self.contentView.addSubview(expiredLabel)
         expiredLabel.snp.makeConstraints { make in
             make.bottom.equalToSuperview().offset(-10)
             make.top.equalTo(questionLabel.snp.bottom).offset(5)
             make.trailing.equalToSuperview().offset(-20)
         }
         
-        self.contentView.addSubview(nameLabel)
         nameLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(4)
             make.trailing.equalTo(questionLabel.snp.leading).offset(-4)

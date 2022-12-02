@@ -13,7 +13,7 @@ final class ScrapViewModel: ViewModelType {
     
     var disposeBag = DisposeBag()
     
-    private let scrapRepositry: ScrapRepositoryInterface
+    private let scrapRepositry: ScrapRepository
     
     struct Input {
         let buttonTab: Observable<Void>
@@ -29,7 +29,7 @@ final class ScrapViewModel: ViewModelType {
     private let scrapObesrvable = BehaviorSubject<[ScrapSectionModel]>(value: [])
     private let trigger = BehaviorSubject<Void>(value: ())
     
-    init(scrapRepositry: ScrapRepositoryInterface) {
+    init(scrapRepositry: ScrapRepository) {
         self.scrapRepositry = scrapRepositry
     }
 

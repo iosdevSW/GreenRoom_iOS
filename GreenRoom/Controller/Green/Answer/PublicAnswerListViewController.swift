@@ -99,14 +99,14 @@ final class PublicAnswerListViewController: BaseViewController {
         }
         
         let buttonHeight = view.frame.size.height * 0.07
-        self.view.addSubview(collectionView)
+        
+        self.view.addSubviews([collectionView, answerPostButton, timeOutView])
         collectionView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
             make.top.equalTo(headerView.snp.bottom).offset(20)
             make.bottom.equalTo(view.safeAreaLayoutGuide)
         }
         
-        self.view.addSubview(answerPostButton)
         answerPostButton.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(15)
             make.trailing.equalToSuperview().offset(-15)
@@ -114,7 +114,6 @@ final class PublicAnswerListViewController: BaseViewController {
             make.bottom.equalTo(view.safeAreaLayoutGuide)
         }
         
-        self.view.addSubview(timeOutView)
         timeOutView.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.bottom.equalTo(answerPostButton.snp.top).offset(-16)
@@ -152,7 +151,7 @@ final class PublicAnswerListViewController: BaseViewController {
             .withLatestFrom(output.answer)
             .withUnretained(self)
             .subscribe(onNext: { onwer, answer in
-                let vc = ApplyPublicAnswerViewController(viewModel: MakePublicAnswerViewModel(answer: answer, repository: ApplyPublicAnswerRepository()))
+                let vc = ApplyPublicAnswerViewController(viewModel: MakePublicAnswerViewModel(answer: answer, repository: DefaultApplyPublicAnswerRepository()))
                 onwer.navigationController?.pushViewController(vc, animated: false)
             }).disposed(by: disposeBag)
         
@@ -162,7 +161,7 @@ final class PublicAnswerListViewController: BaseViewController {
                 let viewModel = DetailPublicAnswerViewModel(
                     question: self.headerView.question,
                     answerID: item.id,
-                    repository: DetailPublicAnswerRepository())
+                    repository: DefaultDetailPublicAnswerRepository())
                 
                 let vc = DetailPublicAnswerViewController(viewModel: viewModel)
                 onwer.navigationController?.pushViewController(vc, animated: false)
@@ -190,7 +189,7 @@ extension PublicAnswerListViewController {
     private func dataSource() -> RxCollectionViewSectionedReloadDataSource<PublicAnswerSectionModel> {
         return RxCollectionViewSectionedReloadDataSource<PublicAnswerSectionModel> { [weak self] (dataSource, collectionView, indexPath, item) in
             guard let self else { return UICollectionViewCell() }
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PublicAnswerCell.reuseIdentifier, for: indexPath) as? PublicAnswerCell else { return UICollectionViewCell() }
+            guard let cell = collectionView.dequeueCell(PublicAnswerCell.self, for: indexPath) else { return UICollectionViewCell() }
             cell.isReversed = indexPath.row % 2 != 0
             cell.question = self.mode == .permission ? item : nil
             
@@ -198,7 +197,6 @@ extension PublicAnswerListViewController {
             
         } configureSupplementaryView: { dataSource, collectionView, kind,
             indexPath in
-            
             guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: PublicAnswerStatusHeaderView.reuseIdentifier, for: indexPath) as? PublicAnswerStatusHeaderView else {
                 return UICollectionReusableView()
             }

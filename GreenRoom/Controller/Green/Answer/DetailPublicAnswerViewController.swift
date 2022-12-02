@@ -18,13 +18,7 @@ final class DetailPublicAnswerViewController: BaseViewController {
     private lazy var scrollView = UIScrollView()
     private lazy var headerView = AnswerHeaderView(frame: .zero)
     
-    private lazy var profileImageView = UIImageView().then {
-        $0.contentMode = .scaleAspectFit
-        $0.layer.cornerRadius = self.view.frame.width * 0.1 / 2
-        $0.layer.masksToBounds = true
-        $0.image = UIImage(named: "GreenRoomIcon")
-        $0.backgroundColor = .customGray
-    }
+    private lazy var profileImageView = ProfileImageView()
     
     private let nameLabel = UILabel().then {
         $0.font = .sfPro(size: 12, family: .Regular)
@@ -56,33 +50,29 @@ final class DetailPublicAnswerViewController: BaseViewController {
         
         let headerHeight = UIScreen.main.bounds.height * 0.3
         
-        self.view.addSubview(headerView)
+        self.view.addSubviews([headerView, scrollView, profileImageView, nameLabel, answerLabel])
         headerView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
             make.top.equalToSuperview()
             make.height.equalTo(headerHeight)
         }
         
-        self.view.addSubview(scrollView)
         scrollView.snp.makeConstraints { make in
             make.bottom.leading.trailing.equalToSuperview()
             make.top.equalTo(headerView.snp.bottom)
         }
         
-        self.scrollView.addSubview(profileImageView)
         profileImageView.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.top.equalToSuperview().offset(20)
             make.width.height.equalTo(self.view.frame.width * 0.1)
         }
         
-        self.scrollView.addSubview(nameLabel)
         nameLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.top.equalTo(profileImageView.snp.bottom).offset(10)
         }
         
-        self.scrollView.addSubview(answerLabel)
         answerLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(25)
             make.trailing.equalToSuperview().offset(-25)

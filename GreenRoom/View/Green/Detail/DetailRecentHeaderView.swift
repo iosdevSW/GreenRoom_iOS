@@ -9,8 +9,6 @@ import UIKit
 
 final class DetailRecentHeaderView: BaseCollectionReusableView {
     
-    static let reuseIdentifier = "DetailRecentHeaderView"
-    
     //MARK: - Properties
     private lazy var containerView = UIView().then {
         $0.backgroundColor = .white

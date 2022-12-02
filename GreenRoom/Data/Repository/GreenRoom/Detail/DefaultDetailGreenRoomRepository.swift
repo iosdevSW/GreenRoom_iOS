@@ -10,12 +10,12 @@ import RxSwift
 import Alamofire
 
 /** 그린룸 질문을 클릭했을 때 보이는*/
-protocol DetailGreenRoomRepositoryInterface {
+protocol DetailGreenRoomRepository {
     /** 그린룸질문 상세정보 조회 */
     func fetchDetailPublicQuestion(id: Int) -> Observable<PublicAnswerList>
 }
 
-final class DetailGreenRoomRepository: DetailGreenRoomRepositoryInterface {
+final class DefaultDetailGreenRoomRepository: DetailGreenRoomRepository {
 
     func fetchDetailPublicQuestion(id: Int) -> Observable<PublicAnswerList> {
         let request = GreenRoomRequest.detailQuestion(id: id)

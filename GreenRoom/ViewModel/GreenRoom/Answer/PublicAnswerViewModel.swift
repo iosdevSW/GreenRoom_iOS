@@ -11,8 +11,8 @@ import RxCocoa
 
 final class PublicAnswerViewModel: ViewModelType {
     
-    private let detailGreenRoomRepository: DetailGreenRoomRepositoryInterface
-    private let scrapRepository: ScrapRepositoryInterface
+    private let detailGreenRoomRepository: DetailGreenRoomRepository
+    private let scrapRepository: ScrapRepository
     
     var disposeBag = DisposeBag()
     
@@ -35,7 +35,7 @@ final class PublicAnswerViewModel: ViewModelType {
     
     private let id: Int
     
-    init(id: Int, scrapRepository: ScrapRepositoryInterface, detailGreenRoomRepository: DetailGreenRoomRepositoryInterface){
+    init(id: Int, scrapRepository: ScrapRepository, detailGreenRoomRepository: DetailGreenRoomRepository){
         self.id = id
         self.scrapRepository = scrapRepository
         self.detailGreenRoomRepository = detailGreenRoomRepository

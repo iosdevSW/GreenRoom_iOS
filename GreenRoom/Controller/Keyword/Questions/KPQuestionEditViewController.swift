@@ -89,7 +89,7 @@ final class KPQuestionEditViewController: BaseViewController {
         self.keywordView = KeywordRegisterView(viewModel: RegisterKeywordViewModel(
             id: viewModel.id,
             answerType: .kpQuestion,
-            repository: RegisterKeywordRepository())
+            repository: DefaultRegisterKeywordRepository())
         )
     }
     

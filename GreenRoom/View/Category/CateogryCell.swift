@@ -50,19 +50,20 @@ final class CategoryCell: BaseCollectionViewCell {
     
     override func configureUI() {
         self.layer.borderColor = UIColor.customGray.cgColor
-        self.addSubview(self.frameView)
+        
+        self.addSubviews([frameView, titleLabel])
+        self.frameView.addSubview(imageView)
+        
         frameView.snp.makeConstraints{ make in
             make.leading.trailing.top.equalToSuperview()
             make.height.equalTo(frameView.snp.width)
         }
         
-        frameView.addSubview(imageView)
         imageView.snp.makeConstraints{ make in
             make.centerY.centerX.equalToSuperview()
             make.width.height.equalTo(36)
         }
         
-        self.addSubview(titleLabel)
         titleLabel.snp.makeConstraints{ make in
             make.top.equalTo(frameView.snp.bottom).offset(4)
             make.centerX.equalToSuperview()

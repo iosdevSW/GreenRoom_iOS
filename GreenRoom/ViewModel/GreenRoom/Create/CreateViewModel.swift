@@ -20,7 +20,7 @@ protocol ViewModelType {
 
 final class CreateViewModel: ViewModelType {
     
-    private let applyRepositry: ApplyQuestionRepositoryInterface
+    private let applyRepositry: ApplyQuestionRepository
     
     var disposeBag = DisposeBag()
     
@@ -41,7 +41,7 @@ final class CreateViewModel: ViewModelType {
     
     let categories = Observable.of(Constants.categories)
     
-    init(repository: ApplyQuestionRepositoryInterface) {
+    init(repository: ApplyQuestionRepository) {
         self.applyRepositry = repository
     }
     

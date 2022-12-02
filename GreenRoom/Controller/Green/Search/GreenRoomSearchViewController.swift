@@ -68,7 +68,7 @@ final class GreenRoomSearchViewController: BaseViewController {
             .subscribe(onNext: { onwer, keyword in
                 let viewModel = FilteringViewModel(
                     mode: .search(keyword: keyword),
-                    fileringRepository: FilteringRepository()
+                    fileringRepository: DefaultFilteringRepository()
                 )
                 let vc = FilteringQuestionViewController(viewModel: viewModel)
                 onwer.navigationController?.pushViewController(vc, animated: false)
@@ -80,7 +80,7 @@ final class GreenRoomSearchViewController: BaseViewController {
             .subscribe(onNext: { onwer, keyword in
                 let viewModel = FilteringViewModel(
                     mode: .search(keyword: keyword.text),
-                    fileringRepository: FilteringRepository()
+                    fileringRepository: DefaultFilteringRepository()
                 )
                 let vc = FilteringQuestionViewController(viewModel: viewModel)
                 onwer.navigationController?.pushViewController(vc, animated: false)
@@ -98,8 +98,9 @@ extension GreenRoomSearchViewController {
     private func configureCollectionView(){
         self.collectionView.isScrollEnabled = false
         self.collectionView.backgroundColor = .white
-        self.collectionView.register(SearchWordCell.self, forCellWithReuseIdentifier: SearchWordCell.reuseIdentifier)
-        self.collectionView.register(SearchWordHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: SearchWordHeaderView.reuseIdentifier)
+        
+        self.collectionView.registerCell(SearchWordCell.self)
+        self.collectionView.registerResuableView(SearchWordHeaderView.self)
     }
     
     private func configureSearchBar(){
@@ -140,11 +141,13 @@ extension GreenRoomSearchViewController {
     private func dataSource() -> RxCollectionViewSectionedReloadDataSource<SearchSectionModel> {
         return RxCollectionViewSectionedReloadDataSource<SearchSectionModel> {
             dataSource, collectionView, indexPath, item in
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SearchWordCell.reuseIdentifier, for: indexPath) as? SearchWordCell else { return UICollectionViewCell() }
+            guard let cell = collectionView.dequeueCell(SearchWordCell.self, for: indexPath) else { return UICollectionViewCell() }
             cell.tagType = item
             return cell
         } configureSupplementaryView: { dataSource, collectionView, kind, indexPath in
-            guard let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: SearchWordHeaderView.reuseIdentifier, for: indexPath) as? SearchWordHeaderView else { return UICollectionReusableView() }
+            guard let headerView = collectionView.dequeReusableView(SearchWordHeaderView.self, for: indexPath) else {
+                return UICollectionReusableView()
+            }
             
             switch dataSource[indexPath.section] {
             case .popular(header: let title, items: _):
@@ -194,7 +197,7 @@ extension GreenRoomSearchViewController {
         let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(45))
         
         section.orthogonalScrollingBehavior = .continuousGroupLeadingBoundary
-        let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .topLeading)
+        let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: SearchWordHeaderView.reuseIdentifier, alignment: .topLeading)
         
         section.boundarySupplementaryItems = [header]
         section.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 15, bottom: 5, trailing: 0)
@@ -222,7 +225,7 @@ extension GreenRoomSearchViewController {
         let section = NSCollectionLayoutSection(group: group)
         
         let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(45))
-        let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .topLeading)
+        let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: SearchWordHeaderView.reuseIdentifier, alignment: .topLeading)
         section.interGroupSpacing = 14
         section.boundarySupplementaryItems = [header]
         section.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 15, bottom: 5, trailing: 0)
