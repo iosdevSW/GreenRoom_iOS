@@ -2,6 +2,51 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSCameraUsageDescription</key>
+	<string></string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string></string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string></string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLIconFile</key>
+			<string></string>
+			<key>CFBundleURLName</key>
+			<string>kakaokompassauth</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>kakaoa45de08bf74de9630747bd72021eb355</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>naverlogin</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>thirdparty20samplegame</string>
+			</array>
+		</dict>
+	</array>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>naversearchapp</string>
+		<string>naversearchthirdlogin</string>
+		<string>kakaolink</string>
+		<string>kakaokompassauth</string>
+	</array>
+	<key>UIAppFonts</key>
+	<array>
+		<string>SFProText-Regular.otf</string>
+		<string>SFProText-SemiBold.otf</string>
+		<string>SFProText-Bold.otf</string>
+		<string>SFPro.ttf</string>
+	</array>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
@@ -19,5 +64,9 @@
 			</array>
 		</dict>
 	</dict>
+	<key>UIStatusBarStyle</key>
+	<string>UIStatusBarStyleDarkContent</string>
+	<key>UIViewControllerBasedStatusBarAppearance</key>
+	<false/>
 </dict>
 </plist>

@@ -1,0 +1,120 @@
+PODS:
+  - Alamofire (5.6.2)
+  - Differentiator (5.0.0)
+  - KakaoSDKAuth (2.11.3):
+    - KakaoSDKCommon (= 2.11.3)
+  - KakaoSDKCommon (2.11.3):
+    - KakaoSDKCommon/Common (= 2.11.3)
+    - KakaoSDKCommon/Network (= 2.11.3)
+  - KakaoSDKCommon/Common (2.11.3)
+  - KakaoSDKCommon/Network (2.11.3):
+    - Alamofire (~> 5.1)
+    - KakaoSDKCommon/Common (= 2.11.3)
+  - KakaoSDKUser (2.11.3):
+    - KakaoSDKAuth (= 2.11.3)
+  - Kingfisher (7.4.1)
+  - naveridlogin-sdk-ios (4.1.5)
+  - RxAlamofire (6.1.1):
+    - RxAlamofire/Core (= 6.1.1)
+  - RxAlamofire/Core (6.1.1):
+    - Alamofire (~> 5.4)
+    - RxSwift (~> 6.0)
+  - RxCocoa (6.5.0):
+    - RxRelay (= 6.5.0)
+    - RxSwift (= 6.5.0)
+  - RxDataSources (5.0.0):
+    - Differentiator (~> 5.0)
+    - RxCocoa (~> 6.0)
+    - RxSwift (~> 6.0)
+  - RxGesture (4.0.4):
+    - RxCocoa (~> 6.0)
+    - RxSwift (~> 6.0)
+  - RxKakaoSDKAuth (2.11.3):
+    - KakaoSDKAuth (= 2.11.3)
+    - RxKakaoSDKCommon (= 2.11.3)
+  - RxKakaoSDKCommon (2.11.3):
+    - RxKakaoSDKCommon/Common (= 2.11.3)
+    - RxKakaoSDKCommon/Network (= 2.11.3)
+  - RxKakaoSDKCommon/Common (2.11.3):
+    - KakaoSDKCommon/Common (= 2.11.3)
+    - RxCocoa
+    - RxSwift (~> 6.0)
+  - RxKakaoSDKCommon/Network (2.11.3):
+    - KakaoSDKCommon/Network (= 2.11.3)
+    - RxAlamofire (~> 6.0)
+    - RxKakaoSDKCommon/Common (= 2.11.3)
+  - RxKakaoSDKUser (2.11.3):
+    - KakaoSDKUser (= 2.11.3)
+    - RxKakaoSDKAuth (= 2.11.3)
+  - RxRelay (6.5.0):
+    - RxSwift (= 6.5.0)
+  - RxSwift (6.5.0)
+  - RxViewController (2.0.0):
+    - RxCocoa (~> 6.0)
+    - RxSwift (~> 6.0)
+  - SnapKit (5.0.1)
+  - SwiftKeychainWrapper (4.0.1)
+  - Then (3.0.0)
+
+DEPENDENCIES:
+  - Kingfisher (~> 7.0)
+  - naveridlogin-sdk-ios
+  - RxCocoa (= 6.5.0)
+  - RxDataSources (~> 5.0)
+  - RxGesture
+  - RxKakaoSDKAuth
+  - RxKakaoSDKUser
+  - RxSwift (= 6.5.0)
+  - RxViewController
+  - SnapKit (~> 5.0.0)
+  - SwiftKeychainWrapper
+  - Then
+
+SPEC REPOS:
+  trunk:
+    - Alamofire
+    - Differentiator
+    - KakaoSDKAuth
+    - KakaoSDKCommon
+    - KakaoSDKUser
+    - Kingfisher
+    - naveridlogin-sdk-ios
+    - RxAlamofire
+    - RxCocoa
+    - RxDataSources
+    - RxGesture
+    - RxKakaoSDKAuth
+    - RxKakaoSDKCommon
+    - RxKakaoSDKUser
+    - RxRelay
+    - RxSwift
+    - RxViewController
+    - SnapKit
+    - SwiftKeychainWrapper
+    - Then
+
+SPEC CHECKSUMS:
+  Alamofire: d368e1ff8a298e6dde360e35a3e68e6c610e7204
+  Differentiator: e8497ceab83c1b10ca233716d547b9af21b9344d
+  KakaoSDKAuth: a64dde90516e18fdfc35b83bbad2677c3675c329
+  KakaoSDKCommon: b4235203f67a5b6ee2df75eaf9bbc863c6d92e09
+  KakaoSDKUser: 9a42e9b74855ce876b071c841418aa6726534010
+  Kingfisher: cd762a593a61b2fbecf7645c00f9a801a3ebfc9c
+  naveridlogin-sdk-ios: 4351fe7162cd6b8b6dbb37bd7cc205304fa1d889
+  RxAlamofire: beb75a1c452d0de225651db4903f5d29d034a620
+  RxCocoa: 94f817b71c07517321eb4f9ad299112ca8af743b
+  RxDataSources: aa47cc1ed6c500fa0dfecac5c979b723542d79cf
+  RxGesture: f3efb47ed2d26a8082f7b660d4a59970e275a7f8
+  RxKakaoSDKAuth: e0380c0369233da9b2bafcec6335bfd2491bb930
+  RxKakaoSDKCommon: 473015ead2bca7ede6cfc7c602228f9d6f9adbc0
+  RxKakaoSDKUser: 5395816373c847abe0211bdecfdcea6d465abc3d
+  RxRelay: 1de1523e604c72b6c68feadedd1af3b1b4d0ecbd
+  RxSwift: 5710a9e6b17f3c3d6e40d6e559b9fa1e813b2ef8
+  RxViewController: 56486fa0afd629a1d6b5ba077f3b8cd9dc31b5d2
+  SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
+  SwiftKeychainWrapper: 807ba1d63c33a7d0613288512399cd1eda1e470c
+  Then: 844265ae87834bbe1147d91d5d41a404da2ec27d
+
+PODFILE CHECKSUM: e47622bcd1164a84711eadddf75a00d6ad6bee5f
+
+COCOAPODS: 1.11.3
