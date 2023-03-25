@@ -32,7 +32,7 @@
 - RestAPI
 - RxSwift, Alamofire, Kingfisher, Then, Snapkit
 - MVVM
-- oAuth(Kakao, Naver, apple)
+- oAuth2.0(Kakao, Naver, apple)
 
 ## :people_hugging: Authors
 
