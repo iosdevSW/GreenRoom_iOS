@@ -33,6 +33,13 @@ class LoginViewModel {
                     .bind(to: self.loginObservable)
             }).disposed(by: disposeBag)
         
+        oauthToken.asObserver()
+            .flatMap { token in
+                AuthService.shared.loginAPI(token.accessToken!, authType: token.oauthType!)
+            }
+            .bind(to: self.loginObservable)
+            .disposed(by: self.disposeBag)
+        
         naverLoginInstance?.rx.subject
             .take(1)
             .subscribe(onNext: { [weak self] oauthToken in

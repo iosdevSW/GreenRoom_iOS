@@ -12,6 +12,7 @@ class AuthManager: RequestInterceptor {
     
     private var retryLimit = 3
     
+    // request 전에 특정 작업을 하고 싶은 경우
     func adapt(_ urlRequest: URLRequest, for session: Session, completion: @escaping (Result<URLRequest, Error>) -> Void) {
 
         guard urlRequest.url?.absoluteString.hasPrefix(Constants.baseURL) == true else { return }
@@ -28,6 +29,7 @@ class AuthManager: RequestInterceptor {
         completion(.success(urlRequest))
     }
     
+    // 특정 오류가 발생한 경우, retry가 필요한 경우
     func retry(_ request: Request, for session: Session, dueTo error: Error, completion: @escaping (RetryResult) -> Void) {
     
         guard let response = request.task?.response as? HTTPURLResponse, response.statusCode == 401 || response.statusCode == 403 else {
@@ -55,9 +57,7 @@ class AuthManager: RequestInterceptor {
             .responseDecodable(of: Auth.self) { response in
 
             switch response.result {
-            case .success(let token):
-                print("토큰 갱신 성공")
-                
+            case .success(let token): 
                 KeychainWrapper.standard.removeAllKeys()
                 KeychainWrapper.standard.set(token.accessToken, forKey: "accessToken")
                 KeychainWrapper.standard.set(token.refreshToken, forKey: "refreshToken")
